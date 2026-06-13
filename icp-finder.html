@@ -200,6 +200,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div class="status-text" id="status-text">No data loaded</div>
     <button class="btn btn-outline" onclick="resetApp()" style="display:none;" id="reload-btn">🔄 Reload</button>
     <button class="btn btn-green" onclick="exportCSV()" style="display:none;" id="export-btn">⬇ Export CSV</button>
+    <button class="btn btn-outline" onclick="window.open('outreach-playbook-demo.html','_blank')" style="display:none;" id="playbook-btn">📋 Playbook</button>
   </div>
 </div>
 
@@ -2004,11 +2005,23 @@ async function processFiles(filemap, isDemo) {
   renderTable();
   buildOutreachView();
 
+  // Save ICP data to localStorage so outreach-playbook-demo.html can read it
+  if (!isDemo) {
+    try {
+      localStorage.setItem('ga_icp_data', JSON.stringify({
+        icp: ICP.map(c => ({...c, connDate: c.connDate ? c.connDate.toISOString() : null})),
+        totalConns: connRows.length,
+        exported: new Date().toISOString()
+      }));
+    } catch(e) { console.warn('localStorage save failed:', e); }
+  }
+
   document.getElementById('load-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('status-dot').classList.add('loaded');
   document.getElementById('reload-btn').style.display = 'flex';
   document.getElementById('export-btn').style.display = 'flex';
+  if (!isDemo) document.getElementById('playbook-btn').style.display = 'flex';
   document.getElementById('status-text').textContent = `${ICP.length} ICP contacts from ${connRows.length} connections`;
   if (isDemo) document.getElementById('demo-banner').style.display = 'block';
 }
