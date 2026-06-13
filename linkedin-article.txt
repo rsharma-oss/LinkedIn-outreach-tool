@@ -1,0 +1,127 @@
+=== LINKEDIN ARTICLE — paste into LinkedIn's article editor ===
+=== Make section headers bold/H2 in the editor ===
+
+
+I found $500K in hidden pipeline inside my LinkedIn connections. Here's the tool I built to do it.
+
+
+I had 2,200 LinkedIn connections and was generating zero pipeline from them. Not because the leads weren't there. Because I had no system to find them. That changed when I built something stupid simple — and I want to share it with you.
+
+
+THE PROBLEM
+
+Everyone tells founders to post more. Engage with comments. Build in public. That stuff works over time.
+
+But here's what nobody talks about: your best pipeline is probably already sitting inside your connections list. You just can't see it.
+
+The average LinkedIn user has 500 to 2,000 connections. In B2B, maybe 10% are your actual ideal buyers. The rest are colleagues, old classmates, and conference contacts.
+
+LinkedIn gives you nothing to work with. No filtering by title. No scoring. No way to sort by "people I should actually be talking to."
+
+So most people do one of two things: reach out randomly with a low hit rate, or do nothing at all. I was doing the second one.
+
+
+WHAT I TRIED FIRST
+
+When I finally decided to fix this, I did what most people do. I opened a spreadsheet.
+
+I started going through my connections one by one. Looking at job titles. Copying names into a CRM. Adding tags like "follow up" or "maybe ICP."
+
+Two hours in, I had 40 contacts sorted. I had 2,160 to go. I quit.
+
+I tried a few tools that promised to help. Some were expensive. Some scraped data in ways that made me nervous. None felt right for what I actually needed: a fast, private way to see who in my existing network was worth reaching out to.
+
+
+THE BREAKTHROUGH
+
+LinkedIn lets you download all your data. Settings, Data Privacy, Get a copy. You wait about 24 hours and get a zip file with everything: connections, messages, reactions, invitations. All of it.
+
+I'd known about this feature for years but never touched it.
+
+One afternoon I actually opened the file. Looked at the CSVs. And something clicked.
+
+If I could parse this data in the browser — without uploading it anywhere — I could build a tool that does in 5 seconds what took me 5 hours manually. Your data stays on your machine the whole time. Nothing touches a server.
+
+So I built it.
+
+
+WHAT I BUILT
+
+There are three tools, and they're designed to run in sequence.
+
+DASHBOARD
+
+Drop your LinkedIn zip file into the Dashboard and you get an instant snapshot of your network. Who you've talked to the most. Who you used to talk to and then stopped. Your overall network health score. It turns a folder full of CSV files into something you can actually understand at a glance.
+
+This is where most people have their first "oh wow" moment — because they see the names they forgot they knew.
+
+ICP FINDER
+
+This is where it gets useful. The ICP Finder scores every single one of your connections against your ideal customer profile.
+
+Tier 1 contacts are decision makers — founders, VPs, CMOs, heads of growth, people who can say yes to a deal.
+
+Tier 2 contacts are ecosystem partners — consultants, agency owners, integrators. They may not buy directly, but they know people who will.
+
+Tier 3 contacts are warm adjacent leads. Right industry, a step removed from your ICP. Worth nurturing, not worth prioritizing today.
+
+In about 5 seconds, you go from 2,000 unsorted names to a ranked list of who actually matters.
+
+OUTREACH PLAYBOOK
+
+Once you know who to contact, the hard part is usually sitting down and writing the message. The Outreach Playbook removes that excuse.
+
+For each tier, it gives you pre-written message templates. Direct, short, nothing that sounds like a pitch. Copy, personalize one line, send. That's it.
+
+
+WHAT THE DATA ACTUALLY SHOWS
+
+Here's what most people find the first time they run this.
+
+Fifty to eighty Tier 1 contacts they've never properly reached out to. Not strangers — people they genuinely know, or at least connected with for a reason at some point.
+
+Ten to twenty conversations they started and never followed up on. You said hi, they responded, and then life happened. Those threads are still there in your messages file.
+
+A handful of people who reacted to your posts or commented on something you wrote — but who never got a direct message from you. They already raised their hand. You just never noticed.
+
+This is the hidden pipeline. It was always there. LinkedIn just doesn't surface it for you.
+
+
+HOW TO USE IT
+
+The whole process takes about 20 minutes.
+
+Step 1: Go to LinkedIn Settings, Data Privacy, Get a copy of your data. Request the export. LinkedIn emails you when it's ready — usually within 24 hours.
+
+Step 2: Drop the zip into the Dashboard. No unzipping needed. Your network analysis loads instantly.
+
+Step 3: Open the ICP Finder. Review your Tier 1 list. These are the people to contact this week.
+
+Step 4: Open the Outreach Playbook. Pick a template. Personalize one line. Send the message today.
+
+That's the whole flow. Twenty minutes from zip file to a prioritized outreach list.
+
+
+WHAT HAPPENED WHEN I RAN IT ON MY OWN NETWORK
+
+I'm not going to promise you'll close $500K from this. That number in the title is real — it's what I eventually sourced from conversations my network analysis helped me rediscover — but I don't want to oversell it.
+
+What I can tell you: the first time I ran this on my own data, I found three conversations I'd completely forgotten about. A founder I'd called eight months earlier. A VP of Marketing who'd replied to my cold message and I never wrote back. A director at a company squarely in my ICP who had commented on a post.
+
+All three turned into real opportunities. Not because I did anything clever. Just because I finally had a system that showed me who to talk to.
+
+The pipeline was already there. I just needed a way to see it.
+
+
+THE TOOLS ARE FREE
+
+No account required. No data leaves your browser. Everything runs locally on your machine.
+
+If you want to try it on your own LinkedIn data, the tools are linked in the comments below.
+
+And if you'd rather see it working before you dig in yourself, I'm doing free 20-minute walkthroughs this week. Drop "pipeline" in my DMs and I'll send you the link to book a time.
+
+
+=== POST IN COMMENTS after publishing ===
+Free tools to analyze your LinkedIn network: https://rsharma-oss.github.io/LinkedIn-outreach-tool/how-to.html
+Book a free 20-min walkthrough: https://seo-for-ai.growthautomated.ai/book_time
