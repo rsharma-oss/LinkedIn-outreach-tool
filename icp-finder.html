@@ -133,6 +133,55 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 ::-webkit-scrollbar{width:6px;height:6px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px;}
+
+/* VIEW SWITCHER */
+.view-tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--border);padding-bottom:0;}
+.view-tab{padding:9px 18px;font-size:0.82rem;font-weight:600;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;}
+.view-tab:hover{color:var(--tx2);}
+.view-tab.active{color:var(--li2);border-bottom-color:var(--li2);}
+
+/* OUTREACH VIEW */
+.or-section{margin-bottom:32px;}
+.or-section-title{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--tx3);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.or-row{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;transition:border-color 0.15s;}
+.or-row:hover{border-color:var(--border2);}
+.or-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.88rem;font-weight:700;flex-shrink:0;}
+.or-av-t1{background:rgba(239,68,68,0.15);color:#f87171;}
+.or-av-t2{background:rgba(249,115,22,0.15);color:#fb923c;}
+.or-info{flex:1;min-width:0;}
+.or-name{font-size:0.87rem;font-weight:600;display:flex;align-items:center;gap:6px;}
+.or-sub{font-size:0.75rem;color:var(--tx3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.or-meta{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.or-days{font-size:0.72rem;font-weight:700;padding:3px 8px;border-radius:6px;}
+.or-days-hot{background:rgba(16,185,129,0.15);color:#34d399;}
+.or-days-warm{background:rgba(249,115,22,0.15);color:#fb923c;}
+.or-days-cool{background:rgba(107,114,128,0.15);color:#9ca3af;}
+.or-link{font-size:0.75rem;color:var(--li2);text-decoration:none;}
+.or-link:hover{text-decoration:underline;}
+.or-empty{text-align:center;padding:40px;color:var(--tx3);font-size:0.82rem;background:var(--card);border:1px dashed var(--border2);border-radius:10px;}
+.or-hint{background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.15);border-radius:10px;padding:14px 18px;font-size:0.8rem;color:var(--tx2);margin-bottom:22px;line-height:1.7;}
+.or-hint strong{color:var(--tx);}
+
+/* TEMPLATES */
+.tpl-grid{display:flex;flex-direction:column;gap:10px;}
+.tpl-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.tpl-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;transition:background 0.15s;}
+.tpl-header:hover{background:var(--bg4);}
+.tpl-header-l{display:flex;align-items:center;gap:10px;}
+.tpl-title{font-size:0.83rem;font-weight:600;}
+.tpl-meta{font-size:0.7rem;color:var(--tx3);margin-top:1px;}
+.tpl-toggle{font-size:0.85rem;color:var(--tx3);transition:transform 0.2s;}
+.tpl-body{display:none;padding:16px;border-top:1px solid var(--border);}
+.tpl-body.open{display:block;}
+.tpl-text{font-size:0.82rem;color:var(--tx2);white-space:pre-wrap;line-height:1.7;background:var(--bg3);border-radius:8px;padding:14px;margin-bottom:10px;font-family:'Inter',sans-serif;}
+.tpl-note{font-size:0.75rem;color:var(--tx3);margin-bottom:10px;font-style:italic;}
+.tpl-copy{padding:7px 14px;background:rgba(0,119,181,0.15);color:var(--li2);border:1px solid rgba(0,119,181,0.3);border-radius:7px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;}
+.tpl-copy:hover{background:rgba(0,119,181,0.25);}
+.tpl-copy.copied{background:rgba(16,185,129,0.15);color:var(--green);border-color:rgba(16,185,129,0.3);}
+.tpl-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.tpl-filter{padding:5px 12px;border-radius:20px;font-size:0.75rem;font-weight:600;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--tx3);font-family:inherit;transition:all 0.2s;}
+.tpl-filter:hover{background:var(--bg4);}
+.tpl-filter.active{background:rgba(0,119,181,0.15);color:var(--li2);border-color:rgba(0,119,181,0.3);}
 </style>
 </head>
 <body>
@@ -227,55 +276,85 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       </div>
     </div>
 
-    <!-- Filter Bar -->
-    <div class="filter-bar">
-      <input type="text" class="search-input" id="icp-search" placeholder="Search name, title, company…" oninput="_icpPage=0;renderTable()">
-      <select class="filter-select" id="f-tier" onchange="_icpPage=0;renderTable()">
-        <option value="">All Tiers</option>
-        <option value="T1">T1 · Decision Maker</option>
-        <option value="T2">T2 · Ecosystem</option>
-        <option value="T3">T3 · Adjacent</option>
-      </select>
-      <select class="filter-select" id="f-recency" onchange="_icpPage=0;renderTable()">
-        <option value="">All Recency</option>
-        <option value="new">🟢 New (&lt;30d)</option>
-        <option value="fresh">🟡 Fresh (30–90d)</option>
-        <option value="warm">⚪ Warm (90–365d)</option>
-        <option value="cold">⬇ Cold (&gt;1yr)</option>
-      </select>
-      <select class="filter-select" id="f-engagement" onchange="_icpPage=0;renderTable()">
-        <option value="">All Engagement</option>
-        <option value="active">Active (messaged &lt;90d)</option>
-        <option value="warm">Warm (messaged &lt;1yr)</option>
-        <option value="cold">Cold (messaged &gt;1yr)</option>
-        <option value="never">Never messaged</option>
-      </select>
-      <span class="filter-count"><b id="icp-count">0</b> contacts</span>
+    <!-- View Switcher -->
+    <div class="view-tabs" id="view-tabs">
+      <div class="view-tab active" id="tab-icp" onclick="switchView('icp')">📋 ICP List</div>
+      <div class="view-tab" id="tab-outreach" onclick="switchView('outreach')">🚀 Outreach Plan</div>
     </div>
 
-    <!-- Table -->
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th onclick="sortICP('name')">Name ↕</th>
-            <th onclick="sortICP('title')">Title ↕</th>
-            <th onclick="sortICP('company')">Company ↕</th>
-            <th onclick="sortICP('tier')">Tier ↕</th>
-            <th onclick="sortICP('date')">Connected ↕</th>
-            <th onclick="sortICP('recency')">Recency</th>
-            <th onclick="sortICP('engagement')">Engagement</th>
-            <th>↗</th>
-          </tr>
-        </thead>
-        <tbody id="icp-tbody"></tbody>
-      </table>
-    </div>
-    <div class="pagination">
-      <button class="pg-btn" id="icp-prev" onclick="icpPage(-1)">← Prev</button>
-      <span class="pg-info" id="icp-page-info"></span>
-      <button class="pg-btn" id="icp-next" onclick="icpPage(1)">Next →</button>
-    </div>
+    <!-- ICP VIEW -->
+    <div id="view-icp">
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <input type="text" class="search-input" id="icp-search" placeholder="Search name, title, company…" oninput="_icpPage=0;renderTable()">
+        <select class="filter-select" id="f-tier" onchange="_icpPage=0;renderTable()">
+          <option value="">All Tiers</option>
+          <option value="T1">T1 · Decision Maker</option>
+          <option value="T2">T2 · Ecosystem</option>
+          <option value="T3">T3 · Adjacent</option>
+        </select>
+        <select class="filter-select" id="f-recency" onchange="_icpPage=0;renderTable()">
+          <option value="">All Recency</option>
+          <option value="new">🟢 New (&lt;30d)</option>
+          <option value="fresh">🟡 Fresh (30–90d)</option>
+          <option value="warm">⚪ Warm (90–365d)</option>
+          <option value="cold">⬇ Cold (&gt;1yr)</option>
+        </select>
+        <select class="filter-select" id="f-engagement" onchange="_icpPage=0;renderTable()">
+          <option value="">All Engagement</option>
+          <option value="active">Active (messaged &lt;90d)</option>
+          <option value="warm">Warm (messaged &lt;1yr)</option>
+          <option value="cold">Cold (messaged &gt;1yr)</option>
+          <option value="never">Never messaged</option>
+        </select>
+        <span class="filter-count"><b id="icp-count">0</b> contacts</span>
+      </div>
+
+      <!-- Table -->
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th onclick="sortICP('name')">Name ↕</th>
+              <th onclick="sortICP('title')">Title ↕</th>
+              <th onclick="sortICP('company')">Company ↕</th>
+              <th onclick="sortICP('tier')">Tier ↕</th>
+              <th onclick="sortICP('date')">Connected ↕</th>
+              <th onclick="sortICP('recency')">Recency</th>
+              <th onclick="sortICP('engagement')">Engagement</th>
+              <th>↗</th>
+            </tr>
+          </thead>
+          <tbody id="icp-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <button class="pg-btn" id="icp-prev" onclick="icpPage(-1)">← Prev</button>
+        <span class="pg-info" id="icp-page-info"></span>
+        <button class="pg-btn" id="icp-next" onclick="icpPage(1)">Next →</button>
+      </div>
+    </div><!-- /view-icp -->
+
+    <!-- OUTREACH VIEW -->
+    <div id="view-outreach" style="display:none;">
+      <div class="or-hint">
+        <strong>How to use this plan:</strong> Your T1 contacts are sorted by how recently you connected — the freshest connections are at the top. Send a first message within 30 days of connecting for the highest reply rate. T2s are ecosystem contacts worth a warmer, more relationship-focused intro. Use the templates below as starting points — always personalize the first line.
+      </div>
+      <div id="outreach-content"></div>
+
+      <!-- Message Templates -->
+      <div class="or-section" style="margin-top:32px;">
+        <div class="or-section-title">📝 Message Templates</div>
+        <div class="tpl-filters">
+          <button class="tpl-filter active" onclick="filterTpls('all',this)">All</button>
+          <button class="tpl-filter" onclick="filterTpls('t1',this)">T1 First Msg</button>
+          <button class="tpl-filter" onclick="filterTpls('t2',this)">T2 Ecosystem</button>
+          <button class="tpl-filter" onclick="filterTpls('followup',this)">Follow-Up</button>
+          <button class="tpl-filter" onclick="filterTpls('reengage',this)">Re-engage</button>
+        </div>
+        <div class="tpl-grid" id="tpl-grid"></div>
+      </div>
+    </div><!-- /view-outreach -->
 
   </div>
 </div>
@@ -1923,6 +2002,7 @@ async function processFiles(filemap, isDemo) {
   buildStats(isDemo);
   _icpPage = 0;
   renderTable();
+  buildOutreachView();
 
   document.getElementById('load-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
@@ -2064,6 +2144,156 @@ function resetApp() {
   document.getElementById('demo-banner').style.display = 'none';
   document.getElementById('progress-wrap').style.display = 'none';
   document.getElementById('progress-bar').style.width = '0%';
+}
+
+// ─── VIEW SWITCHER ────────────────────────────────────────────────────────────
+function switchView(view) {
+  const isIcp = view === 'icp';
+  document.getElementById('view-icp').style.display = isIcp ? 'block' : 'none';
+  document.getElementById('view-outreach').style.display = isIcp ? 'none' : 'block';
+  document.getElementById('tab-icp').classList.toggle('active', isIcp);
+  document.getElementById('tab-outreach').classList.toggle('active', !isIcp);
+  if (!isIcp) buildOutreachView();
+}
+
+// ─── OUTREACH VIEW ────────────────────────────────────────────────────────────
+function buildOutreachView() {
+  const container = document.getElementById('outreach-content');
+  if (!ICP.length) {
+    container.innerHTML = '<div class="or-empty">Load your LinkedIn data to generate your outreach plan.</div>';
+    buildTemplates();
+    return;
+  }
+
+  const t1 = ICP.filter(c => c.tier === 'T1').sort((a,b) => (a.days??9999)-(b.days??9999));
+  const t2 = ICP.filter(c => c.tier === 'T2').sort((a,b) => (a.days??9999)-(b.days??9999));
+
+  // Split T1 into hot / warm / cool buckets
+  const hot  = t1.filter(c => c.days !== null && c.days < 30);
+  const warm = t1.filter(c => c.days !== null && c.days >= 30 && c.days < 90);
+  const cool = t1.filter(c => c.days !== null && (c.days >= 90));
+
+  let html = '';
+
+  function renderSection(title, contacts, badge, limit) {
+    if (!contacts.length) return '';
+    const shown = contacts.slice(0, limit || contacts.length);
+    const rows = shown.map(c => {
+      const initials = ((c.first||'')[0]||'') + ((c.last||'')[0]||'');
+      const daysLabel = c.days !== null ? (c.days < 30 ? `${c.days}d ago` : c.days < 90 ? `${c.days}d` : `${Math.round(c.days/30)}mo`) : '—';
+      const daysCls = c.days < 30 ? 'or-days-hot' : c.days < 90 ? 'or-days-warm' : 'or-days-cool';
+      const tierBadge = c.tier === 'T1' ? '<span class="tier-badge t1-badge" style="font-size:0.65rem;padding:2px 6px">T1</span>' : '<span class="tier-badge t2-badge" style="font-size:0.65rem;padding:2px 6px">T2</span>';
+      const avCls = c.tier === 'T1' ? 'or-av-t1' : 'or-av-t2';
+      return `<div class="or-row">
+        <div class="or-avatar ${avCls}">${initials || '?'}</div>
+        <div class="or-info">
+          <div class="or-name">${c.name} ${tierBadge}</div>
+          <div class="or-sub">${c.title}${c.company ? ' · '+c.company : ''}</div>
+        </div>
+        <div class="or-meta">
+          <span class="or-days ${daysCls}">${daysLabel}</span>
+          ${c.url ? `<a class="or-link" href="${c.url}" target="_blank">View ↗</a>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+    const more = contacts.length > (limit || contacts.length) ? `<div style="font-size:0.75rem;color:var(--tx3);text-align:center;padding:8px">+${contacts.length - limit} more — filter by T1/New in the ICP List</div>` : '';
+    return `<div class="or-section">
+      <div class="or-section-title">${title}</div>
+      ${rows}${more}
+    </div>`;
+  }
+
+  html += renderSection('🔥 Hot — Connected in last 30 days (message now)', hot, 't1', 20);
+  html += renderSection('🌤 Warm — Connected 30–90 days ago (this week)', warm, 't1', 15);
+  html += renderSection('❄️ Cool — Connected 3+ months ago (re-engage)', cool.slice(0,30), 't1', 30);
+  html += renderSection('🔗 T2 Ecosystem — Partners & Referral Sources', t2, 't2', 20);
+
+  if (!html) {
+    html = '<div class="or-empty">No T1 or T2 contacts found. Check your ICP keywords in the tool settings.</div>';
+  }
+
+  container.innerHTML = html;
+  buildTemplates();
+}
+
+// ─── TEMPLATES ────────────────────────────────────────────────────────────────
+const TEMPLATES = [
+  {
+    id: 't1', cat: 't1', label: 'T1 — First Message (Warm)', note: 'For T1 contacts connected in the last 30 days. Keep it short, no pitch, just open a door.',
+    text: `Hey [First Name] — noticed we just connected. I work with [type of company] on [outcome you drive]. Excited to have you in my network. Would love to hear what you're focused on right now.`
+  },
+  {
+    id: 't1b', cat: 't1', label: 'T1 — Insight Opener', note: 'Share a relevant data point or observation. Works well when you have context from their posts or company.',
+    text: `Hey [First Name] — saw [your post / your company's move / something relevant] and it resonated. We help [type of company] with [outcome]. Happy to share what's working if it'd be useful. Either way, great to be connected.`
+  },
+  {
+    id: 't2', cat: 't2', label: 'T2 — Ecosystem / Partnership', note: 'For ecosystem contacts — partners, tools, practitioners. Position as a peer, not a vendor.',
+    text: `Hey [First Name] — we're both in the [Shopify/DTC/SaaS] world and I've been meaning to reach out. I work with [type of clients] on [what you do]. Always looking to build relationships with people doing interesting work in the space. Open to a quick catch-up sometime?`
+  },
+  {
+    id: 'followup1', cat: 'followup', label: 'Follow-Up #1 (No Reply)', note: 'Send 5–7 days after first message if no reply. Add value, don\'t just bump.',
+    text: `Hey [First Name] — just following up on my last message. Thought this might be relevant: [share something useful — a stat, article, or observation]. No pressure at all — just wanted to put it on your radar.`
+  },
+  {
+    id: 'followup2', cat: 'followup', label: 'Follow-Up #2 — Break-Up', note: 'Final message. Light touch, leaves door open.',
+    text: `Hey [First Name] — I know you're busy so I'll keep this short. If the timing's not right, totally understand. I'll leave the ball in your court — feel free to reach out whenever it makes sense. Hope things are going well on your end.`
+  },
+  {
+    id: 're1', cat: 'reengage', label: 'Re-Engage — Cold Connection (1yr+)', note: 'For T1 contacts you connected with long ago but never messaged. Reference the time gap briefly.',
+    text: `Hey [First Name] — we connected a while back and I realize I never actually reached out. Better late than never! I've been working on [what you do] for [type of client]. Would love to catch up — what's been keeping you busy lately?`
+  },
+  {
+    id: 're2', cat: 'reengage', label: 'Re-Engage — Lapsed Conversation', note: 'For contacts you chatted with before but the conversation went cold.',
+    text: `Hey [First Name] — hope things have been going well since we last spoke. I've been heads-down on [something relevant] and it made me think of our earlier conversation. Would love to reconnect — anything exciting on your end these days?`
+  },
+];
+
+let _activeTplFilter = 'all';
+
+function buildTemplates() {
+  const grid = document.getElementById('tpl-grid');
+  if (!grid) return;
+  const toShow = _activeTplFilter === 'all' ? TEMPLATES : TEMPLATES.filter(t => t.cat === _activeTplFilter);
+  grid.innerHTML = toShow.map(t => `
+    <div class="tpl-card" data-cat="${t.cat}">
+      <div class="tpl-header" onclick="toggleTpl('${t.id}')">
+        <div class="tpl-header-l">
+          <div>
+            <div class="tpl-title">${t.label}</div>
+            <div class="tpl-meta">${t.note}</div>
+          </div>
+        </div>
+        <div class="tpl-toggle" id="tog-${t.id}">▸</div>
+      </div>
+      <div class="tpl-body" id="body-${t.id}">
+        <div class="tpl-text">${t.text}</div>
+        <button class="tpl-copy" onclick="copyTpl('${t.id}')">Copy template</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleTpl(id) {
+  const body = document.getElementById('body-'+id);
+  const tog  = document.getElementById('tog-'+id);
+  const open = body.classList.toggle('open');
+  tog.textContent = open ? '▾' : '▸';
+}
+
+function copyTpl(id) {
+  const t = TEMPLATES.find(x => x.id === id);
+  if (!t) return;
+  navigator.clipboard.writeText(t.text).then(() => {
+    const btn = document.querySelector(`#body-${id} .tpl-copy`);
+    if (btn) { btn.textContent = 'Copied!'; btn.classList.add('copied'); setTimeout(()=>{ btn.textContent='Copy template'; btn.classList.remove('copied'); }, 2000); }
+  });
+}
+
+function filterTpls(cat, el) {
+  _activeTplFilter = cat;
+  document.querySelectorAll('.tpl-filter').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  buildTemplates();
 }
 </script>
 </body>
