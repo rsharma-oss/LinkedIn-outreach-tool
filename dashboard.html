@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 :root {
   --bg:#080c14; --bg2:#0d1220; --bg3:#131926; --bg4:#1a2235; --card:#111827;
@@ -55,6 +56,19 @@ a:hover{text-decoration:underline;}
 .error-banner{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#fca5a5;font-size:0.8rem;padding:10px 16px;border-radius:8px;margin-top:12px;display:none;text-align:left;line-height:1.5;}
 /* hidden file input trigger */
 #file-input{display:none;}
+
+/* DROP ZONE */
+.drop-zone{border:2px dashed var(--border2);border-radius:14px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:16px;background:var(--bg3);}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--li2);background:rgba(0,119,181,0.08);transform:scale(1.01);}
+.drop-icon{font-size:38px;margin-bottom:10px;}
+.drop-label{font-size:1rem;font-weight:700;margin-bottom:4px;}
+.drop-sub{font-size:0.78rem;color:var(--tx3);line-height:1.6;}
+.drop-tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
+.drop-tag{font-size:0.68rem;padding:2px 8px;border-radius:10px;background:rgba(0,119,181,0.12);border:1px solid rgba(0,119,181,0.25);color:var(--li2);}
+.load-steps-grid{display:flex;flex-direction:column;gap:8px;text-align:left;margin-top:20px;}
+.load-step-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.81rem;color:var(--tx2);}
+.load-step-row:last-child{border-bottom:none;}
+.step-num{background:rgba(0,119,181,0.15);color:var(--li2);border-radius:50%;min-width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0;margin-top:1px;}
 
 /* NAV TABS */
 #app{display:none;}
@@ -195,58 +209,55 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 </div>
 
 <!-- HIDDEN FILE INPUT (works in all browsers) -->
-<input type="file" id="file-input" multiple accept=".csv"
-  onchange="loadFromInput(this.files)">
+<input type="file" id="file-input" multiple accept=".csv,.zip"
+  onchange="if(this.files.length===1&&this.files[0].name.endsWith('.zip')){loadFromZip(this.files[0])}else{loadFromInput(this.files)}">
 
 <!-- LOAD SCREEN -->
 <div id="load-screen">
   <div class="load-card">
     <div class="load-icon">📊</div>
-    <div class="load-title">Load Your LinkedIn Export</div>
-    <div class="load-sub">
-      Select all the CSV files from your LinkedIn data export folder. Everything is parsed locally in your browser — nothing is uploaded anywhere.
-    </div>
-    <div class="load-files">
-      <span class="file-pill">Connections.csv</span>
-      <span class="file-pill">messages.csv</span>
-      <span class="file-pill">Reactions.csv</span>
-      <span class="file-pill">Comments.csv</span>
-      <span class="file-pill">Shares.csv</span>
-      <span class="file-pill">Invitations.csv</span>
-      <span class="file-pill">Profile.csv</span>
+    <div class="load-title">LinkedIn Intelligence Dashboard</div>
+    <div class="load-sub">Drop your LinkedIn export zip file — or your unzipped folder. Everything runs in your browser. Nothing leaves your device.</div>
+
+    <!-- DROP ZONE -->
+    <div class="drop-zone" id="drop-zone"
+         onclick="document.getElementById('file-input').click()"
+         ondragover="event.preventDefault();document.getElementById('drop-zone').classList.add('drag-over')"
+         ondragleave="document.getElementById('drop-zone').classList.remove('drag-over')"
+         ondrop="document.getElementById('drop-zone').classList.remove('drag-over');handleDrop(event)">
+      <div class="drop-icon">⬇️</div>
+      <div class="drop-label">Drop your LinkedIn export here</div>
+      <div class="drop-sub">Drag the <strong>.zip file</strong> from your Downloads<br>— or drag the unzipped folder — or click to browse</div>
+      <div class="drop-tags">
+        <span class="drop-tag">Connections.csv</span>
+        <span class="drop-tag">messages.csv</span>
+        <span class="drop-tag">Reactions.csv</span>
+        <span class="drop-tag">Invitations.csv</span>
+        <span class="drop-tag">+ more</span>
+      </div>
     </div>
 
     <div class="load-buttons">
-      <!-- Option A: Folder picker (Chrome / Edge) -->
       <button class="btn btn-primary" id="btn-folder" onclick="loadFolder()" style="width:280px;justify-content:center;">
-        📂 Select Export Folder — Chrome/Edge
+        📂 Select Folder — Chrome/Edge
       </button>
-
-      <div class="load-divider">or select individual files</div>
-
-      <!-- Option B: Multi-file input (all browsers) -->
-      <button class="btn btn-outline" onclick="document.getElementById('file-input').click()" style="width:280px;justify-content:center;">
-        📁 Choose CSV Files — All Browsers
-      </button>
-
-      <div class="load-divider">or try the demo</div>
-
-      <!-- Option C: Demo mode -->
+      <div class="load-divider">or</div>
       <button class="btn btn-outline" onclick="loadDemoData()" style="width:280px;justify-content:center;border-color:rgba(139,92,246,0.5);color:#a78bfa;">
         ✨ Try Demo — Alex Chen · ShopBoost Agency
       </button>
     </div>
 
-    <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-wrap" id="progress-wrap" style="display:none;">
       <div class="progress-bar-bg"><div class="progress-bar" id="progress-bar"></div></div>
       <div class="progress-label" id="progress-label">Loading…</div>
     </div>
 
     <div class="error-banner" id="error-banner"></div>
 
-    <div class="load-note">
-      <b>How to export from LinkedIn:</b> Settings → Data Privacy → Get a copy of your data → select all data → Request archive. You'll get an email with a download link within 24 hours.<br><br>
-      <b>Tip:</b> Select-all (Ctrl/Cmd+A) in the export folder when using "Choose CSV Files" to grab everything at once.
+    <div class="load-steps-grid">
+      <div class="load-step-row"><span class="step-num">1</span><span>Go to LinkedIn → <b>Settings</b> → <b>Data Privacy</b> → <b>Get a copy of your data</b> → Request archive</span></div>
+      <div class="load-step-row"><span class="step-num">2</span><span>Wait for the email (up to 24h) and download the <b>.zip file</b></span></div>
+      <div class="load-step-row"><span class="step-num">3</span><span>Drag the zip straight onto the box above — no unzipping needed</span></div>
     </div>
   </div>
 </div>
@@ -645,6 +656,139 @@ function showError(msg) {
   const el = document.getElementById('error-banner');
   el.textContent = '⚠ ' + msg;
   el.style.display = 'block';
+}
+
+// ─── LOADING: DRAG & DROP HANDLER ────────────────────────────────────────────
+async function handleDrop(e) {
+  e.preventDefault();
+  const items = e.dataTransfer.items;
+  const files = e.dataTransfer.files;
+
+  // Check for directory via DataTransferItem API (Chrome/Edge)
+  if (items && items.length > 0) {
+    const item = items[0];
+    if (item.webkitGetAsEntry) {
+      const entry = item.webkitGetAsEntry();
+      if (entry && entry.isDirectory) {
+        await loadFromDirectoryEntry(entry);
+        return;
+      }
+    }
+  }
+
+  // Single file — check if zip
+  if (files.length === 1 && files[0].name.endsWith('.zip')) {
+    await loadFromZip(files[0]);
+    return;
+  }
+
+  // Multiple files — treat as CSVs directly
+  if (files.length > 0) {
+    await loadFromInput(files);
+    return;
+  }
+
+  showError('Could not read dropped content. Try dropping a .zip file or the unzipped folder.');
+}
+
+// ─── LOADING: ZIP FILE (via JSZip) ───────────────────────────────────────────
+async function loadFromZip(zipFile) {
+  if (typeof JSZip === 'undefined') {
+    showError('JSZip not loaded. Please refresh the page and try again.');
+    return;
+  }
+  document.getElementById('progress-wrap').style.display = 'block';
+  document.getElementById('error-banner').style.display = 'none';
+  document.getElementById('progress-label').textContent = 'Reading zip…';
+
+  const wanted = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
+    'Shares.csv','Invitations.csv','Member_Follows.csv','Profile.csv','Positions.csv'];
+
+  try {
+    const zip = await JSZip.loadAsync(zipFile);
+    const filemap = {};
+    const promises = [];
+
+    zip.forEach((relativePath, zipEntry) => {
+      const filename = relativePath.split('/').pop();
+      if (!zipEntry.dir && wanted.includes(filename)) {
+        promises.push(
+          zipEntry.async('string').then(text => { filemap[filename] = text; })
+        );
+      }
+    });
+
+    await Promise.all(promises);
+
+    if (Object.keys(filemap).length === 0) {
+      showError('No LinkedIn CSV files found in the zip. Make sure this is your LinkedIn data export.');
+      document.getElementById('progress-wrap').style.display = 'none';
+      return;
+    }
+
+    await processFiles(filemap);
+  } catch(err) {
+    showError('Could not read zip file: ' + err.message);
+    document.getElementById('progress-wrap').style.display = 'none';
+  }
+}
+
+// ─── LOADING: DIRECTORY ENTRY (drag-dropped folder) ──────────────────────────
+async function loadFromDirectoryEntry(dirEntry) {
+  document.getElementById('progress-wrap').style.display = 'block';
+  document.getElementById('error-banner').style.display = 'none';
+  document.getElementById('progress-label').textContent = 'Reading folder…';
+
+  const wanted = new Set(['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
+    'Shares.csv','Invitations.csv','Member_Follows.csv','Profile.csv','Positions.csv']);
+
+  const filemap = {};
+
+  function readDir(entry) {
+    return new Promise((resolve) => {
+      const reader = entry.createReader();
+      const results = [];
+      function readBatch() {
+        reader.readEntries(async (entries) => {
+          if (entries.length === 0) { resolve(results); return; }
+          for (const e of entries) {
+            if (e.isFile && wanted.has(e.name)) results.push(e);
+            else if (e.isDirectory) {
+              const sub = await readDir(e);
+              results.push(...sub);
+            }
+          }
+          readBatch();
+        });
+      }
+      readBatch();
+    });
+  }
+
+  try {
+    const fileEntries = await readDir(dirEntry);
+    const promises = fileEntries.map(fe =>
+      new Promise(resolve => {
+        fe.file(file => {
+          const reader = new FileReader();
+          reader.onload = e => { filemap[fe.name] = e.target.result; resolve(); };
+          reader.readAsText(file, 'UTF-8');
+        });
+      })
+    );
+    await Promise.all(promises);
+
+    if (Object.keys(filemap).length === 0) {
+      showError('No LinkedIn CSV files found in the folder.');
+      document.getElementById('progress-wrap').style.display = 'none';
+      return;
+    }
+
+    await processFiles(filemap);
+  } catch(err) {
+    showError('Could not read folder: ' + err.message);
+    document.getElementById('progress-wrap').style.display = 'none';
+  }
 }
 
 // ─── LOADING: FOLDER PICKER (Chrome/Edge) ────────────────────────────────────
