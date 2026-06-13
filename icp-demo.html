@@ -1,0 +1,2870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn ICP Demo · ShopBoost Agency · 290 Contacts</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c14;--bg2:#0d1220;--bg3:#131926;--bg4:#1a2235;--card:#111827;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --li:#0077B5;--li2:#00a0dc;
+  --green:#10b981;--yellow:#f59e0b;--red:#ef4444;--purple:#8b5cf6;--orange:#f97316;
+  --tx:#f0f4ff;--tx2:rgba(240,244,255,0.65);--tx3:rgba(240,244,255,0.38);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.6;}
+.hdr{background:linear-gradient(135deg,#0a0f1e,#0d1525);border-bottom:1px solid var(--border);padding:18px 40px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:200;}
+.hdr-l{display:flex;align-items:center;gap:12px;}
+.logo{width:36px;height:36px;background:linear-gradient(135deg,#0077B5,#00a0dc);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0;}
+.hdr-title{font-size:1rem;font-weight:700;} .hdr-sub{font-size:0.72rem;color:var(--tx3);margin-top:1px;}
+.btn{padding:7px 14px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
+.btn-green{background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
+.btn-green:hover{background:rgba(16,185,129,0.25);}
+.demo-banner{background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);color:#c4b5fd;font-size:0.82rem;padding:12px 20px;margin:0 0 20px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;}
+.main{padding:28px 40px;max-width:1400px;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.sc-li::before{background:linear-gradient(90deg,var(--li),var(--li2));}
+.sc-green::before{background:var(--green);} .sc-yellow::before{background:var(--yellow);}
+.sc-red::before{background:var(--red);} .sc-orange::before{background:var(--orange);}
+.stat-val{font-size:1.8rem;font-weight:800;line-height:1;margin-bottom:3px;}
+.stat-label{font-size:0.73rem;color:var(--tx3);font-weight:500;} .stat-sub{font-size:0.68rem;color:var(--tx3);margin-top:3px;}
+.sv-li{color:var(--li2);} .sv-green{color:var(--green);} .sv-yellow{color:var(--yellow);} .sv-red{color:var(--red);} .sv-orange{color:var(--orange);}
+.filter-bar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+.search-input{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;color:var(--tx);font-size:0.82rem;font-family:inherit;outline:none;width:240px;}
+.search-input:focus{border-color:var(--li);}
+.filter-select{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;color:var(--tx2);font-size:0.78rem;font-family:inherit;outline:none;cursor:pointer;}
+.filter-count{font-size:0.73rem;color:var(--tx3);padding:4px 10px;border:1px solid var(--border);border-radius:10px;margin-left:auto;}
+.filter-count b{color:var(--tx);}
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:9px 12px;text-align:left;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--tx3);border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;}
+thead th:hover{color:var(--tx);}
+tbody tr{border-bottom:1px solid rgba(255,255,255,0.04);} tbody tr:hover{background:rgba(255,255,255,0.02);}
+td{padding:9px 12px;font-size:0.82rem;vertical-align:middle;}
+.td-name{font-weight:500;color:var(--tx);}
+.td-title{max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.td-muted{color:var(--tx3);font-size:0.78rem;}
+.tier-pill{font-size:0.63rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+.tp-t1{background:rgba(239,68,68,0.15);color:#fca5a5;border:1px solid rgba(239,68,68,0.3);}
+.tp-t2{background:rgba(249,115,22,0.15);color:#fb923c;border:1px solid rgba(249,115,22,0.3);}
+.tp-t3{background:rgba(0,160,220,0.15);color:var(--li2);border:1px solid rgba(0,160,220,0.3);}
+.rec-new{color:var(--green);font-weight:600;} .rec-fresh{color:var(--yellow);} .rec-warm{color:var(--tx2);} .rec-cold{color:var(--tx3);}
+.eng-active{color:var(--green);} .eng-warm{color:var(--yellow);} .eng-cold,.eng-never{color:var(--tx3);}
+::-webkit-scrollbar{width:6px;height:6px;} ::-webkit-scrollbar-track{background:transparent;} ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="logo">🎯</div>
+    <div>
+      <div class="hdr-title">LinkedIn ICP Finder — Demo</div>
+      <div class="hdr-sub">Sample network · Alex Chen · ShopBoost Agency</div>
+    </div>
+  </div>
+  <div>
+    <button class="btn btn-green" onclick="exportVisible()">⬇ Export CSV</button>
+  </div>
+</div>
+<div class="main">
+  <div class="demo-banner">
+    ✨ <b>This is a demo</b> with anonymized sample data. <a href="icp-finder.html" style="color:#c4b5fd;font-weight:600">→ Load your own LinkedIn export</a> to see your actual ICP contacts.
+  </div>
+  <div class="stat-grid">
+    <div class="stat-card sc-li"><div class="stat-val sv-li">272</div><div class="stat-label">Total ICP Contacts</div><div class="stat-sub" id="vis-count-sub">from 400 connections</div></div>
+    <div class="stat-card sc-red"><div class="stat-val sv-red">108</div><div class="stat-label">T1 — Decision Makers</div><div class="stat-sub">Founders, CEOs, CMOs, VPs</div></div>
+    <div class="stat-card sc-orange"><div class="stat-val sv-orange">34</div><div class="stat-label">T2 — Ecosystem</div><div class="stat-sub">Shopify, Klaviyo, tools</div></div>
+    <div class="stat-card sc-li"><div class="stat-val sv-li">130</div><div class="stat-label">T3 — Adjacent</div><div class="stat-sub">Marketing & growth</div></div>
+    <div class="stat-card sc-green"><div class="stat-val sv-green">2</div><div class="stat-label">New (Last 30 Days)</div><div class="stat-sub">2 fresh (30–90d)</div></div>
+    <div class="stat-card sc-yellow"><div class="stat-val sv-yellow">8</div><div class="stat-label">Actively Engaged</div><div class="stat-sub">Messaged in 90 days</div></div>
+  </div>
+  <div class="filter-bar">
+    <input type="text" class="search-input" id="q" placeholder="Search name, title, company…" oninput="applyFilters()">
+    <select class="filter-select" id="f-tier" onchange="applyFilters()">
+      <option value="">All Tiers</option>
+      <option value="T1">T1 · Decision Maker</option>
+      <option value="T2">T2 · Ecosystem</option>
+      <option value="T3">T3 · Adjacent</option>
+    </select>
+    <select class="filter-select" id="f-rec" onchange="applyFilters()">
+      <option value="">All Recency</option>
+      <option value="new">🟢 New (&lt;30d)</option>
+      <option value="fresh">🟡 Fresh (30–90d)</option>
+      <option value="warm">⚪ Warm (90–365d)</option>
+      <option value="cold">❄ Cold (&gt;1yr)</option>
+    </select>
+    <select class="filter-select" id="f-eng" onchange="applyFilters()">
+      <option value="">All Engagement</option>
+      <option value="active">Active (&lt;90d)</option>
+      <option value="warm">Warm (&lt;1yr)</option>
+      <option value="cold">Cold (&gt;1yr)</option>
+      <option value="never">Never messaged</option>
+    </select>
+    <span class="filter-count"><b id="vis-count">272</b> contacts</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>Name</th><th>Title</th><th>Company</th><th>Tier</th>
+        <th>Connected</th><th>Recency</th><th>Engagement</th><th>↗</th>
+      </tr></thead>
+      <tbody id="icp-body">
+<tr data-tier="T1" data-rec="cold" data-eng="cold" data-search="aurora patel head of dtc salesforce">
+      <td><div class="td-name">Aurora Patel</div></td>
+      <td><div class="td-title" title="Head of DTC">Head of DTC</div></td>
+      <td><div class="td-muted">Salesforce</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">22 May 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>2msg</span></td>
+      <td><a href='https://www.linkedin.com/in/aurora-patel-108' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="cold" data-search="jackson chen vp of marketing ruggable">
+      <td><div class="td-name">Jackson Chen</div></td>
+      <td><div class="td-title" title="VP of Marketing">VP of Marketing</div></td>
+      <td><div class="td-muted">Ruggable</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">20 Jul 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>4msg</span></td>
+      <td><a href='https://www.linkedin.com/in/jackson-chen-960' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="warm" data-search="lily wright lifecycle marketing manager postscript">
+      <td><div class="td-name">Lily Wright</div></td>
+      <td><div class="td-title" title="Lifecycle Marketing Manager">Lifecycle Marketing Manager</div></td>
+      <td><div class="td-muted">Postscript</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">18 Dec 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>4msg</span></td>
+      <td><a href='https://www.linkedin.com/in/lily-wright-216' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="riley taylor cmo olipop">
+      <td><div class="td-name">Riley Taylor</div></td>
+      <td><div class="td-title" title="CMO">CMO</div></td>
+      <td><div class="td-muted">Olipop</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">22 Jan 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/riley-taylor-384' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="new" data-eng="warm" data-search="oliver johansson co-founder rhone">
+      <td><div class="td-name">Oliver Johansson</div></td>
+      <td><div class="td-title" title="Co-Founder">Co-Founder</div></td>
+      <td><div class="td-muted">Rhone</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">3 Apr 2026</div></td>
+      <td><span class="rec-new">🟢 New</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>4msg</span></td>
+      <td><a href='https://www.linkedin.com/in/oliver-johansson-460' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="active" data-search="joseph turner ceo true classic">
+      <td><div class="td-name">Joseph Turner</div></td>
+      <td><div class="td-title" title="CEO">CEO</div></td>
+      <td><div class="td-muted">True Classic</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">8 Oct 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-active">● Active</span><span class='td-muted' style='margin-left:4px'>5msg</span></td>
+      <td><a href='https://www.linkedin.com/in/joseph-turner-254' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="daniel richardson revenue operations manager bazaarvoice">
+      <td><div class="td-name">Daniel Richardson</div></td>
+      <td><div class="td-title" title="Revenue Operations Manager">Revenue Operations Manager</div></td>
+      <td><div class="td-muted">Bazaarvoice</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">13 Mar 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/daniel-richardson-965' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="liam nguyen seo manager ogilvy">
+      <td><div class="td-name">Liam Nguyen</div></td>
+      <td><div class="td-title" title="SEO Manager">SEO Manager</div></td>
+      <td><div class="td-muted">Ogilvy</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">3 Feb 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/liam-nguyen-548' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="cold" data-search="raj chen president shopify">
+      <td><div class="td-name">Raj Chen</div></td>
+      <td><div class="td-title" title="President">President</div></td>
+      <td><div class="td-muted">Shopify</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">8 May 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>3msg</span></td>
+      <td><a href='https://www.linkedin.com/in/raj-chen-640' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="cold" data-search="lincoln lee cmo meta">
+      <td><div class="td-name">Lincoln Lee</div></td>
+      <td><div class="td-title" title="CMO">CMO</div></td>
+      <td><div class="td-muted">Meta</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">1 Jul 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>5msg</span></td>
+      <td><a href='https://www.linkedin.com/in/lincoln-lee-650' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="yuna miller growth manager northbeam">
+      <td><div class="td-name">Yuna Miller</div></td>
+      <td><div class="td-title" title="Growth Manager">Growth Manager</div></td>
+      <td><div class="td-muted">Northbeam</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">4 Jan 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/yuna-miller-411' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="wyatt lee growth hacker dotdigital">
+      <td><div class="td-name">Wyatt Lee</div></td>
+      <td><div class="td-title" title="Growth Hacker">Growth Hacker</div></td>
+      <td><div class="td-muted">Dotdigital</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">27 Sep 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/wyatt-lee-697' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="nina brown marketing lead kpmg">
+      <td><div class="td-name">Nina Brown</div></td>
+      <td><div class="td-title" title="Marketing Lead">Marketing Lead</div></td>
+      <td><div class="td-muted">KPMG</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">28 Nov 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nina-brown-485' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="kenji bell senior marketing manager y combinator">
+      <td><div class="td-name">Kenji Bell</div></td>
+      <td><div class="td-title" title="Senior Marketing Manager">Senior Marketing Manager</div></td>
+      <td><div class="td-muted">Y Combinator</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">23 Apr 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/kenji-bell-909' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="zoe roberts marketing director capterra">
+      <td><div class="td-name">Zoe Roberts</div></td>
+      <td><div class="td-title" title="Marketing Director">Marketing Director</div></td>
+      <td><div class="td-muted">Capterra</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">11 Jan 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/zoe-roberts-579' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="warm" data-eng="never" data-search="aisha wright brand manager dentsu">
+      <td><div class="td-name">Aisha Wright</div></td>
+      <td><div class="td-title" title="Brand Manager">Brand Manager</div></td>
+      <td><div class="td-muted">Dentsu</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">8 Jun 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aisha-wright-724' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="ryan ahmed creative director omnicom">
+      <td><div class="td-name">Ryan Ahmed</div></td>
+      <td><div class="td-title" title="Creative Director">Creative Director</div></td>
+      <td><div class="td-muted">Omnicom</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">26 Mar 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ryan-ahmed-479' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="warm" data-search="wyatt stewart sms marketing manager gorgias">
+      <td><div class="td-name">Wyatt Stewart</div></td>
+      <td><div class="td-title" title="SMS Marketing Manager">SMS Marketing Manager</div></td>
+      <td><div class="td-muted">Gorgias</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">4 Sep 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>2msg</span></td>
+      <td><a href='https://www.linkedin.com/in/wyatt-stewart-286' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="evelyn sanchez senior marketing manager y combinator">
+      <td><div class="td-name">Evelyn Sanchez</div></td>
+      <td><div class="td-title" title="Senior Marketing Manager">Senior Marketing Manager</div></td>
+      <td><div class="td-muted">Y Combinator</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">12 Jan 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/evelyn-sanchez-880' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="henry cox director of growth google">
+      <td><div class="td-name">Henry Cox</div></td>
+      <td><div class="td-title" title="Director of Growth">Director of Growth</div></td>
+      <td><div class="td-muted">Google</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">24 Dec 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>1msg</span></td>
+      <td><a href='https://www.linkedin.com/in/henry-cox-429' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="lucas green revenue operations manager young & rubicam">
+      <td><div class="td-name">Lucas Green</div></td>
+      <td><div class="td-title" title="Revenue Operations Manager">Revenue Operations Manager</div></td>
+      <td><div class="td-muted">Young & Rubicam</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">2 Mar 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/lucas-green-361' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="mason white marketing coordinator y combinator">
+      <td><div class="td-name">Mason White</div></td>
+      <td><div class="td-title" title="Marketing Coordinator">Marketing Coordinator</div></td>
+      <td><div class="td-muted">Y Combinator</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">1 Jul 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/mason-white-562' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="layla howard vp of growth chubbies">
+      <td><div class="td-name">Layla Howard</div></td>
+      <td><div class="td-title" title="VP of Growth">VP of Growth</div></td>
+      <td><div class="td-muted">Chubbies</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">10 Sep 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>4msg</span></td>
+      <td><a href='https://www.linkedin.com/in/layla-howard-378' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="leila walker brand director pwc">
+      <td><div class="td-name">Leila Walker</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">PwC</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">8 May 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/leila-walker-446' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="carlos evans social media manager isobar">
+      <td><div class="td-name">Carlos Evans</div></td>
+      <td><div class="td-title" title="Social Media Manager">Social Media Manager</div></td>
+      <td><div class="td-muted">Isobar</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">3 Nov 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/carlos-evans-619' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="joseph phillips social media manager omnisend">
+      <td><div class="td-name">Joseph Phillips</div></td>
+      <td><div class="td-title" title="Social Media Manager">Social Media Manager</div></td>
+      <td><div class="td-muted">Omnisend</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">8 Jul 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/joseph-phillips-437' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="ananya hassan seo manager bbdo">
+      <td><div class="td-name">Ananya Hassan</div></td>
+      <td><div class="td-title" title="SEO Manager">SEO Manager</div></td>
+      <td><div class="td-muted">BBDO</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">1 Sep 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ananya-hassan-770' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="nora tanaka marketing manager fcb">
+      <td><div class="td-name">Nora Tanaka</div></td>
+      <td><div class="td-title" title="Marketing Manager">Marketing Manager</div></td>
+      <td><div class="td-muted">FCB</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">18 Apr 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nora-tanaka-334' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="leo johnson social media manager fcb">
+      <td><div class="td-name">Leo Johnson</div></td>
+      <td><div class="td-title" title="Social Media Manager">Social Media Manager</div></td>
+      <td><div class="td-muted">FCB</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">22 Mar 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/leo-johnson-477' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="cold" data-search="eleanor richardson founder outer">
+      <td><div class="td-name">Eleanor Richardson</div></td>
+      <td><div class="td-title" title="Founder">Founder</div></td>
+      <td><div class="td-muted">Outer</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">18 Sep 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>1msg</span></td>
+      <td><a href='https://www.linkedin.com/in/eleanor-richardson-789' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="active" data-search="priya young chief marketing officer article">
+      <td><div class="td-name">Priya Young</div></td>
+      <td><div class="td-title" title="Chief Marketing Officer">Chief Marketing Officer</div></td>
+      <td><div class="td-muted">Article</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">7 Nov 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-active">● Active</span><span class='td-muted' style='margin-left:4px'>1msg</span></td>
+      <td><a href='https://www.linkedin.com/in/priya-young-415' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="zoe sanchez creative director razorfish">
+      <td><div class="td-name">Zoe Sanchez</div></td>
+      <td><div class="td-title" title="Creative Director">Creative Director</div></td>
+      <td><div class="td-muted">Razorfish</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">19 Mar 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/zoe-sanchez-429' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="warm" data-eng="never" data-search="ananya morris creative director pwc">
+      <td><div class="td-name">Ananya Morris</div></td>
+      <td><div class="td-title" title="Creative Director">Creative Director</div></td>
+      <td><div class="td-muted">PwC</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">5 Nov 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ananya-morris-546' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="camila hill cmo koio">
+      <td><div class="td-name">Camila Hill</div></td>
+      <td><div class="td-title" title="CMO">CMO</div></td>
+      <td><div class="td-muted">Koio</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">13 Apr 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>4msg</span></td>
+      <td><a href='https://www.linkedin.com/in/camila-hill-489' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="active" data-search="raj lee ceo koio">
+      <td><div class="td-name">Raj Lee</div></td>
+      <td><div class="td-title" title="CEO">CEO</div></td>
+      <td><div class="td-muted">Koio</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">8 Sep 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-active">● Active</span><span class='td-muted' style='margin-left:4px'>3msg</span></td>
+      <td><a href='https://www.linkedin.com/in/raj-lee-788' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="luna collins seo manager forbes">
+      <td><div class="td-name">Luna Collins</div></td>
+      <td><div class="td-title" title="SEO Manager">SEO Manager</div></td>
+      <td><div class="td-muted">Forbes</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">21 Aug 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/luna-collins-102' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="kenji ahmed marketing director wunderman thompson">
+      <td><div class="td-name">Kenji Ahmed</div></td>
+      <td><div class="td-title" title="Marketing Director">Marketing Director</div></td>
+      <td><div class="td-muted">Wunderman Thompson</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">17 Apr 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/kenji-ahmed-835' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="mateo lee seo manager fcb">
+      <td><div class="td-name">Mateo Lee</div></td>
+      <td><div class="td-title" title="SEO Manager">SEO Manager</div></td>
+      <td><div class="td-muted">FCB</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">11 Apr 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/mateo-lee-199' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="warm" data-search="zoey johansson account executive at klaviyo signifyd">
+      <td><div class="td-name">Zoey Johansson</div></td>
+      <td><div class="td-title" title="Account Executive at Klaviyo">Account Executive at Klaviyo</div></td>
+      <td><div class="td-muted">Signifyd</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">5 Feb 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>2msg</span></td>
+      <td><a href='https://www.linkedin.com/in/zoey-johansson-177' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="zoey stewart marketing director tbwa">
+      <td><div class="td-name">Zoey Stewart</div></td>
+      <td><div class="td-title" title="Marketing Director">Marketing Director</div></td>
+      <td><div class="td-muted">TBWA</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">8 Jun 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/zoey-stewart-178' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="fatima park marketing manager dotdigital">
+      <td><div class="td-name">Fatima Park</div></td>
+      <td><div class="td-title" title="Marketing Manager">Marketing Manager</div></td>
+      <td><div class="td-muted">Dotdigital</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">29 Jun 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/fatima-park-773' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="lars johansson head of ecommerce ghia">
+      <td><div class="td-name">Lars Johansson</div></td>
+      <td><div class="td-title" title="Head of eCommerce">Head of eCommerce</div></td>
+      <td><div class="td-muted">Ghia</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">11 Oct 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>4msg</span></td>
+      <td><a href='https://www.linkedin.com/in/lars-johansson-509' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="addison williams brand manager huge">
+      <td><div class="td-name">Addison Williams</div></td>
+      <td><div class="td-title" title="Brand Manager">Brand Manager</div></td>
+      <td><div class="td-muted">Huge</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">23 May 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/addison-williams-571' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="cold" data-search="harper richardson vp of marketing graza">
+      <td><div class="td-name">Harper Richardson</div></td>
+      <td><div class="td-title" title="VP of Marketing">VP of Marketing</div></td>
+      <td><div class="td-muted">Graza</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">18 Feb 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>2msg</span></td>
+      <td><a href='https://www.linkedin.com/in/harper-richardson-355' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="layla johansson copy director tbwa">
+      <td><div class="td-name">Layla Johansson</div></td>
+      <td><div class="td-title" title="Copy Director">Copy Director</div></td>
+      <td><div class="td-muted">TBWA</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">12 Jan 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/layla-johansson-885' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="lincoln rogers head of marketing hydrant">
+      <td><div class="td-name">Lincoln Rogers</div></td>
+      <td><div class="td-title" title="Head of Marketing">Head of Marketing</div></td>
+      <td><div class="td-muted">Hydrant</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">3 May 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>1msg</span></td>
+      <td><a href='https://www.linkedin.com/in/lincoln-rogers-314' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="william mitchell head of dtc jenni kayne">
+      <td><div class="td-name">William Mitchell</div></td>
+      <td><div class="td-title" title="Head of DTC">Head of DTC</div></td>
+      <td><div class="td-muted">Jenni Kayne</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">10 Aug 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>4msg</span></td>
+      <td><a href='https://www.linkedin.com/in/william-mitchell-509' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="warm" data-search="penelope taylor retention specialist elevar">
+      <td><div class="td-name">Penelope Taylor</div></td>
+      <td><div class="td-title" title="Retention Specialist">Retention Specialist</div></td>
+      <td><div class="td-muted">Elevar</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">16 May 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>5msg</span></td>
+      <td><a href='https://www.linkedin.com/in/penelope-taylor-665' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="warm" data-search="oliver lee retention specialist northbeam">
+      <td><div class="td-name">Oliver Lee</div></td>
+      <td><div class="td-title" title="Retention Specialist">Retention Specialist</div></td>
+      <td><div class="td-muted">Northbeam</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">26 Nov 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>3msg</span></td>
+      <td><a href='https://www.linkedin.com/in/oliver-lee-584' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="mateo adams creative director marketo">
+      <td><div class="td-name">Mateo Adams</div></td>
+      <td><div class="td-title" title="Creative Director">Creative Director</div></td>
+      <td><div class="td-muted">Marketo</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">14 Sep 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/mateo-adams-976' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="cold" data-search="mia nguyen head of ecommerce outer">
+      <td><div class="td-name">Mia Nguyen</div></td>
+      <td><div class="td-title" title="Head of eCommerce">Head of eCommerce</div></td>
+      <td><div class="td-muted">Outer</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">9 Oct 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>6msg</span></td>
+      <td><a href='https://www.linkedin.com/in/mia-nguyen-812' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="amelia flores social media manager product hunt">
+      <td><div class="td-name">Amelia Flores</div></td>
+      <td><div class="td-title" title="Social Media Manager">Social Media Manager</div></td>
+      <td><div class="td-muted">Product Hunt</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">22 Feb 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/amelia-flores-220' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="warm" data-search="riley flores retention specialist nofraud">
+      <td><div class="td-name">Riley Flores</div></td>
+      <td><div class="td-title" title="Retention Specialist">Retention Specialist</div></td>
+      <td><div class="td-muted">NoFraud</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">20 Nov 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>3msg</span></td>
+      <td><a href='https://www.linkedin.com/in/riley-flores-779' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="aubrey king seo manager grey group">
+      <td><div class="td-name">Aubrey King</div></td>
+      <td><div class="td-title" title="SEO Manager">SEO Manager</div></td>
+      <td><div class="td-muted">Grey Group</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">9 Apr 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aubrey-king-997' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="nathan carter owner amazon">
+      <td><div class="td-name">Nathan Carter</div></td>
+      <td><div class="td-title" title="Owner">Owner</div></td>
+      <td><div class="td-muted">Amazon</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">23 Jun 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>2msg</span></td>
+      <td><a href='https://www.linkedin.com/in/nathan-carter-308' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="warm" data-search="emma johansson sms marketing manager loop returns">
+      <td><div class="td-name">Emma Johansson</div></td>
+      <td><div class="td-title" title="SMS Marketing Manager">SMS Marketing Manager</div></td>
+      <td><div class="td-muted">Loop Returns</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">14 Dec 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>1msg</span></td>
+      <td><a href='https://www.linkedin.com/in/emma-johansson-551' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="warm" data-eng="never" data-search="lars garcia vp brand vaynermedia">
+      <td><div class="td-name">Lars Garcia</div></td>
+      <td><div class="td-title" title="VP Brand">VP Brand</div></td>
+      <td><div class="td-muted">VaynerMedia</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">12 Dec 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/lars-garcia-693' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="owen thomas senior marketing manager dotdigital">
+      <td><div class="td-name">Owen Thomas</div></td>
+      <td><div class="td-title" title="Senior Marketing Manager">Senior Marketing Manager</div></td>
+      <td><div class="td-muted">Dotdigital</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">19 Mar 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/owen-thomas-760' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="isabella jones brand director vaynermedia">
+      <td><div class="td-name">Isabella Jones</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">VaynerMedia</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">7 Jan 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/isabella-jones-199' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="chloe young founder & ceo marketo">
+      <td><div class="td-name">Chloe Young</div></td>
+      <td><div class="td-title" title="Founder & CEO">Founder & CEO</div></td>
+      <td><div class="td-muted">Marketo</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">15 Feb 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>3msg</span></td>
+      <td><a href='https://www.linkedin.com/in/chloe-young-897' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="mateo wilson ecommerce director mvmt watches">
+      <td><div class="td-name">Mateo Wilson</div></td>
+      <td><div class="td-title" title="eCommerce Director">eCommerce Director</div></td>
+      <td><div class="td-muted">MVMT Watches</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">7 Oct 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>5msg</span></td>
+      <td><a href='https://www.linkedin.com/in/mateo-wilson-891' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="nora tanaka content marketing manager ipg">
+      <td><div class="td-name">Nora Tanaka</div></td>
+      <td><div class="td-title" title="Content Marketing Manager">Content Marketing Manager</div></td>
+      <td><div class="td-muted">IPG</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">27 Nov 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nora-tanaka-381' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="carlos garcia ceo salesforce">
+      <td><div class="td-name">Carlos Garcia</div></td>
+      <td><div class="td-title" title="CEO">CEO</div></td>
+      <td><div class="td-muted">Salesforce</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">14 Aug 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/carlos-garcia-773' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="aurora johnson managing director ridge wallet">
+      <td><div class="td-name">Aurora Johnson</div></td>
+      <td><div class="td-title" title="Managing Director">Managing Director</div></td>
+      <td><div class="td-muted">Ridge Wallet</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">15 Jun 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>2msg</span></td>
+      <td><a href='https://www.linkedin.com/in/aurora-johnson-516' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="madison walker brand director omnisend">
+      <td><div class="td-name">Madison Walker</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">Omnisend</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">22 Oct 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/madison-walker-967' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="aisha müller marketing director grey">
+      <td><div class="td-name">Aisha Müller</div></td>
+      <td><div class="td-title" title="Marketing Director">Marketing Director</div></td>
+      <td><div class="td-muted">Grey</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">15 Apr 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aisha-müller-423' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="active" data-search="ananya cook president convertkit">
+      <td><div class="td-name">Ananya Cook</div></td>
+      <td><div class="td-title" title="President">President</div></td>
+      <td><div class="td-muted">ConvertKit</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">2 Jun 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-active">● Active</span><span class='td-muted' style='margin-left:4px'>5msg</span></td>
+      <td><a href='https://www.linkedin.com/in/ananya-cook-682' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="yuna carter content marketing manager tbwa">
+      <td><div class="td-name">Yuna Carter</div></td>
+      <td><div class="td-title" title="Content Marketing Manager">Content Marketing Manager</div></td>
+      <td><div class="td-muted">TBWA</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">15 Jun 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/yuna-carter-200' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="cold" data-search="nathan wilson vp ecommerce fly by jing">
+      <td><div class="td-name">Nathan Wilson</div></td>
+      <td><div class="td-title" title="VP eCommerce">VP eCommerce</div></td>
+      <td><div class="td-muted">Fly By Jing</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">17 Oct 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>3msg</span></td>
+      <td><a href='https://www.linkedin.com/in/nathan-wilson-317' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="warm" data-search="raj reed head of crm rebuy">
+      <td><div class="td-name">Raj Reed</div></td>
+      <td><div class="td-title" title="Head of CRM">Head of CRM</div></td>
+      <td><div class="td-muted">Rebuy</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">22 Jan 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>6msg</span></td>
+      <td><a href='https://www.linkedin.com/in/raj-reed-449' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="active" data-search="nina peterson senior growth marketer northbeam">
+      <td><div class="td-name">Nina Peterson</div></td>
+      <td><div class="td-title" title="Senior Growth Marketer">Senior Growth Marketer</div></td>
+      <td><div class="td-muted">Northbeam</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">6 May 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-active">● Active</span><span class='td-muted' style='margin-left:4px'>2msg</span></td>
+      <td><a href='https://www.linkedin.com/in/nina-peterson-851' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="jack ward managing director beardbrand">
+      <td><div class="td-name">Jack Ward</div></td>
+      <td><div class="td-title" title="Managing Director">Managing Director</div></td>
+      <td><div class="td-muted">Beardbrand</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">20 Oct 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>4msg</span></td>
+      <td><a href='https://www.linkedin.com/in/jack-ward-165' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="active" data-search="leila hassan managing director outer">
+      <td><div class="td-name">Leila Hassan</div></td>
+      <td><div class="td-title" title="Managing Director">Managing Director</div></td>
+      <td><div class="td-muted">Outer</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">14 Apr 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-active">● Active</span><span class='td-muted' style='margin-left:4px'>5msg</span></td>
+      <td><a href='https://www.linkedin.com/in/leila-hassan-703' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="caleb flores general manager graza">
+      <td><div class="td-name">Caleb Flores</div></td>
+      <td><div class="td-title" title="General Manager">General Manager</div></td>
+      <td><div class="td-muted">Graza</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">10 Feb 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>4msg</span></td>
+      <td><a href='https://www.linkedin.com/in/caleb-flores-151' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="warm" data-eng="warm" data-search="benjamin chen senior ecommerce strategist gorgias">
+      <td><div class="td-name">Benjamin Chen</div></td>
+      <td><div class="td-title" title="Senior eCommerce Strategist">Senior eCommerce Strategist</div></td>
+      <td><div class="td-muted">Gorgias</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">26 Sep 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>3msg</span></td>
+      <td><a href='https://www.linkedin.com/in/benjamin-chen-458' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="bruno campbell brand manager deloitte">
+      <td><div class="td-name">Bruno Campbell</div></td>
+      <td><div class="td-title" title="Brand Manager">Brand Manager</div></td>
+      <td><div class="td-muted">Deloitte</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">4 Apr 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/bruno-campbell-819' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="warm" data-search="violet hall general manager brooklinen">
+      <td><div class="td-name">Violet Hall</div></td>
+      <td><div class="td-title" title="General Manager">General Manager</div></td>
+      <td><div class="td-muted">Brooklinen</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">3 Jun 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>2msg</span></td>
+      <td><a href='https://www.linkedin.com/in/violet-hall-971' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="layla smith chief revenue officer hydrant">
+      <td><div class="td-name">Layla Smith</div></td>
+      <td><div class="td-title" title="Chief Revenue Officer">Chief Revenue Officer</div></td>
+      <td><div class="td-muted">Hydrant</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">4 Jul 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>7msg</span></td>
+      <td><a href='https://www.linkedin.com/in/layla-smith-384' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="cold" data-search="charlotte hall senior growth marketer klaviyo">
+      <td><div class="td-name">Charlotte Hall</div></td>
+      <td><div class="td-title" title="Senior Growth Marketer">Senior Growth Marketer</div></td>
+      <td><div class="td-muted">Klaviyo</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">8 Apr 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>5msg</span></td>
+      <td><a href='https://www.linkedin.com/in/charlotte-hall-805' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="cold" data-search="nina white vp of marketing allbirds">
+      <td><div class="td-name">Nina White</div></td>
+      <td><div class="td-title" title="VP of Marketing">VP of Marketing</div></td>
+      <td><div class="td-muted">Allbirds</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">29 Jul 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>1msg</span></td>
+      <td><a href='https://www.linkedin.com/in/nina-white-328' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="wyatt smith vp of marketing rhone">
+      <td><div class="td-name">Wyatt Smith</div></td>
+      <td><div class="td-title" title="VP of Marketing">VP of Marketing</div></td>
+      <td><div class="td-muted">Rhone</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">21 Mar 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>5msg</span></td>
+      <td><a href='https://www.linkedin.com/in/wyatt-smith-392' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="hazel thompson content marketing manager techstars">
+      <td><div class="td-name">Hazel Thompson</div></td>
+      <td><div class="td-title" title="Content Marketing Manager">Content Marketing Manager</div></td>
+      <td><div class="td-muted">Techstars</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">23 Mar 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/hazel-thompson-891' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="raj richardson vp brand meta">
+      <td><div class="td-name">Raj Richardson</div></td>
+      <td><div class="td-title" title="VP Brand">VP Brand</div></td>
+      <td><div class="td-muted">Meta</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">4 Sep 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/raj-richardson-379' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="julian wang creative director r/ga">
+      <td><div class="td-name">Julian Wang</div></td>
+      <td><div class="td-title" title="Creative Director">Creative Director</div></td>
+      <td><div class="td-muted">R/GA</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">25 Feb 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/julian-wang-137' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="charlotte young growth hacker clutch">
+      <td><div class="td-name">Charlotte Young</div></td>
+      <td><div class="td-title" title="Growth Hacker">Growth Hacker</div></td>
+      <td><div class="td-muted">Clutch</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">26 Sep 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/charlotte-young-841' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="ananya turner vp of marketing liquid iv">
+      <td><div class="td-name">Ananya Turner</div></td>
+      <td><div class="td-title" title="VP of Marketing">VP of Marketing</div></td>
+      <td><div class="td-muted">Liquid IV</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">18 Nov 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>4msg</span></td>
+      <td><a href='https://www.linkedin.com/in/ananya-turner-234' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="mason morris director of growth jenni kayne">
+      <td><div class="td-name">Mason Morris</div></td>
+      <td><div class="td-title" title="Director of Growth">Director of Growth</div></td>
+      <td><div class="td-muted">Jenni Kayne</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">10 May 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/mason-morris-926' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="mei andersen director of marketing marine layer">
+      <td><div class="td-name">Mei Andersen</div></td>
+      <td><div class="td-title" title="Director of Marketing">Director of Marketing</div></td>
+      <td><div class="td-muted">Marine Layer</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">25 May 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/mei-andersen-309' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="cold" data-search="david davis vp ecommerce brooklinen">
+      <td><div class="td-name">David Davis</div></td>
+      <td><div class="td-title" title="VP eCommerce">VP eCommerce</div></td>
+      <td><div class="td-muted">Brooklinen</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">22 Dec 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>6msg</span></td>
+      <td><a href='https://www.linkedin.com/in/david-davis-614' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="samuel peterson growth hacker pwc">
+      <td><div class="td-name">Samuel Peterson</div></td>
+      <td><div class="td-title" title="Growth Hacker">Growth Hacker</div></td>
+      <td><div class="td-muted">PwC</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">10 May 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/samuel-peterson-906' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="warm" data-search="sofia allen managing director true classic">
+      <td><div class="td-name">Sofia Allen</div></td>
+      <td><div class="td-title" title="Managing Director">Managing Director</div></td>
+      <td><div class="td-muted">True Classic</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">27 Jun 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-warm">◐ Warm</span><span class='td-muted' style='margin-left:4px'>3msg</span></td>
+      <td><a href='https://www.linkedin.com/in/sofia-allen-573' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="raj li seo manager techstars">
+      <td><div class="td-name">Raj Li</div></td>
+      <td><div class="td-title" title="SEO Manager">SEO Manager</div></td>
+      <td><div class="td-muted">Techstars</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">24 Apr 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/raj-li-651' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="active" data-search="carlos wilson head of ecommerce rhone">
+      <td><div class="td-name">Carlos Wilson</div></td>
+      <td><div class="td-title" title="Head of eCommerce">Head of eCommerce</div></td>
+      <td><div class="td-muted">Rhone</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">22 Aug 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-active">● Active</span><span class='td-muted' style='margin-left:4px'>3msg</span></td>
+      <td><a href='https://www.linkedin.com/in/carlos-wilson-579' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="cold" data-search="dylan reed fractional head of growth elevar">
+      <td><div class="td-name">Dylan Reed</div></td>
+      <td><div class="td-title" title="Fractional Head of Growth">Fractional Head of Growth</div></td>
+      <td><div class="td-muted">Elevar</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">6 Jul 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>2msg</span></td>
+      <td><a href='https://www.linkedin.com/in/dylan-reed-865' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="active" data-search="riley hill vp ecommerce brooklinen">
+      <td><div class="td-name">Riley Hill</div></td>
+      <td><div class="td-title" title="VP eCommerce">VP eCommerce</div></td>
+      <td><div class="td-muted">Brooklinen</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">29 Mar 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-active">● Active</span><span class='td-muted' style='margin-left:4px'>4msg</span></td>
+      <td><a href='https://www.linkedin.com/in/riley-hill-162' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="cold" data-search="jack campbell sms marketing manager attentive">
+      <td><div class="td-name">Jack Campbell</div></td>
+      <td><div class="td-title" title="SMS Marketing Manager">SMS Marketing Manager</div></td>
+      <td><div class="td-muted">Attentive</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">8 Feb 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-cold">○ Cold</span><span class='td-muted' style='margin-left:4px'>1msg</span></td>
+      <td><a href='https://www.linkedin.com/in/jack-campbell-546' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="daniel hill seo manager forbes">
+      <td><div class="td-name">Daniel Hill</div></td>
+      <td><div class="td-title" title="SEO Manager">SEO Manager</div></td>
+      <td><div class="td-muted">Forbes</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">16 Jun 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/daniel-hill-396' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="julian scott cmo bombas">
+      <td><div class="td-name">Julian Scott</div></td>
+      <td><div class="td-title" title="CMO">CMO</div></td>
+      <td><div class="td-muted">Bombas</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">6 Dec 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/julian-scott-541' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="never" data-search="aiden smith head of dtc chubbies">
+      <td><div class="td-name">Aiden Smith</div></td>
+      <td><div class="td-title" title="Head of DTC">Head of DTC</div></td>
+      <td><div class="td-muted">Chubbies</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">29 Aug 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aiden-smith-334' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="fatima müller marketing director hubspot">
+      <td><div class="td-name">Fatima Müller</div></td>
+      <td><div class="td-title" title="Marketing Director">Marketing Director</div></td>
+      <td><div class="td-muted">HubSpot</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">18 Jan 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/fatima-müller-711' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="nathan cooper brand director product hunt">
+      <td><div class="td-name">Nathan Cooper</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">Product Hunt</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">9 Jan 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nathan-cooper-349' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="elena li marketing manager publicis">
+      <td><div class="td-name">Elena Li</div></td>
+      <td><div class="td-title" title="Marketing Manager">Marketing Manager</div></td>
+      <td><div class="td-muted">Publicis</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">4 Apr 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/elena-li-723' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="bruno reed vp brand leo burnett">
+      <td><div class="td-name">Bruno Reed</div></td>
+      <td><div class="td-title" title="VP Brand">VP Brand</div></td>
+      <td><div class="td-muted">Leo Burnett</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">2 May 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/bruno-reed-341' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="zoey baker email marketing manager daasity">
+      <td><div class="td-name">Zoey Baker</div></td>
+      <td><div class="td-title" title="Email Marketing Manager">Email Marketing Manager</div></td>
+      <td><div class="td-muted">Daasity</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">29 Feb 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/zoey-baker-423' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="benjamin anderson social media manager jwt">
+      <td><div class="td-name">Benjamin Anderson</div></td>
+      <td><div class="td-title" title="Social Media Manager">Social Media Manager</div></td>
+      <td><div class="td-muted">JWT</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">21 Feb 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/benjamin-anderson-931' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="fresh" data-eng="never" data-search="isabella flores digital marketing manager saatchi & saatchi">
+      <td><div class="td-name">Isabella Flores</div></td>
+      <td><div class="td-title" title="Digital Marketing Manager">Digital Marketing Manager</div></td>
+      <td><div class="td-muted">Saatchi & Saatchi</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">27 Mar 2026</div></td>
+      <td><span class="rec-fresh">🟡 Fresh</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/isabella-flores-309' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="mei richardson head of ecommerce google">
+      <td><div class="td-name">Mei Richardson</div></td>
+      <td><div class="td-title" title="Head of eCommerce">Head of eCommerce</div></td>
+      <td><div class="td-muted">Google</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">6 Apr 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/mei-richardson-324' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="anthony hassan content marketing manager mckinsey">
+      <td><div class="td-name">Anthony Hassan</div></td>
+      <td><div class="td-title" title="Content Marketing Manager">Content Marketing Manager</div></td>
+      <td><div class="td-muted">McKinsey</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">9 Sep 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/anthony-hassan-746' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="anthony hill lifecycle marketing manager shipmonk">
+      <td><div class="td-name">Anthony Hill</div></td>
+      <td><div class="td-title" title="Lifecycle Marketing Manager">Lifecycle Marketing Manager</div></td>
+      <td><div class="td-muted">Shipmonk</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">3 Jul 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/anthony-hill-386' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="warm" data-eng="never" data-search="julian morris copy director techstars">
+      <td><div class="td-name">Julian Morris</div></td>
+      <td><div class="td-title" title="Copy Director">Copy Director</div></td>
+      <td><div class="td-muted">Techstars</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">29 Sep 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/julian-morris-394' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="mia kim creative director y combinator">
+      <td><div class="td-name">Mia Kim</div></td>
+      <td><div class="td-title" title="Creative Director">Creative Director</div></td>
+      <td><div class="td-muted">Y Combinator</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">16 Jul 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/mia-kim-802' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="william jones ceo koio">
+      <td><div class="td-name">William Jones</div></td>
+      <td><div class="td-title" title="CEO">CEO</div></td>
+      <td><div class="td-muted">Koio</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">22 Jul 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/william-jones-343' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="nina thomas brand manager grey">
+      <td><div class="td-name">Nina Thomas</div></td>
+      <td><div class="td-title" title="Brand Manager">Brand Manager</div></td>
+      <td><div class="td-muted">Grey</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">18 Dec 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nina-thomas-129' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="layla young revenue operations manager omnicom">
+      <td><div class="td-name">Layla Young</div></td>
+      <td><div class="td-title" title="Revenue Operations Manager">Revenue Operations Manager</div></td>
+      <td><div class="td-muted">Omnicom</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">13 May 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/layla-young-212' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="natalie howard ecommerce director ruggable">
+      <td><div class="td-name">Natalie Howard</div></td>
+      <td><div class="td-title" title="eCommerce Director">eCommerce Director</div></td>
+      <td><div class="td-muted">Ruggable</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">4 Dec 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/natalie-howard-623' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="owen mehta revenue operations manager google">
+      <td><div class="td-name">Owen Mehta</div></td>
+      <td><div class="td-title" title="Revenue Operations Manager">Revenue Operations Manager</div></td>
+      <td><div class="td-muted">Google</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">23 Jun 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/owen-mehta-363' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="raj bell marketing manager ogilvy">
+      <td><div class="td-name">Raj Bell</div></td>
+      <td><div class="td-title" title="Marketing Manager">Marketing Manager</div></td>
+      <td><div class="td-muted">Ogilvy</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">22 Dec 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/raj-bell-985' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="victoria peterson vp of growth jenni kayne">
+      <td><div class="td-name">Victoria Peterson</div></td>
+      <td><div class="td-title" title="VP of Growth">VP of Growth</div></td>
+      <td><div class="td-muted">Jenni Kayne</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">8 Oct 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/victoria-peterson-328' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="yuki nelson performance marketing manager loyaltylion">
+      <td><div class="td-name">Yuki Nelson</div></td>
+      <td><div class="td-title" title="Performance Marketing Manager">Performance Marketing Manager</div></td>
+      <td><div class="td-muted">LoyaltyLion</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">3 Aug 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/yuki-nelson-924' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="bruno rogers copy director kpmg">
+      <td><div class="td-name">Bruno Rogers</div></td>
+      <td><div class="td-title" title="Copy Director">Copy Director</div></td>
+      <td><div class="td-muted">KPMG</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">18 Feb 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/bruno-rogers-349' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="jackson jackson co-founder & ceo rhone">
+      <td><div class="td-name">Jackson Jackson</div></td>
+      <td><div class="td-title" title="Co-Founder & CEO">Co-Founder & CEO</div></td>
+      <td><div class="td-muted">Rhone</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">16 Jan 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/jackson-jackson-327' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="carlos williams marketing director bain">
+      <td><div class="td-name">Carlos Williams</div></td>
+      <td><div class="td-title" title="Marketing Director">Marketing Director</div></td>
+      <td><div class="td-muted">Bain</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">4 Aug 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/carlos-williams-228' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="aubrey peterson brand manager razorfish">
+      <td><div class="td-name">Aubrey Peterson</div></td>
+      <td><div class="td-title" title="Brand Manager">Brand Manager</div></td>
+      <td><div class="td-muted">Razorfish</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">4 Mar 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aubrey-peterson-419' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="nathan johansson brand manager mckinsey">
+      <td><div class="td-name">Nathan Johansson</div></td>
+      <td><div class="td-title" title="Brand Manager">Brand Manager</div></td>
+      <td><div class="td-muted">McKinsey</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">16 Jan 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nathan-johansson-631' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="violet peterson seo manager accenture">
+      <td><div class="td-name">Violet Peterson</div></td>
+      <td><div class="td-title" title="SEO Manager">SEO Manager</div></td>
+      <td><div class="td-muted">Accenture</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">21 Sep 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/violet-peterson-991' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="daniel murphy founder & ceo shopify">
+      <td><div class="td-name">Daniel Murphy</div></td>
+      <td><div class="td-title" title="Founder & CEO">Founder & CEO</div></td>
+      <td><div class="td-muted">Shopify</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">30 Nov 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/daniel-murphy-393' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="isaac taylor digital marketing manager convertkit">
+      <td><div class="td-name">Isaac Taylor</div></td>
+      <td><div class="td-title" title="Digital Marketing Manager">Digital Marketing Manager</div></td>
+      <td><div class="td-muted">ConvertKit</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">23 Jun 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/isaac-taylor-852' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="fatima bell content marketing manager brevo">
+      <td><div class="td-name">Fatima Bell</div></td>
+      <td><div class="td-title" title="Content Marketing Manager">Content Marketing Manager</div></td>
+      <td><div class="td-muted">Brevo</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">21 Aug 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/fatima-bell-972' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="warm" data-eng="never" data-search="hannah walker brand director dotdigital">
+      <td><div class="td-name">Hannah Walker</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">Dotdigital</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">27 Jul 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/hannah-walker-193' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="lincoln kowalski creative director ipg">
+      <td><div class="td-name">Lincoln Kowalski</div></td>
+      <td><div class="td-title" title="Creative Director">Creative Director</div></td>
+      <td><div class="td-muted">IPG</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">8 Mar 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/lincoln-kowalski-713' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="priya roberts sms marketing manager triple whale">
+      <td><div class="td-name">Priya Roberts</div></td>
+      <td><div class="td-title" title="SMS Marketing Manager">SMS Marketing Manager</div></td>
+      <td><div class="td-muted">Triple Whale</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">3 Mar 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/priya-roberts-993' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="mason li copy director activecampaign">
+      <td><div class="td-name">Mason Li</div></td>
+      <td><div class="td-title" title="Copy Director">Copy Director</div></td>
+      <td><div class="td-muted">ActiveCampaign</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">9 Mar 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/mason-li-133' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="yuna rivera co-founder italic">
+      <td><div class="td-name">Yuna Rivera</div></td>
+      <td><div class="td-title" title="Co-Founder">Co-Founder</div></td>
+      <td><div class="td-muted">Italic</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">4 Jul 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/yuna-rivera-966' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="sofia flores managing director uppercase">
+      <td><div class="td-name">Sofia Flores</div></td>
+      <td><div class="td-title" title="Managing Director">Managing Director</div></td>
+      <td><div class="td-muted">Uppercase</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">6 Apr 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/sofia-flores-546' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="never" data-search="ananya patel director of marketing monos">
+      <td><div class="td-name">Ananya Patel</div></td>
+      <td><div class="td-title" title="Director of Marketing">Director of Marketing</div></td>
+      <td><div class="td-muted">Monos</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">4 Jul 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ananya-patel-109' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="harper rivera cmo beardbrand">
+      <td><div class="td-name">Harper Rivera</div></td>
+      <td><div class="td-title" title="CMO">CMO</div></td>
+      <td><div class="td-muted">Beardbrand</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">12 Feb 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/harper-rivera-259' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="chloe reed president great jones">
+      <td><div class="td-name">Chloe Reed</div></td>
+      <td><div class="td-title" title="President">President</div></td>
+      <td><div class="td-muted">Great Jones</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">29 May 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/chloe-reed-953' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="kenji ahmed founder & ceo koio">
+      <td><div class="td-name">Kenji Ahmed</div></td>
+      <td><div class="td-title" title="Founder & CEO">Founder & CEO</div></td>
+      <td><div class="td-muted">Koio</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">10 Jan 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/kenji-ahmed-998' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="camila howard brand director pwc">
+      <td><div class="td-name">Camila Howard</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">PwC</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">12 May 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/camila-howard-746' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="zoey murphy head of dtc mailchimp">
+      <td><div class="td-name">Zoey Murphy</div></td>
+      <td><div class="td-title" title="Head of DTC">Head of DTC</div></td>
+      <td><div class="td-muted">Mailchimp</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">18 Feb 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/zoey-murphy-548' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="kenji rivera creative director mailchimp">
+      <td><div class="td-name">Kenji Rivera</div></td>
+      <td><div class="td-title" title="Creative Director">Creative Director</div></td>
+      <td><div class="td-muted">Mailchimp</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">28 Feb 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/kenji-rivera-480' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="violet baker founder & ceo shopify">
+      <td><div class="td-name">Violet Baker</div></td>
+      <td><div class="td-title" title="Founder & CEO">Founder & CEO</div></td>
+      <td><div class="td-muted">Shopify</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">10 Sep 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/violet-baker-838' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="leila howard brand manager ogilvy">
+      <td><div class="td-name">Leila Howard</div></td>
+      <td><div class="td-title" title="Brand Manager">Brand Manager</div></td>
+      <td><div class="td-muted">Ogilvy</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">4 Oct 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/leila-howard-546' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="elijah walker president hubspot">
+      <td><div class="td-name">Elijah Walker</div></td>
+      <td><div class="td-title" title="President">President</div></td>
+      <td><div class="td-muted">HubSpot</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">9 Sep 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/elijah-walker-532' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="never" data-search="penelope king vp of marketing google">
+      <td><div class="td-name">Penelope King</div></td>
+      <td><div class="td-title" title="VP of Marketing">VP of Marketing</div></td>
+      <td><div class="td-muted">Google</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">22 Nov 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/penelope-king-211' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="aurora flores seo manager brevo">
+      <td><div class="td-name">Aurora Flores</div></td>
+      <td><div class="td-title" title="SEO Manager">SEO Manager</div></td>
+      <td><div class="td-muted">Brevo</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">5 May 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aurora-flores-946' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="isaac patel performance marketing manager alloy automation">
+      <td><div class="td-name">Isaac Patel</div></td>
+      <td><div class="td-title" title="Performance Marketing Manager">Performance Marketing Manager</div></td>
+      <td><div class="td-muted">Alloy Automation</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">11 Dec 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/isaac-patel-735' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="leila thomas head of ecommerce brooklinen">
+      <td><div class="td-name">Leila Thomas</div></td>
+      <td><div class="td-title" title="Head of eCommerce">Head of eCommerce</div></td>
+      <td><div class="td-muted">Brooklinen</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">8 Jul 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/leila-thomas-919' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="eleanor davis revenue operations manager saatchi & saatchi">
+      <td><div class="td-name">Eleanor Davis</div></td>
+      <td><div class="td-title" title="Revenue Operations Manager">Revenue Operations Manager</div></td>
+      <td><div class="td-muted">Saatchi & Saatchi</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">11 Mar 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/eleanor-davis-225' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="raj walker digital marketing manager meta">
+      <td><div class="td-name">Raj Walker</div></td>
+      <td><div class="td-title" title="Digital Marketing Manager">Digital Marketing Manager</div></td>
+      <td><div class="td-muted">Meta</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">26 Nov 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/raj-walker-614' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="nina li brand director kpmg">
+      <td><div class="td-name">Nina Li</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">KPMG</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">2 Jun 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nina-li-518' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="luna bailey vp brand razorfish">
+      <td><div class="td-name">Luna Bailey</div></td>
+      <td><div class="td-title" title="VP Brand">VP Brand</div></td>
+      <td><div class="td-muted">Razorfish</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">6 Nov 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/luna-bailey-525' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="isabella cox general manager gymshark">
+      <td><div class="td-name">Isabella Cox</div></td>
+      <td><div class="td-title" title="General Manager">General Manager</div></td>
+      <td><div class="td-muted">Gymshark</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">13 Apr 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/isabella-cox-803' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="never" data-search="charlotte howard cmo shopify">
+      <td><div class="td-name">Charlotte Howard</div></td>
+      <td><div class="td-title" title="CMO">CMO</div></td>
+      <td><div class="td-muted">Shopify</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">2 Oct 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/charlotte-howard-767' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="omar walker partnerships manager meta">
+      <td><div class="td-name">Omar Walker</div></td>
+      <td><div class="td-title" title="Partnerships Manager">Partnerships Manager</div></td>
+      <td><div class="td-muted">Meta</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">12 Aug 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/omar-walker-822' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="ananya kowalski ecommerce director brightland">
+      <td><div class="td-name">Ananya Kowalski</div></td>
+      <td><div class="td-title" title="eCommerce Director">eCommerce Director</div></td>
+      <td><div class="td-muted">Brightland</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">27 Feb 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ananya-kowalski-999' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="aisha carter social media manager grey">
+      <td><div class="td-name">Aisha Carter</div></td>
+      <td><div class="td-title" title="Social Media Manager">Social Media Manager</div></td>
+      <td><div class="td-muted">Grey</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">24 Jan 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aisha-carter-805' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="sophia bell vp ecommerce google">
+      <td><div class="td-name">Sophia Bell</div></td>
+      <td><div class="td-title" title="VP eCommerce">VP eCommerce</div></td>
+      <td><div class="td-muted">Google</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">20 Nov 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/sophia-bell-127' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="aubrey stewart marketing lead entrepreneur">
+      <td><div class="td-name">Aubrey Stewart</div></td>
+      <td><div class="td-title" title="Marketing Lead">Marketing Lead</div></td>
+      <td><div class="td-muted">Entrepreneur</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">29 Apr 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aubrey-stewart-940' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="kiran johansson managing director away travel">
+      <td><div class="td-name">Kiran Johansson</div></td>
+      <td><div class="td-title" title="Managing Director">Managing Director</div></td>
+      <td><div class="td-muted">Away Travel</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">6 Jan 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/kiran-johansson-926' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="carlos cox director of marketing jenni kayne">
+      <td><div class="td-name">Carlos Cox</div></td>
+      <td><div class="td-title" title="Director of Marketing">Director of Marketing</div></td>
+      <td><div class="td-muted">Jenni Kayne</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">5 Jun 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/carlos-cox-720' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="lars patel general manager hubspot">
+      <td><div class="td-name">Lars Patel</div></td>
+      <td><div class="td-title" title="General Manager">General Manager</div></td>
+      <td><div class="td-muted">HubSpot</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">29 Jun 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/lars-patel-303' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="ananya johnson vp brand techcrunch">
+      <td><div class="td-name">Ananya Johnson</div></td>
+      <td><div class="td-title" title="VP Brand">VP Brand</div></td>
+      <td><div class="td-muted">TechCrunch</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">4 Feb 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ananya-johnson-793' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="never" data-search="anthony kim head of ecommerce fly by jing">
+      <td><div class="td-name">Anthony Kim</div></td>
+      <td><div class="td-title" title="Head of eCommerce">Head of eCommerce</div></td>
+      <td><div class="td-muted">Fly By Jing</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">30 Aug 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/anthony-kim-268' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="liam anderson chief revenue officer hubspot">
+      <td><div class="td-name">Liam Anderson</div></td>
+      <td><div class="td-title" title="Chief Revenue Officer">Chief Revenue Officer</div></td>
+      <td><div class="td-muted">HubSpot</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">21 Mar 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/liam-anderson-145' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="hazel white marketing lead amazon">
+      <td><div class="td-name">Hazel White</div></td>
+      <td><div class="td-title" title="Marketing Lead">Marketing Lead</div></td>
+      <td><div class="td-muted">Amazon</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">23 Feb 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/hazel-white-894' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="abigail andersen solutions engineer recharge">
+      <td><div class="td-name">Abigail Andersen</div></td>
+      <td><div class="td-title" title="Solutions Engineer">Solutions Engineer</div></td>
+      <td><div class="td-muted">Recharge</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">6 May 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/abigail-andersen-538' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="owen martin partnerships manager kpmg">
+      <td><div class="td-name">Owen Martin</div></td>
+      <td><div class="td-title" title="Partnerships Manager">Partnerships Manager</div></td>
+      <td><div class="td-muted">KPMG</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">28 Aug 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/owen-martin-865' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="raj brown marketing manager omnicom">
+      <td><div class="td-name">Raj Brown</div></td>
+      <td><div class="td-title" title="Marketing Manager">Marketing Manager</div></td>
+      <td><div class="td-muted">Omnicom</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">21 Apr 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/raj-brown-908' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="natalie patel copy director brevo">
+      <td><div class="td-name">Natalie Patel</div></td>
+      <td><div class="td-title" title="Copy Director">Copy Director</div></td>
+      <td><div class="td-muted">Brevo</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">5 Jan 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/natalie-patel-243' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="warm" data-eng="never" data-search="yuki campbell retention specialist aftership">
+      <td><div class="td-name">Yuki Campbell</div></td>
+      <td><div class="td-title" title="Retention Specialist">Retention Specialist</div></td>
+      <td><div class="td-muted">AfterShip</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">8 May 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/yuki-campbell-385' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="charlotte walker co-founder & ceo true classic">
+      <td><div class="td-name">Charlotte Walker</div></td>
+      <td><div class="td-title" title="Co-Founder & CEO">Co-Founder & CEO</div></td>
+      <td><div class="td-muted">True Classic</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">7 Mar 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/charlotte-walker-696' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="hazel white vp ecommerce rhone">
+      <td><div class="td-name">Hazel White</div></td>
+      <td><div class="td-title" title="VP eCommerce">VP eCommerce</div></td>
+      <td><div class="td-muted">Rhone</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">10 Mar 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/hazel-white-360' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="aisha nguyen marketing coordinator pwc">
+      <td><div class="td-name">Aisha Nguyen</div></td>
+      <td><div class="td-title" title="Marketing Coordinator">Marketing Coordinator</div></td>
+      <td><div class="td-muted">PwC</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">30 Sep 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aisha-nguyen-321' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="penelope kumar general manager graza">
+      <td><div class="td-name">Penelope Kumar</div></td>
+      <td><div class="td-title" title="General Manager">General Manager</div></td>
+      <td><div class="td-muted">Graza</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">16 Feb 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/penelope-kumar-991' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="benjamin nelson senior ecommerce strategist okendo">
+      <td><div class="td-name">Benjamin Nelson</div></td>
+      <td><div class="td-title" title="Senior eCommerce Strategist">Senior eCommerce Strategist</div></td>
+      <td><div class="td-muted">Okendo</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">27 Aug 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/benjamin-nelson-720' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="abigail ahmed dtc marketing manager kno commerce">
+      <td><div class="td-name">Abigail Ahmed</div></td>
+      <td><div class="td-title" title="DTC Marketing Manager">DTC Marketing Manager</div></td>
+      <td><div class="td-muted">Kno Commerce</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">23 Nov 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/abigail-ahmed-856' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="camila adams president hydrant">
+      <td><div class="td-name">Camila Adams</div></td>
+      <td><div class="td-title" title="President">President</div></td>
+      <td><div class="td-muted">Hydrant</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">12 Sep 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/camila-adams-125' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="logan cook growth hacker salesforce">
+      <td><div class="td-name">Logan Cook</div></td>
+      <td><div class="td-title" title="Growth Hacker">Growth Hacker</div></td>
+      <td><div class="td-muted">Salesforce</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">16 Sep 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/logan-cook-672' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="zoey stewart marketing manager isobar">
+      <td><div class="td-name">Zoey Stewart</div></td>
+      <td><div class="td-title" title="Marketing Manager">Marketing Manager</div></td>
+      <td><div class="td-muted">Isobar</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">14 Apr 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/zoey-stewart-990' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="gabriel allen ceo mailchimp">
+      <td><div class="td-name">Gabriel Allen</div></td>
+      <td><div class="td-title" title="CEO">CEO</div></td>
+      <td><div class="td-muted">Mailchimp</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">20 Feb 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/gabriel-allen-627' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="mason turner marketing director jwt">
+      <td><div class="td-name">Mason Turner</div></td>
+      <td><div class="td-title" title="Marketing Director">Marketing Director</div></td>
+      <td><div class="td-muted">JWT</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">11 Nov 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/mason-turner-361' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="hannah cox growth hacker ipg">
+      <td><div class="td-name">Hannah Cox</div></td>
+      <td><div class="td-title" title="Growth Hacker">Growth Hacker</div></td>
+      <td><div class="td-muted">IPG</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">13 May 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/hannah-cox-521' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="leila wang head of dtc public rec">
+      <td><div class="td-name">Leila Wang</div></td>
+      <td><div class="td-title" title="Head of DTC">Head of DTC</div></td>
+      <td><div class="td-muted">Public Rec</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">5 Mar 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/leila-wang-246' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="addison roberts chief marketing officer shopify">
+      <td><div class="td-name">Addison Roberts</div></td>
+      <td><div class="td-title" title="Chief Marketing Officer">Chief Marketing Officer</div></td>
+      <td><div class="td-muted">Shopify</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">3 Mar 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/addison-roberts-530' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="daniel kumar ecommerce director brightland">
+      <td><div class="td-name">Daniel Kumar</div></td>
+      <td><div class="td-title" title="eCommerce Director">eCommerce Director</div></td>
+      <td><div class="td-muted">Brightland</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">28 Sep 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/daniel-kumar-434' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="benjamin richardson founder untuckit">
+      <td><div class="td-name">Benjamin Richardson</div></td>
+      <td><div class="td-title" title="Founder">Founder</div></td>
+      <td><div class="td-muted">UNTUCKit</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">13 Apr 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/benjamin-richardson-151' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="evelyn nelson owner ghia">
+      <td><div class="td-name">Evelyn Nelson</div></td>
+      <td><div class="td-title" title="Owner">Owner</div></td>
+      <td><div class="td-muted">Ghia</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">22 Apr 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/evelyn-nelson-559' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="carlos phillips founder & ceo uppercase">
+      <td><div class="td-name">Carlos Phillips</div></td>
+      <td><div class="td-title" title="Founder & CEO">Founder & CEO</div></td>
+      <td><div class="td-muted">Uppercase</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">24 Jan 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/carlos-phillips-471' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="zoe mitchell fractional head of growth stamped">
+      <td><div class="td-name">Zoe Mitchell</div></td>
+      <td><div class="td-title" title="Fractional Head of Growth">Fractional Head of Growth</div></td>
+      <td><div class="td-muted">Stamped</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">23 Feb 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/zoe-mitchell-202' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="lucas moore brand manager bain">
+      <td><div class="td-name">Lucas Moore</div></td>
+      <td><div class="td-title" title="Brand Manager">Brand Manager</div></td>
+      <td><div class="td-muted">Bain</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">15 Nov 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/lucas-moore-709' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="rahul nelson founder beardbrand">
+      <td><div class="td-name">Rahul Nelson</div></td>
+      <td><div class="td-title" title="Founder">Founder</div></td>
+      <td><div class="td-muted">Beardbrand</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">28 Oct 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/rahul-nelson-920' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="aurora hall vp brand pwc">
+      <td><div class="td-name">Aurora Hall</div></td>
+      <td><div class="td-title" title="VP Brand">VP Brand</div></td>
+      <td><div class="td-muted">PwC</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">12 Jun 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aurora-hall-701' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="sophia scott director of marketing public rec">
+      <td><div class="td-name">Sophia Scott</div></td>
+      <td><div class="td-title" title="Director of Marketing">Director of Marketing</div></td>
+      <td><div class="td-muted">Public Rec</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">13 Mar 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/sophia-scott-985' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="caleb jones ceo allbirds">
+      <td><div class="td-name">Caleb Jones</div></td>
+      <td><div class="td-title" title="CEO">CEO</div></td>
+      <td><div class="td-muted">Allbirds</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">14 Nov 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/caleb-jones-338' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="warm" data-eng="never" data-search="ellie schmidt marketing lead saatchi & saatchi">
+      <td><div class="td-name">Ellie Schmidt</div></td>
+      <td><div class="td-title" title="Marketing Lead">Marketing Lead</div></td>
+      <td><div class="td-muted">Saatchi & Saatchi</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">9 Jun 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ellie-schmidt-505' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="caleb nielsen co-founder mailchimp">
+      <td><div class="td-name">Caleb Nielsen</div></td>
+      <td><div class="td-title" title="Co-Founder">Co-Founder</div></td>
+      <td><div class="td-muted">Mailchimp</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">1 Aug 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/caleb-nielsen-294' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="penelope cook owner italic">
+      <td><div class="td-name">Penelope Cook</div></td>
+      <td><div class="td-title" title="Owner">Owner</div></td>
+      <td><div class="td-muted">Italic</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">22 Mar 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/penelope-cook-434' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="madison singh senior marketing manager publicis">
+      <td><div class="td-name">Madison Singh</div></td>
+      <td><div class="td-title" title="Senior Marketing Manager">Senior Marketing Manager</div></td>
+      <td><div class="td-muted">Publicis</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">2 Jul 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/madison-singh-213' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="elijah ahmed head of dtc caraway home">
+      <td><div class="td-name">Elijah Ahmed</div></td>
+      <td><div class="td-title" title="Head of DTC">Head of DTC</div></td>
+      <td><div class="td-muted">Caraway Home</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">4 Jul 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/elijah-ahmed-214' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="aiden wilson shopify partner recharge">
+      <td><div class="td-name">Aiden Wilson</div></td>
+      <td><div class="td-title" title="Shopify Partner">Shopify Partner</div></td>
+      <td><div class="td-muted">Recharge</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">20 Jul 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aiden-wilson-304' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="scarlett wilson ceo amazon">
+      <td><div class="td-name">Scarlett Wilson</div></td>
+      <td><div class="td-title" title="CEO">CEO</div></td>
+      <td><div class="td-muted">Amazon</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">1 Oct 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/scarlett-wilson-982' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="benjamin adams sms marketing manager mechanic">
+      <td><div class="td-name">Benjamin Adams</div></td>
+      <td><div class="td-title" title="SMS Marketing Manager">SMS Marketing Manager</div></td>
+      <td><div class="td-muted">Mechanic</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">4 Feb 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/benjamin-adams-876' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="carlos mitchell shopify partner sendlane">
+      <td><div class="td-name">Carlos Mitchell</div></td>
+      <td><div class="td-title" title="Shopify Partner">Shopify Partner</div></td>
+      <td><div class="td-muted">Sendlane</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">11 Jul 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/carlos-mitchell-295' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="nora harris brand director accenture">
+      <td><div class="td-name">Nora Harris</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">Accenture</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">29 Jun 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nora-harris-279' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="natalie mehta director of growth shopify">
+      <td><div class="td-name">Natalie Mehta</div></td>
+      <td><div class="td-title" title="Director of Growth">Director of Growth</div></td>
+      <td><div class="td-muted">Shopify</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">6 Oct 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/natalie-mehta-873' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="luna morgan chief marketing officer activecampaign">
+      <td><div class="td-name">Luna Morgan</div></td>
+      <td><div class="td-title" title="Chief Marketing Officer">Chief Marketing Officer</div></td>
+      <td><div class="td-muted">ActiveCampaign</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">3 Dec 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/luna-morgan-165' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="emma cooper email marketing manager junip">
+      <td><div class="td-name">Emma Cooper</div></td>
+      <td><div class="td-title" title="Email Marketing Manager">Email Marketing Manager</div></td>
+      <td><div class="td-muted">Junip</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">17 Jun 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/emma-cooper-470' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="nora park content marketing manager tbwa">
+      <td><div class="td-name">Nora Park</div></td>
+      <td><div class="td-title" title="Content Marketing Manager">Content Marketing Manager</div></td>
+      <td><div class="td-muted">TBWA</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">13 Mar 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nora-park-943' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="aurora gray digital marketing manager bbdo">
+      <td><div class="td-name">Aurora Gray</div></td>
+      <td><div class="td-title" title="Digital Marketing Manager">Digital Marketing Manager</div></td>
+      <td><div class="td-muted">BBDO</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">20 Mar 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/aurora-gray-630' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="never" data-search="harper singh ceo uppercase">
+      <td><div class="td-name">Harper Singh</div></td>
+      <td><div class="td-title" title="CEO">CEO</div></td>
+      <td><div class="td-muted">Uppercase</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">17 Oct 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/harper-singh-981' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="warm" data-eng="never" data-search="emma ahmed lifecycle marketing manager triple whale">
+      <td><div class="td-name">Emma Ahmed</div></td>
+      <td><div class="td-title" title="Lifecycle Marketing Manager">Lifecycle Marketing Manager</div></td>
+      <td><div class="td-muted">Triple Whale</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">23 Oct 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/emma-ahmed-155' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="owen garcia owner jenni kayne">
+      <td><div class="td-name">Owen Garcia</div></td>
+      <td><div class="td-title" title="Owner">Owner</div></td>
+      <td><div class="td-muted">Jenni Kayne</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">3 Sep 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/owen-garcia-355' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="addison singh marketing manager venturebeat">
+      <td><div class="td-name">Addison Singh</div></td>
+      <td><div class="td-title" title="Marketing Manager">Marketing Manager</div></td>
+      <td><div class="td-muted">VentureBeat</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">12 Dec 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/addison-singh-990' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="isabella phillips digital marketing manager entrepreneur">
+      <td><div class="td-name">Isabella Phillips</div></td>
+      <td><div class="td-title" title="Digital Marketing Manager">Digital Marketing Manager</div></td>
+      <td><div class="td-muted">Entrepreneur</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">12 Jan 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/isabella-phillips-467' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="oliver peterson marketing director pwc">
+      <td><div class="td-name">Oliver Peterson</div></td>
+      <td><div class="td-title" title="Marketing Director">Marketing Director</div></td>
+      <td><div class="td-muted">PwC</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">12 Nov 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/oliver-peterson-539' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="madison kumar chief marketing officer tabs chocolate">
+      <td><div class="td-name">Madison Kumar</div></td>
+      <td><div class="td-title" title="Chief Marketing Officer">Chief Marketing Officer</div></td>
+      <td><div class="td-muted">Tabs Chocolate</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">29 May 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/madison-kumar-170' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="fresh" data-eng="never" data-search="ryan chen email marketing lead junip">
+      <td><div class="td-name">Ryan Chen</div></td>
+      <td><div class="td-title" title="Email Marketing Lead">Email Marketing Lead</div></td>
+      <td><div class="td-muted">Junip</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">16 Feb 2026</div></td>
+      <td><span class="rec-fresh">🟡 Fresh</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ryan-chen-195' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="lucas baker brand manager grey group">
+      <td><div class="td-name">Lucas Baker</div></td>
+      <td><div class="td-title" title="Brand Manager">Brand Manager</div></td>
+      <td><div class="td-muted">Grey Group</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">26 Jul 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/lucas-baker-256' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="owen lee brand director clutch">
+      <td><div class="td-name">Owen Lee</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">Clutch</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">23 Apr 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/owen-lee-552' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="lars schmidt marketing coordinator omnisend">
+      <td><div class="td-name">Lars Schmidt</div></td>
+      <td><div class="td-title" title="Marketing Coordinator">Marketing Coordinator</div></td>
+      <td><div class="td-muted">Omnisend</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">21 Jul 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/lars-schmidt-217' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="violet roberts marketing lead young & rubicam">
+      <td><div class="td-name">Violet Roberts</div></td>
+      <td><div class="td-title" title="Marketing Lead">Marketing Lead</div></td>
+      <td><div class="td-muted">Young & Rubicam</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">14 Jul 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/violet-roberts-540' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="anthony brown director of marketing rhone">
+      <td><div class="td-name">Anthony Brown</div></td>
+      <td><div class="td-title" title="Director of Marketing">Director of Marketing</div></td>
+      <td><div class="td-muted">Rhone</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">27 Oct 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/anthony-brown-795' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="william murphy senior brand manager junip">
+      <td><div class="td-name">William Murphy</div></td>
+      <td><div class="td-title" title="Senior Brand Manager">Senior Brand Manager</div></td>
+      <td><div class="td-muted">Junip</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">7 Nov 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/william-murphy-744' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="carter sanchez seo manager g2">
+      <td><div class="td-name">Carter Sanchez</div></td>
+      <td><div class="td-title" title="SEO Manager">SEO Manager</div></td>
+      <td><div class="td-muted">G2</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">3 Sep 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/carter-sanchez-205' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="elijah hall email marketing manager rich returns">
+      <td><div class="td-name">Elijah Hall</div></td>
+      <td><div class="td-title" title="Email Marketing Manager">Email Marketing Manager</div></td>
+      <td><div class="td-muted">Rich Returns</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">31 Oct 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/elijah-hall-126' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="chloe chen ceo salesforce">
+      <td><div class="td-name">Chloe Chen</div></td>
+      <td><div class="td-title" title="CEO">CEO</div></td>
+      <td><div class="td-muted">Salesforce</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">19 Mar 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/chloe-chen-524' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="warm" data-eng="never" data-search="evelyn li vp brand trustpilot">
+      <td><div class="td-name">Evelyn Li</div></td>
+      <td><div class="td-title" title="VP Brand">VP Brand</div></td>
+      <td><div class="td-muted">Trustpilot</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">30 Jun 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/evelyn-li-182' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="ryan hall marketing manager vaynermedia">
+      <td><div class="td-name">Ryan Hall</div></td>
+      <td><div class="td-title" title="Marketing Manager">Marketing Manager</div></td>
+      <td><div class="td-muted">VaynerMedia</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">16 Feb 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ryan-hall-517' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="kiran murphy copy director trustpilot">
+      <td><div class="td-name">Kiran Murphy</div></td>
+      <td><div class="td-title" title="Copy Director">Copy Director</div></td>
+      <td><div class="td-muted">Trustpilot</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">28 Jan 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/kiran-murphy-217' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="lincoln anderson revenue operations manager huge">
+      <td><div class="td-name">Lincoln Anderson</div></td>
+      <td><div class="td-title" title="Revenue Operations Manager">Revenue Operations Manager</div></td>
+      <td><div class="td-muted">Huge</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">11 Sep 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/lincoln-anderson-218' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="samuel schmidt marketing lead meta">
+      <td><div class="td-name">Samuel Schmidt</div></td>
+      <td><div class="td-title" title="Marketing Lead">Marketing Lead</div></td>
+      <td><div class="td-muted">Meta</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">3 Nov 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/samuel-schmidt-415' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="lincoln anderson marketing coordinator omnisend">
+      <td><div class="td-name">Lincoln Anderson</div></td>
+      <td><div class="td-title" title="Marketing Coordinator">Marketing Coordinator</div></td>
+      <td><div class="td-muted">Omnisend</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">15 Feb 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/lincoln-anderson-754' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="joseph lee ecommerce director italic">
+      <td><div class="td-name">Joseph Lee</div></td>
+      <td><div class="td-title" title="eCommerce Director">eCommerce Director</div></td>
+      <td><div class="td-muted">Italic</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">3 Dec 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/joseph-lee-837' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="julian garcia brand director huge">
+      <td><div class="td-name">Julian Garcia</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">Huge</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">17 Jan 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/julian-garcia-495' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="jackson lee content marketing manager bain">
+      <td><div class="td-name">Jackson Lee</div></td>
+      <td><div class="td-title" title="Content Marketing Manager">Content Marketing Manager</div></td>
+      <td><div class="td-muted">Bain</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">9 Apr 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/jackson-lee-553' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="evelyn ward growth hacker google">
+      <td><div class="td-name">Evelyn Ward</div></td>
+      <td><div class="td-title" title="Growth Hacker">Growth Hacker</div></td>
+      <td><div class="td-muted">Google</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">4 Jun 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/evelyn-ward-144' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="daniel murphy marketing lead ogilvy">
+      <td><div class="td-name">Daniel Murphy</div></td>
+      <td><div class="td-title" title="Marketing Lead">Marketing Lead</div></td>
+      <td><div class="td-muted">Ogilvy</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">7 Apr 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/daniel-murphy-605' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="leila moore brand director havas">
+      <td><div class="td-name">Leila Moore</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">Havas</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">12 Feb 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/leila-moore-872' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="nina mitchell co-founder marine layer">
+      <td><div class="td-name">Nina Mitchell</div></td>
+      <td><div class="td-title" title="Co-Founder">Co-Founder</div></td>
+      <td><div class="td-muted">Marine Layer</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">17 Apr 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nina-mitchell-344' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="warm" data-eng="never" data-search="lucas andersen creative director omnisend">
+      <td><div class="td-name">Lucas Andersen</div></td>
+      <td><div class="td-title" title="Creative Director">Creative Director</div></td>
+      <td><div class="td-muted">Omnisend</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">16 Jul 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/lucas-andersen-245' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="james collins head of dtc untuckit">
+      <td><div class="td-name">James Collins</div></td>
+      <td><div class="td-title" title="Head of DTC">Head of DTC</div></td>
+      <td><div class="td-muted">UNTUCKit</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">21 May 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/james-collins-265' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="zoey adams managing director brooklinen">
+      <td><div class="td-name">Zoey Adams</div></td>
+      <td><div class="td-title" title="Managing Director">Managing Director</div></td>
+      <td><div class="td-muted">Brooklinen</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">17 Dec 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/zoey-adams-180' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="ryan schmidt marketing manager huge">
+      <td><div class="td-name">Ryan Schmidt</div></td>
+      <td><div class="td-title" title="Marketing Manager">Marketing Manager</div></td>
+      <td><div class="td-muted">Huge</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">14 May 2024</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ryan-schmidt-371' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="logan nielsen marketing director bain">
+      <td><div class="td-name">Logan Nielsen</div></td>
+      <td><div class="td-title" title="Marketing Director">Marketing Director</div></td>
+      <td><div class="td-muted">Bain</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">22 Oct 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/logan-nielsen-225' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="daniel torres brand director wunderman thompson">
+      <td><div class="td-name">Daniel Torres</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">Wunderman Thompson</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">15 Feb 2025</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/daniel-torres-342' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="isaac park chief revenue officer italic">
+      <td><div class="td-name">Isaac Park</div></td>
+      <td><div class="td-title" title="Chief Revenue Officer">Chief Revenue Officer</div></td>
+      <td><div class="td-muted">Italic</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">5 Mar 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/isaac-park-556' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="wyatt johansson partnerships manager isobar">
+      <td><div class="td-name">Wyatt Johansson</div></td>
+      <td><div class="td-title" title="Partnerships Manager">Partnerships Manager</div></td>
+      <td><div class="td-muted">Isobar</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">4 Jan 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/wyatt-johansson-122' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="sebastian collins ecommerce director outer">
+      <td><div class="td-name">Sebastian Collins</div></td>
+      <td><div class="td-title" title="eCommerce Director">eCommerce Director</div></td>
+      <td><div class="td-muted">Outer</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">16 Jul 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/sebastian-collins-373' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="luna tanaka senior marketing manager techcrunch">
+      <td><div class="td-name">Luna Tanaka</div></td>
+      <td><div class="td-title" title="Senior Marketing Manager">Senior Marketing Manager</div></td>
+      <td><div class="td-muted">TechCrunch</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">12 Nov 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/luna-tanaka-751' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="carlos chen digital marketing manager r/ga">
+      <td><div class="td-name">Carlos Chen</div></td>
+      <td><div class="td-title" title="Digital Marketing Manager">Digital Marketing Manager</div></td>
+      <td><div class="td-muted">R/GA</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">22 Sep 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/carlos-chen-395' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="evelyn green marketing manager shopify">
+      <td><div class="td-name">Evelyn Green</div></td>
+      <td><div class="td-title" title="Marketing Manager">Marketing Manager</div></td>
+      <td><div class="td-muted">Shopify</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">17 May 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/evelyn-green-674' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="priya roberts director of growth hubspot">
+      <td><div class="td-name">Priya Roberts</div></td>
+      <td><div class="td-title" title="Director of Growth">Director of Growth</div></td>
+      <td><div class="td-muted">HubSpot</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">7 Apr 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/priya-roberts-691' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="never" data-search="zoey flores chief marketing officer ghia">
+      <td><div class="td-name">Zoey Flores</div></td>
+      <td><div class="td-title" title="Chief Marketing Officer">Chief Marketing Officer</div></td>
+      <td><div class="td-muted">Ghia</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">17 Jan 2026</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/zoey-flores-147' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="nora davis co-founder & ceo olipop">
+      <td><div class="td-name">Nora Davis</div></td>
+      <td><div class="td-title" title="Co-Founder & CEO">Co-Founder & CEO</div></td>
+      <td><div class="td-muted">Olipop</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">13 Oct 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nora-davis-510' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="ananya white dtc marketing manager drip">
+      <td><div class="td-name">Ananya White</div></td>
+      <td><div class="td-title" title="DTC Marketing Manager">DTC Marketing Manager</div></td>
+      <td><div class="td-muted">Drip</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">8 Feb 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ananya-white-816' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="yuki collins social media manager techstars">
+      <td><div class="td-name">Yuki Collins</div></td>
+      <td><div class="td-title" title="Social Media Manager">Social Media Manager</div></td>
+      <td><div class="td-muted">Techstars</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">20 May 2021</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/yuki-collins-202' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="warm" data-eng="never" data-search="nora andersen content marketing manager convertkit">
+      <td><div class="td-name">Nora Andersen</div></td>
+      <td><div class="td-title" title="Content Marketing Manager">Content Marketing Manager</div></td>
+      <td><div class="td-muted">ConvertKit</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">24 Sep 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/nora-andersen-259' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="warm" data-eng="never" data-search="ananya torres chief revenue officer mack weldon">
+      <td><div class="td-name">Ananya Torres</div></td>
+      <td><div class="td-title" title="Chief Revenue Officer">Chief Revenue Officer</div></td>
+      <td><div class="td-muted">Mack Weldon</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">15 Jul 2025</div></td>
+      <td><span class="rec-warm">⚪ Warm</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ananya-torres-780' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="raj shah vp brand vaynermedia">
+      <td><div class="td-name">Raj Shah</div></td>
+      <td><div class="td-title" title="VP Brand">VP Brand</div></td>
+      <td><div class="td-muted">VaynerMedia</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">8 Feb 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/raj-shah-131' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="new" data-eng="never" data-search="riley cox founder hydrant">
+      <td><div class="td-name">Riley Cox</div></td>
+      <td><div class="td-title" title="Founder">Founder</div></td>
+      <td><div class="td-muted">Hydrant</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">14 Apr 2026</div></td>
+      <td><span class="rec-new">🟢 New</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/riley-cox-839' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="addison allen chief marketing officer monos">
+      <td><div class="td-name">Addison Allen</div></td>
+      <td><div class="td-title" title="Chief Marketing Officer">Chief Marketing Officer</div></td>
+      <td><div class="td-muted">Monos</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">6 May 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/addison-allen-646' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="stella nelson fractional cmo tolstoy">
+      <td><div class="td-name">Stella Nelson</div></td>
+      <td><div class="td-title" title="Fractional CMO">Fractional CMO</div></td>
+      <td><div class="td-muted">Tolstoy</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">24 Jun 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/stella-nelson-784' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="liam martin copy director capterra">
+      <td><div class="td-name">Liam Martin</div></td>
+      <td><div class="td-title" title="Copy Director">Copy Director</div></td>
+      <td><div class="td-muted">Capterra</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">3 Jun 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/liam-martin-216' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="ananya campbell ecommerce director activecampaign">
+      <td><div class="td-name">Ananya Campbell</div></td>
+      <td><div class="td-title" title="eCommerce Director">eCommerce Director</div></td>
+      <td><div class="td-muted">ActiveCampaign</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">20 Jan 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ananya-campbell-173' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T2" data-rec="cold" data-eng="never" data-search="mia park dtc marketing manager loyaltylion">
+      <td><div class="td-name">Mia Park</div></td>
+      <td><div class="td-title" title="DTC Marketing Manager">DTC Marketing Manager</div></td>
+      <td><div class="td-muted">LoyaltyLion</div></td>
+      <td><span class="tier-pill tp-t2">T2 · Ecosystem</span></td>
+      <td><div class="td-muted">22 Apr 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/mia-park-316' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="yuna miller brand director convertkit">
+      <td><div class="td-name">Yuna Miller</div></td>
+      <td><div class="td-title" title="Brand Director">Brand Director</div></td>
+      <td><div class="td-muted">ConvertKit</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">10 Feb 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/yuna-miller-894' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="ryan murphy vp ecommerce beardbrand">
+      <td><div class="td-name">Ryan Murphy</div></td>
+      <td><div class="td-title" title="VP eCommerce">VP eCommerce</div></td>
+      <td><div class="td-muted">Beardbrand</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">24 Jul 2023</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/ryan-murphy-692' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="kenji johansson marketing manager mailchimp">
+      <td><div class="td-name">Kenji Johansson</div></td>
+      <td><div class="td-title" title="Marketing Manager">Marketing Manager</div></td>
+      <td><div class="td-muted">Mailchimp</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">13 Oct 2018</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/kenji-johansson-941' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="james carter partnerships manager g2">
+      <td><div class="td-name">James Carter</div></td>
+      <td><div class="td-title" title="Partnerships Manager">Partnerships Manager</div></td>
+      <td><div class="td-muted">G2</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">27 Sep 2019</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/james-carter-693' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T1" data-rec="cold" data-eng="never" data-search="isabella peterson cmo true classic">
+      <td><div class="td-name">Isabella Peterson</div></td>
+      <td><div class="td-title" title="CMO">CMO</div></td>
+      <td><div class="td-muted">True Classic</div></td>
+      <td><span class="tier-pill tp-t1">T1 · Decision Maker</span></td>
+      <td><div class="td-muted">28 Jan 2022</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/isabella-peterson-180' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+<tr data-tier="T3" data-rec="cold" data-eng="never" data-search="william chen senior marketing manager grey">
+      <td><div class="td-name">William Chen</div></td>
+      <td><div class="td-title" title="Senior Marketing Manager">Senior Marketing Manager</div></td>
+      <td><div class="td-muted">Grey</div></td>
+      <td><span class="tier-pill tp-t3">T3 · Adjacent</span></td>
+      <td><div class="td-muted">25 Jul 2020</div></td>
+      <td><span class="rec-cold">❄ Cold</span></td>
+      <td><span class="eng-never">— Never</span></td>
+      <td><a href='https://www.linkedin.com/in/william-chen-707' target='_blank' style='color:var(--li2);font-size:0.75rem'>↗</a></td>
+    </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+function applyFilters() {
+  const q = document.getElementById('q').value.toLowerCase();
+  const ft = document.getElementById('f-tier').value;
+  const fr = document.getElementById('f-rec').value;
+  const fe = document.getElementById('f-eng').value;
+  let count = 0;
+  document.querySelectorAll('#icp-body tr').forEach(row => {
+    const show = (!ft || row.dataset.tier === ft)
+              && (!fr || row.dataset.rec === fr)
+              && (!fe || row.dataset.eng === fe)
+              && (!q || row.dataset.search.includes(q));
+    row.style.display = show ? '' : 'none';
+    if (show) count++;
+  });
+  document.getElementById('vis-count').textContent = count.toLocaleString();
+}
+function exportVisible() {
+  const rows = [...document.querySelectorAll('#icp-body tr')].filter(r => r.style.display !== 'none');
+  const lines = [['Name','Title','Company','Tier','Connected','Recency','Engagement'].join(',')];
+  rows.forEach(r => {
+    const cells = [...r.querySelectorAll('td')].map(td => '"' + td.textContent.trim().replace(/"/g,'""') + '"');
+    lines.push(cells.slice(0,7).join(','));
+  });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([lines.join('\n')], {type:'text/csv'}));
+  a.download = 'icp-demo-contacts.csv'; a.click();
+}
+</script>
+</body>
+</html>
