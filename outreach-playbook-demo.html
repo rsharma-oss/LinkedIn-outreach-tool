@@ -996,6 +996,218 @@ function showTab(id, el) {
   el.classList.add('active');
 }
 
+// ── DYNAMIC DATA ENGINE ───────────────────────────────────────────────────────
+// Reads real ICP data saved by icp-finder.html via localStorage.
+// Falls back to demo mode if no data found.
+(function() {
+  const stored = localStorage.getItem('ga_icp_data');
+  if (!stored) return; // stay in demo mode
+
+  let parsed;
+  try { parsed = JSON.parse(stored); } catch(e) { return; }
+
+  const rawICP = parsed.icp || [];
+  const totalConns = parsed.totalConns || 0;
+  const exported = parsed.exported ? new Date(parsed.exported) : new Date();
+  if (!rawICP.length) return;
+
+  // Reconstruct Date objects
+  const ICP = rawICP.map(c => ({...c, connDate: c.connDate ? new Date(c.connDate) : null}));
+
+  // Derived slices
+  const t1 = ICP.filter(c => c.tier === 'T1');
+  const t2 = ICP.filter(c => c.tier === 'T2');
+  const t3 = ICP.filter(c => c.tier === 'T3');
+  const withMsgs = ICP.filter(c => c.msgCount > 0);
+  const urgent = t1.filter(c => c.days >= 20 && c.days < 30).sort((a,b) => b.days - a.days);
+  const recentT1 = t1.filter(c => c.days !== null && c.days < 90).sort((a,b) => a.days - b.days);
+  const reengage = ICP.filter(c => c.msgCount > 0 && (c.lastMsgDays||0) > 90)
+                      .sort((a,b) => a.tier < b.tier ? -1 : a.tier > b.tier ? 1 : (b.lastMsgDays||0) - (a.lastMsgDays||0));
+
+  const dateStr = exported.toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
+
+  // ── Update header & banner ─────────────────────────────────────────────────
+  document.querySelector('.header-sub').textContent =
+    `[Your Company] · ${totalConns.toLocaleString()} Connections Analysed · ${dateStr}`;
+
+  const banner = document.querySelector('.demo-banner');
+  if (banner) {
+    banner.style.cssText += ';background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(59,130,246,0.05));border-color:rgba(16,185,129,0.25);color:#6ee7b7;';
+    banner.innerHTML = `✅ <strong>Live data</strong> — showing your real LinkedIn network · synced from ICP Finder on ${dateStr}. <a href="icp-finder.html" style="color:#6ee7b7;margin-left:8px">← Back to ICP Finder</a>`;
+  }
+
+  // ── Update nav badges ──────────────────────────────────────────────────────
+  const navBadges = document.querySelectorAll('.nav-tab .badge');
+  if (navBadges[0]) navBadges[0].textContent = urgent.length;
+  if (navBadges[1]) navBadges[1].textContent = recentT1.length;
+
+  // ── OVERVIEW ──────────────────────────────────────────────────────────────
+  const statVals = document.querySelectorAll('#tab-overview .stat-value');
+  if (statVals[0]) statVals[0].textContent = totalConns.toLocaleString();
+  if (statVals[1]) statVals[1].textContent = ICP.length.toLocaleString();
+  if (statVals[2]) statVals[2].textContent = withMsgs.length.toLocaleString();
+  if (statVals[3]) statVals[3].textContent = reengage.length.toLocaleString();
+
+  const hbP = document.querySelector('#tab-overview .highlight-box p');
+  if (hbP) hbP.innerHTML = `Your network has <strong style="color:#93c5fd">${ICP.length.toLocaleString()} ICP-fit contacts</strong> — Founders, CEOs, CMOs, and VPs who match your ideal buyer profile. Of those, <strong style="color:#93c5fd">${recentT1.length} connected in the last 90 days</strong> and are primed for a first message. You also have <strong style="color:#93c5fd">${reengage.length} past conversations</strong> worth re-engaging and <strong style="color:#fca5a5">${urgent.length} time-sensitive actions</strong> that need your attention today.`;
+
+  // Update recency card bars
+  const n30  = ICP.filter(c => c.days !== null && c.days < 30).length;
+  const n90  = ICP.filter(c => c.days !== null && c.days < 90).length;
+  const n365 = ICP.filter(c => c.days !== null && c.days < 365).length;
+  const nOld = ICP.filter(c => c.days === null || c.days >= 365).length;
+  const maxN = Math.max(n30, n90, n365, nOld, 1);
+  const ovCards = document.querySelectorAll('#tab-overview .card');
+  if (ovCards[0]) {
+    const rows = ovCards[0].querySelectorAll('[style*="justify-content"]');
+    const bars = ovCards[0].querySelectorAll('.progress-fill');
+    const vals = [n30, n90, n365, nOld];
+    rows.forEach((r,i) => { const sp = r.querySelector('span:last-child'); if(sp) sp.textContent = (vals[i]||0).toLocaleString(); });
+    bars.forEach((b,i) => { b.style.width = Math.max(2, Math.round((vals[i]||0)/maxN*98))+'%'; });
+  }
+  if (ovCards[1]) {
+    const rows = ovCards[1].querySelectorAll('[style*="justify-content"]');
+    const bars = ovCards[1].querySelectorAll('.progress-fill');
+    const tVals = [t1.length, t2.length, t3.length];
+    const tMax = Math.max(...tVals, 1);
+    rows.forEach((r,i) => { const sp = r.querySelector('span:last-child'); if(sp) sp.textContent = (tVals[i]||0).toLocaleString(); });
+    bars.forEach((b,i) => { b.style.width = Math.max(2, Math.round((tVals[i]||0)/tMax*98))+'%'; });
+  }
+  if (ovCards[2]) {
+    const active = ICP.filter(c => c.engagement === 'active').length;
+    const warm   = ICP.filter(c => c.engagement === 'warm').length;
+    const never  = ICP.filter(c => c.engagement === 'never').length;
+    const rows = ovCards[2].querySelectorAll('[style*="justify-content"]');
+    const bars = ovCards[2].querySelectorAll('.progress-fill');
+    const mVals = [active, warm, never];
+    const mMax = Math.max(...mVals, 1);
+    rows.forEach((r,i) => { const sp = r.querySelector('span:last-child'); if(sp) sp.textContent = (mVals[i]||0).toLocaleString(); });
+    bars.forEach((b,i) => { b.style.width = Math.max(2, Math.round((mVals[i]||0)/mMax*98))+'%'; });
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function initials(c) {
+    return (((c.first||'')[0]||'') + ((c.last||'')[0]||'')).toUpperCase() || (c.name||'?')[0].toUpperCase();
+  }
+  function dayLabel(days) {
+    if (days === null || days === undefined) return '—';
+    if (days === 0) return 'Today';
+    return days < 365 ? `${days}d ago` : `${Math.round(days/365)}yr ago`;
+  }
+  function msgTimeLabel(d) {
+    if (!d) return '—';
+    if (d < 30) return `${d}d ago`;
+    if (d < 365) return `${Math.round(d/30)} month${Math.round(d/30)===1?'':'s'} ago`;
+    return `${Math.round(d/365)} year ago`;
+  }
+  function personRow(c, opts={}) {
+    const tc = c.tier === 'T1' ? 't1' : 't2';
+    const dc = c.days < 30 ? 'var(--tier1)' : c.days < 90 ? 'var(--yellow)' : 'var(--text-muted)';
+    const viewLink = c.url ? `<div style="margin-top:3px"><a href="${c.url}" target="_blank" style="color:var(--accent);font-size:0.72rem">↗ View</a></div>` : '';
+    const extra = opts.daysLeft != null
+      ? `<div class="person-signal">⚡ ${opts.daysLeft} day${opts.daysLeft===1?'':'s'} left</div>`
+      : opts.msgLine
+      ? `<div class="person-signal">${opts.msgLine}</div>`
+      : '';
+    return `<div class="person-row">
+      <div class="person-avatar">${initials(c)}</div>
+      <div class="person-info">
+        <div class="person-name">${c.name} <span class="tier-badge ${tc}" style="margin-left:6px">${c.tier}</span></div>
+        <div class="person-sub">${c.title}${c.company?' · '+c.company:''}</div>
+      </div>
+      <div class="person-meta">
+        <div class="person-days" style="color:${opts.metaColor||dc}">${opts.metaText||dayLabel(c.days)}</div>
+        ${extra}${viewLink}
+      </div>
+    </div>`;
+  }
+
+  // ── ACT NOW ───────────────────────────────────────────────────────────────
+  (function() {
+    const tab = document.getElementById('tab-urgent');
+    if (!tab) return;
+    tab.querySelectorAll('.person-row, .section-label').forEach(el => el.remove());
+    const urgentBox = tab.querySelector('.urgent-box');
+    const h4 = urgentBox && urgentBox.querySelector('h4');
+    if (h4) h4.textContent = `⏰ Why These ${urgent.length} Matter`;
+
+    if (!urgent.length) {
+      urgentBox.insertAdjacentHTML('afterend', `<div style="text-align:center;padding:40px;color:var(--text-muted);background:var(--bg-card);border:1px dashed var(--border);border-radius:12px;margin-top:16px;font-size:0.85rem">No urgent T1 contacts right now — all recent connections are outside the 20–30 day window.</div>`);
+      return;
+    }
+
+    const exp3 = urgent.filter(c => c.days >= 27);
+    const exp7 = urgent.filter(c => c.days < 27);
+    let html = '';
+    if (exp3.length) {
+      html += `<div class="section-label">Expiring in 1–3 days</div>`;
+      html += exp3.map(c => personRow(c, {metaColor:'var(--urgent)', metaText:`${c.days} days ago`, daysLeft: 30-c.days})).join('');
+    }
+    if (exp7.length) {
+      html += `<div class="section-label">Expiring in 4–10 days</div>`;
+      html += exp7.map(c => personRow(c, {metaColor:'var(--yellow)', metaText:`${c.days} days ago`, daysLeft: 30-c.days})).join('');
+    }
+    urgentBox.insertAdjacentHTML('afterend', html);
+  })();
+
+  // ── PRIORITY TARGETS ──────────────────────────────────────────────────────
+  (function() {
+    const tab = document.getElementById('tab-targets');
+    if (!tab) return;
+    tab.querySelectorAll('.person-row, .section-label').forEach(el => el.remove());
+    const hBox = tab.querySelector('.highlight-box');
+    if (hBox) hBox.querySelector('p').innerHTML = `These ${recentT1.length} contacts are your highest-leverage outreach. They're recent T1 connections — founders, CEOs, CMOs, ecommerce heads. Aim to message at least 5–8 per day.`;
+
+    const hot  = recentT1.filter(c => c.days < 30);
+    const warm = recentT1.filter(c => c.days >= 30);
+    let html = '';
+    if (hot.length) {
+      html += `<div class="section-label">🔥 Hot — Connected in last 30 days</div>`;
+      html += hot.slice(0,20).map(c => personRow(c, {metaColor:'var(--tier1)'})).join('');
+      if (hot.length > 20) html += `<p style="font-size:0.78rem;color:var(--text-muted);text-align:center;padding:10px;font-style:italic">+${hot.length-20} more — see ICP Finder for full list</p>`;
+    }
+    if (warm.length) {
+      html += `<div class="section-label">🌤 Warm — Connected 30–90 days ago</div>`;
+      html += warm.slice(0,20).map(c => personRow(c, {metaColor:'var(--yellow)'})).join('');
+      if (warm.length > 20) html += `<p style="font-size:0.78rem;color:var(--text-muted);text-align:center;padding:10px;font-style:italic">+${warm.length-20} more — see ICP Finder for full list</p>`;
+    }
+    if (!html) html = `<div style="text-align:center;padding:40px;color:var(--text-muted);background:var(--bg-card);border:1px dashed var(--border);border-radius:12px;margin-top:16px;font-size:0.85rem">No T1 contacts connected in the last 90 days.</div>`;
+    (hBox || tab.querySelector('.section-title')).insertAdjacentHTML('afterend', html);
+  })();
+
+  // ── RE-ENGAGE ─────────────────────────────────────────────────────────────
+  (function() {
+    const tab = document.getElementById('tab-reengage');
+    if (!tab) return;
+    tab.querySelectorAll('.person-row, .section-label').forEach(el => el.remove());
+    const hBox = tab.querySelector('.highlight-box');
+    if (hBox) hBox.querySelector('p').innerHTML = `These contacts already know you from a previous conversation. A well-timed re-engage gets dramatically higher reply rates than cold outreach. <strong style="color:var(--tier1)">${reengage.length} total targets identified.</strong> Aim for 5 per day.`;
+
+    const sLabel = document.createElement('div');
+    sLabel.className = 'section-label';
+    sLabel.textContent = 'Top Re-engagement Targets';
+    hBox.after(sLabel);
+
+    let html = '';
+    if (!reengage.length) {
+      html = `<div style="text-align:center;padding:40px;color:var(--text-muted);background:var(--bg-card);border:1px dashed var(--border);border-radius:12px;font-size:0.85rem">No re-engagement targets found yet — contacts you've messaged who go quiet will appear here.</div>`;
+    } else {
+      html = reengage.slice(0,20).map(c => personRow(c, {
+        metaColor: 'var(--yellow)',
+        metaText: `Last msg: ${msgTimeLabel(c.lastMsgDays)}`,
+        msgLine: `${c.msgCount} message${c.msgCount===1?'':'s'} exchanged`
+      })).join('');
+      if (reengage.length > 20) html += `<p style="font-size:0.78rem;color:var(--text-muted);text-align:center;padding:10px;font-style:italic">+${reengage.length-20} more re-engagement targets</p>`;
+    }
+    sLabel.insertAdjacentHTML('afterend', html);
+  })();
+
+  // ── METRICS top stats ─────────────────────────────────────────────────────
+  const metricVals = document.querySelectorAll('#tab-metrics .stat-value');
+  // Keep benchmarks static — they're targets not actuals
+
+})();
+
 function toggleTemplate(header) {
   const body = header.nextElementSibling;
   const toggle = header.querySelector('.template-toggle');
