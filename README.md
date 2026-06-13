@@ -57,3 +57,4 @@ Everything runs client-side. No data is sent to any server. No accounts required
 1. Push this folder to a GitHub repository
 2. Go to Settings → Pages → Source: main branch, root folder
 3. Share the URL — anyone can use it with their own LinkedIn export
+
