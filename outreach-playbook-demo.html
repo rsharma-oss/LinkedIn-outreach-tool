@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn Outreach Playbook — Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #080c14;
+    --bg-elevated: #0d1220;
+    --bg-surface: #131926;
+    --bg-hover: #1a2235;
+    --bg-card: #161d2e;
+    --border: rgba(255,255,255,0.08);
+    --border-active: rgba(99,179,237,0.4);
+    --accent: #3b82f6;
+    --accent-2: #6366f1;
+    --accent-glow: rgba(59,130,246,0.2);
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --purple: #8b5cf6;
+    --text-primary: #f0f4ff;
+    --text-secondary: rgba(240,244,255,0.65);
+    --text-muted: rgba(240,244,255,0.38);
+    --tier1: #10b981;
+    --tier1-bg: rgba(16,185,129,0.1);
+    --tier2: #f59e0b;
+    --tier2-bg: rgba(245,158,11,0.1);
+    --tier3: #6b7280;
+    --tier3-bg: rgba(107,114,128,0.1);
+    --urgent: #ef4444;
+    --urgent-bg: rgba(239,68,68,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; line-height: 1.6; }
+
+  .demo-banner { background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(59,130,246,0.08)); border-bottom: 1px solid rgba(139,92,246,0.3); padding: 10px 48px; font-size: 0.8rem; color: #c4b5fd; display: flex; align-items: center; gap: 10px; }
+  .demo-banner strong { color: #e9d5ff; }
+
+  .header {
+    background: linear-gradient(135deg, #0d1220 0%, #111827 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .logo-badge {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800; color: white;
+  }
+  .header-title { font-size: 1.05rem; font-weight: 700; }
+  .header-sub { font-size: 0.76rem; color: var(--text-muted); margin-top: 1px; }
+  .header-badge { background: var(--accent-glow); border: 1px solid var(--border-active); color: #93c5fd; font-size: 0.72rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+
+  .nav-tabs { background: var(--bg-elevated); border-bottom: 1px solid var(--border); padding: 0 48px; display: flex; gap: 2px; overflow-x: auto; }
+  .nav-tab { padding: 14px 18px; font-size: 0.84rem; font-weight: 500; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 7px; }
+  .nav-tab:hover { color: var(--text-secondary); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .nav-tab .badge { background: var(--urgent-bg); color: var(--urgent); font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-left: 4px; }
+  .nav-tab .badge.green { background: var(--tier1-bg); color: var(--tier1); }
+
+  .main { padding: 36px 48px; max-width: 1220px; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section-title { font-size: 1.45rem; font-weight: 700; margin-bottom: 6px; }
+  .section-sub { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 28px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; transition: border-color 0.2s; }
+  .card:hover { border-color: rgba(99,179,237,0.18); }
+  .card-title { font-size: 0.92rem; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .card-body { font-size: 0.855rem; color: var(--text-secondary); line-height: 1.75; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+
+  .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; }
+  .stat-value { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .stat-label { font-size: 0.74rem; color: var(--text-muted); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
+
+  .tier-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 0.71rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.4px; }
+  .t1 { background: var(--tier1-bg); color: var(--tier1); border: 1px solid rgba(16,185,129,0.3); }
+  .t2 { background: var(--tier2-bg); color: var(--tier2); border: 1px solid rgba(245,158,11,0.3); }
+  .t3 { background: var(--tier3-bg); color: var(--tier3); border: 1px solid rgba(107,114,128,0.25); }
+  .turgent { background: var(--urgent-bg); color: var(--urgent); border: 1px solid rgba(239,68,68,0.3); }
+  .tblue { background: rgba(59,130,246,0.1); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+  .tpurple { background: rgba(139,92,246,0.1); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.3); }
+
+  .highlight-box { background: linear-gradient(135deg, rgba(59,130,246,0.07), rgba(99,102,241,0.05)); border: 1px solid rgba(99,102,241,0.22); border-radius: 12px; padding: 18px 22px; margin-bottom: 24px; }
+  .highlight-box h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 7px; color: #93c5fd; }
+  .highlight-box p { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.7; }
+
+  .urgent-box { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.25); border-radius: 12px; padding: 18px 22px; margin-bottom: 24px; }
+  .urgent-box h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 10px; color: #fca5a5; }
+
+  .person-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    transition: border-color 0.2s;
+  }
+  .person-row:hover { border-color: rgba(99,179,237,0.25); }
+  .person-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+    color: white;
+  }
+  .person-info { flex: 1; min-width: 0; }
+  .person-name { font-weight: 600; font-size: 0.87rem; }
+  .person-sub { font-size: 0.76rem; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .person-meta { text-align: right; flex-shrink: 0; }
+  .person-days { font-size: 0.75rem; font-weight: 600; }
+  .person-signal { font-size: 0.73rem; color: var(--text-muted); margin-top: 2px; }
+
+  .msg-snippet { font-size: 0.77rem; color: var(--text-muted); margin-top: 4px; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 380px; }
+
+  .template-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; }
+  .template-header { padding: 14px 18px; background: var(--bg-hover); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .template-header-left { display: flex; align-items: center; gap: 10px; }
+  .template-title { font-size: 0.88rem; font-weight: 600; }
+  .template-meta { font-size: 0.73rem; color: var(--text-muted); margin-top: 2px; }
+  .template-toggle { font-size: 0.9rem; color: var(--text-muted); transition: transform 0.2s; }
+  .template-body { padding: 18px; display: none; }
+  .template-body.open { display: block; }
+  .template-text { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; font-size: 0.845rem; color: var(--text-secondary); line-height: 1.8; white-space: pre-line; }
+  .template-note { margin-top: 10px; font-size: 0.77rem; color: var(--text-muted); padding: 8px 12px; background: rgba(59,130,246,0.06); border-left: 3px solid var(--accent); border-radius: 4px; }
+  .copy-btn { margin-top: 12px; background: var(--accent); color: white; border: none; padding: 7px 16px; border-radius: 8px; font-size: 0.79rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; font-family: 'Inter', sans-serif; }
+  .copy-btn:hover { opacity: 0.85; }
+  .copy-btn.copied { background: var(--green); }
+
+  .cadence-row { display: flex; gap: 0; margin-bottom: 10px; align-items: stretch; }
+  .cadence-day { min-width: 80px; background: var(--bg-hover); border: 1px solid var(--border); border-right: none; border-radius: 10px 0 0 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .cadence-day-num { font-size: 1.1rem; font-weight: 800; color: var(--accent); }
+  .cadence-day-label { font-size: 0.66rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+  .cadence-content { flex: 1; background: var(--bg-card); border: 1px solid var(--border); border-radius: 0 10px 10px 0; padding: 12px 18px; display: flex; align-items: center; gap: 14px; }
+  .cadence-action { flex: 1; font-size: 0.86rem; color: var(--text-secondary); }
+  .cadence-action strong { color: var(--text-primary); }
+  .ctag { font-size: 0.7rem; font-weight: 600; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+  .ct-connect { background: rgba(59,130,246,0.14); color: #93c5fd; }
+  .ct-message { background: rgba(139,92,246,0.14); color: #c4b5fd; }
+  .ct-content { background: rgba(16,185,129,0.12); color: #6ee7b7; }
+  .ct-follow { background: rgba(245,158,11,0.12); color: #fcd34d; }
+  .ct-review { background: rgba(107,114,128,0.14); color: #9ca3af; }
+  .ct-urgent { background: var(--urgent-bg); color: #fca5a5; }
+
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.835rem; }
+  .data-table th { text-align: left; padding: 10px 14px; background: var(--bg-hover); border: 1px solid var(--border); font-size: 0.73rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .data-table td { padding: 10px 14px; border: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; }
+  .data-table tr:hover td { background: var(--bg-hover); }
+
+  .progress-bar { background: var(--bg-hover); border-radius: 99px; height: 7px; overflow: hidden; margin-top: 6px; }
+  .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+
+  .checklist { list-style: none; }
+  .checklist li { display: flex; align-items: flex-start; gap: 9px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 0.855rem; color: var(--text-secondary); }
+  .checklist li:last-child { border-bottom: none; }
+
+  .tag-pill { display: inline-block; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.22); color: #93c5fd; font-size: 0.71rem; font-weight: 600; padding: 2px 9px; border-radius: 20px; margin: 2px; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+  .mb16 { margin-bottom: 16px; }
+  .mb24 { margin-bottom: 24px; }
+  .mb32 { margin-bottom: 32px; }
+
+  .section-label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 12px; margin-top: 24px; }
+
+  @media (max-width: 900px) {
+    .main { padding: 20px; } .header { padding: 16px 20px; } .nav-tabs { padding: 0 20px; }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .demo-banner { padding: 10px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  ✨ <strong>Demo mode</strong> — This is a sample playbook for Alex Chen · ShopBoost Agency (fictional). Your real playbook is generated from your own LinkedIn export using the ICP Finder tool.
+</div>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo-badge">S</div>
+    <div>
+      <div class="header-title">LinkedIn Lead Generation Playbook</div>
+      <div class="header-sub">[Your Company] · 2,934 Connections Analysed · Your Export Date</div>
+    </div>
+  </div>
+  <div class="header-badge">DATA-DRIVEN</div>
+</header>
+
+<nav class="nav-tabs">
+  <div class="nav-tab active" onclick="showTab('overview', this)">🗺️ Overview</div>
+  <div class="nav-tab" onclick="showTab('urgent', this)">🔥 Act Now <span class="badge">8</span></div>
+  <div class="nav-tab" onclick="showTab('targets', this)">🎯 Priority Targets <span class="badge green">24</span></div>
+  <div class="nav-tab" onclick="showTab('reengage', this)">⚡ Re-engage</div>
+  <div class="nav-tab" onclick="showTab('templates', this)">✉️ Templates</div>
+  <div class="nav-tab" onclick="showTab('cadence', this)">📅 Cadence</div>
+  <div class="nav-tab" onclick="showTab('metrics', this)">📊 Metrics</div>
+</nav>
+
+<div class="main">
+
+<!-- ══════════════════════════════════════════ -->
+<!-- OVERVIEW -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-overview" class="tab-content active">
+  <div class="section-title">Your Network at a Glance</div>
+  <div class="section-sub">Analysed from your LinkedIn data export (Connections, Messages, Invitations).</div>
+
+  <div class="grid-4 mb32">
+    <div class="stat-card"><div class="stat-value">2,934</div><div class="stat-label">Total Connections</div></div>
+    <div class="stat-card"><div class="stat-value">891</div><div class="stat-label">ICP-Fit Contacts</div></div>
+    <div class="stat-card"><div class="stat-value">1,687</div><div class="stat-label">Conversations</div></div>
+    <div class="stat-card"><div class="stat-value">43</div><div class="stat-label">Re-engage Targets</div></div>
+  </div>
+
+  <div class="highlight-box">
+    <h4>🎯 The Big Picture</h4>
+    <p>Your network has a strong foundation of <strong style="color: #93c5fd;">891 ICP-fit contacts</strong> — Founders, CEOs, CMOs, and VPs who match your ideal buyer profile. Of those, <strong style="color: #93c5fd;">24 connected in the last 90 days</strong> and are primed for a first message. You also have <strong style="color: #93c5fd;">43 past conversations</strong> worth re-engaging and <strong style="color: #fca5a5;">8 time-sensitive actions</strong> that need your attention today.</p>
+  </div>
+
+  <div class="grid-3 mb24">
+    <div class="card">
+      <div class="card-title">🔗 Connection Recency</div>
+      <div class="card-body">
+        <div style="margin-bottom: 10px;">
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;"><span>Last 30 days</span><span style="font-weight:700;color:var(--tier1)">12</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:2%"></div></div>
+        </div>
+        <div style="margin-bottom: 10px;">
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;"><span>Last 90 days</span><span style="font-weight:700;color:var(--tier1)">24</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:3%"></div></div>
+        </div>
+        <div style="margin-bottom: 10px;">
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;"><span>Last 365 days</span><span style="font-weight:700;color:var(--tier2)">187</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:8%; background: linear-gradient(90deg,var(--yellow),var(--tier2));"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;"><span>1+ year old</span><span style="font-weight:700;color:var(--tier3)">2,747</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:92%; background: linear-gradient(90deg,#374151,#6b7280);"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏆 ICP Tier Breakdown</div>
+      <div class="card-body">
+        <div style="margin-bottom: 10px;">
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;"><span>T1 — Decision Makers</span><span style="font-weight:700;color:var(--tier1)">312</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:35%"></div></div>
+        </div>
+        <div style="margin-bottom: 10px;">
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;"><span>T2 — Ecosystem</span><span style="font-weight:700;color:var(--tier2)">287</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:32%; background: linear-gradient(90deg,var(--yellow),#ea580c);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;"><span>T3 — Adjacent</span><span style="font-weight:700;color:var(--tier3)">292</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:33%; background: linear-gradient(90deg,#374151,#6b7280);"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💬 Message Activity</div>
+      <div class="card-body">
+        <div style="margin-bottom: 10px;">
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;"><span>Active (messaged &lt;90d)</span><span style="font-weight:700;color:var(--tier1)">57</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:30%"></div></div>
+        </div>
+        <div style="margin-bottom: 10px;">
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;"><span>Warm (messaged &lt;1yr)</span><span style="font-weight:700;color:var(--tier2)">143</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:50%; background: linear-gradient(90deg,var(--yellow),#ea580c);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;"><span>Never messaged</span><span style="font-weight:700;color:var(--tier3)">691</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:78%; background: linear-gradient(90deg,#374151,#6b7280);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Your Weekly Focus</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">🔥 This Week's Priority</div>
+      <div class="card-body">Message the <strong style="color:var(--tier1)">8 urgent contacts</strong> who are timing out — connections made 25–29 days ago where the window for a "warm" first message closes in the next few days. After 30 days, reply rates drop significantly. Then queue up the 16 other T1 contacts from the last 90 days for outreach this week.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📌 The Bigger Opportunity</div>
+      <div class="card-body">Your <strong style="color:var(--tier2)">43 re-engagement targets</strong> represent conversations you started but never finished. These contacts already know you — a well-timed re-engage message gets dramatically higher open rates than cold outreach. Aim for 5 per day.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- ACT NOW -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-urgent" class="tab-content">
+  <div class="section-title">Act Now — Expiring Opportunities</div>
+  <div class="section-sub">T1 connections made 20–30 days ago. Message before the window closes — reply rates drop after 30 days.</div>
+
+  <div class="urgent-box">
+    <h4>⏰ Why These 8 Matter</h4>
+    <p style="font-size:0.84rem;color:var(--text-secondary);">Research shows LinkedIn connection reply rates peak in the first two weeks and drop sharply after day 30. These contacts accepted your connection request recently — they still remember who you are. A brief, personalized first message now outperforms any cold outreach you could do later.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:0">Expiring in 1–3 days</div>
+
+  <div class="person-row">
+    <div class="person-avatar">SC</div>
+    <div class="person-info">
+      <div class="person-name">Sarah Chen <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Founder & CEO · EcoShift Commerce</div>
+      <div class="msg-snippet">"Looking forward to connecting and exploring DTC growth strategies together."</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--urgent)">29 days ago</div>
+      <div class="person-signal">⚡ 1 day left</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">MJ</div>
+    <div class="person-info">
+      <div class="person-name">Marcus Johnson <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">CMO · Brightline Brands</div>
+      <div class="msg-snippet">"Always good to expand the network with growth-focused folks."</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--urgent)">28 days ago</div>
+      <div class="person-signal">⚡ 2 days left</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">PL</div>
+    <div class="person-info">
+      <div class="person-name">Priya Larson <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">VP Marketing · Petal & Pine</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--urgent)">28 days ago</div>
+      <div class="person-signal">⚡ 2 days left</div>
+    </div>
+  </div>
+
+  <div class="section-label">Expiring in 4–7 days</div>
+
+  <div class="person-row">
+    <div class="person-avatar">TR</div>
+    <div class="person-info">
+      <div class="person-name">Tom Reynolds <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Co-Founder · Vault & Vine</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">24 days ago</div>
+      <div class="person-signal">6 days left</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">AB</div>
+    <div class="person-info">
+      <div class="person-name">Amara Bello <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Head of eCommerce · NordLux Living</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">23 days ago</div>
+      <div class="person-signal">7 days left</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">DK</div>
+    <div class="person-info">
+      <div class="person-name">Dev Kumar <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">General Manager · Terrain & Tides</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">22 days ago</div>
+      <div class="person-signal">8 days left</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">LF</div>
+    <div class="person-info">
+      <div class="person-name">Lena Fischer <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Owner · Kinsfolk Market</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">21 days ago</div>
+      <div class="person-signal">9 days left</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">RO</div>
+    <div class="person-info">
+      <div class="person-name">Ricardo Oliveira <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Managing Director · Cura Wellness</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">20 days ago</div>
+      <div class="person-signal">10 days left</div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:24px">
+    <h4>📝 Suggested Message (T1 First Message)</h4>
+    <p>Hey [First Name] — noticed we just connected. I help [type of DTC/ecomm brand] with [email/retention/growth]. Would love to hear what you're focused on right now — always good to know smart folks in the space.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PRIORITY TARGETS -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-targets" class="tab-content">
+  <div class="section-title">Priority Targets — T1 Contacts, Last 90 Days</div>
+  <div class="section-sub">T1 decision makers who connected in the last 90 days. Sorted by connection recency — freshest first.</div>
+
+  <div class="highlight-box">
+    <h4>🎯 Your T1 Priority Queue</h4>
+    <p>These 24 contacts are your highest-leverage outreach this week. They're recent connections who match your ideal buyer profile — founders, CEOs, CMOs, and ecommerce heads. Aim to message at least 5–8 per day until you've worked through all of them.</p>
+  </div>
+
+  <div class="section-label">🔥 Hot — Connected in last 30 days</div>
+
+  <div class="person-row">
+    <div class="person-avatar">SC</div>
+    <div class="person-info">
+      <div class="person-name">Sarah Chen <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Founder & CEO · EcoShift Commerce</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--tier1)">3 days ago</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">JM</div>
+    <div class="person-info">
+      <div class="person-name">Jamie Moreau <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Co-Founder · Bluebell & Co</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--tier1)">5 days ago</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">NA</div>
+    <div class="person-info">
+      <div class="person-name">Nina Adeyemi <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Head of DTC · Solace Skincare</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--tier1)">8 days ago</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">BP</div>
+    <div class="person-info">
+      <div class="person-name">Ben Park <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">CMO · Atlas Outdoor Co.</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--tier1)">11 days ago</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">CE</div>
+    <div class="person-info">
+      <div class="person-name">Claire Eaton <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">VP eCommerce · Harbour & Home</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--tier1)">14 days ago</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">OW</div>
+    <div class="person-info">
+      <div class="person-name">Omar Whitfield <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Founder · Coppice Goods</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--tier1)">17 days ago</div>
+    </div>
+  </div>
+
+  <div class="section-label">🌤 Warm — Connected 30–90 days ago</div>
+
+  <div class="person-row">
+    <div class="person-avatar">ST</div>
+    <div class="person-info">
+      <div class="person-name">Sophie Tan <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Owner & CEO · Fern & Fellow</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">34 days ago</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">GN</div>
+    <div class="person-info">
+      <div class="person-name">Gabriel Nkosi <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Ecommerce Director · Meridian Brands</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">41 days ago</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">IH</div>
+    <div class="person-info">
+      <div class="person-name">Isabel Harrington <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">CMO · Thornfield Beauty</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">52 days ago</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">MV</div>
+    <div class="person-info">
+      <div class="person-name">Marco Volpe <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Head of Growth · Daybreak Supply</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">67 days ago</div>
+    </div>
+  </div>
+
+  <p style="font-size:0.78rem;color:var(--text-muted);margin-top:16px;font-style:italic">+ 14 more T1 contacts in this window — load your own data in the ICP Finder for the full list.</p>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- RE-ENGAGE -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-reengage" class="tab-content">
+  <div class="section-title">Re-Engage — Past Conversations Worth Reviving</div>
+  <div class="section-sub">Contacts you've exchanged messages with who've gone quiet. These are warm leads, not cold outreach.</div>
+
+  <div class="highlight-box">
+    <h4>💡 Why Re-engagement Outperforms Cold Outreach</h4>
+    <p>These contacts already know you from a previous conversation. They've invested attention in you before. A well-timed re-engage — referencing something relevant that's happened since — gets dramatically higher reply rates than messaging a stranger. Aim for 5 per day over the next two weeks to work through all 43.</p>
+  </div>
+
+  <div class="section-label">Top Re-engagement Targets</div>
+
+  <div class="person-row">
+    <div class="person-avatar">KL</div>
+    <div class="person-info">
+      <div class="person-name">Kai Larsson <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">CEO · Drift & Company</div>
+      <div class="msg-snippet">Last exchange: "Would love to connect when the timing's better — lots happening on our end."</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">Last msg: 8 months ago</div>
+      <div class="person-signal">4 messages exchanged</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">FB</div>
+    <div class="person-info">
+      <div class="person-name">Freya Blake <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Co-Founder · Wildhaven Goods</div>
+      <div class="msg-snippet">Last exchange: "We're in the middle of a replatform right now but let's revisit this."</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">Last msg: 5 months ago</div>
+      <div class="person-signal">6 messages exchanged</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">ZA</div>
+    <div class="person-info">
+      <div class="person-name">Zara Ahmed <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">VP Marketing · Sunsetter Brands</div>
+      <div class="msg-snippet">Last exchange: "Interesting approach — send me something to look at when you have a moment."</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">Last msg: 3 months ago</div>
+      <div class="person-signal">3 messages exchanged</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">HW</div>
+    <div class="person-info">
+      <div class="person-name">Henry Walsh <span class="tier-badge t2" style="margin-left:6px">T2</span></div>
+      <div class="person-sub">Senior Klaviyo Strategist · Pixel & Proof</div>
+      <div class="msg-snippet">Last exchange: "Always good to know good email people. Let's stay in touch."</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--text-muted)">Last msg: 11 months ago</div>
+      <div class="person-signal">2 messages exchanged</div>
+    </div>
+  </div>
+
+  <div class="person-row">
+    <div class="person-avatar">MC</div>
+    <div class="person-info">
+      <div class="person-name">Maya Castellano <span class="tier-badge t1" style="margin-left:6px">T1</span></div>
+      <div class="person-sub">Head of eCommerce · Solstice Studio</div>
+      <div class="msg-snippet">Last exchange: "We're just onboarding a new agency but I'll keep you in mind."</div>
+    </div>
+    <div class="person-meta">
+      <div class="person-days" style="color:var(--yellow)">Last msg: 6 months ago</div>
+      <div class="person-signal">5 messages exchanged</div>
+    </div>
+  </div>
+
+  <p style="font-size:0.78rem;color:var(--text-muted);margin-top:16px;font-style:italic">+ 38 more re-engagement targets — load your own LinkedIn export to see the full list with real message context.</p>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- TEMPLATES -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-templates" class="tab-content">
+  <div class="section-title">Message Templates</div>
+  <div class="section-sub">Battle-tested templates for each situation. Always personalise the first line with something specific — a post, a company move, or a mutual connection.</div>
+
+  <!-- T1 Templates -->
+  <div class="section-label">T1 — First Messages (Decision Makers)</div>
+
+  <div class="template-card">
+    <div class="template-header" onclick="toggleTemplate(this)">
+      <div class="template-header-left">
+        <span class="tier-badge t1">T1</span>
+        <div>
+          <div class="template-title">Warm First Message — Short & Curious</div>
+          <div class="template-meta">Best for: new connections (0–14 days). Highest reply rate template.</div>
+        </div>
+      </div>
+      <span class="template-toggle">▸</span>
+    </div>
+    <div class="template-body">
+      <div class="template-text">Hey [First Name] — noticed we just connected. I help [type of DTC/ecomm brand] drive more revenue from their existing customer base through email and retention. Would love to hear what you're focused on right now — what's the big initiative for [their company] this quarter?</div>
+      <div class="template-note">💡 Keep it short. One question at the end. No pitch — you're just opening a conversation.</div>
+      <button class="copy-btn" onclick="copyTemplate(this, 'Hey [First Name] — noticed we just connected. I help [type of DTC/ecomm brand] drive more revenue from their existing customer base through email and retention. Would love to hear what you\'re focused on right now — what\'s the big initiative for [their company] this quarter?')">📋 Copy</button>
+    </div>
+  </div>
+
+  <div class="template-card">
+    <div class="template-header" onclick="toggleTemplate(this)">
+      <div class="template-header-left">
+        <span class="tier-badge t1">T1</span>
+        <div>
+          <div class="template-title">Insight Opener — Share a Relevant Observation</div>
+          <div class="template-meta">Best for: when you have context from their posts, news, or company activity.</div>
+        </div>
+      </div>
+      <span class="template-toggle">▸</span>
+    </div>
+    <div class="template-body">
+      <div class="template-text">Hey [First Name] — [saw your post on X / noticed [Company] just launched Y / read about your recent raise / noticed you're scaling fast into Z market]. That resonated.
+
+I work with brands at exactly that stage on [email/retention/DTC growth]. Happy to share what's been moving the needle for similar companies if it'd be useful. Either way, glad to be connected.</div>
+      <div class="template-note">💡 The hook needs to be real — don't fake it. If you can't find something genuine, use the simpler template above.</div>
+      <button class="copy-btn" onclick="copyTemplate(this, 'Hey [First Name] — [saw your post on X / noticed [Company] just launched Y]. That resonated.\n\nI work with brands at exactly that stage on [email/retention/DTC growth]. Happy to share what\'s been moving the needle for similar companies if it\'d be useful. Either way, glad to be connected.')">📋 Copy</button>
+    </div>
+  </div>
+
+  <div class="template-card">
+    <div class="template-header" onclick="toggleTemplate(this)">
+      <div class="template-header-left">
+        <span class="tier-badge t1">T1</span>
+        <div>
+          <div class="template-title">Warm Window Closing — Slightly More Direct</div>
+          <div class="template-meta">Best for: connections made 21–30 days ago where you haven't messaged yet.</div>
+        </div>
+      </div>
+      <span class="template-toggle">▸</span>
+    </div>
+    <div class="template-body">
+      <div class="template-text">Hey [First Name] — we connected a little while back and I've been meaning to reach out. I help [type of DTC brand] with [retention/email/growth] — specifically [specific outcome, e.g. "reducing churn and growing LTV through smarter email flows"].
+
+Is [outcome] something on your radar right now, or is the priority elsewhere?</div>
+      <div class="template-note">💡 The question at the end is key — it invites a real answer rather than a yes/no. Even a "no, not right now" is useful intel.</div>
+      <button class="copy-btn" onclick="copyTemplate(this, 'Hey [First Name] — we connected a little while back and I\'ve been meaning to reach out. I help [type of DTC brand] with [retention/email/growth] — specifically [specific outcome].\n\nIs [outcome] something on your radar right now, or is the priority elsewhere?')">📋 Copy</button>
+    </div>
+  </div>
+
+  <!-- Re-engagement Templates -->
+  <div class="section-label">Re-Engagement</div>
+
+  <div class="template-card">
+    <div class="template-header" onclick="toggleTemplate(this)">
+      <div class="template-header-left">
+        <span class="tier-badge tpurple">RE-ENGAGE</span>
+        <div>
+          <div class="template-title">Revive a Lapsed Conversation</div>
+          <div class="template-meta">Best for: contacts you spoke with 3–12 months ago but went quiet.</div>
+        </div>
+      </div>
+      <span class="template-toggle">▸</span>
+    </div>
+    <div class="template-body">
+      <div class="template-text">Hey [First Name] — hope things have been going well since we last spoke. I've been heads-down on [something relevant you've been doing — a case study, a new service, a result you achieved for a client].
+
+It made me think of our earlier conversation about [something specific from your last exchange if you have it / their situation].
+
+Would love to reconnect — anything exciting happening on your end?</div>
+      <div class="template-note">💡 Reference the previous conversation if you can. Even a vague "last time we spoke you were focused on X" shows you paid attention.</div>
+      <button class="copy-btn" onclick="copyTemplate(this, 'Hey [First Name] — hope things have been going well since we last spoke. I\'ve been heads-down on [something relevant] and it made me think of our earlier conversation.\n\nWould love to reconnect — anything exciting happening on your end?')">📋 Copy</button>
+    </div>
+  </div>
+
+  <div class="template-card">
+    <div class="template-header" onclick="toggleTemplate(this)">
+      <div class="template-header-left">
+        <span class="tier-badge tpurple">RE-ENGAGE</span>
+        <div>
+          <div class="template-title">Timing Callback — "You Said When the Time Was Better"</div>
+          <div class="template-meta">Best for: contacts who explicitly said "not now" or "reach out later."</div>
+        </div>
+      </div>
+      <span class="template-toggle">▸</span>
+    </div>
+    <div class="template-body">
+      <div class="template-text">Hey [First Name] — a few months back you mentioned [the timing wasn't right / you were mid-replatform / you had a lot on your plate]. I didn't want to let that hang forever.
+
+Is [situation] in a better place now? Happy to pick up where we left off, or just stay in touch if the timing's still not right.</div>
+      <div class="template-note">💡 Only use this if you genuinely have the previous message context. Don't fabricate a reason — it reads as dishonest.</div>
+      <button class="copy-btn" onclick="copyTemplate(this, 'Hey [First Name] — a few months back you mentioned [the timing wasn\'t right]. I didn\'t want to let that hang forever.\n\nIs [situation] in a better place now? Happy to pick up where we left off, or just stay in touch if the timing\'s still not right.')">📋 Copy</button>
+    </div>
+  </div>
+
+  <!-- Follow-Up Templates -->
+  <div class="section-label">Follow-Ups</div>
+
+  <div class="template-card">
+    <div class="template-header" onclick="toggleTemplate(this)">
+      <div class="template-header-left">
+        <span class="tier-badge tblue">FOLLOW-UP</span>
+        <div>
+          <div class="template-title">Follow-Up #1 — Add Value, Don't Just Bump</div>
+          <div class="template-meta">Send 5–7 days after first message if no reply.</div>
+        </div>
+      </div>
+      <span class="template-toggle">▸</span>
+    </div>
+    <div class="template-body">
+      <div class="template-text">Hey [First Name] — just following up on my last message. Didn't want it to get buried.
+
+Thought this might be relevant: [one genuinely useful thing — a stat, a brief insight, an article, something that connects to their world]. No pressure — just wanted to put it on your radar.</div>
+      <div class="template-note">💡 The "add value" part is mandatory. Don't just say "following up" — give them a reason to reply.</div>
+      <button class="copy-btn" onclick="copyTemplate(this, 'Hey [First Name] — just following up on my last message. Didn\'t want it to get buried.\n\nThought this might be relevant: [one genuinely useful thing]. No pressure — just wanted to put it on your radar.')">📋 Copy</button>
+    </div>
+  </div>
+
+  <div class="template-card">
+    <div class="template-header" onclick="toggleTemplate(this)">
+      <div class="template-header-left">
+        <span class="tier-badge tblue">FOLLOW-UP</span>
+        <div>
+          <div class="template-title">Break-Up Message — Leave the Door Open</div>
+          <div class="template-meta">Send 7–10 days after follow-up #1 if still no reply. Final message.</div>
+        </div>
+      </div>
+      <span class="template-toggle">▸</span>
+    </div>
+    <div class="template-body">
+      <div class="template-text">Hey [First Name] — I know you're busy so I'll keep this short. If the timing's not right or this isn't relevant to what you're working on right now, completely understand.
+
+I'll leave the ball in your court — feel free to reach out whenever it makes sense. Hope things are going well on your end.</div>
+      <div class="template-note">💡 The break-up message actually gets more replies than follow-up #1 — people respond to finality. Keep it warm, not passive-aggressive.</div>
+      <button class="copy-btn" onclick="copyTemplate(this, 'Hey [First Name] — I know you\'re busy so I\'ll keep this short. If the timing\'s not right, completely understand.\n\nI\'ll leave the ball in your court — feel free to reach out whenever it makes sense. Hope things are going well on your end.')">📋 Copy</button>
+    </div>
+  </div>
+
+  <!-- T2 Template -->
+  <div class="section-label">T2 — Ecosystem & Partnership</div>
+
+  <div class="template-card">
+    <div class="template-header" onclick="toggleTemplate(this)">
+      <div class="template-header-left">
+        <span class="tier-badge t2">T2</span>
+        <div>
+          <div class="template-title">Ecosystem Intro — Peer-to-Peer, Not Vendor</div>
+          <div class="template-meta">For T2 ecosystem contacts: tool vendors, agency peers, practitioners.</div>
+        </div>
+      </div>
+      <span class="template-toggle">▸</span>
+    </div>
+    <div class="template-body">
+      <div class="template-text">Hey [First Name] — we're both in the [Shopify/DTC/email] space and I've been meaning to reach out. I run [Your Company] — we work with [type of brands] on [what you do].
+
+Always looking to build relationships with people doing interesting work in the ecosystem. Would love to hear what you're seeing on your end — open to a quick catch-up sometime?</div>
+      <div class="template-note">💡 Position yourself as a peer, not a vendor. The goal with T2 is relationship and referral, not a direct sale.</div>
+      <button class="copy-btn" onclick="copyTemplate(this, 'Hey [First Name] — we\'re both in the [Shopify/DTC/email] space and I\'ve been meaning to reach out. I run [Your Company] — we work with [type of brands] on [what you do].\n\nAlways looking to build relationships with people doing interesting work in the ecosystem. Would love to hear what you\'re seeing — open to a quick catch-up sometime?')">📋 Copy</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CADENCE -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-cadence" class="tab-content">
+  <div class="section-title">Outreach Cadence</div>
+  <div class="section-sub">A proven week-by-week rhythm for LinkedIn outreach. Consistency beats volume.</div>
+
+  <div class="highlight-box">
+    <h4>📌 The Rule of 5</h4>
+    <p>Send 5 first messages per day, maximum. LinkedIn will throttle you if you send more than ~10–15 cold messages in a day — and quality suffers anyway. 5 thoughtful messages beats 20 copy-paste ones every time. With 8 urgent + 16 warm T1 contacts, you can work through all of them in one week at 5/day.</p>
+  </div>
+
+  <div class="section-label">Week 1 — Clear the Urgent Queue</div>
+
+  <div class="cadence-row">
+    <div class="cadence-day"><div class="cadence-day-num">1</div><div class="cadence-day-label">Mon</div></div>
+    <div class="cadence-content">
+      <div class="cadence-action"><strong>Message 5 urgent T1s</strong> — the ones expiring soonest. Use the "Warm First Message" template. Personalise the opening line.</div>
+      <span class="ctag ct-urgent">Urgent</span>
+    </div>
+  </div>
+
+  <div class="cadence-row">
+    <div class="cadence-day"><div class="cadence-day-num">2</div><div class="cadence-day-label">Tue</div></div>
+    <div class="cadence-content">
+      <div class="cadence-action"><strong>Message remaining 3 urgent T1s</strong> + start on warm T1 queue (first 2). Check for replies from day 1.</div>
+      <span class="ctag ct-urgent">Urgent</span>
+    </div>
+  </div>
+
+  <div class="cadence-row">
+    <div class="cadence-day"><div class="cadence-day-num">3</div><div class="cadence-day-label">Wed</div></div>
+    <div class="cadence-content">
+      <div class="cadence-action"><strong>5 warm T1s</strong> from the 30–90 day list. Reply to any responses from earlier in the week — prioritise those above new outreach.</div>
+      <span class="ctag ct-message">Outreach</span>
+    </div>
+  </div>
+
+  <div class="cadence-row">
+    <div class="cadence-day"><div class="cadence-day-num">4</div><div class="cadence-day-label">Thu</div></div>
+    <div class="cadence-content">
+      <div class="cadence-action"><strong>5 re-engage targets</strong> from the lapsed conversation list. These are warm — use the "revive a lapsed conversation" template.</div>
+      <span class="ctag ct-follow">Re-engage</span>
+    </div>
+  </div>
+
+  <div class="cadence-row">
+    <div class="cadence-day"><div class="cadence-day-num">5</div><div class="cadence-day-label">Fri</div></div>
+    <div class="cadence-content">
+      <div class="cadence-action"><strong>Follow-ups</strong> for anyone who didn't reply Mon/Tue. Add value — don't just bump. Also: send connection requests to 5 new T1 prospects for next week's pipeline.</div>
+      <span class="ctag ct-follow">Follow-Up</span>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:32px">Week 2–4 — Build the Habit</div>
+
+  <div class="cadence-row">
+    <div class="cadence-day"><div class="cadence-day-num">W2</div><div class="cadence-day-label">Week</div></div>
+    <div class="cadence-content">
+      <div class="cadence-action"><strong>5 re-engage targets / day</strong> (Mon–Wed) + <strong>5 new T1 first messages / day</strong> (Thu–Fri). Aim to work through all 43 re-engage targets over 2 weeks.</div>
+      <span class="ctag ct-follow">Re-engage</span>
+    </div>
+  </div>
+
+  <div class="cadence-row">
+    <div class="cadence-day"><div class="cadence-day-num">W3+</div><div class="cadence-day-label">Week</div></div>
+    <div class="cadence-content">
+      <div class="cadence-action"><strong>Steady state:</strong> 3 new T1/T2 first messages + 2 follow-ups/re-engages per day. Keep pipeline topped up by sending 5 connection requests on Fridays for next week.</div>
+      <span class="ctag ct-content">Ongoing</span>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:32px">Content Amplifier (Optional)</div>
+
+  <div class="cadence-row">
+    <div class="cadence-day"><div class="cadence-day-num">2×</div><div class="cadence-day-label">Week</div></div>
+    <div class="cadence-content">
+      <div class="cadence-action"><strong>Post to LinkedIn feed.</strong> 1 educational post (a result, a lesson, a data point) + 1 engagement post (question or opinion). Posting keeps you visible to T1 contacts before you message them — warm them up passively.</div>
+      <span class="ctag ct-content">Content</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- METRICS -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-metrics" class="tab-content">
+  <div class="section-title">Benchmarks & Tracking</div>
+  <div class="section-sub">What good looks like — and how to measure your outreach performance week by week.</div>
+
+  <div class="grid-4 mb32">
+    <div class="stat-card"><div class="stat-value">35%</div><div class="stat-label">T1 Reply Rate Target</div></div>
+    <div class="stat-card"><div class="stat-value">55%</div><div class="stat-label">Re-engage Reply Target</div></div>
+    <div class="stat-card"><div class="stat-value">3–5</div><div class="stat-label">Calls/Convos per week</div></div>
+    <div class="stat-card"><div class="stat-value">1–2</div><div class="stat-label">New opps per week</div></div>
+  </div>
+
+  <div class="grid-2 mb24">
+    <div class="card">
+      <div class="card-title">📊 Weekly Tracking Template</div>
+      <div class="card-body">
+        <table class="data-table" style="margin-top:8px">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Target</th>
+              <th>Your Week</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>First messages sent</td><td>25</td><td>—</td></tr>
+            <tr><td>Replies received</td><td>8–12</td><td>—</td></tr>
+            <tr><td>Conversations started</td><td>5–8</td><td>—</td></tr>
+            <tr><td>Calls/meetings booked</td><td>2–3</td><td>—</td></tr>
+            <tr><td>Connection requests sent</td><td>5–10</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎯 What "Good" Looks Like by Tier</div>
+      <div class="card-body">
+        <table class="data-table" style="margin-top:8px">
+          <thead>
+            <tr>
+              <th>Tier</th>
+              <th>Expected Reply Rate</th>
+              <th>Goal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="tier-badge t1">T1</span> Warm (0–30d)</td><td>35–50%</td><td>Discovery call</td></tr>
+            <tr><td><span class="tier-badge t1">T1</span> Cold (30–90d)</td><td>20–35%</td><td>Discovery call</td></tr>
+            <tr><td><span class="tier-badge tpurple">Re-engage</span></td><td>45–60%</td><td>Resume conversation</td></tr>
+            <tr><td><span class="tier-badge t2">T2</span> Ecosystem</td><td>30–45%</td><td>Referral relationship</td></tr>
+            <tr><td><span class="tier-badge t3">T3</span> Adjacent</td><td>15–25%</td><td>Network building</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Diagnostic: When Something's Off</div>
+  <div class="card">
+    <div class="card-body">
+      <table class="data-table">
+        <thead>
+          <tr><th>Symptom</th><th>Likely Cause</th><th>Fix</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Reply rate &lt;15%</td><td>Message is too salesy or generic</td><td>Shorten message. Remove all mentions of your company. End with a question, not a pitch.</td></tr>
+          <tr><td>Lots of replies, no calls booked</td><td>Transition to call is too abrupt</td><td>Add one more message building rapport before asking for a call. Ask a business question first.</td></tr>
+          <tr><td>Calls booked but no pipeline</td><td>ICP mismatch or qualification</td><td>Revisit your T1 keyword list — are you reaching the right decision makers?</td></tr>
+          <tr><td>LinkedIn restricting your account</td><td>Sending too many messages too fast</td><td>Stay under 10 messages/day. Spread across the week. Warm up new accounts slowly.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:32px">Monthly Health Check</div>
+  <div class="card">
+    <ul class="checklist">
+      <li><span style="color:var(--tier1)">✓</span> Re-export your LinkedIn data and re-run the ICP Finder — new connections accumulate every week</li>
+      <li><span style="color:var(--tier1)">✓</span> Update your T1/T2 keyword lists if your ICP has shifted</li>
+      <li><span style="color:var(--tier1)">✓</span> Review which message templates performed best — double down on what's working</li>
+      <li><span style="color:var(--tier1)">✓</span> Archive closed/won conversations and remove from active follow-up queue</li>
+      <li><span style="color:var(--tier1)">✓</span> Send 5 new connection requests to T1 prospects to keep pipeline topped up</li>
+    </ul>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+function toggleTemplate(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.template-toggle');
+  const isOpen = body.classList.toggle('open');
+  toggle.textContent = isOpen ? '▾' : '▸';
+}
+
+function copyTemplate(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    // Fallback for non-HTTPS
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>
