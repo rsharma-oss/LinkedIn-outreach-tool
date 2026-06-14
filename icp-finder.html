@@ -2039,6 +2039,18 @@ async function processFiles(filemap, isDemo) {
   if (!isDemo) document.getElementById('playbook-btn').style.display = 'flex';
   document.getElementById('status-text').textContent = `${ICP.length} ICP contacts from ${connRows.length} connections`;
   if (isDemo) document.getElementById('demo-banner').style.display = 'block';
+
+  // ─── CACHE: save raw CSV for cross-page navigation ─────────────────────────
+  if (!isDemo) {
+    try {
+      sessionStorage.setItem('ga_csv_cache', JSON.stringify({data: filemap, src:'icp'}));
+    } catch(e) {
+      try {
+        const slim = Object.fromEntries(Object.entries(filemap).filter(([k]) => k !== 'messages.csv'));
+        sessionStorage.setItem('ga_csv_cache', JSON.stringify({data: slim, src:'icp'}));
+      } catch(e2) { console.warn('CSV session cache failed:', e2); }
+    }
+  }
 }
 
 // ─── STATS ───────────────────────────────────────────────────────────────────
@@ -2323,6 +2335,19 @@ function filterTpls(cat, el) {
   el.classList.add('active');
   buildTemplates();
 }
+
+// ─── AUTO-RESTORE FROM SESSION CACHE ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  const raw = sessionStorage.getItem('ga_csv_cache');
+  if (!raw) return;
+  try {
+    const {data} = JSON.parse(raw);
+    if (!data || !data['Connections.csv']) return;
+    document.getElementById('progress-wrap').style.display = 'block';
+    document.getElementById('progress-label').textContent = 'Restoring session data…';
+    await processFiles(data, false);
+  } catch(e) { console.warn('Session restore failed:', e); }
+});
 </script>
 </body>
 </html>
