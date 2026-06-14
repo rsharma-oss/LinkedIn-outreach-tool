@@ -857,7 +857,7 @@ async function loadFromInput(fileList) {
 }
 
 // ─── PROCESS FILES → DATA STORE ──────────────────────────────────────────────
-async function processFiles(filemap) {
+async function processFiles(filemap, isDemo=false) {
   const steps = [
     { key:'connections', name:'Connections.csv', skip:'First Name', pct:15 },
     { key:'messages',    name:'messages.csv',    skip:null,          pct:30 },
@@ -909,6 +909,19 @@ async function processFiles(filemap) {
   const loadedFiles = Object.keys(filemap);
   document.getElementById('status-text').textContent =
     `${fmtFull(D.connections.length)} connections · ${fmtFull(D.messages.length)} messages · ${loadedFiles.length} files loaded`;
+
+  // ─── CACHE: save raw CSV for cross-page navigation ─────────────────────────
+  if (!isDemo) {
+    try {
+      sessionStorage.setItem('ga_csv_cache', JSON.stringify({data: filemap, src:'dashboard'}));
+    } catch(e) {
+      // Quota exceeded — retry without large files
+      try {
+        const slim = Object.fromEntries(Object.entries(filemap).filter(([k]) => k !== 'messages.csv'));
+        sessionStorage.setItem('ga_csv_cache', JSON.stringify({data: slim, src:'dashboard'}));
+      } catch(e2) { console.warn('CSV session cache failed:', e2); }
+    }
+  }
 }
 
 // ─── GROUPING HELPERS ────────────────────────────────────────────────────────
@@ -3072,8 +3085,21 @@ async function loadDemoData() {
     'Invitations.csv': DEMO_DATA.Invitations_csv,
     'Profile.csv':     DEMO_DATA.Profile_csv,
   };
-  await processFiles(filemap);
+  await processFiles(filemap, true); // isDemo=true — don't cache demo data
 }
+
+// ─── AUTO-RESTORE FROM SESSION CACHE ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  const raw = sessionStorage.getItem('ga_csv_cache');
+  if (!raw) return;
+  try {
+    const {data} = JSON.parse(raw);
+    if (!data || !data['Connections.csv']) return;
+    document.getElementById('progress-wrap').style.display = 'block';
+    document.getElementById('progress-label').textContent = 'Restoring session data…';
+    await processFiles(data, false);
+  } catch(e) { console.warn('Session restore failed:', e); }
+});
 
 </script>
 </body>
