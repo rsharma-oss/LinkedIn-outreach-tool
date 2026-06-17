@@ -401,7 +401,7 @@ a:hover{color:#fff;text-decoration:underline;}
      HERO
 ══════════════════════════════════════════ -->
 <section class="hero">
-  <div class="hero-badge">✨ Free toolkit · No sign-up needed</div>
+  <div class="hero-badge">🔒 100% local · No server · Open source</div>
   <h1>Turn 500+ connections<br>into your pipeline.</h1>
   <p class="hero-sub">3 free tools. 3 simple steps. No spreadsheets.</p>
   <div class="hero-btns">
@@ -591,12 +591,18 @@ a:hover{color:#fff;text-decoration:underline;}
       <div class="faq-item">
         <input type="checkbox" id="faq1" class="faq-toggle">
         <label class="faq-label" for="faq1">
-          Is my data safe?
+          Is my data safe? How do I know this isn't collecting my network?
           <span class="faq-icon">+</span>
         </label>
         <div class="faq-body">
-          <div class="faq-body-inner">
-            Yes. Everything runs in your browser. Nothing is sent to a server. Your data never leaves your device.
+          <div class="faq-body-inner" style="line-height:1.8;">
+            <p style="margin-bottom:10px;">Yes — and you don't have to take our word for it. This app is a static HTML file hosted on GitHub Pages. <strong style="color:#f0f4ff;">There is no server. It physically cannot receive your data.</strong> Everything runs in your browser's local memory and disappears the moment you close the tab.</p>
+            <p style="margin-bottom:6px;">Three ways to verify this yourself:</p>
+            <ol style="margin:0 0 12px 18px;display:flex;flex-direction:column;gap:6px;">
+              <li><strong style="color:#f0f4ff;">Open DevTools → Network tab</strong> (right-click → Inspect). Load your data. You'll see requests for fonts and chart libraries — and nothing else. Zero bytes of your data sent anywhere.</li>
+              <li><strong style="color:#f0f4ff;">Right-click → View Page Source.</strong> Every line of code is plain JavaScript. There are no upload calls, no tracking scripts, no analytics.</li>
+              <li><strong style="color:#f0f4ff;">Read the full source on GitHub →</strong> <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" style="color:var(--li2);">github.com/rsharma-oss/LinkedIn-outreach-tool</a></li>
+            </ol>
           </div>
         </div>
       </div>
@@ -676,6 +682,26 @@ a:hover{color:#fff;text-decoration:underline;}
 </section>
 
 <!-- ══════════════════════════════════════════
+     OFFLINE VERSION
+══════════════════════════════════════════ -->
+<section class="section" id="offline" style="background:var(--bg2);border-top:1px solid var(--border);">
+  <div class="section-inner" style="text-align:center;">
+    <div class="section-label">Still not convinced?</div>
+    <h2 class="section-title" style="margin-bottom:16px;">Run it with Wi&#8209;Fi off.</h2>
+    <p style="font-size:0.97rem;color:var(--tx2);max-width:560px;margin:0 auto 32px;line-height:1.7;">Download the tools as standalone HTML files. Open them in your browser, turn off your internet, and load your data. If anything were being sent to a server, it would fail. It doesn't.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">
+      <a class="btn" href="dashboard-offline.html" download style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.35);color:#6ee7b7;padding:10px 22px;border-radius:8px;font-size:0.87rem;font-weight:600;display:inline-flex;align-items:center;gap:8px;">
+        ⬇&nbsp;Dashboard (offline)
+      </a>
+      <a class="btn" href="icp-finder-offline.html" download style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.35);color:#6ee7b7;padding:10px 22px;border-radius:8px;font-size:0.87rem;font-weight:600;display:inline-flex;align-items:center;gap:8px;">
+        ⬇&nbsp;ICP Finder (offline)
+      </a>
+    </div>
+    <p style="font-size:0.75rem;color:var(--tx3);">Single HTML files with all dependencies bundled inline. No internet needed after download. All data processing works fully offline.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
      CTA
 ══════════════════════════════════════════ -->
 <section class="cta-section">
@@ -688,7 +714,7 @@ a:hover{color:#fff;text-decoration:underline;}
      FOOTER
 ══════════════════════════════════════════ -->
 <footer class="footer">
-  <p>Built by GrowthAutomated.ai · Not affiliated with LinkedIn</p>
+  <p>Built by GrowthAutomated.ai · Not affiliated with LinkedIn · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" style="color:var(--tx3);">View source on GitHub ↗</a></p>
 </footer>
 
 </body>
