@@ -6,6 +6,7 @@
 <title>LinkedIn ICP Finder · GrowthAutomated.ai</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
 <style>
 :root{
   --bg:#080c14;--bg2:#0d1220;--bg3:#131926;--bg4:#1a2235;--card:#111827;
@@ -278,6 +279,10 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 
     <div class="demo-banner" id="demo-banner">
       ✨ <b>Demo mode</b> — showing sample data. Load your own LinkedIn export to see your actual network.
+    </div>
+
+    <div id="msg-missing-banner" style="display:none;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:#fbbf24;padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:0.82rem;line-height:1.5;">
+      ⚠ <b>Message engagement data not available</b> — all contacts will show engagement as "Never". To include message scores, click <button onclick="resetApp()" style="background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.4);color:#fbbf24;padding:2px 10px;border-radius:5px;cursor:pointer;font-size:0.8rem;font-weight:600;">🔄 Reload</button> and select your export folder.
     </div>
 
     <!-- Stat Cards -->
@@ -2058,15 +2063,24 @@ async function processFiles(filemap, isDemo) {
   if (isDemo) document.getElementById('demo-banner').style.display = 'block';
 
   // ─── CACHE: save raw CSV for cross-page navigation ─────────────────────────
+  // LZ-string compression reduces each key by ~3x — fixes Safari 5 MB quota for
+  // M-activity profiles. H-activity (80K msgs) remains Chrome-only at ~8 MB compressed.
   if (!isDemo) {
+    const mainMap = Object.fromEntries(Object.entries(filemap).filter(([k]) => k !== 'messages.csv'));
     try {
-      sessionStorage.setItem('ga_csv_cache', JSON.stringify({data: filemap, src:'icp'}));
-    } catch(e) {
+      sessionStorage.setItem('ga_csv_cache', LZString.compress(JSON.stringify({data: mainMap, src:'icp'})));
+    } catch(e) { console.warn('CSV session cache failed:', e); }
+    if (filemap['messages.csv']) {
       try {
-        const slim = Object.fromEntries(Object.entries(filemap).filter(([k]) => k !== 'messages.csv'));
-        sessionStorage.setItem('ga_csv_cache', JSON.stringify({data: slim, src:'icp'}));
-      } catch(e2) { console.warn('CSV session cache failed:', e2); }
+        sessionStorage.setItem('ga_msg_cache', LZString.compress(filemap['messages.csv']));
+      } catch(e) { console.warn('Messages session cache skipped (storage full):', e); }
     }
+  }
+
+  // Advisory banner when messages.csv was not available
+  if (!isDemo && !filemap['messages.csv']) {
+    const b = document.getElementById('msg-missing-banner');
+    if (b) b.style.display = 'block';
   }
 }
 
@@ -2358,8 +2372,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const raw = sessionStorage.getItem('ga_csv_cache');
   if (!raw) return;
   try {
-    const {data} = JSON.parse(raw);
+    // Decompress — fall back to raw string if not compressed (legacy sessions)
+    const decompressed = LZString.decompress(raw) ?? raw;
+    const {data} = JSON.parse(decompressed);
     if (!data || !data['Connections.csv']) return;
+    // Merge messages.csv from its dedicated cache key (stored separately, also compressed)
+    const msgRaw = sessionStorage.getItem('ga_msg_cache');
+    if (msgRaw) data['messages.csv'] = LZString.decompress(msgRaw) ?? msgRaw;
     document.getElementById('progress-wrap').style.display = 'block';
     document.getElementById('progress-label').textContent = 'Restoring session data…';
     await processFiles(data, false);
