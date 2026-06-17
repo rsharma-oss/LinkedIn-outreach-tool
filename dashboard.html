@@ -54,6 +54,14 @@ a:hover{text-decoration:underline;}
 .progress-bar{background:linear-gradient(90deg,var(--li),var(--li2));height:100%;border-radius:8px;width:0%;transition:width 0.4s;}
 .progress-label{font-size:0.75rem;color:var(--tx3);text-align:center;margin-top:6px;}
 .error-banner{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#fca5a5;font-size:0.8rem;padding:10px 16px;border-radius:8px;margin-top:12px;display:none;text-align:left;line-height:1.5;}
+/* PRIVACY MANIFEST */
+.privacy-manifest{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:14px 18px;margin-bottom:16px;text-align:left;}
+.pm-title{font-size:0.7rem;font-weight:700;color:#6ee7b7;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.pm-row{display:flex;align-items:baseline;gap:8px;padding:3px 0;font-size:0.76rem;}
+.pm-file{color:#f0f4ff;font-weight:600;min-width:145px;flex-shrink:0;}
+.pm-use{color:rgba(240,244,255,0.5);flex:1;}
+.pm-loc{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);color:#6ee7b7;font-size:0.65rem;padding:1px 7px;border-radius:8px;white-space:nowrap;flex-shrink:0;}
+.pm-note{font-size:0.7rem;color:rgba(240,244,255,0.35);margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);}
 /* hidden file input trigger */
 #file-input{display:none;}
 
@@ -233,6 +241,16 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div class="load-icon">📊</div>
     <div class="load-title">LinkedIn Intelligence Dashboard</div>
     <div class="load-sub">Drop your LinkedIn export zip file — or your unzipped folder. Everything runs in your browser. Nothing leaves your device.</div>
+
+    <!-- PRIVACY MANIFEST -->
+    <div class="privacy-manifest">
+      <div class="pm-title">🔒 What this tool reads — and where it stays</div>
+      <div class="pm-row"><span class="pm-file">Connections.csv</span><span class="pm-use">Names, companies &amp; roles</span><span class="pm-loc">browser only</span></div>
+      <div class="pm-row"><span class="pm-file">messages.csv</span><span class="pm-use">Message history &amp; dates</span><span class="pm-loc">browser only</span></div>
+      <div class="pm-row"><span class="pm-file">Reactions / Comments</span><span class="pm-use">Engagement activity charts</span><span class="pm-loc">browser only</span></div>
+      <div class="pm-row"><span class="pm-file">Profile / Positions</span><span class="pm-use">Your own profile snapshot</span><span class="pm-loc">browser only</span></div>
+      <div class="pm-note">No server. No upload. All processing runs in your browser's local memory and disappears when you close the tab. <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" style="color:rgba(110,231,183,0.7);">View source on GitHub ↗</a></div>
+    </div>
 
     <!-- DROP ZONE -->
     <div class="drop-zone" id="drop-zone"
@@ -871,7 +889,7 @@ async function processFiles(filemap, isDemo=false) {
   ];
 
   for (const s of steps) {
-    setProgress(s.pct, `Parsing ${s.name}…`);
+    setProgress(s.pct, `Reading ${s.name} locally…`);
     await new Promise(r => setTimeout(r, 10)); // let browser breathe
     const text = filemap[s.name] || null;
     if (s.key === 'profile') {
@@ -908,7 +926,7 @@ async function processFiles(filemap, isDemo=false) {
 
   const loadedFiles = Object.keys(filemap);
   document.getElementById('status-text').textContent =
-    `${fmtFull(D.connections.length)} connections · ${fmtFull(D.messages.length)} messages · ${loadedFiles.length} files loaded`;
+    `${fmtFull(D.connections.length)} connections · ${fmtFull(D.messages.length)} messages · ↑ 0 bytes sent`;
 
   // ─── CACHE: save raw CSV for cross-page navigation ─────────────────────────
   if (!isDemo) {
