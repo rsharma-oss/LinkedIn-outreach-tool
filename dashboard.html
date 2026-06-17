@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script>document.documentElement.setAttribute('data-theme',localStorage.getItem('ga_theme')||'dark');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LinkedIn Intelligence · GrowthAutomated.ai</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -18,23 +17,6 @@
   --green:#10b981; --yellow:#f59e0b; --red:#ef4444; --purple:#8b5cf6; --orange:#f97316;
   --tx:#f0f4ff; --tx2:rgba(240,244,255,0.65); --tx3:rgba(240,244,255,0.38);
 }
-[data-theme="light"]{
-  --bg:#f4f6fb; --bg2:#edf0f7; --bg3:#e4e9f2; --bg4:#d6dce8; --card:#ffffff;
-  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.13);
-  --tx:#111827; --tx2:rgba(17,24,39,0.62); --tx3:rgba(17,24,39,0.38);
-}
-[data-theme="light"] .hdr{background:#ffffff;border-bottom-color:rgba(0,0,0,0.1);}
-[data-theme="light"] ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.14);}
-[data-theme="light"] .pm-file{color:var(--tx);}
-[data-theme="light"] .pm-use{color:var(--tx2);}
-[data-theme="light"] .pm-note{color:var(--tx3);border-top-color:var(--border);}
-[data-theme="light"] .status-dot{background:#cbd5e1;}
-[data-theme="light"] .nav-link:hover{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.05);}
-[data-theme="light"] .tab:hover{background:rgba(0,0,0,0.04);}
-[data-theme="light"] .tpl-filter:hover{background:rgba(0,0,0,0.05);color:var(--tx);}
-[data-theme="light"] .filter-select option{background:#ffffff;color:var(--tx);}
-[data-theme="light"] .hbar-track{background:rgba(0,0,0,0.08);}
-[data-theme="light"] .score-bar-bg{background:rgba(0,0,0,0.08);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.6;}
 a{color:var(--li2);text-decoration:none;}
@@ -269,7 +251,6 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <a class="nav-link cta" href="demo.html">Book Demo</a>
   </nav>
   <div class="hdr-r">
-    <button class="btn btn-outline" id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" style="padding:6px 10px;font-size:1rem;line-height:1;">🌙</button>
     <div class="status-dot" id="status-dot"></div>
     <div class="status-text" id="status-text">No data loaded</div>
     <button class="btn btn-outline" id="reload-btn" onclick="document.getElementById('file-input').click()" style="display:none;">🔄 Reload</button>
@@ -1057,36 +1038,6 @@ function thinSeries(labels, vals, maxPoints=20) {
 // ─── CHART FACTORY ───────────────────────────────────────────────────────────
 const GC = { color:'rgba(240,244,255,0.6)', grid:'rgba(255,255,255,0.06)', tick:'rgba(240,244,255,0.35)' };
 
-// ─── THEME ────────────────────────────────────────────────────────────────────
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('ga_theme', t);
-  const btn = document.getElementById('theme-toggle');
-  if (btn) btn.textContent = t === 'light' ? '☀️' : '🌙';
-  const l = t === 'light';
-  GC.color = l ? 'rgba(17,24,39,0.62)'  : 'rgba(240,244,255,0.6)';
-  GC.grid  = l ? 'rgba(0,0,0,0.07)'     : 'rgba(255,255,255,0.06)';
-  GC.tick  = l ? 'rgba(17,24,39,0.38)'  : 'rgba(240,244,255,0.35)';
-  const db = l ? '#ffffff' : '#111827';
-  Object.values(charts).forEach(c => {
-    if (!c) return;
-    try {
-      ['x','y'].forEach(ax => {
-        if (c.options.scales?.[ax]) {
-          c.options.scales[ax].grid.color  = GC.grid;
-          c.options.scales[ax].ticks.color = GC.tick;
-        }
-      });
-      if (c.options.plugins?.legend?.labels) c.options.plugins.legend.labels.color = GC.color;
-      if (c.data.datasets[0]?.borderColor !== undefined) c.data.datasets[0].borderColor = db;
-      c.update('none');
-    } catch(e) {}
-  });
-}
-function toggleTheme() {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
-}
-
 function mkChart(id, config) {
   if (charts[id]) { try { charts[id].destroy(); } catch(e){} }
   const ctx = document.getElementById(id);
@@ -1146,7 +1097,7 @@ function barChart(id, labels, datasets, opts={}) {
 function doughnutChart(id, labels, data, colors) {
   mkChart(id, {
     type:'doughnut',
-    data:{ labels, datasets:[{data,backgroundColor:colors,borderWidth:2,borderColor:document.documentElement.getAttribute('data-theme')==='light'?'#ffffff':'#111827'}] },
+    data:{ labels, datasets:[{data,backgroundColor:colors,borderWidth:2,borderColor:'#111827'}] },
     options:{
       responsive:true,
       plugins:{ legend:{position:'bottom',labels:{color:GC.color,padding:10,font:{size:11}}} },
@@ -3186,16 +3137,6 @@ async function loadDemoData() {
 
 // ─── AUTO-RESTORE FROM SESSION CACHE ─────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
-  // Sync theme toggle button with saved preference
-  const btn = document.getElementById('theme-toggle');
-  const savedTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-  if (btn) btn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
-  if (savedTheme === 'light') {
-    GC.color = 'rgba(17,24,39,0.62)';
-    GC.grid  = 'rgba(0,0,0,0.07)';
-    GC.tick  = 'rgba(17,24,39,0.38)';
-  }
-
   const raw = sessionStorage.getItem('ga_csv_cache');
   if (!raw) return;
   try {
