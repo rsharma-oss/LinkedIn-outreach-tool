@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>document.documentElement.setAttribute('data-theme',localStorage.getItem('ga_theme')||'dark');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LinkedIn Intelligence · GrowthAutomated.ai</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -17,6 +18,23 @@
   --green:#10b981; --yellow:#f59e0b; --red:#ef4444; --purple:#8b5cf6; --orange:#f97316;
   --tx:#f0f4ff; --tx2:rgba(240,244,255,0.65); --tx3:rgba(240,244,255,0.38);
 }
+[data-theme="light"]{
+  --bg:#f4f6fb; --bg2:#edf0f7; --bg3:#e4e9f2; --bg4:#d6dce8; --card:#ffffff;
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.13);
+  --tx:#111827; --tx2:rgba(17,24,39,0.62); --tx3:rgba(17,24,39,0.38);
+}
+[data-theme="light"] .hdr{background:#ffffff;border-bottom-color:rgba(0,0,0,0.1);}
+[data-theme="light"] ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.14);}
+[data-theme="light"] .pm-file{color:var(--tx);}
+[data-theme="light"] .pm-use{color:var(--tx2);}
+[data-theme="light"] .pm-note{color:var(--tx3);border-top-color:var(--border);}
+[data-theme="light"] .status-dot{background:#cbd5e1;}
+[data-theme="light"] .nav-link:hover{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.05);}
+[data-theme="light"] .tab:hover{background:rgba(0,0,0,0.04);}
+[data-theme="light"] .tpl-filter:hover{background:rgba(0,0,0,0.05);color:var(--tx);}
+[data-theme="light"] .filter-select option{background:#ffffff;color:var(--tx);}
+[data-theme="light"] .hbar-track{background:rgba(0,0,0,0.08);}
+[data-theme="light"] .score-bar-bg{background:rgba(0,0,0,0.08);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.6;}
 a{color:var(--li2);text-decoration:none;}
@@ -83,9 +101,9 @@ a:hover{text-decoration:underline;}
 #app{display:none;}
 .nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 40px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;}
 .nav::-webkit-scrollbar{display:none;}
-.tab{padding:13px 18px;font-size:0.82rem;font-weight:500;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;display:flex;align-items:center;gap:6px;}
-.tab:hover{color:var(--tx2);}
-.tab.on{color:var(--li2);border-bottom-color:var(--li2);}
+.tab{padding:13px 18px;font-size:0.82rem;font-weight:500;color:rgba(240,244,255,0.38);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.18s;white-space:nowrap;display:flex;align-items:center;gap:6px;}
+.tab:hover{color:rgba(240,244,255,0.78);background:rgba(255,255,255,0.05);}
+.tab.on{color:var(--tx);font-weight:700;border-bottom:3px solid var(--li);background:rgba(0,160,220,0.16);}
 .tcnt{font-size:0.65rem;font-weight:700;padding:1px 6px;border-radius:10px;background:rgba(0,160,220,0.15);color:var(--li2);}
 
 /* MAIN */
@@ -139,7 +157,9 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .filter-bar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
 .search-input{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:8px 14px;color:var(--tx);font-size:0.82rem;font-family:inherit;outline:none;width:240px;}
 .search-input:focus{border-color:var(--li);}
-.filter-select{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:7px 12px;color:var(--tx2);font-size:0.8rem;font-family:inherit;outline:none;cursor:pointer;}
+.filter-select{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;color:var(--tx);font-size:0.8rem;font-family:inherit;outline:none;cursor:pointer;font-weight:500;transition:border-color 0.18s,background 0.18s;appearance:auto;}
+.filter-select:hover{border-color:rgba(0,160,220,0.35);background:var(--bg4);}
+.filter-select:focus{border-color:rgba(0,160,220,0.52);box-shadow:0 0 0 3px rgba(0,160,220,0.1);}
 .filter-count{font-size:0.75rem;color:var(--tx3);padding:4px 10px;border:1px solid var(--border);border-radius:10px;}
 .filter-count b{color:var(--tx);}
 
@@ -192,9 +212,9 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .logo-link{text-decoration:none;display:flex;align-items:center;gap:12px;color:inherit;}
 .logo-link:hover{opacity:0.85;}
 .hdr-nav{display:flex;align-items:center;gap:4px;margin:0 auto;}
-.nav-link{padding:7px 12px;border-radius:8px;font-size:0.78rem;font-weight:500;color:var(--tx2);text-decoration:none;transition:all 0.2s;white-space:nowrap;}
-.nav-link:hover{background:var(--bg4);color:var(--tx);}
-.nav-link.active{color:var(--li2);}
+.nav-link{padding:7px 12px;border-radius:8px;font-size:0.78rem;font-weight:500;color:rgba(240,244,255,0.3);text-decoration:none;transition:all 0.18s;white-space:nowrap;border:1px solid transparent;}
+.nav-link:hover{background:rgba(255,255,255,0.08);color:rgba(240,244,255,0.8);border-color:rgba(255,255,255,0.06);}
+.nav-link.active{color:var(--tx);background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.44);font-weight:700;}
 .nav-link.cta{background:var(--li);color:#fff;font-weight:600;}
 .nav-link.cta:hover{background:var(--li2);}
 @media(max-width:680px){.hdr-nav{display:none;}}
@@ -249,6 +269,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <a class="nav-link cta" href="demo.html">Book Demo</a>
   </nav>
   <div class="hdr-r">
+    <button class="btn btn-outline" id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" style="padding:6px 10px;font-size:1rem;line-height:1;">🌙</button>
     <div class="status-dot" id="status-dot"></div>
     <div class="status-text" id="status-text">No data loaded</div>
     <button class="btn btn-outline" id="reload-btn" onclick="document.getElementById('file-input').click()" style="display:none;">🔄 Reload</button>
@@ -1036,6 +1057,36 @@ function thinSeries(labels, vals, maxPoints=20) {
 // ─── CHART FACTORY ───────────────────────────────────────────────────────────
 const GC = { color:'rgba(240,244,255,0.6)', grid:'rgba(255,255,255,0.06)', tick:'rgba(240,244,255,0.35)' };
 
+// ─── THEME ────────────────────────────────────────────────────────────────────
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('ga_theme', t);
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = t === 'light' ? '☀️' : '🌙';
+  const l = t === 'light';
+  GC.color = l ? 'rgba(17,24,39,0.62)'  : 'rgba(240,244,255,0.6)';
+  GC.grid  = l ? 'rgba(0,0,0,0.07)'     : 'rgba(255,255,255,0.06)';
+  GC.tick  = l ? 'rgba(17,24,39,0.38)'  : 'rgba(240,244,255,0.35)';
+  const db = l ? '#ffffff' : '#111827';
+  Object.values(charts).forEach(c => {
+    if (!c) return;
+    try {
+      ['x','y'].forEach(ax => {
+        if (c.options.scales?.[ax]) {
+          c.options.scales[ax].grid.color  = GC.grid;
+          c.options.scales[ax].ticks.color = GC.tick;
+        }
+      });
+      if (c.options.plugins?.legend?.labels) c.options.plugins.legend.labels.color = GC.color;
+      if (c.data.datasets[0]?.borderColor !== undefined) c.data.datasets[0].borderColor = db;
+      c.update('none');
+    } catch(e) {}
+  });
+}
+function toggleTheme() {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+}
+
 function mkChart(id, config) {
   if (charts[id]) { try { charts[id].destroy(); } catch(e){} }
   const ctx = document.getElementById(id);
@@ -1095,7 +1146,7 @@ function barChart(id, labels, datasets, opts={}) {
 function doughnutChart(id, labels, data, colors) {
   mkChart(id, {
     type:'doughnut',
-    data:{ labels, datasets:[{data,backgroundColor:colors,borderWidth:2,borderColor:'#111827'}] },
+    data:{ labels, datasets:[{data,backgroundColor:colors,borderWidth:2,borderColor:document.documentElement.getAttribute('data-theme')==='light'?'#ffffff':'#111827'}] },
     options:{
       responsive:true,
       plugins:{ legend:{position:'bottom',labels:{color:GC.color,padding:10,font:{size:11}}} },
@@ -3135,6 +3186,16 @@ async function loadDemoData() {
 
 // ─── AUTO-RESTORE FROM SESSION CACHE ─────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
+  // Sync theme toggle button with saved preference
+  const btn = document.getElementById('theme-toggle');
+  const savedTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  if (btn) btn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+  if (savedTheme === 'light') {
+    GC.color = 'rgba(17,24,39,0.62)';
+    GC.grid  = 'rgba(0,0,0,0.07)';
+    GC.tick  = 'rgba(17,24,39,0.38)';
+  }
+
   const raw = sessionStorage.getItem('ga_csv_cache');
   if (!raw) return;
   try {
