@@ -52,6 +52,14 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .progress-bar{background:linear-gradient(90deg,var(--li),var(--li2));height:100%;border-radius:8px;width:0%;transition:width 0.4s;}
 .progress-label{font-size:0.75rem;color:var(--tx3);text-align:center;margin-top:6px;}
 .error-banner{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#fca5a5;font-size:0.8rem;padding:10px 16px;border-radius:8px;margin-top:12px;display:none;text-align:left;}
+/* PRIVACY MANIFEST */
+.privacy-manifest{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:14px 18px;margin:16px 0;text-align:left;}
+.pm-title{font-size:0.7rem;font-weight:700;color:#6ee7b7;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.pm-row{display:flex;align-items:baseline;gap:8px;padding:3px 0;font-size:0.76rem;}
+.pm-file{color:#f0f4ff;font-weight:600;min-width:145px;flex-shrink:0;}
+.pm-use{color:rgba(240,244,255,0.5);flex:1;}
+.pm-loc{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);color:#6ee7b7;font-size:0.65rem;padding:1px 7px;border-radius:8px;white-space:nowrap;flex-shrink:0;}
+.pm-note{font-size:0.7rem;color:rgba(240,244,255,0.35);margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);}
 #file-input{display:none;}
 
 /* APP */
@@ -229,6 +237,15 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div class="load-sub">
       Automatically classify your LinkedIn connections into ICP tiers — decision makers, ecosystem partners, and adjacent contacts. Everything runs in your browser. Your data stays on your device.
     </div>
+
+    <!-- PRIVACY MANIFEST -->
+    <div class="privacy-manifest">
+      <div class="pm-title">🔒 What this tool reads — and where it stays</div>
+      <div class="pm-row"><span class="pm-file">Connections.csv</span><span class="pm-use">Names, companies &amp; roles — scored locally</span><span class="pm-loc">browser only</span></div>
+      <div class="pm-row"><span class="pm-file">messages.csv</span><span class="pm-use">Message recency &amp; engagement per contact</span><span class="pm-loc">browser only</span></div>
+      <div class="pm-note">No server. No upload. All processing runs in your browser's local memory. <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" style="color:rgba(110,231,183,0.7);">View source on GitHub ↗</a></div>
+    </div>
+
     <div class="load-steps">
       <div class="load-step"><span class="step-num">1</span><span>Export your LinkedIn data: Settings → Data Privacy → Get a copy of your data → Request archive</span></div>
       <div class="load-step"><span class="step-num">2</span><span>Unzip the download and load <b>Connections.csv</b> (and optionally <b>messages.csv</b> for engagement data)</span></div>
@@ -1943,15 +1960,15 @@ async function loadDemoData() {
 }
 
 async function processFiles(filemap, isDemo) {
-  setProgress(20, 'Parsing connections…');
+  setProgress(20, 'Reading Connections.csv locally…');
   await new Promise(r => setTimeout(r, 10));
   const connRows = parseCSV(filemap['Connections.csv'], 'First Name');
 
-  setProgress(55, 'Parsing messages…');
+  setProgress(55, 'Reading messages.csv locally…');
   await new Promise(r => setTimeout(r, 10));
   const msgRows = parseCSV(filemap['messages.csv']);
 
-  setProgress(75, 'Classifying contacts…');
+  setProgress(75, 'Classifying contacts in browser memory…');
   await new Promise(r => setTimeout(r, 10));
 
   // Build message engagement map
@@ -2037,7 +2054,7 @@ async function processFiles(filemap, isDemo) {
   document.getElementById('reload-btn').style.display = 'flex';
   document.getElementById('export-btn').style.display = 'flex';
   if (!isDemo) document.getElementById('playbook-btn').style.display = 'flex';
-  document.getElementById('status-text').textContent = `${ICP.length} ICP contacts from ${connRows.length} connections`;
+  document.getElementById('status-text').textContent = `${ICP.length} ICP contacts from ${connRows.length} connections · ↑ 0 bytes sent`;
   if (isDemo) document.getElementById('demo-banner').style.display = 'block';
 
   // ─── CACHE: save raw CSV for cross-page navigation ─────────────────────────
