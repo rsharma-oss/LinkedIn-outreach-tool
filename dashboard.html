@@ -8,6 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
 <style>
 :root {
   --bg:#080c14; --bg2:#0d1220; --bg3:#131926; --bg4:#1a2235; --card:#111827;
@@ -929,15 +930,18 @@ async function processFiles(filemap, isDemo=false) {
     `${fmtFull(D.connections.length)} connections · ${fmtFull(D.messages.length)} messages · ↑ 0 bytes sent`;
 
   // ─── CACHE: save raw CSV for cross-page navigation ─────────────────────────
+  // LZ-string compression reduces each key by ~3x, bringing M-activity exports
+  // (~6.4 MB serialized) down to ~2.1 MB — fitting Safari's 5 MB per-origin quota.
+  // messages.csv stored separately (ga_msg_cache) to avoid a single-key size spike.
   if (!isDemo) {
+    const mainMap = Object.fromEntries(Object.entries(filemap).filter(([k]) => k !== 'messages.csv'));
     try {
-      sessionStorage.setItem('ga_csv_cache', JSON.stringify({data: filemap, src:'dashboard'}));
-    } catch(e) {
-      // Quota exceeded — retry without large files
+      sessionStorage.setItem('ga_csv_cache', LZString.compress(JSON.stringify({data: mainMap, src:'dashboard'})));
+    } catch(e) { console.warn('CSV session cache failed:', e); }
+    if (filemap['messages.csv']) {
       try {
-        const slim = Object.fromEntries(Object.entries(filemap).filter(([k]) => k !== 'messages.csv'));
-        sessionStorage.setItem('ga_csv_cache', JSON.stringify({data: slim, src:'dashboard'}));
-      } catch(e2) { console.warn('CSV session cache failed:', e2); }
+        sessionStorage.setItem('ga_msg_cache', LZString.compress(filemap['messages.csv']));
+      } catch(e) { console.warn('Messages session cache skipped (storage full):', e); }
     }
   }
 }
@@ -3111,8 +3115,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const raw = sessionStorage.getItem('ga_csv_cache');
   if (!raw) return;
   try {
-    const {data} = JSON.parse(raw);
+    // Decompress — fall back to raw string if not compressed (legacy sessions)
+    const decompressed = LZString.decompress(raw) ?? raw;
+    const {data} = JSON.parse(decompressed);
     if (!data || !data['Connections.csv']) return;
+    // Merge messages.csv from its dedicated cache key (stored separately, also compressed)
+    const msgRaw = sessionStorage.getItem('ga_msg_cache');
+    if (msgRaw) data['messages.csv'] = LZString.decompress(msgRaw) ?? msgRaw;
     document.getElementById('progress-wrap').style.display = 'block';
     document.getElementById('progress-label').textContent = 'Restoring session data…';
     await processFiles(data, false);
