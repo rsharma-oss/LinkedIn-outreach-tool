@@ -4,6 +4,13 @@
 
 ## Sprint Wrap — June 18, 2026 (Navigation Consistency)
 
+### 🐛 Bug Fix — Messages tab broken on real exports (dashboard.html)
+- **Symptom:** With a real LinkedIn export, the Messages tab showed empty "Messages Per Month", 0 sent in Sent-vs-Received, and no top contacts. (Worked in the demo, which masked it.)
+- **Root cause:** `messages.csv` is the only export file with **UPPERCASE, space-separated headers** (`FROM`, `DATE`, `CONVERSATION TITLE`). The code read TitleCase keys (`r['From']`, `r['Date']`, `r['ConversationTitle']`) → all `undefined` on real data. The demo data uses TitleCase headers, so it never reproduced.
+- **Fix:** `processFiles` now normalizes message headers to TitleCase (`tcKey`: lowercase → strip spaces → capitalize each word) right after parsing, guarded by `!('Date' in D.messages[0])` so demo data is untouched. Robust to LinkedIn casing/spacing drift.
+- **Verified** by driving the real `processFiles` with a synthetic uppercase-header dataset: dates parse (6/6), sent/received split correct (3/3), Messages-Per-Month + Day-of-Week + top-contacts all populate.
+- icp-finder.html was already safe (reads `r['FROM'] || r['From']`); no change needed.
+
 ### Summary
 **Unified the primary navigation across all 7 pages.** Audit found the nav had drifted into two implementations and several per-page inconsistencies; standardized everything onto one canonical nav.
 
