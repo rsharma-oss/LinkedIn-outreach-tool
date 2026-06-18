@@ -29,11 +29,12 @@ a:hover{color:#fff;text-decoration:underline;}
   top:0;
   z-index:200;
 }
-.hdr-l{display:flex;align-items:center;gap:12px;}
+.hdr-l{flex:1 1 0;min-width:0;display:flex;align-items:center;gap:12px;}
 .logo{display:flex;align-items:center;flex-shrink:0;}
 .hdr-title{font-size:1rem;font-weight:700;}
 .hdr-sub{font-size:0.72rem;color:var(--tx3);margin-top:1px;}
-.hdr-nav{display:flex;align-items:center;gap:6px;}
+.hdr-nav{flex:0 0 auto;display:flex;align-items:center;gap:4px;}
+.hdr-r{flex:1 1 0;display:flex;align-items:center;justify-content:flex-end;gap:10px;}
 .nav-link{padding:7px 12px;border-radius:8px;font-size:0.78rem;font-weight:500;color:rgba(240,244,255,0.3);text-decoration:none;transition:all 0.18s;white-space:nowrap;border:1px solid transparent;}
 .nav-link:hover{background:rgba(255,255,255,0.08);color:rgba(240,244,255,0.8);border-color:rgba(255,255,255,0.06);text-decoration:none;}
 .nav-link.active{color:#f0f4ff;background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.44);font-weight:700;}
@@ -384,6 +385,7 @@ a:hover{color:#fff;text-decoration:underline;}
     <a class="nav-link" href="outreach-playbook-demo.html">📋 Playbook</a>
     <a class="nav-link cta" href="demo.html">Book Demo</a>
   </nav>
+  <div class="hdr-r"></div>
 </header>
 
 <!-- ══════════════════════════════════════════
