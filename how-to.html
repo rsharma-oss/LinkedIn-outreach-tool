@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>(function(){try{var t=localStorage.getItem('ga_theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How It Works · GrowthAutomated.ai</title>
@@ -11,15 +12,33 @@
   --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
   --li:#0077B5; --li2:#00a0dc; --glow:rgba(0,119,181,0.18);
   --tx:#f0f4ff; --tx2:rgba(240,244,255,0.65); --tx3:rgba(240,244,255,0.38);
+  /* theme-adaptive (dark defaults — overridden by [data-theme="light"]) */
+  --hdr-grad:linear-gradient(135deg,#0a0f1e,#0d1525);
+  --hero-grad:linear-gradient(160deg,#0a0f1e 0%,#0d1525 50%,#0a1628 100%);
+  --head-grad:linear-gradient(135deg,#f0f4ff 0%,#a5c8f0 100%);
+  --cta-grad:linear-gradient(135deg,#0a0f1e,#0a1628);
+  --hover-strong:rgba(255,255,255,0.08);
+  --nav-idle:rgba(240,244,255,0.3); --nav-idle-hover:rgba(240,244,255,0.8);
+}
+[data-theme="light"]{
+  --bg:#eef1f7; --bg2:#ffffff; --bg3:#f4f6fb; --bg4:#e7ecf5; --card:#ffffff;
+  --border:rgba(15,23,42,0.1); --border2:rgba(15,23,42,0.18); --glow:rgba(0,119,181,0.12);
+  --tx:#0f172a; --tx2:rgba(15,23,42,0.7); --tx3:rgba(15,23,42,0.5);
+  --hdr-grad:linear-gradient(135deg,#ffffff,#eef1f7);
+  --hero-grad:linear-gradient(160deg,#ffffff 0%,#eef1f7 50%,#e3eefb 100%);
+  --head-grad:linear-gradient(135deg,#0f172a 0%,#0077B5 100%);
+  --cta-grad:linear-gradient(135deg,#eef1f7,#e3eefb);
+  --hover-strong:rgba(15,23,42,0.07);
+  --nav-idle:rgba(15,23,42,0.55); --nav-idle-hover:rgba(15,23,42,0.9);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.6;}
 a{color:var(--li2);text-decoration:none;}
-a:hover{color:#fff;text-decoration:underline;}
+a:hover{color:var(--tx);text-decoration:underline;}
 
 /* ── HEADER ── */
 .hdr{
-  background:linear-gradient(135deg,#0a0f1e,#0d1525);
+  background:var(--hdr-grad);
   border-bottom:1px solid var(--border);
   padding:18px 40px;
   display:flex;
@@ -35,15 +54,17 @@ a:hover{color:#fff;text-decoration:underline;}
 .hdr-sub{font-size:0.72rem;color:var(--tx3);margin-top:1px;}
 .hdr-nav{flex:0 0 auto;display:flex;align-items:center;gap:4px;}
 .hdr-r{flex:1 1 0;display:flex;align-items:center;justify-content:flex-end;gap:10px;}
-.nav-link{padding:7px 12px;border-radius:8px;font-size:0.78rem;font-weight:500;color:rgba(240,244,255,0.3);text-decoration:none;transition:all 0.18s;white-space:nowrap;border:1px solid transparent;}
-.nav-link:hover{background:rgba(255,255,255,0.08);color:rgba(240,244,255,0.8);border-color:rgba(255,255,255,0.06);text-decoration:none;}
-.nav-link.active{color:#f0f4ff;background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.44);font-weight:700;}
+.nav-link{padding:7px 12px;border-radius:8px;font-size:0.78rem;font-weight:500;color:var(--nav-idle);text-decoration:none;transition:all 0.18s;white-space:nowrap;border:1px solid transparent;}
+.nav-link:hover{background:var(--hover-strong);color:var(--nav-idle-hover);border-color:var(--border);text-decoration:none;}
+.nav-link.active{color:var(--tx);background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.44);font-weight:700;}
 .nav-link.cta{background:#0077B5;color:#fff;font-weight:600;border:1px solid transparent;}
 .nav-link.cta:hover{background:#00a0dc;text-decoration:none;}
+.theme-toggle{background:var(--hover-strong);color:var(--tx2);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;font-size:0.95rem;line-height:1;cursor:pointer;transition:all 0.18s;}
+.theme-toggle:hover{background:var(--bg4);color:var(--tx);}
 
 /* ── HERO ── */
 .hero{
-  background:linear-gradient(160deg,#0a0f1e 0%,#0d1525 50%,#0a1628 100%);
+  background:var(--hero-grad);
   border-bottom:1px solid var(--border);
   padding:80px 40px 72px;
   text-align:center;
@@ -67,7 +88,7 @@ a:hover{color:#fff;text-decoration:underline;}
   line-height:1.15;
   letter-spacing:-0.03em;
   margin-bottom:16px;
-  background:linear-gradient(135deg,#f0f4ff 0%,#a5c8f0 100%);
+  background:var(--head-grad);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
@@ -314,7 +335,7 @@ a:hover{color:#fff;text-decoration:underline;}
 
 /* ── CTA SECTION ── */
 .cta-section{
-  background:linear-gradient(135deg,#0a0f1e,#0a1628);
+  background:var(--cta-grad);
   border-top:1px solid var(--border);
   padding:80px 40px;
   text-align:center;
@@ -385,7 +406,7 @@ a:hover{color:#fff;text-decoration:underline;}
     <a class="nav-link" href="outreach-playbook-demo.html">📋 Playbook</a>
     <a class="nav-link cta" href="demo.html">Book Demo</a>
   </nav>
-  <div class="hdr-r"></div>
+  <div class="hdr-r"><button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button></div>
 </header>
 
 <!-- ══════════════════════════════════════════
@@ -640,19 +661,19 @@ a:hover{color:#fff;text-decoration:underline;}
             <p style="margin-bottom:12px;"><strong style="color:#f0f4ff;">Complete export</strong> — arrives within 72 hours. Adds your Reactions, Comments, Posts, Invitations, and full profile history. Load this into the Dashboard to unlock engagement trends, content analysis, and your full network health score.</p>
             <table style="width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:4px;">
               <thead>
-                <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+                <tr style="border-bottom:1px solid var(--border2);">
                   <th style="text-align:left;padding:6px 8px;color:var(--tx3);font-weight:600;">Tool</th>
                   <th style="text-align:center;padding:6px 8px;color:var(--tx3);font-weight:600;">Basic file</th>
                   <th style="text-align:center;padding:6px 8px;color:var(--tx3);font-weight:600;">Complete file</th>
                 </tr>
               </thead>
               <tbody>
-                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <tr style="border-bottom:1px solid var(--border);">
                   <td style="padding:7px 8px;color:var(--tx2);">📊 Dashboard</td>
                   <td style="text-align:center;padding:7px 8px;color:#f59e0b;">Partial — connections &amp; messages only</td>
                   <td style="text-align:center;padding:7px 8px;color:#10b981;">✓ Full analytics</td>
                 </tr>
-                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <tr style="border-bottom:1px solid var(--border);">
                   <td style="padding:7px 8px;color:var(--tx2);">🎯 ICP Finder</td>
                   <td style="text-align:center;padding:7px 8px;color:#10b981;">✓ Fully works</td>
                   <td style="text-align:center;padding:7px 8px;color:#10b981;">✓ Fully works</td>
@@ -708,5 +729,15 @@ a:hover{color:#fff;text-decoration:underline;}
   <p>Built by GrowthAutomated.ai · Not affiliated with LinkedIn · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" style="color:var(--tx3);">View source on GitHub ↗</a></p>
 </footer>
 
+<script>
+function updateThemeBtn(){ var b=document.getElementById('theme-btn'); if(b) b.textContent=document.documentElement.getAttribute('data-theme')==='light'?'☀️':'🌙'; }
+function toggleTheme(){
+  var light=document.documentElement.getAttribute('data-theme')==='light';
+  if(light){ document.documentElement.removeAttribute('data-theme'); try{localStorage.setItem('ga_theme','dark');}catch(e){} }
+  else { document.documentElement.setAttribute('data-theme','light'); try{localStorage.setItem('ga_theme','light');}catch(e){} }
+  updateThemeBtn();
+}
+updateThemeBtn();
+</script>
 </body>
 </html>
