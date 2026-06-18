@@ -7,7 +7,7 @@ _Last updated: June 18, 2026_
 ## 🔴 High Priority
 
 ### Light / Dark Mode
-- **Status:** Attempted, reverted (buggy)
+- **Status:** ✅ **Shipped June 18, 2026** (v2). All v1 known-issues resolved — see RELEASE_NOTES. Requirements kept below for reference.
 - **Scope:** Both `dashboard.html` and `icp-finder.html`
 - **Requirements:**
   - CSS variable swap via `[data-theme="light"]` on `<html>`
@@ -21,6 +21,18 @@ _Last updated: June 18, 2026_
   - Chart.js colors not fully updating on toggle
   - Hardcoded rgba white tints visible on light backgrounds
   - Privacy manifest colors not adapting
+
+---
+
+### Harden GitHub Token in Push Scripts
+- **Status:** Not started
+- **Scope:** `push_to_dev.py`, `create_pr.py` (and older `push_all_updates.py`, `push_session_cache_fix.py`, `upload_icp_doc.py` if they also embed it)
+- **Problem:** GitHub fine-grained PAT is hardcoded in plaintext (`push_to_dev.py:18`, `create_pr.py:15`). Token sits unencrypted on disk; would leak if the Desktop folder is ever zipped, shared, or synced. (Not currently leaked to the repo — `.py` files are not in the push list.)
+- **Requirements:**
+  - Read token from `os.environ["GH_TOKEN"]` (fail with a clear message if unset)
+  - Rotate the currently-exposed token at github.com → Settings → Developer settings → Fine-grained tokens
+  - Document the env-var setup in `CLAUDE.md` (replace the inline token references)
+  - Optional: load from a git-ignored `.env` / keychain instead of shell env
 
 ---
 
@@ -83,11 +95,12 @@ _Last updated: June 18, 2026_
 
 ### Offline Bundle
 - **Status:** ✅ Built and deployed (lzstring now inlined — previous build was broken)
+- **Rebuilt June 18 ✅** — offline bundles regenerated with the unified nav via `build_offline_bundle.py`. Always rebuild after editing the source HTML before a `--with-offline` push.
 - **Remaining:** Audit `how-to.html` download links point to correct filenames
 
 ### How-To Page
-- **Status:** Linked from nav but not reviewed this sprint
-- **Requirements:** Audit for accuracy, confirm offline download links point to correct filenames
+- **Status:** Nav standardized June 18 ✅ — now part of the unified nav with active state. Content not yet re-audited.
+- **Requirements:** Audit copy for accuracy, confirm offline download links point to correct filenames
 
 ---
 

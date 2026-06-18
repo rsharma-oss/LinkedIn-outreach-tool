@@ -2,6 +2,40 @@
 
 ---
 
+## Sprint Wrap — June 18, 2026 (Navigation Consistency)
+
+### Summary
+**Unified the primary navigation across all 7 pages.** Audit found the nav had drifted into two implementations and several per-page inconsistencies; standardized everything onto one canonical nav.
+
+### Audit findings (before)
+- Two separate nav systems: `.nav-link` (dashboard, icp-finder, how-to) vs `.hn-link` (playbook)
+- `how-to.html` dropped emoji, had no active-pill state, and used "Request Demo" instead of "Book Demo"
+- "How It Works" was unreachable from the nav on every page (logo-link only)
+- Demo pages (`icp-demo`, `dashboard-demo`) had no shared nav and used emoji/text logos (`🎯`, `in`) instead of the brand SVG
+- Header used `<div class="hdr">` on some pages, `<header>` on others
+
+### Changes
+- **Canonical nav** applied to all 7 pages: `📘 How It Works · 📊 Dashboard · 🎯 ICP Finder · 📋 Playbook · [Book Demo]`, identical markup + CSS, correct per-page active pill
+- Nav CSS made self-contained (literal colors) so it renders identically regardless of each file's CSS-variable scheme
+- Playbook converted `.hn-link` → `.nav-link`
+- `how-to.html` aligned to canonical active-pill styling, emoji added, CTA → "Book Demo"
+- Demo pages rebranded to the GrowthAutomated.ai SVG logo + given the full nav
+- Header elements standardized to semantic `<header class="hdr">` (playbook outer container left as `.header` — visually identical, no user-facing change)
+
+### Light / Dark Mode (v2 — shipped) ☀️🌙
+Re-implemented after the v1 revert; all three v1 failure modes fixed.
+- **Theme system:** `:root` holds dark defaults; a `[data-theme="light"]` block overrides them. ~14 previously-hardcoded colors (header gradient, hover tints, nav, tabs, tracks, scrollbar, privacy manifest, chart colors) were promoted to vars whose dark values are **unchanged** — so dark mode is pixel-identical to before.
+- **FOUC prevention:** tiny inline script in `<head>` applies the stored theme before first paint.
+- **Persistence:** `localStorage['ga_theme']` ('light'/'dark'), shared across both apps.
+- **Toggle:** 🌙/☀️ button in `.hdr-r` (before the status dot).
+- **Chart.js fix (the v1 killer):** `applyChartTheme()` re-reads the CSS vars into `GC` and iterates the `charts[]` registry, updating each chart's grid / ticks / legend (and doughnut segment borders) then calling `.update()`. Verified live-toggling re-themes all 18 dashboard charts. icp-finder has no charts.
+- **Default:** dark (unchanged brand look). Scope: `dashboard.html` + `icp-finder.html` only.
+
+### Offline bundles
+- Rebuilt `dashboard-offline.html` / `icp-finder-offline.html` with `build_offline_bundle.py` so they carry the unified nav **and** the theme toggle. (Reminder: always rebuild after editing source HTML before a `--with-offline` push.)
+
+---
+
 ## Sprint Wrap — Week of June 11–17, 2026
 
 ### Summary

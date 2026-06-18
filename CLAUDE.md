@@ -95,12 +95,19 @@ python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/pu
 
 ## CSS Conventions (current state)
 
-**L1 nav links** — 3 states:
+**L1 nav — CANONICAL (June 18 2026).** One shared nav across ALL 7 pages (dashboard, icp-finder, how-to, outreach-playbook-demo, demo, icp-demo, dashboard-demo). Markup is identical everywhere except the `.active` link; only the brand sub-label and `.hdr-r` controls vary per page.
+
+Order: `📘 How It Works · 📊 Dashboard · 🎯 ICP Finder · 📋 Playbook · [Book Demo]` (Book Demo = `.cta`, never `.active`).
+
+CSS uses **literal colors** on the 5 non-themed pages (how-to, demo, playbook, icp-demo, dashboard-demo) so they render identically regardless of each file's variable scheme. The 2 themed apps (dashboard, icp-finder) use theme vars (`--nav-idle`, `--nav-idle-hover`, `--hover-strong`) whose **dark defaults equal these literals** — so dark rendering is identical everywhere, and the nav adapts in light mode. Reference (dark values):
 ```css
-.nav-link          { color: rgba(240,244,255,0.3); }
-.nav-link:hover    { color: rgba(240,244,255,0.8); background: rgba(255,255,255,0.08); }
-.nav-link.active   { color: var(--tx); background: rgba(0,160,220,0.26); border-color: rgba(0,160,220,0.44); }
+.nav-link        { color: rgba(240,244,255,0.3); border:1px solid transparent; }
+.nav-link:hover  { color: rgba(240,244,255,0.8); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.06); }
+.nav-link.active { color: #f0f4ff; background: rgba(0,160,220,0.26); border-color: rgba(0,160,220,0.44); font-weight:700; }
+.nav-link.cta    { background: #0077B5; color:#fff; font-weight:600; }
+.nav-link.cta:hover { background: #00a0dc; }
 ```
+Container is `<header class="hdr">` (playbook's outer wrapper is still `.header` — visually identical). If you touch the nav, change it in all 7 files. The old `.hn-link` class is retired.
 
 **L2 dashboard tabs:**
 ```css
@@ -135,8 +142,15 @@ LinkedIn exports use **title case**. These exact names must be used in code:
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Light/Dark Mode | ❌ Reverted | Chart.js rgba tints + GC object not fully dynamic. Requirements in BACKLOG.md |
+| Light/Dark Mode | ✅ Shipped (v2, Jun 18) | See "Theming" below. dashboard.html + icp-finder.html only. v1 revert reasons all fixed. |
 | Dropdown filter component | ❌ Reverted | User preferred pills. Custom `dd-wrap/dd-trigger/dd-menu` CSS still in icp-finder.html as dead CSS |
+
+## Theming (Light/Dark) — dashboard.html + icp-finder.html
+
+- `:root` = dark defaults; `[data-theme="light"]` on `<html>` overrides them. **Dark values are unchanged** from pre-theme — don't "tidy" them.
+- Previously-hardcoded colors are now vars: `--hdr-grad`, `--hover`, `--hover-strong`, `--track`, `--hairline`, `--scroll`, `--nav-idle`, `--nav-idle-hover`, `--tab-idle`, `--tab-hover`, `--pm-use` (dashboard also `--chart-grid/-tick/-label`). Add new colored UI via these vars, not literals, or it won't theme.
+- FOUC script is the first thing in `<head>`. Persistence: `localStorage['ga_theme']`. Toggle button: `#theme-btn` in `.hdr-r`.
+- **Chart.js (dashboard only):** `applyChartTheme()` syncs `GC` from CSS vars and updates every chart in the `charts[]` registry. Call it after any theme change AND after rendering new charts in light mode. icp-finder has no Chart.js.
 
 ---
 

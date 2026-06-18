@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>(function(){try{var t=localStorage.getItem('ga_theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LinkedIn ICP Finder · GrowthAutomated.ai</title>
@@ -24,12 +25,28 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
   --li:#0077B5;--li2:#00a0dc;
   --green:#10b981;--yellow:#f59e0b;--red:#ef4444;--purple:#8b5cf6;--orange:#f97316;
   --tx:#f0f4ff;--tx2:rgba(240,244,255,0.65);--tx3:rgba(240,244,255,0.38);
+  /* theme-adaptive (dark defaults — overridden by [data-theme="light"]) */
+  --hdr-grad:linear-gradient(135deg,#0a0f1e,#0d1525);
+  --hover:rgba(255,255,255,0.04);--hover-strong:rgba(255,255,255,0.08);
+  --track:rgba(255,255,255,0.06);--hairline:rgba(255,255,255,0.04);--scroll:rgba(255,255,255,0.1);
+  --nav-idle:rgba(240,244,255,0.3);--nav-idle-hover:rgba(240,244,255,0.8);
+  --tab-idle:rgba(240,244,255,0.32);--tab-hover:rgba(240,244,255,0.72);--pm-use:rgba(240,244,255,0.5);
+}
+[data-theme="light"]{
+  --bg:#eef1f7;--bg2:#ffffff;--bg3:#f4f6fb;--bg4:#e7ecf5;--card:#ffffff;
+  --border:rgba(15,23,42,0.1);--border2:rgba(15,23,42,0.18);
+  --tx:#0f172a;--tx2:rgba(15,23,42,0.7);--tx3:rgba(15,23,42,0.5);
+  --hdr-grad:linear-gradient(135deg,#ffffff,#eef1f7);
+  --hover:rgba(15,23,42,0.04);--hover-strong:rgba(15,23,42,0.07);
+  --track:rgba(15,23,42,0.08);--hairline:rgba(15,23,42,0.07);--scroll:rgba(15,23,42,0.2);
+  --nav-idle:rgba(15,23,42,0.55);--nav-idle-hover:rgba(15,23,42,0.9);
+  --tab-idle:rgba(15,23,42,0.5);--tab-hover:rgba(15,23,42,0.85);--pm-use:rgba(15,23,42,0.6);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.6;}
 
 /* HEADER */
-.hdr{background:linear-gradient(135deg,#0a0f1e,#0d1525);border-bottom:1px solid var(--border);padding:18px 40px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:200;}
+.hdr{background:var(--hdr-grad);border-bottom:1px solid var(--border);padding:18px 40px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:200;}
 .hdr-l{display:flex;align-items:center;gap:12px;}
 .logo{display:flex;align-items:center;flex-shrink:0;}
 .hdr-title{font-size:1rem;font-weight:700;}
@@ -42,6 +59,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .btn-primary{background:var(--li);color:#fff;}
 .btn-primary:hover{background:var(--li2);}
 .btn-outline{background:transparent;color:var(--tx2);border:1px solid var(--border2);}
+.btn-icon{background:var(--hover);color:var(--tx2);border:1px solid var(--border2);padding:8px 10px;font-size:0.95rem;line-height:1;}
+.btn-icon:hover{background:var(--hover-strong);color:var(--tx);}
 .btn-outline:hover{background:var(--bg4);color:var(--tx);}
 .btn-green{background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
 .btn-green:hover{background:rgba(16,185,129,0.25);}
@@ -68,9 +87,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .pm-title{font-size:0.7rem;font-weight:700;color:#6ee7b7;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
 .pm-row{display:flex;align-items:baseline;gap:8px;padding:3px 0;font-size:0.76rem;}
 .pm-file{color:#f0f4ff;font-weight:600;min-width:145px;flex-shrink:0;}
-.pm-use{color:rgba(240,244,255,0.5);flex:1;}
+.pm-use{color:var(--pm-use);flex:1;}
 .pm-loc{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);color:#6ee7b7;font-size:0.65rem;padding:1px 7px;border-radius:8px;white-space:nowrap;flex-shrink:0;}
-.pm-note{font-size:0.7rem;color:rgba(240,244,255,0.35);margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);}
+.pm-note{font-size:0.7rem;color:var(--tx3);margin-top:10px;padding-top:8px;border-top:1px solid var(--track);}
 #file-input{display:none;}
 
 /* APP */
@@ -118,8 +137,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 table{width:100%;border-collapse:collapse;}
 thead th{padding:10px 12px;text-align:left;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--tx3);border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;}
 thead th:hover{color:var(--tx);}
-tbody tr{border-bottom:1px solid rgba(255,255,255,0.04);}
-tbody tr:hover{background:rgba(255,255,255,0.02);}
+tbody tr{border-bottom:1px solid var(--hairline);}
+tbody tr:hover{background:var(--hover);}
 td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .td-name{font-weight:500;color:var(--tx);}
 .td-muted{color:var(--tx3);font-size:0.78rem;}
@@ -153,12 +172,12 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 
 ::-webkit-scrollbar{width:6px;height:6px;}
 ::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px;}
+::-webkit-scrollbar-thumb{background:var(--scroll);border-radius:3px;}
 .logo-link{text-decoration:none;display:flex;align-items:center;gap:12px;color:inherit;}
 .logo-link:hover{opacity:0.85;}
 .hdr-nav{display:flex;align-items:center;gap:4px;margin:0 auto;}
-.nav-link{padding:7px 12px;border-radius:8px;font-size:0.78rem;font-weight:500;color:rgba(240,244,255,0.3);text-decoration:none;transition:all 0.18s;white-space:nowrap;border:1px solid transparent;}
-.nav-link:hover{background:rgba(255,255,255,0.08);color:rgba(240,244,255,0.8);border-color:rgba(255,255,255,0.06);}
+.nav-link{padding:7px 12px;border-radius:8px;font-size:0.78rem;font-weight:500;color:var(--nav-idle);text-decoration:none;transition:all 0.18s;white-space:nowrap;border:1px solid transparent;}
+.nav-link:hover{background:var(--hover-strong);color:var(--nav-idle-hover);border-color:var(--border);}
 .nav-link.active{color:var(--tx);background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.44);font-weight:700;}
 .nav-link.cta{background:var(--li);color:#fff;font-weight:600;}
 .nav-link.cta:hover{background:var(--li2);}
@@ -181,8 +200,8 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 
 /* VIEW SWITCHER */
 .view-tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--border);padding-bottom:0;}
-.view-tab{padding:9px 18px;font-size:0.82rem;font-weight:600;color:rgba(240,244,255,0.32);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all 0.18s;}
-.view-tab:hover{color:rgba(240,244,255,0.72);background:rgba(255,255,255,0.04);}
+.view-tab{padding:9px 18px;font-size:0.82rem;font-weight:600;color:var(--tab-idle);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all 0.18s;}
+.view-tab:hover{color:var(--tab-hover);background:var(--hover);}
 .view-tab.active{color:var(--tx);border-bottom-color:var(--li);background:rgba(0,160,220,0.1);font-weight:700;}
 
 /* OUTREACH VIEW */
@@ -244,7 +263,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 
 
 <!-- HEADER -->
-<div class="hdr">
+<header class="hdr">
   <div class="hdr-l">
     <a href="how-to.html" class="logo-link"><div class="logo"><svg width="34" height="34" viewBox="0.85 0.85 3.3 3.3" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><defs><linearGradient id="ga-sym" gradientUnits="userSpaceOnUse" x1="0.933" y1="0" x2="4.067" y2="0"><stop stop-color="#26275f" offset="0"/><stop stop-color="#813e96" offset="0.14"/><stop stop-color="#2e64af" offset="0.29"/><stop stop-color="#3faa49" offset="0.5"/><stop stop-color="#f2e64a" offset="0.71"/><stop stop-color="#f2903b" offset="0.86"/><stop stop-color="#ed4533" offset="1"/></linearGradient></defs><g fill="url(#ga-sym)"><polygon points="2.77 1.478 3.325 1.478 3.325 1.285 2.964 1.285 2.964 0.933 2.395 0.933 2.395 1.126 2.77 1.126 2.77 1.478"/><polygon points="2.396 1.93 2.59 1.93 2.59 1.361 2.237 1.361 2.237 1 2.044 1 2.044 1.555 2.396 1.555 2.396 1.93"/><polygon points="3.164 2.205 3.358 2.205 3.358 1.845 3.71 1.845 3.71 1.276 3.516 1.276 3.516 1.651 3.164 1.651 3.164 2.205"/><polygon points="2.763 2.059 2.413 2.059 2.403 2.498 2.597 2.502 2.603 2.253 2.957 2.253 2.957 1.684 2.763 1.684 2.763 2.059"/><polygon points="4.067 2.395 3.874 2.395 3.874 2.77 3.522 2.77 3.522 3.325 3.715 3.325 3.715 2.964 4.067 2.964 4.067 2.395"/><polygon points="3.513 2.396 3.07 2.396 3.07 2.59 3.707 2.59 3.707 2.237 4 2.237 4 2.044 3.513 2.044 3.513 2.396"/><polygon points="3.724 3.71 3.724 3.516 3.349 3.516 3.349 3.083 2.795 3.083 2.795 3.277 3.155 3.277 3.155 3.71 3.724 3.71"/><polygon points="2.747 2.503 2.747 2.942 3.316 2.942 3.316 2.748 2.941 2.748 2.941 2.503 2.747 2.503"/><polygon points="2.605 4.067 2.605 3.874 2.23 3.874 2.23 3.522 1.675 3.522 1.675 3.715 2.036 3.715 2.036 4.067 2.605 4.067"/><polygon points="2.956 4 2.956 3.445 2.604 3.445 2.604 3.07 2.41 3.07 2.41 3.639 2.763 3.639 2.763 4 2.956 4"/><polygon points="1.484 3.349 1.836 3.349 1.836 2.795 1.642 2.795 1.642 3.155 1.29 3.155 1.29 3.724 1.484 3.724 1.484 3.349"/><polygon points="2.043 3.316 2.237 3.316 2.237 2.876 2.6 2.876 2.6 2.682 2.043 2.682 2.043 3.316"/><polygon points="1.126 2.23 1.497 2.23 1.497 1.675 1.304 1.675 1.304 2.036 0.933 2.036 0.933 2.605 1.126 2.605 1.126 2.23"/><polygon points="1.304 2.763 1 2.763 1 2.956 1.497 2.956 1.497 2.604 1.93 2.604 1.93 2.41 1.304 2.41 1.304 2.763"/><polygon points="1.651 1.909 2.205 1.909 2.205 1.716 1.845 1.716 1.845 1.29 1.276 1.29 1.276 1.484 1.651 1.484 1.651 1.909"/><polygon points="1.684 2.237 2.059 2.237 2.059 2.492 2.253 2.492 2.253 2.043 1.684 2.043 1.684 2.237"/></g></svg></div>
     <div>
@@ -253,19 +272,21 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     </div></a>
   </div>
   <nav class="hdr-nav">
+    <a class="nav-link" href="how-to.html">📘 How It Works</a>
     <a class="nav-link" href="dashboard.html">📊 Dashboard</a>
     <a class="nav-link active" href="icp-finder.html">🎯 ICP Finder</a>
     <a class="nav-link" href="outreach-playbook-demo.html">📋 Playbook</a>
     <a class="nav-link cta" href="demo.html">Book Demo</a>
   </nav>
   <div class="hdr-r">
+    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button>
     <div class="status-dot" id="status-dot"></div>
     <div class="status-text" id="status-text">No data loaded</div>
     <button class="btn btn-outline" onclick="resetApp()" style="display:none;" id="reload-btn">🔄 Reload</button>
     <button class="btn btn-green" onclick="exportCSV()" style="display:none;" id="export-btn">⬇ Export CSV</button>
     <button class="btn btn-outline" onclick="window.open('outreach-playbook-demo.html','_blank')" style="display:none;" id="playbook-btn">📋 Playbook</button>
   </div>
-</div>
+</header>
 
 <input type="file" id="file-input" multiple accept=".csv" onchange="loadFromInput(this.files)">
 
@@ -2406,8 +2427,18 @@ function filterTpls(cat, el) {
   buildTemplates();
 }
 
+// ─── THEME TOGGLE ────────────────────────────────────────────────────────────
+function updateThemeBtn(){ var b=document.getElementById('theme-btn'); if(b) b.textContent=document.documentElement.getAttribute('data-theme')==='light'?'☀️':'🌙'; }
+function toggleTheme(){
+  var light=document.documentElement.getAttribute('data-theme')==='light';
+  if(light){ document.documentElement.removeAttribute('data-theme'); try{localStorage.setItem('ga_theme','dark');}catch(e){} }
+  else { document.documentElement.setAttribute('data-theme','light'); try{localStorage.setItem('ga_theme','light');}catch(e){} }
+  updateThemeBtn();
+}
+
 // ─── AUTO-RESTORE FROM SESSION CACHE ─────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
+  updateThemeBtn();
   const raw = sessionStorage.getItem('ga_csv_cache');
   if (!raw) return;
   try {
