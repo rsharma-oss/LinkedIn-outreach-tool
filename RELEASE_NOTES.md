@@ -28,6 +28,7 @@
 - `how-to.html` aligned to canonical active-pill styling, emoji added, CTA → "Book Demo"
 - Demo pages rebranded to the GrowthAutomated.ai SVG logo + given the full nav
 - Header elements standardized to semantic `<header class="hdr">` (playbook outer container left as `.header` — visually identical, no user-facing change)
+- **Nav placement fix (follow-up):** the nav used `margin:0 auto`, which centered it in the *leftover* space between the brand and the per-page controls — so it jumped 50–150px between pages. Replaced with a balanced 3-column flex header: left zone `flex:1`, nav `flex:0 0 auto`, right zone `flex:1` (empty `.hdr-r` added to how-to & playbook). Nav now sits at true page-center (~640px @1280) on all 7 pages. Flex reserves space, so no overlap with controls.
 
 ### Light / Dark Mode (v2 — shipped) ☀️🌙
 Re-implemented after the v1 revert; all three v1 failure modes fixed.
