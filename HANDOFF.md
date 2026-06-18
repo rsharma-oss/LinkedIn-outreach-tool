@@ -1,7 +1,7 @@
 # GrowthAutomated.ai — LinkedIn Toolkit
 ## Product Requirements Document & Engineering Handoff
 
-_Version: 1.0 · Reverse-engineered June 17, 2026_
+_Version: 1.1 · Updated June 18, 2026_
 
 ---
 
@@ -269,7 +269,38 @@ python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/bu
 
 ---
 
-## 11. Open Items — See BACKLOG.md
+## 11. CSV Field Name Reference (Critical)
+
+LinkedIn exports use **title case** field names. These have caused bugs when coded incorrectly:
+
+| File | Field | Correct | ❌ Wrong |
+|------|-------|---------|---------|
+| `messages.csv` | Date sent | `Date` | `DATE` |
+| `messages.csv` | Sender name | `From` | `FROM` |
+| `messages.csv` | Contact name (for sent msgs) | `ConversationTitle` | `TO` (doesn't exist) |
+| `Connections.csv` | Date connected | `Connected On` | — |
+| `Reactions.csv` | Date | `Date` | — |
+
+Always verify field names against an actual export before coding against them.
+
+---
+
+## 12. Git Workflow
+
+```
+main  →  production (GitHub Pages)
+dev   →  all work lands here first
+```
+
+**Scripts:**
+- `push_to_dev.py` — push changes to dev branch (supports `--msg`, `--with-offline`)
+- `create_pr.py` — open PR from dev → main (auto-opens GitHub on 403)
+
+**PAT note:** Current PAT has Contents permission only. Pull requests require adding `Pull requests: read & write` in GitHub → Settings → Developer settings → Fine-grained tokens.
+
+---
+
+## 13. Open Items — See BACKLOG.md
 
 - Light / Dark Mode (attempted, reverted — full requirements documented)
 - Customize Your ICP Filter (per-user keyword editing)
