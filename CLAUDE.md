@@ -118,6 +118,19 @@ python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/pu
 
 ---
 
+## CSV Field Names — Critical
+
+LinkedIn exports use **title case**. These exact names must be used in code:
+
+| File | Field | Correct | ❌ Wrong (past bugs) |
+|------|-------|---------|-----|
+| `messages.csv` | Date | `Date` | `DATE` |
+| `messages.csv` | Sender | `From` | `FROM` |
+| `messages.csv` | Contact name (sent) | `ConversationTitle` | `TO` (doesn't exist) |
+| `Connections.csv` | Date connected | `Connected On` | — |
+
+---
+
 ## What's Been Tried and Rolled Back
 
 | Feature | Status | Notes |
@@ -157,10 +170,19 @@ docs: add HANDOFF.md reverse-engineered PRD
 
 ---
 
+## PAT Permissions Note
+
+Current GitHub PAT has **Contents** permission only. To enable `create_pr.py` to open PRs automatically, add `Pull requests: read & write` in:
+GitHub → Settings → Developer settings → Fine-grained personal access tokens → edit token
+
+Until then, create PRs manually at: https://github.com/rsharma-oss/LinkedIn-outreach-tool/compare/main...dev
+
+---
+
 ## What's Next — Check BACKLOG.md
 
 Top items:
 1. 🔴 Light/Dark Mode (full requirements documented in BACKLOG.md)
 2. 🔴 Customize Your ICP Filter (localStorage-persisted keyword editor)
 3. 🔴 ICP Scoring FAQ (inline transparency)
-4. 🟡 Offline bundle — needs to be rebuilt and pushed (`build_offline_bundle.py`)
+4. 🟡 How-To page audit — verify offline download links are correct
