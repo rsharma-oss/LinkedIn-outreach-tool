@@ -1,6 +1,6 @@
 # GrowthAutomated.ai — LinkedIn Toolkit Backlog
 
-_Last updated: June 17, 2026_
+_Last updated: June 18, 2026_
 
 ---
 
@@ -82,10 +82,8 @@ _Last updated: June 17, 2026_
 - **Note:** Custom component code is preserved in conversation history if needed
 
 ### Offline Bundle
-- **Status:** Script ready (`build_offline_bundle.py`), not yet run / not deployed
-- **Scope:** Generates `dashboard-offline.html` and `icp-finder-offline.html`
-- **Action needed:** Run on Mac with internet access, then push with `--with-offline` flag
-- **Blocker:** Download buttons on `how-to.html` will 404 until files exist
+- **Status:** ✅ Built and deployed (lzstring now inlined — previous build was broken)
+- **Remaining:** Audit `how-to.html` download links point to correct filenames
 
 ### How-To Page
 - **Status:** Linked from nav but not reviewed this sprint
@@ -115,6 +113,14 @@ _Last updated: June 17, 2026_
 
 ## ✅ Recently Completed (see RELEASE_NOTES.md)
 
+**June 18, 2026**
+- Messages tab: 4 field name bugs fixed (`DATE`→`Date`, `FROM`→`From`, `TO`→`ConversationTitle`) — sent/received chart, top contacts, and message dates all broken
+- Git workflow: `dev` branch, `push_to_dev.py`, `create_pr.py`
+- `CLAUDE.md` session brain file created
+- `HANDOFF.md` reverse-engineered PRD created
+- Offline bundle rebuilt with lzstring
+
+**June 11–17, 2026**
 - LZ-string compression for sessionStorage (Safari fix)
 - Split-key cache strategy (`ga_csv_cache` + `ga_msg_cache`)
 - Mobile responsive layout (3 UAT defects fixed)
