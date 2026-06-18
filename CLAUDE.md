@@ -147,12 +147,13 @@ Container is `<header class="hdr">` (playbook's outer wrapper is still `.header`
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Light/Dark Mode | ✅ Shipped (v2, Jun 18) | See "Theming" below. dashboard.html + icp-finder.html only. v1 revert reasons all fixed. |
+| Light/Dark Mode | ✅ Shipped (v2, Jun 18) | See "Theming" below. dashboard.html + icp-finder.html + outreach-playbook-demo.html. v1 revert reasons all fixed. (how-to.html + demo.html still dark-only.) |
 | Dropdown filter component | ❌ Reverted | User preferred pills. Custom `dd-wrap/dd-trigger/dd-menu` CSS still in icp-finder.html as dead CSS |
 
-## Theming (Light/Dark) — dashboard.html + icp-finder.html
+## Theming (Light/Dark) — dashboard.html + icp-finder.html + outreach-playbook-demo.html
 
 - `:root` = dark defaults; `[data-theme="light"]` on `<html>` overrides them. **Dark values are unchanged** from pre-theme — don't "tidy" them.
+- ⚠️ **Playbook uses a SEPARATE variable scheme** (`--bg-primary`, `--text-primary`, `--accent`, `--bg-card`…), so its `[data-theme="light"]` block overrides *those* names, not the apps' `--bg`/`--tx`/`--li`. Its toggle is `.theme-toggle` (not `.btn-icon`). Keep the two schemes in sync conceptually but edit each file's own vars.
 - Previously-hardcoded colors are now vars: `--hdr-grad`, `--hover`, `--hover-strong`, `--track`, `--hairline`, `--scroll`, `--nav-idle`, `--nav-idle-hover`, `--tab-idle`, `--tab-hover`, `--pm-use` (dashboard also `--chart-grid/-tick/-label`). Add new colored UI via these vars, not literals, or it won't theme.
 - FOUC script is the first thing in `<head>`. Persistence: `localStorage['ga_theme']`. Toggle button: `#theme-btn` in `.hdr-r`.
 - **Chart.js (dashboard only):** `applyChartTheme()` syncs `GC` from CSS vars and updates every chart in the `charts[]` registry. Call it after any theme change AND after rendering new charts in light mode. icp-finder has no Chart.js.
