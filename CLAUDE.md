@@ -127,14 +127,17 @@ Container is `<header class="hdr">` (playbook's outer wrapper is still `.header`
 
 ## CSV Field Names — Critical
 
-LinkedIn exports use **title case**. These exact names must be used in code:
+⚠️ **Header casing is NOT consistent across LinkedIn export files.** Verify against a real export, never assume.
 
-| File | Field | Correct | ❌ Wrong (past bugs) |
-|------|-------|---------|-----|
-| `messages.csv` | Date | `Date` | `DATE` |
-| `messages.csv` | Sender | `From` | `FROM` |
-| `messages.csv` | Contact name (sent) | `ConversationTitle` | `TO` (doesn't exist) |
-| `Connections.csv` | Date connected | `Connected On` | — |
+| File | Real header format | Example headers |
+|------|--------------------|-----------------|
+| `messages.csv` | **UPPERCASE + spaces** | `FROM`, `TO`, `DATE`, `CONVERSATION TITLE`, `CONTENT` |
+| `Connections.csv` | Title Case + spaces | `First Name`, `Connected On`, `Company`, `Position` |
+| `Reactions/Comments/Shares.csv` | Title Case | `Date`, `Type`, `Link` |
+| `Invitations.csv` | Title Case + spaces | `From`, `To`, `Sent At`, `Direction` |
+| `Profile.csv` | Title Case + spaces | `First Name`, `Headline` |
+
+**The trap:** `messages.csv` is the only UPPERCASE/spaced file. dashboard.html's code reads TitleCase keys (`From`, `Date`, `ConversationTitle`) — so in `processFiles` it **normalizes message headers** (`tcKey`: lowercase → strip spaces → TitleCase each word) right after parsing, guarded by `!('Date' in D.messages[0])` so the TitleCase demo data is left alone. icp-finder.html instead reads with fallbacks: `r['FROM'] || r['From']`. Either pattern is fine — but if you add new message-field reads, **don't assume `From`/`Date` exist on raw rows.** (June 18: dashboard Messages tab was broken because it read only `From`/`Date`/`ConversationTitle` with no normalization → empty dates, 0 sent, no top contacts on real exports.)
 
 ---
 
