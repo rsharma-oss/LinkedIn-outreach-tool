@@ -927,7 +927,7 @@ async function processFiles(filemap, isDemo=false) {
 
   // Attach parsed dates
   D.connections.forEach(r => { r._date = parseDate(r['Connected On']); });
-  D.messages.forEach(r =>    { r._date = parseDate(r['DATE']); });
+  D.messages.forEach(r =>    { r._date = parseDate(r['Date']); });
   D.reactions.forEach(r =>   { r._date = parseDate(r['Date']); });
   D.comments.forEach(r =>    { r._date = parseDate(r['Date']); });
   D.shares.forEach(r =>      { r._date = parseDate(r['Date']); });
@@ -1148,7 +1148,7 @@ function buildOverview() {
   document.getElementById('s-connections').textContent = fmtFull(D.connections.length);
   document.getElementById('s-conn-recent').textContent = `+${connThisMonth} this month`;
 
-  const sent = D.messages.filter(r => (r['FROM']||'').toLowerCase().includes(firstName.toLowerCase())).length;
+  const sent = D.messages.filter(r => (r['From']||'').toLowerCase().includes(firstName.toLowerCase())).length;
   document.getElementById('s-messages').textContent = fmtFull(D.messages.length);
   document.getElementById('s-msg-sub').textContent = `~${fmtFull(sent)} sent by you`;
 
@@ -1545,8 +1545,8 @@ function buildMessages() {
     const ym=toYM(d);
     lbls.push(MONTH_NAMES[d.getMonth()]+(d.getMonth()===0||i===11?` '${String(d.getFullYear()).slice(2)}`:''));
     const mo=D.messages.filter(r=>toYM(r._date)===ym);
-    sentArr.push(mo.filter(r=>(r['FROM']||'').toLowerCase().includes(firstName.toLowerCase())).length);
-    recdArr.push(mo.filter(r=>!(r['FROM']||'').toLowerCase().includes(firstName.toLowerCase())).length);
+    sentArr.push(mo.filter(r=>(r['From']||'').toLowerCase().includes(firstName.toLowerCase())).length);
+    recdArr.push(mo.filter(r=>!(r['From']||'').toLowerCase().includes(firstName.toLowerCase())).length);
   }
   barChart('chart-msg-sentrecd',lbls,[
     {label:'Sent',    data:sentArr,color:'rgba(16,185,129,0.8)'},
@@ -1559,9 +1559,9 @@ function buildMessages() {
   // Top contacts
   const cc={};
   D.messages.forEach(r=>{
-    const from=(r['FROM']||'').trim();
+    const from=(r['From']||'').trim();
     const isMe=from.toLowerCase().includes(firstName.toLowerCase());
-    const other=isMe?(r['TO']||'').trim():from;
+    const other=isMe?(r['ConversationTitle']||'').trim():from;
     if(other&&!other.toLowerCase().includes(firstName.toLowerCase())&&other.length>1)
       cc[other]=(cc[other]||0)+1;
   });
