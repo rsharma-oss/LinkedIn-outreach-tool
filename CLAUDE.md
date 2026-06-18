@@ -109,6 +109,8 @@ CSS uses **literal colors** on the 5 non-themed pages (how-to, demo, playbook, i
 ```
 Container is `<header class="hdr">` (playbook's outer wrapper is still `.header` — visually identical). If you touch the nav, change it in all 7 files. The old `.hn-link` class is retired.
 
+**Header layout = balanced 3-column flex (keep it centered).** `.hdr-l{flex:1 1 0}` · `.hdr-nav{flex:0 0 auto}` · `.hdr-r{flex:1 1 0;justify-content:flex-end}`. The equal `flex:1` side zones force the nav to true page-center on every page regardless of brand/control widths. Do NOT use `margin:0 auto` on `.hdr-nav` (that centers in *leftover* space → nav shifts per page). Every header has all 3 zones — how-to & playbook carry an empty `<div class="hdr-r"></div>` purely to balance the layout.
+
 **L2 dashboard tabs:**
 ```css
 .tab               { color: rgba(240,244,255,0.38); }
