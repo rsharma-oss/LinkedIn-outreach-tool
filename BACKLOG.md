@@ -36,6 +36,15 @@ _Last updated: June 18, 2026_
 
 ---
 
+### PR Automation — Enable `create_pr.py` to open PRs
+- **Status:** Not started — currently blocked
+- **Problem:** `create_pr.py` fails with `403` because the GitHub PAT has `Contents` permission only, not `Pull requests: write`. PRs must be opened manually at the compare URL after every `push_to_dev.py`.
+- **Fix:** Grant the fine-grained PAT **`Pull requests: Read & write`** (GitHub → Settings → Developer settings → Fine-grained tokens → edit token), then update `TOKEN` in `create_pr.py` (and `push_to_dev.py`).
+- **Do this together with [Harden GitHub Token]** above — both require editing the same token, so rotate + re-scope in one pass.
+- **Nice-to-have:** a single `ship.py` that runs `build_offline_bundle.py` → `push_to_dev.py --with-offline` → `create_pr.py` end to end.
+
+---
+
 ## 🟡 Medium Priority
 
 ### Customize Your ICP Filter
