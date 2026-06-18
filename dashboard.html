@@ -948,6 +948,20 @@ async function processFiles(filemap, isDemo=false) {
     }
   }
 
+  // messages.csv ships with UPPERCASE, space-separated headers (CONVERSATION TITLE, FROM, DATE…)
+  // while the rest of this code reads TitleCase keys (ConversationTitle, From, Date).
+  // Normalize message headers once here — only when the expected 'Date' key is absent, so demo
+  // data (already TitleCase) is left untouched. Robust to LinkedIn header casing/spacing drift.
+  if (D.messages.length && !('Date' in D.messages[0])) {
+    const tcKey = k => String(k).trim().toLowerCase().split(/\s+/)
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+    D.messages = D.messages.map(r => {
+      const o = {};
+      for (const k in r) o[tcKey(k)] = r[k];
+      return o;
+    });
+  }
+
   // Attach parsed dates
   D.connections.forEach(r => { r._date = parseDate(r['Connected On']); });
   D.messages.forEach(r =>    { r._date = parseDate(r['Date']); });
