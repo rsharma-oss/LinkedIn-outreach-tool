@@ -22,7 +22,10 @@ A fully client-side LinkedIn analytics and outreach tool. Users upload their Lin
 | `dashboard.html` | Full analytics dashboard — 6 tabs, Chart.js, sessionStorage cache |
 | `icp-finder.html` | ICP classifier + outreach planner + message templates |
 | `how-to.html` | Landing / instructions page |
-| `outreach-playbook-demo.html` | Demo playbook page |
+| `outreach-playbook-demo.html` | Demo playbook page (own CSS-var scheme — see Theming) |
+| `demo.html` | Book-demo page (also a themed nav page) |
+
+Plus standalone sample snapshots `icp-demo.html` / `dashboard-demo.html` (nav present, dark-only). **Editing nav / theme / Report button touches all 7 pages.**
 
 Supporting docs (keep these updated):
 - `HANDOFF.md` — full reverse-engineered PRD (architecture, features, scoring logic)
@@ -162,6 +165,15 @@ Container is `<header class="hdr">` (playbook's outer wrapper is still `.header`
 
 ---
 
+## UAT Report Button & External Links (June 19)
+
+- **🐞 Report** button in every page's `.hdr-r` → `reportIssue()` opens a pre-filled `mailto:rahul@growthautomated.ai` with privacy-safe diagnostics (tool, page, browser, screen, theme, load-state counts, recent console errors via `window.__gaErrs`). **No LinkedIn data.** Apps use `.report-btn` with scheme-A vars (`--tx2`/`--border2`/`--hover-strong`); playbook uses its own (`--text-secondary`/`--border`). An early `addEventListener('error')` buffer in `<head>` feeds the error list.
+- **LinkedIn data-download link** → `https://www.linkedin.com/mypreferences/d/download-my-data`, placed everywhere export is explained (both load screens, how-to, dashboard-demo, shopify-embed, README).
+- **Repo doc links** point at GitHub's rendered blob (`/blob/main/<file>.md`): `ICP-CUSTOMIZATION.md` (ICP customize CTA) and `RELEASE_NOTES.md` (footer link). Both `.md` files are in the push list so they resolve on `main`.
+- **how-to tool frames** (01/02/03) each have a primary launch CTA (`.btn btn-primary`) → the respective tool.
+
+---
+
 ## Commit Message Format
 
 ```
@@ -203,8 +215,10 @@ Until then, create PRs manually at: https://github.com/rsharma-oss/LinkedIn-outr
 
 ## What's Next — Check BACKLOG.md
 
-Top items:
-1. 🔴 Light/Dark Mode (full requirements documented in BACKLOG.md)
-2. 🔴 Customize Your ICP Filter (localStorage-persisted keyword editor)
-3. 🔴 ICP Scoring FAQ (inline transparency)
-4. 🟡 How-To page audit — verify offline download links are correct
+Top open items (June 19):
+1. 🔴 Locale-Tolerant CSV Parsing — non-English exports parse empty (the "works for anyone" gap)
+2. 🔴 Harden GitHub token + PR automation (PAT needs `Pull requests: write` — also unblocks `create_pr.py`)
+3. 🟡 Customize Your ICP Filter (localStorage keyword editor; interim "edit keywords" link already shipped)
+4. 🟡 Hosted UAT feedback form (upgrade the `mailto` Report button to aggregated triage)
+
+Shipped this sprint (June 18–19): unified + centered nav, Light/Dark on all 5 nav pages, messages + member-id-suffix real-export fixes, 🐞 Report button, ICP explainer + FAQs, LinkedIn download links, per-tool CTAs.

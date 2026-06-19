@@ -2,13 +2,20 @@
 
 ---
 
-## Sprint Wrap — June 18, 2026 (Navigation Consistency)
+## Sprint Wrap — June 18–19, 2026 (Nav, Theming, Real-Export Hardening, UAT)
 
 ### ✨ UAT Feedback — "🐞 Report" button (June 19)
 - **What:** a header-nav "Report" button on all 5 nav pages that opens a **pre-filled `mailto:rahul@growthautomated.ai`** with the tester's description prompt + auto-attached **diagnostics**: tool, page, browser/OS, screen+window size, theme, load-state (e.g. `2,957 connections · 0 reactions`), and recent console errors.
 - **Privacy:** environment + counts only — **no LinkedIn data**. `mailto` shows the draft in the user's mail client, so they review before sending. Consistent with the no-server promise (nothing auto-sends).
 - **Why mailto:** zero backend, ships immediately, no third-party service. (Open follow-up: a hosted form/dashboard if we want aggregated triage — see below.)
 - **Errors captured** via an early `window.addEventListener('error')` buffer (`window.__gaErrs`) in `<head>`.
+
+### ✨ Content, links & CTAs (June 19)
+- **ICP transparency:** inline "How these tiers are scored" explainer on the ICP Finder + a 2-fold CTA — "edit the keywords yourself" (→ `ICP-CUSTOMIZATION.md`, now deployed) and "book time — we'll build your ICP for you" (→ demo).
+- **New FAQs** on how-to: "Why doesn't this work on my phone?" and "Why Chrome/Edge over Safari?"
+- **LinkedIn data-download link** (`mypreferences/d/download-my-data`) added everywhere export is explained — both load screens, how-to, dashboard-demo, shopify-embed, README. (`README.md` + `ICP-CUSTOMIZATION.md` added to the deploy list so their links resolve.)
+- **Per-tool launch CTAs** on how-to's 3 numbered tool frames (📊 Open Dashboard / 🎯 Open ICP Finder / 📋 Open Playbook).
+- **Footer "Release notes" link** (how-to + demo) → GitHub-rendered `RELEASE_NOTES.md`.
 
 ### 🐛 Bug Fix — member-id filename suffix broke engagement data (June 19)
 - **Symptom:** On a fresh export, the Dashboard's Reactions / Comments / Shares / Follows all loaded empty (Activity Breakdown, Engagement, and Content tabs blank) — while connections, messages, and invitations worked.
@@ -51,7 +58,7 @@ Re-implemented after the v1 revert; all three v1 failure modes fixed.
 - **Persistence:** `localStorage['ga_theme']` ('light'/'dark'), shared across both apps.
 - **Toggle:** 🌙/☀️ button in `.hdr-r` (before the status dot).
 - **Chart.js fix (the v1 killer):** `applyChartTheme()` re-reads the CSS vars into `GC` and iterates the `charts[]` registry, updating each chart's grid / ticks / legend (and doughnut segment borders) then calling `.update()`. Verified live-toggling re-themes all 18 dashboard charts. icp-finder has no charts.
-- **Default:** dark (unchanged brand look). Scope: `dashboard.html` + `icp-finder.html` only.
+- **Default:** dark (unchanged brand look). Scope at v2 launch was the 2 apps; **later extended to all 5 nav pages** (playbook, how-to, demo) — see the "light/dark added" change above. Only the standalone `icp-demo` / `dashboard-demo` snapshots remain dark-only.
 
 ### Offline bundles
 - Rebuilt `dashboard-offline.html` / `icp-finder-offline.html` with `build_offline_bundle.py` so they carry the unified nav **and** the theme toggle. (Reminder: always rebuild after editing source HTML before a `--with-offline` push.)

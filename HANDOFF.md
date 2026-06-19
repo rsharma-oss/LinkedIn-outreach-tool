@@ -1,7 +1,18 @@
 # GrowthAutomated.ai — LinkedIn Toolkit
 ## Product Requirements Document & Engineering Handoff
 
-_Version: 1.1 · Updated June 18, 2026_
+_Version: 1.3 · Updated June 19, 2026_
+
+---
+
+## 0. What's New (June 18–19, 2026)
+
+- **Unified, centered nav** across all 7 pages (`📘 How It Works · 📊 Dashboard · 🎯 ICP Finder · 📋 Playbook · [Book Demo]`) — balanced 3-column flex header keeps it at true page-center everywhere.
+- **Light / Dark mode** on all 5 nav pages (dashboard, icp-finder, playbook, how-to, demo): `[data-theme="light"]` overrides + FOUC script + `localStorage['ga_theme']`; dashboard re-themes Chart.js via `applyChartTheme()`. (icp-demo / dashboard-demo snapshots remain dark-only.)
+- **Real-export hardening:** `canonicalName()` strips member-id filename suffixes (e.g. `Reactions_5175237.csv`); `messages.csv` UPPERCASE headers normalized via `tcKey`. Verified end-to-end against a live 06-19-2026 export (2,957 connections · 11,811 reactions · 954 ICP).
+- **UAT "🐞 Report" button** in the header of every nav page → pre-filled `mailto:rahul@growthautomated.ai` with privacy-safe diagnostics (environment + counts + recent console errors, **no LinkedIn data**).
+- **Content / links:** ICP scoring explainer + 2-fold "edit keywords / book time" CTA; "why-not-mobile" & "why-not-Safari" FAQs; LinkedIn data-download link wherever export is explained; per-tool launch CTAs on how-to; footer "Release notes" link. `README.md` + `ICP-CUSTOMIZATION.md` now deployed.
+- **Deploy:** use `push_to_dev.py` → `create_pr.py`. The old `push_all_updates.py` is retired.
 
 ---
 
@@ -218,19 +229,21 @@ All templates have: title, category tag, usage note, template text with `[placeh
 | Compression | lz-string 1.5.0 |
 | Fonts | Inter + Assistant (Google Fonts) |
 | Hosting | GitHub Pages (static) |
-| Deploy | `push_all_updates.py` (GitHub Contents API + PAT) |
+| Deploy | `push_to_dev.py` → `create_pr.py` (GitHub Contents API + PAT) |
 | Offline build | `build_offline_bundle.py` (inlines all CDN libs) |
 
 ---
 
 ## 8. Navigation Structure
 
-**L1 Header (both pages):**
+**L1 Header — canonical across ALL 7 pages** (balanced 3-column flex, centered):
 - Logo → `how-to.html`
+- 📘 How It Works → `how-to.html`
 - 📊 Dashboard → `dashboard.html`
 - 🎯 ICP Finder → `icp-finder.html`
 - 📋 Playbook → `outreach-playbook-demo.html`
 - Book Demo (CTA) → `demo.html`
+- Right zone (`.hdr-r`): **🐞 Report** button + **🌙/☀️ theme toggle** + page-specific controls (status, reload, export)
 
 **L2 Dashboard tabs:**
 Overview · Network · Engagement · Content · Messages · Connections Table
@@ -242,10 +255,12 @@ ICP Contacts · Outreach Plan · Message Templates
 
 ## 9. Deployment
 
-**Push to GitHub Pages:**
+**Push to `dev`, then open the PR (merge deploys to Pages):**
 ```bash
-python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/push_all_updates.py
+python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/push_to_dev.py --with-offline
+python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/create_pr.py
 ```
+_(`push_all_updates.py` is retired — do not use.)_
 
 **Build offline bundle (run first if offline files needed):**
 ```bash
@@ -271,17 +286,19 @@ python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/bu
 
 ## 11. CSV Field Name Reference (Critical)
 
-LinkedIn exports use **title case** field names. These have caused bugs when coded incorrectly:
+⚠️ **Header casing is NOT consistent across files — verify against a real export, never assume.** `messages.csv` is the ODD ONE OUT (UPPERCASE + spaces).
 
-| File | Field | Correct | ❌ Wrong |
-|------|-------|---------|---------|
-| `messages.csv` | Date sent | `Date` | `DATE` |
-| `messages.csv` | Sender name | `From` | `FROM` |
-| `messages.csv` | Contact name (for sent msgs) | `ConversationTitle` | `TO` (doesn't exist) |
-| `Connections.csv` | Date connected | `Connected On` | — |
-| `Reactions.csv` | Date | `Date` | — |
+| File | Real header format | Example headers |
+|------|--------------------|-----------------|
+| `messages.csv` | **UPPERCASE + spaces** | `FROM`, `TO`, `DATE`, `CONVERSATION TITLE`, `CONTENT` |
+| `Connections.csv` | Title Case + spaces (+ a `Notes:` preamble — use `skip:'First Name'`) | `First Name`, `Connected On`, `Company`, `Position` |
+| `Reactions/Comments/Shares.csv` | Title Case | `Date`, `Type`, `Link` |
+| `Invitations.csv` | Title Case + spaces | `From`, `To`, `Sent At`, `Direction` |
+| `Profile.csv` | Title Case + spaces | `First Name`, `Headline` |
 
-Always verify field names against an actual export before coding against them.
+- **dashboard.html** normalizes message headers via `tcKey` (lowercase → strip spaces → TitleCase) right after parse, guarded by `!('Date' in D.messages[0])`. **icp-finder.html** reads with fallbacks (`r['FROM'] || r['From']`).
+- **Filename suffix:** some exports append a member-id (`Reactions_5175237.csv`). Both apps run intake names through `canonicalName()` (strips a trailing `_<digits>`) so they match the `wanted` list.
+- ⚠️ Still English-only — localized exports translate headers and parse empty (see BACKLOG: locale-tolerant parsing).
 
 ---
 
@@ -302,8 +319,9 @@ dev   →  all work lands here first
 
 ## 13. Open Items — See BACKLOG.md
 
-- Light / Dark Mode (attempted, reverted — full requirements documented)
-- Customize Your ICP Filter (per-user keyword editing)
-- ICP Scoring FAQ (document defaults inline)
-- Offline bundle deployment
-- Dropdown filter components
+- **Locale-tolerant CSV parsing** — non-English exports parse empty (next "works for anyone" gap)
+- **Customize Your ICP Filter** — per-user keyword editing (interim: "edit keywords" link to `ICP-CUSTOMIZATION.md`)
+- **Harden GitHub token + PR automation** — PAT needs `Pull requests: write`
+- **Hosted UAT feedback form** — aggregate triage vs. the current `mailto` report button
+- Dropdown filter components (built, reverted)
+- _Shipped since v1.1: Light/Dark mode (all 5 nav pages), ICP scoring explainer + FAQ, real-export hardening, UAT Report button — see RELEASE_NOTES_

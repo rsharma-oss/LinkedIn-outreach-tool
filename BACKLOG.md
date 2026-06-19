@@ -18,21 +18,7 @@ _Last updated: June 19, 2026_
   - Add a couple of non-English sample exports to the test set.
 - **Note:** Bigger than a one-liner — needs an alias map maintained per locale.
 
-### Light / Dark Mode
-- **Status:** ✅ **Shipped June 18, 2026** (v2). All v1 known-issues resolved — see RELEASE_NOTES. Requirements kept below for reference.
-- **Scope:** Both `dashboard.html` and `icp-finder.html`
-- **Requirements:**
-  - CSS variable swap via `[data-theme="light"]` on `<html>`
-  - `localStorage` persistence across page navigations
-  - FOUC-prevention script in `<head>` (apply theme before first paint)
-  - Chart.js update on toggle — grid lines, axis ticks, legend labels, doughnut border
-  - All hardcoded `rgba(255,255,255,...)` hover tints need light-mode overrides
-  - Header gradient (`linear-gradient(135deg,#0a0f1e,#0d1525)`) needs override
-  - Toggle button (🌙 / ☀️) in `hdr-r` before status dot
-- **Known issues from v1:**
-  - Chart.js colors not fully updating on toggle
-  - Hardcoded rgba white tints visible on light backgrounds
-  - Privacy manifest colors not adapting
+_(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to Recently Completed.)_
 
 ---
 
@@ -70,12 +56,12 @@ _Last updated: June 19, 2026_
   - Live re-classification on save — existing contacts re-tiered immediately with new ruleset
   - Show match count per tier after re-run so user can validate their changes
   - Export custom config as JSON (nice-to-have)
-- **Note:** Currently all classification is hardcoded — see FAQ item below for exact defaults
+- **Note:** Currently all classification is hardcoded — see FAQ item below for exact defaults. **Interim shipped June 19:** the ICP Finder now links to `ICP-CUSTOMIZATION.md` ("edit the keywords yourself") + a "book time — we'll build your ICP" CTA.
 
 ---
 
 ### ICP Scoring FAQ — Document the Coded Defaults
-- **Status:** Not started
+- **Status:** 🟢 **Partially shipped (June 19)** — an inline "How these tiers are scored" explainer (`.icp-note` block) now appears on the ICP Finder with the T1/T2/T3 logic + customize CTAs. Optional remaining: a dedicated expandable keyword-list accordion and/or a `how-to.html` section.
 - **Scope:** `icp-finder.html` (inline FAQ section or tooltip) + `how-to.html`
 - **Purpose:** Users don't know why a contact was placed in T1 vs T2 vs T3. Transparency builds trust and helps them understand what to customize.
 - **Current hardcoded defaults to document:**
@@ -102,6 +88,14 @@ _Last updated: June 19, 2026_
 
 ---
 
+### Hosted UAT Feedback Form (upgrade the 🐞 Report button)
+- **Status:** Not started — currently ships via pre-filled `mailto` (June 19)
+- **Problem:** `mailto:` scatters reports as individual emails and silently fails for testers with no desktop mail client (webmail-only users). No aggregate triage view.
+- **Fix:** point the Report button at a pre-filled hosted form (Tally / Google Forms) so responses land in one dashboard/sheet; keep `mailto` as a fallback. Carry the same diagnostics via URL params. User-initiated only (no-server promise preserved).
+
+### Deploy / version `shopify-embed.html`
+- **Status:** Decision needed — it's NOT in `push_to_dev.py` FILES (the paste-into-Shopify snippet, not Pages-served). Local copy has the latest edits (download link). Add to the push list if you want it versioned in the repo.
+
 ### Dropdown Components for Filters
 - **Status:** Built (custom `dd-wrap` / `dd-trigger` / `dd-menu`), reverted at user request
 - **Scope:** `icp-finder.html` template filter section
@@ -116,12 +110,12 @@ _Last updated: June 19, 2026_
 
 ### Offline Bundle
 - **Status:** ✅ Built and deployed (lzstring now inlined — previous build was broken)
-- **Rebuilt June 18 ✅** — offline bundles regenerated with the unified nav via `build_offline_bundle.py`. Always rebuild after editing the source HTML before a `--with-offline` push.
-- **Remaining:** Audit `how-to.html` download links point to correct filenames
+- **Rebuilt June 18–19 ✅** — regenerated repeatedly with the unified nav, theme toggle, Report button, suffix fix, and download links. Always rebuild after editing source HTML before a `--with-offline` push.
+- **Done:** how-to offline-download links verified (`dashboard-offline.html` / `icp-finder-offline.html`).
 
 ### How-To Page
-- **Status:** Nav standardized June 18 ✅ — now part of the unified nav with active state. Content not yet re-audited.
-- **Requirements:** Audit copy for accuracy, confirm offline download links point to correct filenames
+- **Status:** ✅ Substantially updated June 18–19 — unified + centered nav, light/dark, per-tool launch CTAs on the 3 tool frames, "why-not-mobile / Safari" FAQs, LinkedIn data-download link, footer Release-notes link. Offline-download links verified.
+- **Remaining:** none pressing — general copy polish only.
 
 ---
 
@@ -146,6 +140,15 @@ _Last updated: June 19, 2026_
 ---
 
 ## ✅ Recently Completed (see RELEASE_NOTES.md)
+
+**June 19, 2026**
+- Real-export hardening: `canonicalName()` for member-id filename suffixes — verified against a live 06-19 export (reactions/comments/shares/follows were all 0 → now full)
+- Messages tab fix: UPPERCASE-header normalization (`tcKey`) — real exports populate dates / sent-received / top-contacts
+- Light/Dark extended to playbook + how-to + demo (now all 5 nav pages); nav placement fixed (3-column flex, centered)
+- UAT "🐞 Report" button (pre-filled mailto + privacy-safe diagnostics) on every nav page
+- ICP scoring explainer + "edit keywords / book time" CTAs; "why-not-mobile / why-not-Safari" FAQs
+- LinkedIn data-download link wherever export is explained; `README.md` + `ICP-CUSTOMIZATION.md` deployed
+- Per-tool launch CTAs on how-to's 3 tool frames; footer "Release notes" link
 
 **June 18, 2026**
 - Messages tab: 4 field name bugs fixed (`DATE`→`Date`, `FROM`→`From`, `TO`→`ConversationTitle`) — sent/received chart, top contacts, and message dates all broken
