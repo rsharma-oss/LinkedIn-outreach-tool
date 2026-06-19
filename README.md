@@ -22,7 +22,7 @@ Static version of the ICP finder with anonymized sample data already loaded. No 
 
 ## How to Use
 
-1. **Export your LinkedIn data:** Settings → Data Privacy → Get a copy of your data → Request archive
+1. **Export your LinkedIn data:** Settings → Data Privacy → [Get a copy of your data ↗](https://www.linkedin.com/mypreferences/d/download-my-data) → Request archive
 2. Unzip the download
 3. Open `dashboard.html` or `icp-finder.html` in Chrome or Edge
 4. Click **Select Export Folder** (Chrome/Edge) or **Choose CSV Files** (any browser)
