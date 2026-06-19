@@ -4,6 +4,11 @@
 
 ## Sprint Wrap — June 18–19, 2026 (Nav, Theming, Real-Export Hardening, UAT)
 
+### 📱 Mobile "built for desktop" notice (June 19)
+- On phones, the two upload tools (`dashboard.html`, `icp-finder.html`) now show a dismissible amber banner under the header: **"Built for desktop. Loading your LinkedIn export needs a laptop — mobile browsers can't open the folder picker. Why? ↗"**
+- The "Why?" link → `how-to.html#faq5`, and how-to now **auto-expands** the linked FAQ ("Why doesn't this work on my phone?") via a small hash handler.
+- Mobile-only (`@media max-width:768px`), theme-safe (uses `--tx`/`--li2`), dismissible with `localStorage['ga_mobile_notice']`, hidden on desktop. Not shown on how-to/demo/playbook (they render fine on mobile and the FAQ lives on how-to).
+
 ### 📱 Mobile header & layout fixes (June 19)
 - Adding the 🐞 Report button overflowed the phone header — the brand text ran into the buttons. Reworked the mobile header (`@media`) on all 5 nav pages to a **wrapping** layout: brand on row 1; the action cluster (Report · theme · reload/export/playbook) wraps right-aligned below instead of overlapping. Secondary status text + brand sub-label hidden, title shrunk. No horizontal scroll in any state (load screen, loaded, demo banner).
 - `icp-finder`: tier-description cards (`.tier-explain`) now stack to 1 column on mobile (were crammed into 3).
