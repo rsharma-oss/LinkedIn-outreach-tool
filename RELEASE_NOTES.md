@@ -4,6 +4,10 @@
 
 ## Sprint Wrap — June 18–19, 2026 (Nav, Theming, Real-Export Hardening, UAT)
 
+### 📱 Mobile header & layout fixes (June 19)
+- Adding the 🐞 Report button overflowed the phone header — the brand text ran into the buttons. Reworked the mobile header (`@media`) on all 5 nav pages to a **wrapping** layout: brand on row 1; the action cluster (Report · theme · reload/export/playbook) wraps right-aligned below instead of overlapping. Secondary status text + brand sub-label hidden, title shrunk. No horizontal scroll in any state (load screen, loaded, demo banner).
+- `icp-finder`: tier-description cards (`.tier-explain`) now stack to 1 column on mobile (were crammed into 3).
+
 ### ✨ UAT Feedback — "🐞 Report" button (June 19)
 - **What:** a header-nav "Report" button on all 5 nav pages that opens a **pre-filled `mailto:rahul@growthautomated.ai`** with the tester's description prompt + auto-attached **diagnostics**: tool, page, browser/OS, screen+window size, theme, load-state (e.g. `2,957 connections · 0 reactions`), and recent console errors.
 - **Privacy:** environment + counts only — **no LinkedIn data**. `mailto` shows the draft in the user's mail client, so they review before sending. Consistent with the no-server promise (nothing auto-sends).
