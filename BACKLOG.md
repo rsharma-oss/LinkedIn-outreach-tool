@@ -1,10 +1,22 @@
 # GrowthAutomated.ai — LinkedIn Toolkit Backlog
 
-_Last updated: June 18, 2026_
+_Last updated: June 19, 2026_
 
 ---
 
 ## 🔴 High Priority
+
+### Locale-Tolerant CSV Parsing (non-English exports)
+- **Status:** Not started
+- **Scope:** `dashboard.html`, `icp-finder.html`
+- **Problem:** All parsing reads literal **English** column headers (`r['Date']`, `r['First Name']`, `r['Connected On']`, etc.). LinkedIn localizes export headers by account language (e.g. `Date`→`Datum`/`Fecha`), so a German/Spanish/French export loads the files but parses **empty** — every chart and tier comes back blank. Only English exports have been validated.
+- **Context:** The June 19 `canonicalName()` fix solved *filename* matching for the `_<member-id>` suffix, but it's filename-only — it does not address translated *column headers* inside the files. This is the remaining gap before "any export from anyone" works.
+- **Requirements:**
+  - Map columns by known-alias lists (per field, across LinkedIn's supported languages) or by position, instead of exact English strings.
+  - Apply to every field read: messages (`From`/`Date`/`ConversationTitle`…), connections (`First Name`/`Company`/`Position`/`Connected On`), reactions/comments/shares (`Date`), invitations (`From`/`Sent At`).
+  - Fall back gracefully + surface a clear "couldn't read this export's columns" message instead of silently rendering empty.
+  - Add a couple of non-English sample exports to the test set.
+- **Note:** Bigger than a one-liner — needs an alias map maintained per locale.
 
 ### Light / Dark Mode
 - **Status:** ✅ **Shipped June 18, 2026** (v2). All v1 known-issues resolved — see RELEASE_NOTES. Requirements kept below for reference.
