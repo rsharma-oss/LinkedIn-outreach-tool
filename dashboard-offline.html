@@ -757,6 +757,11 @@ function parseCSV(text, skipToHeader) {
   return result.data || [];
 }
 
+// LinkedIn sometimes suffixes activity files with a member-id (e.g. Reactions_5175237.csv,
+// Member_Follows_5175237.csv). Strip a trailing _<digits> before the extension so they
+// match the canonical names the rest of the code expects.
+function canonicalName(name){ return name.replace(/_\d+(\.[A-Za-z0-9]+)$/, '$1'); }
+
 function setProgress(pct, label) {
   document.getElementById('progress-bar').style.width = pct + '%';
   document.getElementById('progress-label').textContent = label;
@@ -820,7 +825,7 @@ async function loadFromZip(zipFile) {
     const promises = [];
 
     zip.forEach((relativePath, zipEntry) => {
-      const filename = relativePath.split('/').pop();
+      const filename = canonicalName(relativePath.split('/').pop());
       if (!zipEntry.dir && wanted.includes(filename)) {
         promises.push(
           zipEntry.async('string').then(text => { filemap[filename] = text; })
@@ -862,7 +867,7 @@ async function loadFromDirectoryEntry(dirEntry) {
         reader.readEntries(async (entries) => {
           if (entries.length === 0) { resolve(results); return; }
           for (const e of entries) {
-            if (e.isFile && wanted.has(e.name)) results.push(e);
+            if (e.isFile && wanted.has(canonicalName(e.name))) results.push(e);
             else if (e.isDirectory) {
               const sub = await readDir(e);
               results.push(...sub);
@@ -881,7 +886,7 @@ async function loadFromDirectoryEntry(dirEntry) {
       new Promise(resolve => {
         fe.file(file => {
           const reader = new FileReader();
-          reader.onload = e => { filemap[fe.name] = e.target.result; resolve(); };
+          reader.onload = e => { filemap[canonicalName(fe.name)] = e.target.result; resolve(); };
           reader.readAsText(file, 'UTF-8');
         });
       })
@@ -920,9 +925,9 @@ async function loadFolder() {
 
   try {
     for await (const entry of dirHandle.values()) {
-      if (entry.kind === 'file' && wanted.includes(entry.name)) {
+      if (entry.kind === 'file' && wanted.includes(canonicalName(entry.name))) {
         const file = await entry.getFile();
-        filemap[entry.name] = await file.text();
+        filemap[canonicalName(entry.name)] = await file.text();
       }
     }
   } catch(e) {
@@ -943,7 +948,7 @@ async function loadFromInput(fileList) {
   const readPromises = Array.from(fileList).map(file =>
     new Promise(resolve => {
       const reader = new FileReader();
-      reader.onload = e => { filemap[file.name] = e.target.result; resolve(); };
+      reader.onload = e => { filemap[canonicalName(file.name)] = e.target.result; resolve(); };
       reader.readAsText(file, 'UTF-8');
     })
   );
