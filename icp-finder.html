@@ -1978,6 +1978,10 @@ function parseCSV(text, skipToHeader) {
   return (Papa.parse(t, { header:true, skipEmptyLines:true, dynamicTyping:false }).data) || [];
 }
 
+// LinkedIn sometimes suffixes export files with a member-id (e.g. Reactions_5175237.csv).
+// Strip a trailing _<digits> before the extension so files match the expected names.
+function canonicalName(name){ return name.replace(/_\d+(\.[A-Za-z0-9]+)$/, '$1'); }
+
 // ─── LOADING ──────────────────────────────────────────────────────────────────
 function setProgress(pct, label) {
   document.getElementById('progress-bar').style.width = pct + '%';
@@ -1997,9 +2001,9 @@ async function loadFolder() {
   const wanted = ['Connections.csv','messages.csv'];
   try {
     for await (const entry of dirHandle.values()) {
-      if (entry.kind === 'file' && wanted.includes(entry.name)) {
+      if (entry.kind === 'file' && wanted.includes(canonicalName(entry.name))) {
         const file = await entry.getFile();
-        filemap[entry.name] = await file.text();
+        filemap[canonicalName(entry.name)] = await file.text();
       }
     }
   } catch(e) { showError('Could not read folder: ' + e.message); return; }
@@ -2013,7 +2017,7 @@ async function loadFromInput(fileList) {
   const readPromises = Array.from(fileList).map(file =>
     new Promise(resolve => {
       const reader = new FileReader();
-      reader.onload = e => { filemap[file.name] = e.target.result; resolve(); };
+      reader.onload = e => { filemap[canonicalName(file.name)] = e.target.result; resolve(); };
       reader.readAsText(file, 'UTF-8');
     })
   );
