@@ -689,6 +689,39 @@ a:hover{color:var(--tx);text-decoration:underline;}
         </div>
       </div>
 
+      <!-- Q5 -->
+      <div class="faq-item">
+        <input type="checkbox" id="faq5" class="faq-toggle">
+        <label class="faq-label" for="faq5">
+          Why doesn't this work on my phone?
+          <span class="faq-icon">+</span>
+        </label>
+        <div class="faq-body">
+          <div class="faq-body-inner" style="line-height:1.8;">
+            <p style="margin-bottom:10px;">These are <strong style="color:var(--tx);">desktop tools by design</strong> — dense dashboards, large contact tables, and 18 charts that need real screen width to be readable.</p>
+            <p>There's also a hard technical reason: loading your export uses the browser's folder/file picker (the File System Access API), which <strong style="color:var(--tx);">mobile browsers don't support</strong>. You can read this page and explore the demos on a phone, but to load your own data use a laptop or desktop.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="faq-item">
+        <input type="checkbox" id="faq6" class="faq-toggle">
+        <label class="faq-label" for="faq6">
+          Why do you recommend Chrome or Edge instead of Safari?
+          <span class="faq-icon">+</span>
+        </label>
+        <div class="faq-body">
+          <div class="faq-body-inner" style="line-height:1.8;">
+            <p style="margin-bottom:10px;">It still works in Safari and Firefox — Chrome and Edge just give the smoothest path, for two reasons:</p>
+            <ol style="margin:0 0 0 18px;display:flex;flex-direction:column;gap:8px;">
+              <li><strong style="color:var(--tx);">One-click folder upload.</strong> The "Select Export Folder" button uses the File System Access API, which only Chrome and Edge support. In Safari/Firefox you pick the CSV files manually instead — a couple extra clicks, same result.</li>
+              <li><strong style="color:var(--tx);">Storage headroom.</strong> Safari caps per-tab storage (~5MB) lower than Chrome (~10MB), so very large networks (10k+ connections) can hit the limit. Either way, nothing ever leaves your browser.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
