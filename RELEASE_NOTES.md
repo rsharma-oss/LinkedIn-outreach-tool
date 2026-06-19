@@ -4,6 +4,12 @@
 
 ## Sprint Wrap — June 18, 2026 (Navigation Consistency)
 
+### 🐛 Bug Fix — member-id filename suffix broke engagement data (June 19)
+- **Symptom:** On a fresh export, the Dashboard's Reactions / Comments / Shares / Follows all loaded empty (Activity Breakdown, Engagement, and Content tabs blank) — while connections, messages, and invitations worked.
+- **Root cause:** LinkedIn suffixes some activity files with a member-id — `Reactions_5175237.csv`, `Comments_5175237.csv`, `Shares_5175237.csv`, `Member_Follows_5175237.csv`. All file-intake paths matched filenames **exactly** against the `wanted` list, so the suffixed files were skipped entirely.
+- **Fix:** added `canonicalName()` (strips a trailing `_<digits>` before the extension) and applied it at every intake point in both apps (zip, drag-folder, folder picker, file input).
+- **Verified** against a real 06-19-2026 export: 2,957 connections · 6,961 messages · **11,811 reactions · 3,727 comments · 672 shares · 1,626 follows** (all four were 0 before the fix). ICP Finder classified 954 contacts (T1 891 / T2 16 / T3 47). Dashboard charts and ICP tiers all render.
+
 ### 🐛 Bug Fix — Messages tab broken on real exports (dashboard.html)
 - **Symptom:** With a real LinkedIn export, the Messages tab showed empty "Messages Per Month", 0 sent in Sent-vs-Received, and no top contacts. (Worked in the demo, which masked it.)
 - **Root cause:** `messages.csv` is the only export file with **UPPERCASE, space-separated headers** (`FROM`, `DATE`, `CONVERSATION TITLE`). The code read TitleCase keys (`r['From']`, `r['Date']`, `r['ConversationTitle']`) → all `undefined` on real data. The demo data uses TitleCase headers, so it never reproduced.
