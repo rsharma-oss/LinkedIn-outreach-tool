@@ -369,7 +369,12 @@ a:hover{color:var(--tx);text-decoration:underline;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
-  .hdr{padding:14px 20px;}
+  .hdr{padding:11px 14px;gap:8px;flex-wrap:wrap;}
+  .hdr-l{flex:0 1 auto;}
+  .hdr-r{flex:1 1 auto;flex-wrap:wrap;justify-content:flex-end;gap:7px;}
+  .hdr-title{font-size:0.95rem;}
+  .hdr-sub{display:none;}
+  .report-btn{padding:7px 9px;}
   .hdr-nav .nav-link:not(.cta){display:none;}
   .hero{padding:56px 20px 52px;}
   .section{padding:52px 20px;}

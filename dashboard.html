@@ -225,8 +225,14 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .nav-link.cta:hover{background:var(--li2);}
 @media(max-width:680px){.hdr-nav{display:none;}}
 @media(max-width:600px){
-  /* Header */
-  .hdr{padding:12px 16px;}
+  /* Header — compact single row, no overlap (nav already hidden <680px) */
+  .hdr{padding:11px 14px;gap:8px;flex-wrap:wrap;}
+  .hdr-l{flex:0 1 auto;}
+  .hdr-r{flex:1 1 auto;flex-wrap:wrap;justify-content:flex-end;gap:7px;}
+  .hdr-title{font-size:0.95rem;}
+  .hdr-sub{display:none;}
+  .status-text{display:none;}
+  .report-btn{padding:7px 9px;}
   /* Load screen — reduce outer + card padding so content isn't crushed */
   #load-screen{padding:12px;}
   .load-card{padding:28px 16px;}
