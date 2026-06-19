@@ -201,7 +201,13 @@
   .report-btn{background:transparent;color:var(--text-secondary);border:1px solid var(--border);border-radius:8px;padding:7px 11px;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-family:inherit;}
   .report-btn:hover{background:var(--hover-strong);color:var(--text-primary);}
   @media (max-width: 900px) {
-    .main { padding: 20px; } .header { padding: 16px 20px; } .nav-tabs { padding: 0 20px; }
+    .main { padding: 20px; } .nav-tabs { padding: 0 20px; }
+    .header { padding: 14px 18px; gap: 8px; flex-wrap: wrap; }
+    .header-left { flex: 0 1 auto; }
+    .header-title { font-size: 1rem; }
+    .header-sub { display: none; }
+    .hdr-r { flex: 1 1 auto; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
+    .report-btn { padding: 7px 9px; }
     .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
     .demo-banner { padding: 10px 20px; }
     .hdr-nav { display: none; }
