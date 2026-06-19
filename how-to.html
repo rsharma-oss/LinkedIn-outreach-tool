@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <script>(function(){try{var t=localStorage.getItem('ga_theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<script>window.__gaErrs=[];addEventListener('error',function(e){try{window.__gaErrs.push((e.message||'error')+' @'+((e.filename||'').split('/').pop())+':'+(e.lineno||0));if(window.__gaErrs.length>10)window.__gaErrs.shift();}catch(_){}});</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How It Works · GrowthAutomated.ai</title>
@@ -61,6 +62,8 @@ a:hover{color:var(--tx);text-decoration:underline;}
 .nav-link.cta:hover{background:#00a0dc;text-decoration:none;}
 .theme-toggle{background:var(--hover-strong);color:var(--tx2);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;font-size:0.95rem;line-height:1;cursor:pointer;transition:all 0.18s;}
 .theme-toggle:hover{background:var(--bg4);color:var(--tx);}
+.report-btn{background:transparent;color:var(--tx2);border:1px solid var(--border2);border-radius:8px;padding:7px 11px;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.18s;font-family:inherit;}
+.report-btn:hover{background:var(--hover-strong);color:var(--tx);}
 
 /* ── HERO ── */
 .hero{
@@ -406,7 +409,7 @@ a:hover{color:var(--tx);text-decoration:underline;}
     <a class="nav-link" href="outreach-playbook-demo.html">📋 Playbook</a>
     <a class="nav-link cta" href="demo.html">Book Demo</a>
   </nav>
-  <div class="hdr-r"><button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button></div>
+  <div class="hdr-r"><button class="report-btn" onclick="reportIssue()" title="Report an issue or give feedback">🐞 Report</button><button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button></div>
 </header>
 
 <!-- ══════════════════════════════════════════
@@ -763,6 +766,16 @@ a:hover{color:var(--tx);text-decoration:underline;}
 </footer>
 
 <script>
+function reportIssue(){
+  var L=['Describe the issue here:','','- What happened: ','- What you expected: ','','--- Diagnostics (auto-filled · no LinkedIn data) ---'];
+  L.push('Tool: '+document.title);
+  L.push('Page: '+location.pathname);
+  L.push('Browser: '+navigator.userAgent);
+  L.push('Screen '+screen.width+'x'+screen.height+' · Window '+innerWidth+'x'+innerHeight);
+  L.push('Theme: '+(document.documentElement.getAttribute('data-theme')||'dark'));
+  try{ L.push('Console errors: '+((window.__gaErrs&&window.__gaErrs.length)?window.__gaErrs.slice(0,5).join(' | '):'none')); }catch(_){}
+  window.location.href='mailto:rahul@growthautomated.ai?subject='+encodeURIComponent('[LinkedIn Toolkit] Issue — '+document.title)+'&body='+encodeURIComponent(L.join('\n'));
+}
 function updateThemeBtn(){ var b=document.getElementById('theme-btn'); if(b) b.textContent=document.documentElement.getAttribute('data-theme')==='light'?'☀️':'🌙'; }
 function toggleTheme(){
   var light=document.documentElement.getAttribute('data-theme')==='light';
