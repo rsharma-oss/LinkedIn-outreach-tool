@@ -149,6 +149,7 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 - ICP scoring explainer + "edit keywords / book time" CTAs; "why-not-mobile / why-not-Safari" FAQs
 - LinkedIn data-download link wherever export is explained; `README.md` + `ICP-CUSTOMIZATION.md` deployed
 - Per-tool launch CTAs on how-to's 3 tool frames; footer "Release notes" link
+- Mobile: header overflow fixed (wrapping layout, all 5 nav pages); icp-finder tier cards stack; "Built for desktop" notice on dashboard + icp-finder (top of page, links to auto-expanding how-to FAQ)
 
 **June 18, 2026**
 - Messages tab: 4 field name bugs fixed (`DATE`→`Date`, `FROM`→`From`, `TO`→`ConversationTitle`) — sent/received chart, top contacts, and message dates all broken
