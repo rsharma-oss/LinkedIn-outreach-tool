@@ -4,6 +4,12 @@
 
 ## Sprint Wrap — June 18, 2026 (Navigation Consistency)
 
+### ✨ UAT Feedback — "🐞 Report" button (June 19)
+- **What:** a header-nav "Report" button on all 5 nav pages that opens a **pre-filled `mailto:rahul@growthautomated.ai`** with the tester's description prompt + auto-attached **diagnostics**: tool, page, browser/OS, screen+window size, theme, load-state (e.g. `2,957 connections · 0 reactions`), and recent console errors.
+- **Privacy:** environment + counts only — **no LinkedIn data**. `mailto` shows the draft in the user's mail client, so they review before sending. Consistent with the no-server promise (nothing auto-sends).
+- **Why mailto:** zero backend, ships immediately, no third-party service. (Open follow-up: a hosted form/dashboard if we want aggregated triage — see below.)
+- **Errors captured** via an early `window.addEventListener('error')` buffer (`window.__gaErrs`) in `<head>`.
+
 ### 🐛 Bug Fix — member-id filename suffix broke engagement data (June 19)
 - **Symptom:** On a fresh export, the Dashboard's Reactions / Comments / Shares / Follows all loaded empty (Activity Breakdown, Engagement, and Content tabs blank) — while connections, messages, and invitations worked.
 - **Root cause:** LinkedIn suffixes some activity files with a member-id — `Reactions_5175237.csv`, `Comments_5175237.csv`, `Shares_5175237.csv`, `Member_Follows_5175237.csv`. All file-intake paths matched filenames **exactly** against the `wanted` list, so the suffixed files were skipped entirely.

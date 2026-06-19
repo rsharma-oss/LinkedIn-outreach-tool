@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <script>(function(){try{var t=localStorage.getItem('ga_theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<script>window.__gaErrs=[];addEventListener('error',function(e){try{window.__gaErrs.push((e.message||'error')+' @'+((e.filename||'').split('/').pop())+':'+(e.lineno||0));if(window.__gaErrs.length>10)window.__gaErrs.shift();}catch(_){}});</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LinkedIn ICP Finder · GrowthAutomated.ai</title>
@@ -51,6 +52,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .btn-outline{background:transparent;color:var(--tx2);border:1px solid var(--border2);}
 .btn-icon{background:var(--hover);color:var(--tx2);border:1px solid var(--border2);padding:8px 10px;font-size:0.95rem;line-height:1;}
 .btn-icon:hover{background:var(--hover-strong);color:var(--tx);}
+.report-btn{background:transparent;color:var(--tx2);border:1px solid var(--border2);border-radius:8px;padding:7px 11px;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.18s;font-family:inherit;}
+.report-btn:hover{background:var(--hover-strong);color:var(--tx);}
 .btn-outline:hover{background:var(--bg4);color:var(--tx);}
 .btn-green{background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
 .btn-green:hover{background:rgba(16,185,129,0.25);}
@@ -275,6 +278,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <a class="nav-link cta" href="demo.html">Book Demo</a>
   </nav>
   <div class="hdr-r">
+    <button class="report-btn" onclick="reportIssue()" title="Report an issue or give feedback">🐞 Report</button>
     <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button>
     <div class="status-dot" id="status-dot"></div>
     <div class="status-text" id="status-text">No data loaded</div>
@@ -2438,6 +2442,18 @@ function filterTpls(cat, el) {
 }
 
 // ─── THEME TOGGLE ────────────────────────────────────────────────────────────
+function reportIssue(){
+  var L=['Describe the issue here:','','- What happened: ','- What you expected: ','','--- Diagnostics (auto-filled · no LinkedIn data) ---'];
+  L.push('Tool: '+document.title);
+  L.push('Page: '+location.pathname);
+  L.push('Browser: '+navigator.userAgent);
+  L.push('Screen '+screen.width+'x'+screen.height+' · Window '+innerWidth+'x'+innerHeight);
+  L.push('Theme: '+(document.documentElement.getAttribute('data-theme')||'dark'));
+  try{ if(typeof D!=='undefined'&&D&&D.connections){ L.push('Loaded: '+D.connections.length+' connections · '+D.messages.length+' messages · '+D.reactions.length+' reactions · '+D.comments.length+' comments · '+D.shares.length+' shares · '+D.follows.length+' follows'); } }catch(_){}
+  try{ if(typeof ICP!=='undefined'&&ICP){ L.push('ICP classified: '+ICP.length+' contacts'); } }catch(_){}
+  try{ L.push('Console errors: '+((window.__gaErrs&&window.__gaErrs.length)?window.__gaErrs.slice(0,5).join(' | '):'none')); }catch(_){}
+  window.location.href='mailto:rahul@growthautomated.ai?subject='+encodeURIComponent('[LinkedIn Toolkit] Issue — '+document.title)+'&body='+encodeURIComponent(L.join('\n'));
+}
 function updateThemeBtn(){ var b=document.getElementById('theme-btn'); if(b) b.textContent=document.documentElement.getAttribute('data-theme')==='light'?'☀️':'🌙'; }
 function toggleTheme(){
   var light=document.documentElement.getAttribute('data-theme')==='light';

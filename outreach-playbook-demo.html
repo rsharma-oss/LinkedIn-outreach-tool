@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <script>(function(){try{var t=localStorage.getItem('ga_theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<script>window.__gaErrs=[];addEventListener('error',function(e){try{window.__gaErrs.push((e.message||'error')+' @'+((e.filename||'').split('/').pop())+':'+(e.lineno||0));if(window.__gaErrs.length>10)window.__gaErrs.shift();}catch(_){}});</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LinkedIn Outreach Playbook — Demo</title>
@@ -197,6 +198,8 @@
   .nav-link.cta:hover{background:#00a0dc;}
   .theme-toggle{background:var(--bg-hover);color:var(--text-secondary);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:0.95rem;line-height:1;cursor:pointer;transition:all 0.2s;}
   .theme-toggle:hover{background:var(--hover-strong);color:var(--text-primary);}
+  .report-btn{background:transparent;color:var(--text-secondary);border:1px solid var(--border);border-radius:8px;padding:7px 11px;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-family:inherit;}
+  .report-btn:hover{background:var(--hover-strong);color:var(--text-primary);}
   @media (max-width: 900px) {
     .main { padding: 20px; } .header { padding: 16px 20px; } .nav-tabs { padding: 0 20px; }
     .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
@@ -226,7 +229,7 @@
     <a class="nav-link active" href="outreach-playbook-demo.html">📋 Playbook</a>
     <a class="nav-link cta" href="demo.html">Book Demo</a>
   </nav>
-  <div class="hdr-r"><button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button></div>
+  <div class="hdr-r"><button class="report-btn" onclick="reportIssue()" title="Report an issue or give feedback">🐞 Report</button><button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button></div>
 </header>
 
 <nav class="nav-tabs">
@@ -1019,6 +1022,16 @@ Always looking to build relationships with people doing interesting work in the 
 </div><!-- /main -->
 
 <script>
+function reportIssue(){
+  var L=['Describe the issue here:','','- What happened: ','- What you expected: ','','--- Diagnostics (auto-filled · no LinkedIn data) ---'];
+  L.push('Tool: '+document.title);
+  L.push('Page: '+location.pathname);
+  L.push('Browser: '+navigator.userAgent);
+  L.push('Screen '+screen.width+'x'+screen.height+' · Window '+innerWidth+'x'+innerHeight);
+  L.push('Theme: '+(document.documentElement.getAttribute('data-theme')||'dark'));
+  try{ L.push('Console errors: '+((window.__gaErrs&&window.__gaErrs.length)?window.__gaErrs.slice(0,5).join(' | '):'none')); }catch(_){}
+  window.location.href='mailto:rahul@growthautomated.ai?subject='+encodeURIComponent('[LinkedIn Toolkit] Issue — '+document.title)+'&body='+encodeURIComponent(L.join('\n'));
+}
 function updateThemeBtn(){ var b=document.getElementById('theme-btn'); if(b) b.textContent=document.documentElement.getAttribute('data-theme')==='light'?'☀️':'🌙'; }
 function toggleTheme(){
   var light=document.documentElement.getAttribute('data-theme')==='light';
