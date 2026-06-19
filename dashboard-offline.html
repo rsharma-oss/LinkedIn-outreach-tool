@@ -298,6 +298,13 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 <div style="background:rgba(16,185,129,0.1);border-bottom:1px solid rgba(16,185,129,0.2);padding:8px 24px;text-align:center;font-size:0.75rem;color:#6ee7b7;">📦 Offline build — all libraries bundled inline. No internet required.</div>
 
 
+<!-- Mobile-only notice (very top, above header) → ties to the how-to FAQ ("Why doesn't this work on my phone?") -->
+<div class="mobile-notice" id="mobile-notice">
+  <span>📱 <strong>Built for desktop.</strong> Loading your LinkedIn export needs a laptop — mobile browsers can't open the folder picker. <a href="how-to.html#faq5">Why? ↗</a></span>
+  <button class="mn-close" onclick="dismissMobileNotice()" aria-label="Dismiss this notice">×</button>
+</div>
+<script>try{if(localStorage.getItem('ga_mobile_notice')==='1'){document.getElementById('mobile-notice').classList.add('dismissed');}}catch(e){}</script>
+
 <!-- HEADER -->
 <header class="hdr">
   <div class="hdr-l">
@@ -322,13 +329,6 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <button class="btn btn-outline" id="reload-btn" onclick="document.getElementById('file-input').click()" style="display:none;">🔄 Reload</button>
   </div>
 </header>
-
-<!-- Mobile-only notice → ties to the how-to FAQ ("Why doesn't this work on my phone?") -->
-<div class="mobile-notice" id="mobile-notice">
-  <span>📱 <strong>Built for desktop.</strong> Loading your LinkedIn export needs a laptop — mobile browsers can't open the folder picker. <a href="how-to.html#faq5">Why? ↗</a></span>
-  <button class="mn-close" onclick="dismissMobileNotice()" aria-label="Dismiss this notice">×</button>
-</div>
-<script>try{if(localStorage.getItem('ga_mobile_notice')==='1'){document.getElementById('mobile-notice').classList.add('dismissed');}}catch(e){}</script>
 
 <!-- HIDDEN FILE INPUT (works in all browsers) -->
 <input type="file" id="file-input" multiple accept=".csv,.zip"
