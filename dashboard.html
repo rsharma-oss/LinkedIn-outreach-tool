@@ -270,6 +270,13 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 </head>
 <body>
 
+<!-- Mobile-only notice (very top, above header) → ties to the how-to FAQ ("Why doesn't this work on my phone?") -->
+<div class="mobile-notice" id="mobile-notice">
+  <span>📱 <strong>Built for desktop.</strong> Loading your LinkedIn export needs a laptop — mobile browsers can't open the folder picker. <a href="how-to.html#faq5">Why? ↗</a></span>
+  <button class="mn-close" onclick="dismissMobileNotice()" aria-label="Dismiss this notice">×</button>
+</div>
+<script>try{if(localStorage.getItem('ga_mobile_notice')==='1'){document.getElementById('mobile-notice').classList.add('dismissed');}}catch(e){}</script>
+
 <!-- HEADER -->
 <header class="hdr">
   <div class="hdr-l">
@@ -294,13 +301,6 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <button class="btn btn-outline" id="reload-btn" onclick="document.getElementById('file-input').click()" style="display:none;">🔄 Reload</button>
   </div>
 </header>
-
-<!-- Mobile-only notice → ties to the how-to FAQ ("Why doesn't this work on my phone?") -->
-<div class="mobile-notice" id="mobile-notice">
-  <span>📱 <strong>Built for desktop.</strong> Loading your LinkedIn export needs a laptop — mobile browsers can't open the folder picker. <a href="how-to.html#faq5">Why? ↗</a></span>
-  <button class="mn-close" onclick="dismissMobileNotice()" aria-label="Dismiss this notice">×</button>
-</div>
-<script>try{if(localStorage.getItem('ga_mobile_notice')==='1'){document.getElementById('mobile-notice').classList.add('dismissed');}}catch(e){}</script>
 
 <!-- HIDDEN FILE INPUT (works in all browsers) -->
 <input type="file" id="file-input" multiple accept=".csv,.zip"
