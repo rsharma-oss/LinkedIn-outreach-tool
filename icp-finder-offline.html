@@ -121,6 +121,14 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .t3-badge{background:rgba(0,160,220,0.15);color:var(--li2);border:1px solid rgba(0,160,220,0.3);}
 .tier-card-title{font-size:0.8rem;font-weight:600;margin-bottom:2px;}
 .tier-card-sub{font-size:0.72rem;color:var(--tx3);line-height:1.4;}
+.icp-note{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:18px;}
+.icp-note-title{font-size:0.85rem;font-weight:700;margin-bottom:8px;color:var(--tx);}
+.icp-note-body{font-size:0.8rem;color:var(--tx2);line-height:1.65;margin-bottom:14px;}
+.icp-note-cta{display:flex;flex-wrap:wrap;gap:10px;}
+.icp-cta-link{font-size:0.8rem;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--border2);color:var(--tx2);text-decoration:none;transition:all 0.18s;}
+.icp-cta-link:hover{background:var(--bg4);color:var(--tx);}
+.icp-cta-primary{background:var(--li);color:#fff;border-color:transparent;}
+.icp-cta-primary:hover{background:var(--li2);color:#fff;}
 
 /* FILTER BAR */
 .filter-bar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
@@ -371,6 +379,16 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
         <div class="tier-badge t3-badge">T3 · Adjacent</div>
         <div class="tier-card-title">Marketing & Growth Professionals</div>
         <div class="tier-card-sub">Adjacent roles with context. Worth nurturing; potential future buyers or champions.</div>
+      </div>
+    </div>
+
+    <!-- ICP scoring transparency + customization CTA -->
+    <div class="icp-note">
+      <div class="icp-note-title">ℹ️ How these tiers are scored — and how to make them yours</div>
+      <p class="icp-note-body">Every connection is auto-classified by matching its <strong>job title and company</strong> against a built-in keyword ruleset — the default ICP we use for Shopify DTC growth agencies (founders &amp; marketing leaders → T1, ecommerce tools &amp; ecosystem → T2, broader marketing roles → T3). First match wins; no match means the contact is left out of the results. It's a fixed starting point — <strong>not yet tailored to your business</strong>.</p>
+      <div class="icp-note-cta">
+        <a class="icp-cta-link" href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/ICP-CUSTOMIZATION.md" target="_blank" rel="noopener">📝 Edit the keywords yourself →</a>
+        <a class="icp-cta-link icp-cta-primary" href="demo.html">📅 Book time — we'll build your ICP for you →</a>
       </div>
     </div>
 
