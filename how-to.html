@@ -795,6 +795,9 @@ function toggleTheme(){
   updateThemeBtn();
 }
 updateThemeBtn();
+// Auto-expand a FAQ when linked directly (e.g. the mobile notice → #faq5)
+(function(){function openHashFaq(){var h=location.hash; if(/^#faq\d+$/.test(h)){var cb=document.getElementById(h.slice(1)); if(cb&&cb.classList.contains('faq-toggle')){cb.checked=true; var it=cb.closest('.faq-item'); if(it) it.scrollIntoView({block:'center'});}}}
+document.addEventListener('DOMContentLoaded',openHashFaq); window.addEventListener('hashchange',openHashFaq); if(document.readyState!=='loading')openHashFaq();})();
 </script>
 </body>
 </html>
