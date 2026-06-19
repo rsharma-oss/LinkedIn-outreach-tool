@@ -155,7 +155,12 @@ footer{text-align:center;padding:24px;border-top:1px solid var(--border);font-si
 
 /* MOBILE */
 @media(max-width:680px){
-  .hdr{padding:14px 20px;}
+  .hdr{padding:11px 14px;gap:8px;flex-wrap:wrap;}
+  .hdr-l{flex:0 1 auto;}
+  .hdr-r{flex:1 1 auto;flex-wrap:wrap;justify-content:flex-end;gap:7px;}
+  .hdr-title{font-size:0.95rem;}
+  .hdr-sub{display:none;}
+  .report-btn{padding:7px 9px;}
   .page{padding:36px 20px 60px;}
   .two-col{grid-template-columns:1fr;gap:36px;}
   .info-heading{font-size:1.4rem;}
