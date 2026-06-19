@@ -1,7 +1,7 @@
 # GrowthAutomated.ai — LinkedIn Toolkit
 ## Product Requirements Document & Engineering Handoff
 
-_Version: 1.3 · Updated June 19, 2026_
+_Version: 1.4 · Updated June 19, 2026_
 
 ---
 
@@ -12,6 +12,7 @@ _Version: 1.3 · Updated June 19, 2026_
 - **Real-export hardening:** `canonicalName()` strips member-id filename suffixes (e.g. `Reactions_5175237.csv`); `messages.csv` UPPERCASE headers normalized via `tcKey`. Verified end-to-end against a live 06-19-2026 export (2,957 connections · 11,811 reactions · 954 ICP).
 - **UAT "🐞 Report" button** in the header of every nav page → pre-filled `mailto:rahul@growthautomated.ai` with privacy-safe diagnostics (environment + counts + recent console errors, **no LinkedIn data**).
 - **Content / links:** ICP scoring explainer + 2-fold "edit keywords / book time" CTA; "why-not-mobile" & "why-not-Safari" FAQs; LinkedIn data-download link wherever export is explained; per-tool launch CTAs on how-to; footer "Release notes" link. `README.md` + `ICP-CUSTOMIZATION.md` now deployed.
+- **Mobile:** headers now wrap (never overlap) on phones; icp-finder tier cards stack; dashboard + icp-finder show a top-of-page "Built for desktop" notice (mobile-only) linking to the how-to FAQ. ⚠️ Mobile browsers cache HTML hard — pull-to-refresh after deploys.
 - **Deploy:** use `push_to_dev.py` → `create_pr.py`. The old `push_all_updates.py` is retired.
 
 ---
@@ -281,6 +282,9 @@ python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/bu
 | Content strategy targets are hardcoded | Benchmarks built for a Shopify growth agency founder (10/mo cadence, 75% consistency) |
 | Message engagement requires `messages.csv` | Without it, all contacts show engagement as "Never" |
 | Chrome File System Access API only | Folder mount (persistent session) requires Chrome |
+| Desktop-first | Upload (folder/file picker) doesn't work in mobile browsers; phones get a "Built for desktop" notice. Pages render but data must be loaded on desktop. |
+| Mobile HTML caching | Phones cache the static pages aggressively — pull-to-refresh / clear-site-data to see a fresh deploy. |
+| English exports only | Localized (non-English) exports translate column headers and parse empty (see BACKLOG: locale-tolerant parsing). |
 
 ---
 
