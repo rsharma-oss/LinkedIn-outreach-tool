@@ -45,6 +45,23 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 
 ## 🟡 Medium Priority
 
+### "Willis" — Humorous, Approachable Help Wiki
+- **Status:** 🟢 **MVP launched June 20** — floating widget on all 5 nav pages (`willis.js` engine + `willis-articles.js` 14 seed articles + `willis/*.png`). Search, article view, lean states, theme-aware, deep-link API. Shipped with Kimi placeholder art.
+- **Follow-ups:** (1) **swap final character art** (just replace `willis/*.png`); (2) **inline Willis into offline bundles** (currently stripped — `build_offline_bundle.py`); (3) expand articles beyond the seed ~14; (4) wire deep-links (mobile notice + 🐞 Report → `Willis.article(...)`).
+- **Concept:** A client-side **customer-support wiki / knowledge base** with a friendly, funny personality. The entire goal is to make asking for help feel **easy and non-threatening** — you just type your question to a character who's happy to help.
+- **Layout homage (NOT a butler):** Modeled on the **original Ask Jeeves homepage** UX — a **character icon to the LEFT of the "ask" box**, inviting a plain-English question. We're borrowing the *approachable layout & framing only*. **No butler, no Jeeves — none of that.**
+- **Name & voice:** Called **"Willis."** Tagline plays on the *Diff'rent Strokes* line — **"Whatchu talkin' 'bout, Willis?"** Tone: warm, witty, plain-English, a little cheeky.
+- **Character (graphic, original):** **Willis** = a warm, cheeky **man with dark skin & dark black curly hair** — an original character inspired by the *Diff'rent Strokes* vibe (⚠️ not a literal likeness of the real actor — IP risk; see brief). Sits to the **left** of the ask box; the ask-box **placeholder reads "Whatchu talkin' 'bout, Willis?" in grey**. Needs expressions: idle/welcoming, thinking, got-it, nothing-found. **Full spec → `WILLIS-CHARACTER-BRIEF.md`** (hand to image AI / illustrator; use design skills when building).
+- **Format:** "Ask Willis…" question box + browsable articles, **client-side search over bundled content only** (no server — privacy promise stays intact).
+- **Seed content (consolidate what's scattered today):**
+  - how-to FAQs (data safety, two zip files, why-not-mobile, why-not-Safari)
+  - ICP scoring explainer (T1/T2/T3 logic) + how to customize it
+  - "Get your LinkedIn data" 3-step flow + each tool's how-to
+  - glossary (Tier 1/2/3, Recency, Engagement, …)
+- **Surface — DECIDED: Willis floats.** A fixed bottom-right **avatar bubble on every page** → opens an "Ask Willis…" panel with client-side search over bundled articles (one shared include, like the nav; theme-aware; no server). The 🐞 Report button + mobile "Built for desktop" notice deep-link into relevant articles.
+- **Content:** ~40-article wiki inventory mapped out (many "seed" from existing FAQ / icp-note / how-to copy). Full UX + article list → **`WILLIS-WIKI-PLAN.md`**.
+- **IP note:** original character + our own copy only — echo the *approachable-help layout*, nothing trademarked.
+
 ### Customize Your ICP Filter
 - **Status:** Not started
 - **Scope:** `icp-finder.html`
@@ -149,6 +166,7 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 - ICP scoring explainer + "edit keywords / book time" CTAs; "why-not-mobile / why-not-Safari" FAQs
 - LinkedIn data-download link wherever export is explained; `README.md` + `ICP-CUSTOMIZATION.md` deployed
 - Per-tool launch CTAs on how-to's 3 tool frames; footer "Release notes" link
+- Mobile: header overflow fixed (wrapping layout, all 5 nav pages); icp-finder tier cards stack; "Built for desktop" notice on dashboard + icp-finder (top of page, links to auto-expanding how-to FAQ)
 
 **June 18, 2026**
 - Messages tab: 4 field name bugs fixed (`DATE`→`Date`, `FROM`→`From`, `TO`→`ConversationTitle`) — sent/received chart, top contacts, and message dates all broken

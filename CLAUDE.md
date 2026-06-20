@@ -174,6 +174,15 @@ Container is `<header class="hdr">` (playbook's outer wrapper is still `.header`
 
 ---
 
+## Mobile / Responsive (June 19)
+
+- **Header wraps on mobile — never overlaps.** Each page's `@media` block uses `.hdr{flex-wrap:wrap}` + `.hdr-l{flex:0 1 auto}` + `.hdr-r{flex:1 1 auto;flex-wrap:wrap;justify-content:flex-end}`, hides `.hdr-sub`/`.status-text`, and shrinks the title. The action cluster (Report · theme · reload/export/playbook) wraps to its own row instead of colliding with the brand. **Do NOT** force a fixed single-row header on mobile or set `.hdr-l{min-width:0}` (that shrinks the title and makes it overlap). Playbook uses `.header`/`.header-sub` (its own scheme).
+- **"Built for desktop" notice** (`.mobile-notice`, **dashboard + icp-finder only**): mobile-only (`@media max-width:768px`) amber banner placed at the **very top of `<body>`, ABOVE `<header>`** — keep it there so it's "up top" regardless of header height (icp-finder's loaded header wraps tall). Links to `how-to.html#faq5`; how-to auto-expands that FAQ via a `#faqN` hash handler. Dismissible → `localStorage['ga_mobile_notice']`. Theme-safe (`--tx`/`--li2`).
+- **⚠️ Cache caveat:** mobile browsers cache the static HTML aggressively — a phone may keep serving the OLD page until pull-to-refresh / clear-site-data. If "X doesn't appear on page Y on mobile" but the source is correct and identical to a working page, **suspect stale cache first** (verify with a `?v=timestamp` cache-bust).
+- icp-finder `.tier-explain` stacks to 1 column on mobile; stat grids use `auto-fit minmax(...)` (already responsive).
+
+---
+
 ## Commit Message Format
 
 ```
