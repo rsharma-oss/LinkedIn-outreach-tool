@@ -46,8 +46,8 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 ## 🟡 Medium Priority
 
 ### "Willis" — Humorous, Approachable Help Wiki
-- **Status:** 🟢 **MVP launched June 20** — floating widget on all 5 nav pages (`willis.js` engine + `willis-articles.js` 14 seed articles + `willis/*.png`). Search, article view, lean states, theme-aware, deep-link API. Shipped with Kimi placeholder art.
-- **Follow-ups:** (1) **swap final character art** (just replace `willis/*.png`); (2) **inline Willis into offline bundles** (currently stripped — `build_offline_bundle.py`); (3) expand articles beyond the seed ~14; (4) wire deep-links (mobile notice + 🐞 Report → `Willis.article(...)`).
+- **Status:** ✅ **Launched June 20** — floating widget on all 5 nav pages (`willis.js` + `willis-articles.js` 14 seed articles + `willis/*.png`). Search, article view, lean states, theme-aware, deep-link API. **Final v2 art live** (Gemini-look striped polo). **Packaged as a reusable kit** (`~/Desktop/Willis/willis-kit/` + `.zip`) for other apps.
+- **Follow-ups:** (1) ✅ final art swapped in; (2) **inline Willis into offline bundles** (currently stripped — `build_offline_bundle.py`); (3) expand articles beyond the seed ~14; (4) wire deep-links (mobile notice + 🐞 Report → `Willis.article(...)`); (5) `window.WILLIS_CONFIG` for zero-edit reuse (name/tagline/placeholder/art-path).
 - **Concept:** A client-side **customer-support wiki / knowledge base** with a friendly, funny personality. The entire goal is to make asking for help feel **easy and non-threatening** — you just type your question to a character who's happy to help.
 - **Layout homage (NOT a butler):** Modeled on the **original Ask Jeeves homepage** UX — a **character icon to the LEFT of the "ask" box**, inviting a plain-English question. We're borrowing the *approachable layout & framing only*. **No butler, no Jeeves — none of that.**
 - **Name & voice:** Called **"Willis."** Tagline plays on the *Diff'rent Strokes* line — **"Whatchu talkin' 'bout, Willis?"** Tone: warm, witty, plain-English, a little cheeky.
