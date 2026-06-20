@@ -9,7 +9,7 @@
 - **States:** welcoming / got-it / shrug, cheeky-on-hover. **Article view** opens content in-panel with a back button. ESC to close, mobile sheet layout, theme-aware, self-contained styling (own tokens — holds on any page's theme).
 - **Architecture:** one shared include — `<script src="willis-articles.js"></script><script src="willis.js"></script>` — like the nav. Engine = `willis.js`; content = `willis-articles.js` (14 seed articles ported from the FAQ / ICP explainer / how-to); art = `willis/*.png`.
 - **Deep-link API:** `Willis.open()` / `Willis.ask('mobile')` / `Willis.article('why-mobile')` for wiring the notice + Report button (follow-up).
-- **Launched with placeholder art** (Kimi set — consistent, transparent, themes well); final character swaps in later by replacing the PNGs.
+- **Art:** launched June 20 on the Kimi placeholder set; **swapped to the v2 final character** same day (the Gemini-look — orange/blue striped polo, dark skin/curly hair, consistent 5-pose set, downscaled to web sizes). Swap was just replacing the PNGs in `willis/` — zero code changes.
 - **Follow-ups:** inline Willis into the offline bundles (stripped for now), expand articles beyond the seed set, wire deep-links, swap final art.
 
 ### 📱 Mobile "built for desktop" notice (June 19)
