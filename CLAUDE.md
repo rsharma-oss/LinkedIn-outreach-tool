@@ -183,6 +183,18 @@ Container is `<header class="hdr">` (playbook's outer wrapper is still `.header`
 
 ---
 
+## Willis help widget (June 20)
+
+- **What:** a floating "Ask Willis" help wiki on all 5 nav pages — bubble bottom-right → searchable panel (client-side, no server). Files: `willis.js` (engine, self-contained, namespaced `wz-`), `willis-articles.js` (`window.WILLIS_ARTICLES`, 14 seed articles), `willis/*.png` (5-pose character — v2 = the orange/blue striped-polo character).
+- **Integrate:** two tags before `</body>` — `<script src="willis-articles.js"></script>` then `<script src="willis.js"></script>`. Already on dashboard, icp-finder, how-to, demo, playbook. The widget self-injects.
+- **Deep-link API:** `Willis.open()` / `Willis.ask('q')` / `Willis.article('id')` / `Willis.close()`.
+- **Theme:** dark by default; reacts to `html[data-theme="light"]`. Own tokens (`--wp-*`) so it keeps separation regardless of the page theme (don't make it depend on app vars).
+- **Swap art:** replace `willis/*.png` (same names) → zero code changes. (Kept the Kimi originals + v2 source in `~/Desktop/Willis/`.)
+- **Offline:** `build_offline_bundle.py` STRIPS the Willis includes (they'd 404 in a single-file bundle). TODO: inline Willis for offline.
+- **Reusable kit:** engine + art + README packaged at `~/Desktop/Willis/willis-kit/` (+ `.zip`) for dropping into other apps as a support wiki.
+
+---
+
 ## Commit Message Format
 
 ```
