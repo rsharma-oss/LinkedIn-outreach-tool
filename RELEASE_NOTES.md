@@ -4,6 +4,14 @@
 
 ## Sprint Wrap — June 18–19, 2026 (Nav, Theming, Real-Export Hardening, UAT)
 
+### 🤵 "Willis" help widget — launched (June 20)
+- A floating **"Ask Willis"** help wiki on all 5 nav pages — a bottom-right avatar bubble that opens a searchable panel. Client-side search over bundled articles (no server; privacy promise intact).
+- **States:** welcoming / got-it / shrug, cheeky-on-hover. **Article view** opens content in-panel with a back button. ESC to close, mobile sheet layout, theme-aware, self-contained styling (own tokens — holds on any page's theme).
+- **Architecture:** one shared include — `<script src="willis-articles.js"></script><script src="willis.js"></script>` — like the nav. Engine = `willis.js`; content = `willis-articles.js` (14 seed articles ported from the FAQ / ICP explainer / how-to); art = `willis/*.png`.
+- **Deep-link API:** `Willis.open()` / `Willis.ask('mobile')` / `Willis.article('why-mobile')` for wiring the notice + Report button (follow-up).
+- **Launched with placeholder art** (Kimi set — consistent, transparent, themes well); final character swaps in later by replacing the PNGs.
+- **Follow-ups:** inline Willis into the offline bundles (stripped for now), expand articles beyond the seed set, wire deep-links, swap final art.
+
 ### 📱 Mobile "built for desktop" notice (June 19)
 - On phones, the two upload tools (`dashboard.html`, `icp-finder.html`) now show a dismissible amber banner under the header: **"Built for desktop. Loading your LinkedIn export needs a laptop — mobile browsers can't open the folder picker. Why? ↗"**
 - The "Why?" link → `how-to.html#faq5`, and how-to now **auto-expands** the linked FAQ ("Why doesn't this work on my phone?") via a small hash handler.
