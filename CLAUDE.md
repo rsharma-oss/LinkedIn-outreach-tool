@@ -43,9 +43,11 @@ dev    →  all work happens here — push here by default
 
 **Workflow:**
 1. Make changes to HTML/JS files
-2. Run `push_to_dev.py` → pushes to `dev` branch
-3. Run `create_pr.py` → opens a PR from dev → main
+2. Run `push_to_dev.py` → **auto-resyncs `dev` to `main`** (clean PR diffs), then pushes the full file set to `dev`
+3. Run `create_pr.py` → **opens the PR automatically** (PAT now has `Pull requests: write`)
 4. Rahul reviews diff on GitHub, merges → live in ~30s
+
+**Auto-resync (June 22):** `push_to_dev.py` force-fast-forwards `dev` to `main`'s HEAD before pushing, so each PR diff shows only that push's files — no historical drift. **Guard:** if a dev→main PR is already open, it **skips** the resync (resetting dev to `main` would momentarily make them equal and GitHub would auto-close the PR). So: **push → create_pr → merge** per cycle; to update an in-review PR, just push again (resync is skipped, PR updates in place). `resync_dev.py` does a manual idempotent sync if drift ever creeps back after a merge.
 
 ---
 
@@ -170,7 +172,10 @@ Container is `<header class="hdr">` (playbook's outer wrapper is still `.header`
 
 ## UAT Report Button & External Links (June 19)
 
-- **🐞 Report** button in every page's `.hdr-r` → `reportIssue()` opens a pre-filled `mailto:rahul@growthautomated.ai` with privacy-safe diagnostics (tool, page, browser, screen, theme, load-state counts, recent console errors via `window.__gaErrs`). **No LinkedIn data.** Apps use `.report-btn` with scheme-A vars (`--tx2`/`--border2`/`--hover-strong`); playbook uses its own (`--text-secondary`/`--border`). An early `addEventListener('error')` buffer in `<head>` feeds the error list.
+- **🐞 Report** button in every page's `.hdr-r` opens a report flow with privacy-safe diagnostics (tool, page, browser, screen, theme, load-state counts, recent console errors via `window.__gaErrs`). **No LinkedIn data.** Apps use `.report-btn` with scheme-A vars (`--tx2`/`--border2`/`--hover-strong`); playbook uses its own (`--text-secondary`/`--border`). An early `addEventListener('error')` buffer in `<head>` feeds the error list.
+- **⚠️ Report delivery — universal dialog (June 22).** The old `reportIssue()` used `mailto:` only, which **silently failed for Gmail/webmail testers** (no desktop mail client). The fix lives in **`willis.js`**: `gaReport(opts)` opens a `.gar-*` dialog offering **Copy / Gmail compose URL / `mailto`**, with an editable body and `parseUA()` → a readable `Chrome 149 · macOS · Desktop` line (raw UA still appended). `willis.js` sets `window.reportIssue = () => gaReport()`, so it **overrides every page's per-page Report button site-wide with zero markup edits** (loaded on all 5 nav pages). Also wired into Willis's no-match state (`#wzReport` → "📧 tell us what you needed"). Reports go to **rahul@growthautomated.ai**; aggregated weekly via the UAT routine (see below). ⚠️ Offline bundles still carry the old inline `mailto` (Willis is stripped there) — a follow-up.
+- **UAT triage:** `UAT-REPORTS.md` (local, not deployed) aggregates report emails parsed from Gmail; a scheduled **"UAT Reports — weekly catch-up"** routine refreshes it every Saturday. Gmail connector is currently **read-only** (labeling needs a reconnect); headless/scheduled runs may not inherit Gmail access.
+- **Company filter (Dashboard Connections + dashboard-demo):** searchable scrollable combobox (`cdd-*` — `#conn-company` input + `#conn-company-menu`), replacing a native `<select>` that capped ~300 options. Substring match via `filterConnections()`; `cddRenderMenu(q)` builds the list.
 - **LinkedIn data-download link** → `https://www.linkedin.com/mypreferences/d/download-my-data`, placed everywhere export is explained (both load screens, how-to, dashboard-demo, shopify-embed, README).
 - **Repo doc links** point at GitHub's rendered blob (`/blob/main/<file>.md`): `ICP-CUSTOMIZATION.md` (ICP customize CTA) and `RELEASE_NOTES.md` (footer link). Both `.md` files are in the push list so they resolve on `main`.
 - **how-to tool frames** (01/02/03) each have a primary launch CTA (`.btn btn-primary`) → the respective tool.
