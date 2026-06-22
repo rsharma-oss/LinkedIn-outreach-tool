@@ -3268,8 +3268,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     // Decompress — fall back to raw string if not compressed (legacy sessions)
     const decompressed = LZString.decompress(raw) ?? raw;
-    const {data} = JSON.parse(decompressed);
+    const {data, src} = JSON.parse(decompressed);
     if (!data || !data['Connections.csv']) return;
+    // A cache authored by ICP Finder holds ONLY Connections (+messages) — it has no
+    // Reactions/Comments/Shares. Silently restoring it would leave the Engagement &
+    // Content tabs permanently empty (looks broken — this was a reported bug). Unless
+    // the dashboard itself wrote this cache, require activity data before restoring;
+    // otherwise fall through to the load screen so the user loads their full export here
+    // (which then writes a complete cache).
+    const hasActivity = data['Reactions.csv'] || data['Comments.csv'] || data['Shares.csv'];
+    if (src !== 'dashboard' && !hasActivity) return;
     // Merge messages.csv from its dedicated cache key (stored separately, also compressed)
     const msgRaw = sessionStorage.getItem('ga_msg_cache');
     if (msgRaw) data['messages.csv'] = LZString.decompress(msgRaw) ?? msgRaw;

@@ -676,6 +676,11 @@ function showError(msg) {
   el.style.display = 'block';
 }
 
+// LinkedIn suffixes some activity files with a member-id (Reactions_5175237.csv …).
+// Strip a trailing _<digits> before the extension so they match the wanted list —
+// without this, Reactions/Comments/Shares/Follows silently load empty on real exports.
+function canonicalName(name){ return name.replace(/_\d+(\.[A-Za-z0-9]+)$/, '$1'); }
+
 // ─── LOADING: FOLDER PICKER (Chrome/Edge) ────────────────────────────────────
 async function loadFolder() {
   if (!window.showDirectoryPicker) {
@@ -695,9 +700,9 @@ async function loadFolder() {
 
   try {
     for await (const entry of dirHandle.values()) {
-      if (entry.kind === 'file' && wanted.includes(entry.name)) {
+      if (entry.kind === 'file' && wanted.includes(canonicalName(entry.name))) {
         const file = await entry.getFile();
-        filemap[entry.name] = await file.text();
+        filemap[canonicalName(entry.name)] = await file.text();
       }
     }
   } catch(e) {
@@ -718,7 +723,7 @@ async function loadFromInput(fileList) {
   const readPromises = Array.from(fileList).map(file =>
     new Promise(resolve => {
       const reader = new FileReader();
-      reader.onload = e => { filemap[file.name] = e.target.result; resolve(); };
+      reader.onload = e => { filemap[canonicalName(file.name)] = e.target.result; resolve(); };
       reader.readAsText(file, 'UTF-8');
     })
   );

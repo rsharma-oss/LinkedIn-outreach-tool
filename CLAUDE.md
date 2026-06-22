@@ -73,9 +73,12 @@ python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/pu
 ## Architecture in 60 Seconds
 
 **Storage:** `sessionStorage` with LZ-string compression (~3× ratio)
-- `ga_csv_cache` — all CSVs except messages
+- `ga_csv_cache` — all CSVs except messages. JSON `{data:{<file>:<csv>}, src:'dashboard'|'icp'}`.
 - `ga_msg_cache` — messages.csv only (split to avoid single-key quota spike)
+- `ga_icp_data` (localStorage, not session) — ICP-scored contacts, written by **icp-finder only**; the Playbook reads it.
 - Chrome: ~10MB limit. Safari: ~5MB. High-activity users (10K+ connections) need Chrome.
+
+⚠️ **Cross-page cache contract — "load once, use everywhere."** Tools share loaded data via `ga_csv_cache` so navigating between them never asks for a re-mount. **Any page that writes `ga_csv_cache` MUST include the activity files** (`Reactions/Comments/Shares.csv`) or the Dashboard's Engagement & Content tabs render empty. ICP Finder only *parses* Connections+messages, but its folder loader now *reads & caches* the full activity set too (Jun 22). Defensively, the Dashboard's auto-restore **skips a cache with no activity unless `src==='dashboard'`** (else it would show empty Engagement/Content — a real reported bug). The Playbook needs `ga_icp_data` (ICP-scored, icp-finder-only); if it's absent but a session cache exists, the Playbook routes the user to ICP Finder (one click, auto-restores) instead of showing demo.
 
 **ICP Scoring** (icp-finder.html, lines ~1888–1899):
 - Runs in order: EXCL → T1 → T2 → T3 → excluded

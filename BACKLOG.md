@@ -1,6 +1,6 @@
 # GrowthAutomated.ai — LinkedIn Toolkit Backlog
 
-_Last updated: June 19, 2026_
+_Last updated: June 22, 2026_
 
 ---
 
@@ -40,6 +40,15 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 - **Fix:** Grant the fine-grained PAT **`Pull requests: Read & write`** (GitHub → Settings → Developer settings → Fine-grained tokens → edit token), then update `TOKEN` in `create_pr.py` (and `push_to_dev.py`).
 - **Do this together with [Harden GitHub Token]** above — both require editing the same token, so rotate + re-scope in one pass.
 - **Nice-to-have:** a single `ship.py` that runs `build_offline_bundle.py` → `push_to_dev.py --with-offline` → `create_pr.py` end to end.
+
+---
+
+### Sync `dev` Branch from `main` (branch drift)
+- **Status:** Not started
+- **Scope:** GitHub branches / `push_to_dev.py` workflow
+- **Problem:** `dev` was cut from an older `main` and has fallen **17 commits behind `main`** (flagged by `create_pr.py` on June 22). Pushes still work because every `push_to_dev.py` overwrites each toolkit file with the local source-of-truth copy — so the **files** on `dev` are current — but the `main...dev` compare diff shows unrelated historical drift, making each PR noisier to review than the actual sprint's changes.
+- **Fix:** Re-sync the branches so they share history again — merge `main` into `dev`, or simplest: delete `dev` and let the next `push_to_dev.py` recreate it fresh from `main` (`ensure_dev_branch()` already does this). After that, each PR diff shows only that sprint's real changes.
+- **Risk:** Low — file blobs are already current; this is **diff hygiene**, not a content bug. Best done right after a merge, when `dev` and `main` are content-equal.
 
 ---
 
