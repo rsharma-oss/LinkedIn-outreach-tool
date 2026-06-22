@@ -29,6 +29,10 @@
 ### 🐞 UAT feedback pipeline
 - Webmail-drop fixed (above). Added a local triage doc **`UAT-REPORTS.md`** that aggregates 🐞 Report emails parsed from Gmail, plus a **weekly Saturday routine** ("UAT Reports — weekly catch-up") to keep it current. First-ever real report (the company-scroll bug) was triaged from the inbox — and already fixed this sprint. _Note: the Gmail connector is read-only (labeling needs a reconnect); scheduled/headless runs may not inherit Gmail access — verify via "Run now"._
 
+### 🌐 Language scope — English-language exports (positioning + graceful message)
+- **Positioning:** the toolkit officially supports **English-language LinkedIn exports** ("works for everyone, in English"). A "Works with English-language LinkedIn exports" line now appears on the Dashboard / ICP Finder / dashboard-demo load screens and in how-to.
+- **Graceful non-English handling:** LinkedIn translates the export's CSV column headers by account language, so a non-English export would otherwise render everything empty. All three apps now **detect a non-English export** (the English `First Name` header is absent in `Connections.csv`) and show: _"At the moment, our apps only support English. Please submit a Report email with a feature request for another language."_ — with a one-click Report action (the universal dialog on Dashboard/ICP Finder, a pre-filled `mailto` on dashboard-demo). `gaReport` gained a `feature` mode that pre-frames the email as a language feature request.
+
 ---
 
 ## Sprint Wrap — June 18–19, 2026 (Nav, Theming, Real-Export Hardening, UAT)
