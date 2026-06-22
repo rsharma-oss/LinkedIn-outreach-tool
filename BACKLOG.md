@@ -6,17 +6,12 @@ _Last updated: June 22, 2026_
 
 ## 🔴 High Priority
 
-### Locale-Tolerant CSV Parsing (non-English exports)
-- **Status:** Not started
-- **Scope:** `dashboard.html`, `icp-finder.html`
-- **Problem:** All parsing reads literal **English** column headers (`r['Date']`, `r['First Name']`, `r['Connected On']`, etc.). LinkedIn localizes export headers by account language (e.g. `Date`→`Datum`/`Fecha`), so a German/Spanish/French export loads the files but parses **empty** — every chart and tier comes back blank. Only English exports have been validated.
-- **Context:** The June 19 `canonicalName()` fix solved *filename* matching for the `_<member-id>` suffix, but it's filename-only — it does not address translated *column headers* inside the files. This is the remaining gap before "any export from anyone" works.
-- **Requirements:**
-  - Map columns by known-alias lists (per field, across LinkedIn's supported languages) or by position, instead of exact English strings.
-  - Apply to every field read: messages (`From`/`Date`/`ConversationTitle`…), connections (`First Name`/`Company`/`Position`/`Connected On`), reactions/comments/shares (`Date`), invitations (`From`/`Sent At`).
-  - Fall back gracefully + surface a clear "couldn't read this export's columns" message instead of silently rendering empty.
-  - Add a couple of non-English sample exports to the test set.
-- **Note:** Bigger than a one-liner — needs an alias map maintained per locale.
+### Language Scope — English LinkedIn exports (positioning + graceful non-English message)
+- **Positioning (decided June 22):** the toolkit **officially supports English-language LinkedIn exports** — any LinkedIn account set to English, in any country. Stated plainly: **"Works for everyone, in English."** This is a deliberate scope decision, **not a defect** to chase.
+- **Why English-only:** LinkedIn translates export *column headers* by account language (`Date`→`Datum`/`Fecha`, `First Name`→`Vorname`…). The parser reads English headers, so a non-English export loads but renders empty. Full coverage means a per-language header alias map — large and perpetually maintained for marginal reach. We scope to English and say so up front instead.
+- **Open to-do (the only real work — graceful failure, not full i18n):** detect a non-English export (expected English headers absent after parse) and show **one clear line** instead of silent blank charts/tiers — e.g. _"This tool works with English-language LinkedIn exports. Switch your LinkedIn language to English, re-download your data, and try again."_ Scope: `dashboard.html`, `icp-finder.html`, `dashboard-demo.html`.
+- **Positioning copy:** add a short "Works with English-language LinkedIn exports" line to the load screens + `how-to.html` so it's set up front.
+- **Deferred (only if real demand appears):** a per-locale header alias map for full non-English support. Bigger than a one-liner; maintained per language.
 
 _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to Recently Completed.)_
 
