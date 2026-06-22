@@ -1058,7 +1058,25 @@ function showTab(id, el) {
 // Falls back to demo mode if no data found.
 (function() {
   const stored = localStorage.getItem('ga_icp_data');
-  if (!stored) return; // stay in demo mode
+  if (!stored) {
+    // No ICP data yet — but if the user has already loaded their export this session
+    // (a session cache exists from the Dashboard or ICP Finder), don't pretend this is
+    // pure demo. The playbook needs ICP-SCORED data, which only ICP Finder produces —
+    // so route them there in one click. ICP Finder auto-restores from the same session
+    // cache (no re-mount) and writes ga_icp_data, after which this page goes live.
+    try {
+      if (sessionStorage.getItem('ga_csv_cache')) {
+        const b = document.querySelector('.demo-banner');
+        if (b) {
+          b.style.cssText += ';background:linear-gradient(135deg,rgba(0,160,220,0.12),rgba(59,130,246,0.06));border-color:rgba(0,160,220,0.3);color:#7dd3fc;';
+          b.innerHTML = '📂 <strong>Your data’s loaded.</strong> Build your live playbook in one click — ' +
+            '<a href="icp-finder.html" style="color:#7dd3fc;margin-left:6px;font-weight:600">Open ICP Finder →</a> ' +
+            '<span style="opacity:0.8">(it restores your session automatically — no re-upload).</span>';
+        }
+      }
+    } catch(e) {}
+    return; // stay in demo layout until ICP data exists
+  }
 
   let parsed;
   try { parsed = JSON.parse(stored); } catch(e) { return; }
