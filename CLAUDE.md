@@ -228,12 +228,21 @@ docs: add HANDOFF.md reverse-engineered PRD
 
 ---
 
-## PAT Permissions Note
+## GitHub Token (PAT) — env var, not hardcoded
 
-Current GitHub PAT has **Contents** permission only. To enable `create_pr.py` to open PRs automatically, add `Pull requests: read & write` in:
-GitHub → Settings → Developer settings → Fine-grained personal access tokens → edit token
+**As of June 22, 2026 the token is read from the `GH_TOKEN` environment variable** — it is no longer hardcoded in any script (was a plaintext leak risk if this folder is zipped/shared). `push_to_dev.py`, `create_pr.py`, and `resync_dev.py` all `os.environ.get("GH_TOKEN")` and exit with a clear message if it's unset. Set it once:
 
-Until then, create PRs manually at: https://github.com/rsharma-oss/LinkedIn-outreach-tool/compare/main...dev
+```bash
+echo 'export GH_TOKEN="github_pat_..."' >> ~/.zshrc && source ~/.zshrc
+```
+
+(Lives in `~/.zshrc`, outside this project folder, so it never travels with the toolkit.)
+
+**Required scopes** (fine-grained PAT, repo `rsharma-oss/LinkedIn-outreach-tool`):
+- `Contents: Read & write` — required for `push_to_dev.py` / `resync_dev.py`
+- `Pull requests: Read & write` — required for `create_pr.py` to open the PR automatically (without it, `create_pr.py` falls back to printing the manual compare URL)
+
+To change scopes: GitHub → Settings → Developer settings → Fine-grained tokens → edit token, then re-export the new value (update `~/.zshrc`). Manual PR fallback: https://github.com/rsharma-oss/LinkedIn-outreach-tool/compare/main...dev
 
 ---
 
