@@ -106,10 +106,13 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 
 ---
 
-### Hosted UAT Feedback Form (upgrade the 🐞 Report button)
-- **Status:** Not started — currently ships via pre-filled `mailto` (June 19)
-- **Problem:** `mailto:` scatters reports as individual emails and silently fails for testers with no desktop mail client (webmail-only users). No aggregate triage view.
-- **Fix:** point the Report button at a pre-filled hosted form (Tally / Google Forms) so responses land in one dashboard/sheet; keep `mailto` as a fallback. Carry the same diagnostics via URL params. User-initiated only (no-server promise preserved).
+### UAT Feedback Aggregation (triage view for 🐞 Report)
+- **Status:** 🟢 **Partially done — webmail failure RESOLVED June 22.**
+- **Resolved (June 22):** the universal report dialog (`gaReport` in `willis.js`) now offers **Copy / Gmail compose / Mail app**, so webmail-only testers are no longer silently dropped (the original `mailto`-only failure). It overrides the per-page 🐞 Report site-wide (via `window.reportIssue`) and is wired into Willis's no-match state. Diagnostics stay privacy-safe (env/counts only — **no LinkedIn data**).
+- **Remaining = aggregation only:** reports still arrive as individual emails to rahul@growthautomated.ai — there's no single triage view. Two paths (pick one):
+  - **A) Automate from Gmail** — label incoming reports + auto-parse their structured body into a Google Sheet / recurring digest. **No app change**; leverages emails already arriving. (Gmail integration + a scheduled digest.)
+  - **B) Replace with a Google Form** — point the report flow at a pre-filled Google Form (diagnostics passed via URL params); responses auto-collect in a linked Sheet. Requires editing `gaReport`; cleanest native aggregation, lowest ongoing maintenance.
+- **Constraint:** user-initiated only; no always-on server; no LinkedIn data in reports.
 
 ### Deploy / version `shopify-embed.html`
 - **Status:** Decision needed — it's NOT in `push_to_dev.py` FILES (the paste-into-Shopify snippet, not Pages-served). Local copy has the latest edits (download link). Add to the push list if you want it versioned in the repo.
@@ -158,6 +161,15 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 ---
 
 ## ✅ Recently Completed (see RELEASE_NOTES.md)
+
+**June 22, 2026**
+- **Cross-page cache fix** — Engagement/Content no longer load empty after loading data on the ICP Finder first (Dashboard refuses an activity-less cache unless it wrote it; ICP folder loader caches the full activity set; Playbook routes to ICP Finder instead of demo). Verified across all flows.
+- **Searchable company filter** — Dashboard Connections table (+ dashboard-demo): native `<select>` → scrollable searchable combobox (`cdd-*`).
+- **Universal 🐞 Report dialog** — `gaReport` (Copy / Gmail / Mail app) fixes the `mailto`-only failure for webmail testers; overrides every page's Report site-wide; wired into Willis's no-match state. (Webmail half of the old "Hosted UAT form" item.)
+- **`dashboard-demo` parser parity** — `canonicalName` member-id suffix strip added to its loaders.
+- **Dev workflow** — resolved 19-commit `dev`/`main` drift; `push_to_dev.py` auto-resyncs before each push (open-PR guard); `resync_dev.py` added. ⟶ _Resolved: "Sync dev Branch from main"._
+- **GitHub token hardening + PR automation** — PAT → `GH_TOKEN` env var (regenerated, removed from all files); re-scoped so `create_pr.py` opens PRs automatically. ⟶ _Resolved: both 🔴 token items._
+- **UAT pipeline** — `UAT-REPORTS.md` triage doc + weekly Saturday "UAT Reports — weekly catch-up" routine parsing report emails from Gmail.
 
 **June 19, 2026**
 - Real-export hardening: `canonicalName()` for member-id filename suffixes — verified against a live 06-19 export (reactions/comments/shares/follows were all 0 → now full)

@@ -2,6 +2,35 @@
 
 ---
 
+## Sprint Wrap — June 22, 2026 (Defect fixes · Cross-page cache · Dev workflow · Token security · UAT pipeline)
+
+### 🐛 Engagement & Content tabs loaded empty from a partial cross-page cache
+- **Symptom (reported):** load your export on the ICP Finder, then open the Dashboard → Connections and Messages populate, but **Engagement and Content show 0**.
+- **Root cause:** the ICP Finder only ingests `Connections.csv` + `messages.csv` (all its scoring needs) but writes the **shared** `ga_csv_cache`. The Dashboard's auto-restore accepted that partial cache and read the absent `Reactions/Comments/Shares.csv` as empty arrays.
+- **Fix (3 parts):** (1) the Dashboard's auto-restore now **refuses a cache with no activity data** unless the Dashboard itself wrote it (`src==='dashboard'`) — it shows the load screen instead of fake-empty tabs; (2) the ICP Finder's folder loader now **also reads & caches the activity files** so the shared cache stays complete from either entry point; (3) the **Playbook** routes the user to the ICP Finder in one click (auto-restores, no re-upload) when a session cache exists but ICP data doesn't, instead of silently showing demo.
+- **Verified** in-browser across every flow (Dashboard ↔ ICP Finder ↔ Playbook, plus genuine first-time demo).
+
+### 🔎 Searchable company filter — Dashboard Connections table
+- The native `<select>` company filter capped at ~300 options and scrolled badly. Replaced with a **searchable, scrollable combobox** (`cdd-*`): substring matching + browse-by-letter, clears to "All companies". Mirrored to `dashboard-demo.html`.
+
+### ✉️ Universal "🐞 Report" dialog — fixes webmail testers
+- **Symptom (reported):** the Report button used `mailto:` only, which **silently did nothing for Gmail/webmail testers** (no desktop mail client).
+- **Fix:** new `gaReport` dialog in `willis.js` offers **Copy · Gmail compose · Mail app**, parses the User-Agent into a readable `Chrome 149 · macOS · Desktop` line (raw UA still appended), and **overrides every page's Report button site-wide** via `window.reportIssue` (zero per-page markup changes). Also wired into **Willis's no-match state** ("📧 tell us what you needed"). Still privacy-safe — environment/counts only, no LinkedIn data.
+
+### 🧩 dashboard-demo parser parity
+- `dashboard-demo.html` had a working loader that was **missing `canonicalName`** — a real `_<member-id>`-suffixed export would have loaded empty there. Added it on both intake paths to match `dashboard.html`.
+
+### 🔧 Dev workflow hardening (clean PR diffs)
+- Resolved a **19-commit `dev`-vs-`main` drift**. `push_to_dev.py` now **auto-resyncs `dev` to `main` before each push** so every PR diff shows only that push's changes — with a **guard that skips the resync when a PR is already open** (so re-pushing to update an in-review PR doesn't auto-close it). Added `resync_dev.py` for manual/idempotent syncs.
+
+### 🔐 GitHub token hardening + PR automation
+- The PAT was **hardcoded in plaintext** across 5 scripts. Moved to the **`GH_TOKEN` env var** (`~/.zshrc`, outside the project folder); **token regenerated** (old exposed value is dead); real token removed from every file on disk. PAT **re-scoped with `Pull requests: Read & write`**, so **`create_pr.py` now opens PRs automatically** — the manual compare-URL step is gone.
+
+### 🐞 UAT feedback pipeline
+- Webmail-drop fixed (above). Added a local triage doc **`UAT-REPORTS.md`** that aggregates 🐞 Report emails parsed from Gmail, plus a **weekly Saturday routine** ("UAT Reports — weekly catch-up") to keep it current. First-ever real report (the company-scroll bug) was triaged from the inbox — and already fixed this sprint. _Note: the Gmail connector is read-only (labeling needs a reconnect); scheduled/headless runs may not inherit Gmail access — verify via "Run now"._
+
+---
+
 ## Sprint Wrap — June 18–19, 2026 (Nav, Theming, Real-Export Hardening, UAT)
 
 ### 🤵 "Willis" help widget — launched (June 20)
