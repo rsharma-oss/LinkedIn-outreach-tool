@@ -76,7 +76,19 @@
     .wz-panel{right:8px;left:8px;bottom:8px;width:auto;max-height:calc(100vh - 16px);}
     .wz-bubble{right:14px;bottom:14px;width:58px;height:58px;}
     .wz-tip{display:none;}
-  }`;
+  }
+  .gar-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2147483600;display:flex;align-items:center;justify-content:center;padding:16px;}
+  .gar-card{position:relative;background:#1b2436;color:#f0f4ff;border:1px solid rgba(255,255,255,.12);border-radius:14px;max-width:460px;width:100%;padding:18px;box-shadow:0 24px 70px rgba(0,0,0,.6);}
+  html[data-theme="light"] .gar-card{background:#fff;color:#0f172a;border-color:rgba(15,23,42,.12);}
+  .gar-card h3{font-size:1.02rem;margin:0 0 4px;}
+  .gar-sub{font-size:.8rem;opacity:.7;margin:0 0 12px;}
+  .gar-ta{width:100%;height:150px;resize:vertical;background:rgba(127,127,127,.12);border:1px solid rgba(127,127,127,.28);border-radius:9px;color:inherit;font:0.78rem/1.5 ui-monospace,Menlo,monospace;padding:10px;box-sizing:border-box;outline:none;}
+  .gar-to{font-size:.76rem;opacity:.7;margin:9px 0 12px;}
+  .gar-btns{display:flex;flex-wrap:wrap;gap:8px;}
+  .gar-b{flex:1;min-width:118px;border:1px solid rgba(127,127,127,.32);background:transparent;color:inherit;border-radius:9px;padding:9px 12px;font-weight:600;font-size:.82rem;font-family:inherit;cursor:pointer;}
+  .gar-b:hover{background:rgba(127,127,127,.14);}
+  .gar-b.gar-primary{background:#0077B5;color:#fff;border-color:transparent;}
+  .gar-b.gar-primary:hover{background:#00a0dc;}`;
   var style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
   /* ---------- DOM ---------- */
@@ -119,8 +131,9 @@
       body.innerHTML=stateCard(ART.got,'Here\'s what I got:',hits.length+' article'+(hits.length>1?'s':'')+' for "'+esc(q)+'".')+
         hits.map(artRow).join('');
     }else{
-      body.innerHTML=stateCard(ART.shrug,'Hmm, I got nothin\' on that one.','Try different words — or <button class="wz-link" id="wzReset">start over</button>.');
+      body.innerHTML=stateCard(ART.shrug,'Hmm, I got nothin\' on that one.','Try different words, <button class="wz-link" id="wzReset">start over</button>, or <button class="wz-link" id="wzReport">📧 tell us what you needed</button>.');
       var r=document.getElementById('wzReset'); if(r)r.onclick=function(){input.value='';renderIdle();input.focus();};
+      var rp=document.getElementById('wzReport'); if(rp)rp.onclick=function(){ gaReport({question:input.value.trim()}); };
     }
     wireRows();
   }
@@ -154,4 +167,66 @@
     ask:function(q){open();input.value=q||'';runSearch(input.value);},
     article:function(id){open();openArticle(id);}
   };
+
+  /* ---------- universal report (used by 🐞 Report button + Willis no-match) ---------- */
+  function parseUA(){
+    var ua=navigator.userAgent, b='', os='Unknown OS', dev='Desktop', mt=function(re){var m=ua.match(re);return m?m[1]:'';};
+    if(/Edg\//.test(ua)) b='Edge '+mt(/Edg\/(\d+)/);
+    else if(/OPR\//.test(ua)) b='Opera '+mt(/OPR\/(\d+)/);
+    else if(/Firefox\//.test(ua)) b='Firefox '+mt(/Firefox\/(\d+)/);
+    else if(/Chrome\//.test(ua)) b='Chrome '+mt(/Chrome\/(\d+)/);
+    else if(/Version\//.test(ua)&&/Safari\//.test(ua)) b='Safari '+mt(/Version\/(\d+)/);
+    if(/Windows NT/.test(ua)) os='Windows';
+    else if(/Mac OS X/.test(ua)) os='macOS';
+    else if(/Android/.test(ua)){os='Android';dev='Mobile';}
+    else if(/iPhone|iPod/.test(ua)){os='iOS';dev='Mobile';}
+    else if(/iPad/.test(ua)){os='iPadOS';dev='Tablet';}
+    else if(/Linux/.test(ua)) os='Linux';
+    if(/Mobi/.test(ua)) dev='Mobile';
+    return (b||'Unknown browser')+' · '+os+' · '+dev;
+  }
+  function gaDiag(o){
+    o=o||{}; var L=[];
+    if(o.question){ L.push('I couldn\'t find an answer in Willis for:', '  "'+o.question+'"', '', 'What were you trying to do?', ''); }
+    else { L.push('Describe the issue:', '', '- What happened: ', '- What you expected: ', ''); }
+    L.push('--- Diagnostics (auto-filled · no LinkedIn data) ---');
+    L.push('Tool: '+document.title);
+    L.push('Page: '+location.pathname+(o.question?' · via Willis':''));
+    L.push('Browser: '+parseUA());
+    L.push('Screen '+screen.width+'x'+screen.height+' · Window '+window.innerWidth+'x'+window.innerHeight);
+    L.push('Theme: '+(document.documentElement.getAttribute('data-theme')||'dark'));
+    try{ if(typeof D!=='undefined'&&D&&D.connections){ L.push('Loaded: '+D.connections.length+' connections · '+D.messages.length+' messages · '+D.reactions.length+' reactions · '+D.comments.length+' comments · '+D.shares.length+' shares · '+D.follows.length+' follows'); } }catch(_){}
+    try{ if(typeof ICP!=='undefined'&&ICP){ L.push('ICP classified: '+ICP.length+' contacts'); } }catch(_){}
+    try{ L.push('Console errors: '+((window.__gaErrs&&window.__gaErrs.length)?window.__gaErrs.slice(0,5).join(' | '):'none')); }catch(_){}
+    L.push('UA (raw): '+navigator.userAgent);
+    return L.join('\n');
+  }
+  function gaReport(o){
+    o=o||{}; var EMAIL='rahul@growthautomated.ai';
+    var subject='['+(o.question?'Willis — unanswered':'LinkedIn Toolkit — issue')+'] '+document.title;
+    var ov=document.createElement('div'); ov.className='gar-ov';
+    var card=document.createElement('div'); card.className='gar-card'; card.setAttribute('role','dialog'); card.setAttribute('aria-label','Send a report');
+    card.innerHTML='<h3>📨 Send us a report</h3><p class="gar-sub">Edit if you like, then copy it or open your email. No LinkedIn data is included.</p>'+
+      '<textarea class="gar-ta" id="garTa"></textarea>'+
+      '<p class="gar-to">Goes to <b>'+EMAIL+'</b></p>'+
+      '<div class="gar-btns"><button class="gar-b gar-primary" id="garCopy">📋 Copy report</button>'+
+      '<button class="gar-b" id="garGmail">Open in Gmail</button>'+
+      '<button class="gar-b" id="garMail">Open mail app</button></div>'+
+      '<div class="gar-btns" style="margin-top:8px"><button class="gar-b" id="garClose">Close</button></div>';
+    ov.appendChild(card); document.body.appendChild(ov);
+    var ta=card.querySelector('#garTa'); ta.value=gaDiag(o);
+    function done(){ if(ov.parentNode) ov.parentNode.removeChild(ov); }
+    ov.addEventListener('click',function(e){ if(e.target===ov)done(); });
+    document.addEventListener('keydown',function esc(e){ if(e.key==='Escape'){done();document.removeEventListener('keydown',esc);} });
+    card.querySelector('#garClose').onclick=done;
+    card.querySelector('#garCopy').onclick=function(){ var btn=this;
+      function ok(){ btn.textContent='✓ Copied — now email it'; }
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(ta.value).then(ok,function(){ta.select();try{document.execCommand('copy');}catch(_){}ok();}); }
+      else { ta.select(); try{document.execCommand('copy');}catch(_){} ok(); } };
+    card.querySelector('#garGmail').onclick=function(){ window.open('https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(EMAIL)+'&su='+encodeURIComponent(subject)+'&body='+encodeURIComponent(ta.value),'_blank','noopener'); };
+    card.querySelector('#garMail').onclick=function(){ window.location.href='mailto:'+EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(ta.value); };
+    setTimeout(function(){ta.focus();ta.setSelectionRange(0,0);},40);
+  }
+  window.gaReport = gaReport;
+  window.reportIssue = function(){ gaReport(); };   /* upgrade the existing 🐞 Report buttons site-wide */
 })();
