@@ -171,6 +171,12 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .filter-select{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;color:var(--tx);font-size:0.8rem;font-family:inherit;outline:none;cursor:pointer;font-weight:500;transition:border-color 0.18s,background 0.18s;appearance:auto;}
 .filter-select:hover{border-color:rgba(0,160,220,0.35);background:var(--bg4);}
 .filter-select:focus{border-color:rgba(0,160,220,0.52);box-shadow:0 0 0 3px rgba(0,160,220,0.1);}
+.cdd{position:relative;display:inline-block;}
+.cdd-menu{position:absolute;top:calc(100% + 4px);left:0;min-width:240px;max-width:360px;max-height:300px;overflow-y:auto;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;box-shadow:0 14px 38px rgba(0,0,0,0.5);z-index:300;padding:5px;display:none;}
+.cdd-menu.cdd-open{display:block;}
+.cdd-item{padding:7px 11px;border-radius:7px;font-size:0.82rem;color:var(--tx2);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cdd-item:hover{background:rgba(0,160,220,0.18);color:var(--tx);}
+.cdd-empty{padding:9px 11px;font-size:0.8rem;color:var(--tx3);}
 .filter-count{font-size:0.75rem;color:var(--tx3);padding:4px 10px;border:1px solid var(--border);border-radius:10px;}
 .filter-count b{color:var(--tx);}
 
@@ -662,7 +668,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 
       <div class="filter-bar">
         <input type="text" class="search-input" id="conn-search" placeholder="Search name, company, or title…" oninput="filterConnections()">
-        <select class="filter-select" id="conn-company" onchange="filterConnections()"><option value="">All companies</option></select>
+        <div class="cdd"><input class="filter-select cdd-input" id="conn-company" placeholder="All companies" autocomplete="off"><div class="cdd-menu" id="conn-company-menu"></div></div>
         <select class="filter-select" id="conn-year" onchange="filterConnections()"><option value="">All years</option></select>
         <span class="filter-count"><b id="conn-count">0</b> connections</span>
       </div>
@@ -1678,8 +1684,9 @@ function buildConnectionsTable() {
 
   // Company filter
   const comps=[...new Set(D.connections.map(r=>(r['Company']||'').trim()).filter(Boolean))].sort();
-  document.getElementById('conn-company').innerHTML='<option value="">All companies</option>'+
-    comps.slice(0,300).map(c=>`<option value="${c.replace(/"/g,'&quot;')}">${c}</option>`).join('');
+  window._connComps = comps;
+  document.getElementById('conn-company').value='';
+  cddRenderMenu('');
 
   // Year filter
   const yrs=[...new Set(D.connections.map(r=>r._date?.getFullYear()).filter(Boolean))].sort((a,b)=>b-a);
@@ -1690,6 +1697,24 @@ function buildConnectionsTable() {
   renderConnTable();
 }
 
+function cddRenderMenu(q){
+  var menu=document.getElementById('conn-company-menu'); if(!menu)return;
+  var comps=window._connComps||[]; var ql=(q||'').toLowerCase();
+  var idxs=[]; for(var i=0;i<comps.length;i++){ if(!ql||comps[i].toLowerCase().indexOf(ql)===0) idxs.push(i); }
+  if(!idxs.length){ menu.innerHTML='<div class="cdd-empty">No matches</div>'; return; }
+  menu.innerHTML=idxs.slice(0,250).map(function(i){ var c=comps[i].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); return '<div class="cdd-item" data-i="'+i+'">'+c+'</div>'; }).join('');
+  Array.prototype.forEach.call(menu.querySelectorAll('.cdd-item'),function(el){
+    el.onmousedown=function(e){ e.preventDefault(); document.getElementById('conn-company').value=window._connComps[+el.getAttribute('data-i')]; menu.classList.remove('cdd-open'); filterConnections(); };
+  });
+}
+(function setupCompanyDD(){
+  var inp=document.getElementById('conn-company'), menu=document.getElementById('conn-company-menu');
+  if(!inp||!menu)return;
+  inp.addEventListener('focus',function(){ cddRenderMenu(inp.value); menu.classList.add('cdd-open'); });
+  inp.addEventListener('input',function(){ cddRenderMenu(inp.value); menu.classList.add('cdd-open'); filterConnections(); });
+  inp.addEventListener('keydown',function(e){ if(e.key==='Escape') menu.classList.remove('cdd-open'); });
+  document.addEventListener('click',function(e){ if(!e.target.closest('.cdd')) menu.classList.remove('cdd-open'); });
+})();
 function filterConnections(){
   const q=document.getElementById('conn-search').value.toLowerCase();
   const co=document.getElementById('conn-company').value;
@@ -1701,7 +1726,7 @@ function filterConnections(){
       const title=(r['Position']||'').toLowerCase();
       if(!name.includes(q)&&!company.includes(q)&&!title.includes(q))return false;
     }
-    if(co&&(r['Company']||'').trim()!==co)return false;
+    if(co&&(r['Company']||'').toLowerCase().indexOf(co.toLowerCase())!==0)return false;
     if(yr&&String(r._date?.getFullYear())!==yr)return false;
     return true;
   });
