@@ -51,21 +51,34 @@ dev    →  all work happens here — push here by default
 
 ---
 
-## How to Push
+## How to Push — Current Methodology (June 22, 2026)
+
+**Prereq:** the GitHub token lives in the **`GH_TOKEN` env var** (set in `~/.zshrc`), NOT hardcoded. A fresh shell already has it. If a script exits with "❌ GH_TOKEN is not set", run `source ~/.zshrc` (or `export GH_TOKEN='github_pat_...'`). See "GitHub Token (PAT)" below.
 
 ```bash
-# Push current changes to dev branch
-python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/push_to_dev.py
+ROOT=/Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip
 
-# Push dev → main PR (do this when ready to go live)
-python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/create_pr.py
+# 1. Push changes to dev — AUTO-RESYNCS dev→main first (clean PR diff), then pushes all files
+python3 $ROOT/push_to_dev.py --msg "feat: your message"
 
-# Build offline bundle (needs internet — run before pushing offline files)
-python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/build_offline_bundle.py
+# 2. Open the PR dev→main — opens it AUTOMATICALLY (PAT has Pull requests: write)
+python3 $ROOT/create_pr.py
 
-# Push with offline files included
-python3 /Users/rahulsharma/Desktop/Complete_LinkedInDataExport_05-02-2026.zip/push_to_dev.py --with-offline
+# 3. Rahul reviews + merges on GitHub → GitHub Pages redeploys in ~30s
+
+# 4. After merge, dev drifts ~1 commit behind main — resync to keep diffs clean:
+python3 $ROOT/resync_dev.py     # idempotent; no-op when already in sync
+
+# Offline bundle (separate, optional): rebuild then push with --with-offline
+python3 $ROOT/build_offline_bundle.py
+python3 $ROOT/push_to_dev.py --with-offline
 ```
+
+**Key behaviors (changed June 22):**
+- `push_to_dev.py` **force-resyncs `dev` to `main` before pushing** so each PR diff shows only that push's files — UNLESS a dev→main PR is already open, in which case it **skips the resync** (resetting dev would auto-close the open PR) and pushes onto it, updating the PR in place.
+- `create_pr.py` **opens the PR automatically** (no more manual compare URL).
+- One cycle = **push → create_pr → merge → resync**. To update an in-review PR, just push again (resync auto-skips).
+- Scripts are NOT in the deploy `FILES` list — they never ship to the repo.
 
 **Python:** use `python3` (not `python`)
 **SSL:** `ssl._create_unverified_context()` required on macOS
