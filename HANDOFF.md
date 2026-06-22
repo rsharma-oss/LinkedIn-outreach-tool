@@ -1,11 +1,23 @@
 # GrowthAutomated.ai — LinkedIn Toolkit
 ## Product Requirements Document & Engineering Handoff
 
-_Version: 1.5 · Updated June 20, 2026_
+_Version: 1.6 · Updated June 22, 2026_
 
 ---
 
-## 0. What's New (June 18–19, 2026)
+## 0. What's New (June 22, 2026)
+
+- **Cross-page cache contract** — fixed Engagement/Content loading empty when data was loaded on the ICP Finder first. Any page writing `ga_csv_cache` must include the activity files; the Dashboard now refuses an activity-less cache unless it authored it (`src==='dashboard'`), the ICP Finder folder loader caches the full activity set, and the Playbook routes to the ICP Finder (auto-restore) instead of showing demo. See §3.
+- **Universal 🐞 Report dialog** — `gaReport` in `willis.js` (Copy / Gmail / Mail app) overrides every page's Report site-wide via `window.reportIssue`, fixing the `mailto`-only failure for webmail testers. Parses UA to a readable line; no LinkedIn data. Wired into Willis's no-match state.
+- **Searchable company filter** (Dashboard Connections + dashboard-demo) — native `<select>` (capped ~300 options) → scrollable searchable combobox (`cdd-*`). See §4.6.
+- **Parser parity** — `canonicalName()` added to `dashboard-demo.html` loaders.
+- **Dev workflow** — `push_to_dev.py` auto-resyncs `dev`→`main` before each push (clean PR diffs) with an open-PR guard; `create_pr.py` opens PRs automatically; `resync_dev.py` added. See §12.
+- **Security** — GitHub PAT moved to the `GH_TOKEN` env var (regenerated, removed from all files on disk). See §12.
+- **UAT pipeline** — `UAT-REPORTS.md` triage doc + weekly Saturday "UAT Reports — weekly catch-up" routine aggregating report emails from Gmail.
+
+---
+
+## 0b. What's New (June 18–19, 2026)
 
 - **Unified, centered nav** across all 7 pages (`📘 How It Works · 📊 Dashboard · 🎯 ICP Finder · 📋 Playbook · [Book Demo]`) — balanced 3-column flex header keeps it at true page-center everywhere.
 - **Light / Dark mode** on all 5 nav pages (dashboard, icp-finder, playbook, how-to, demo): `[data-theme="light"]` overrides + FOUC script + `localStorage['ga_theme']`; dashboard re-themes Chart.js via `applyChartTheme()`. (icp-demo / dashboard-demo snapshots remain dark-only.)
@@ -69,11 +81,14 @@ The tool accepts a LinkedIn data export — either a `.zip` file or an unzipped 
 The tool uses `sessionStorage` to cache parsed data so users can navigate between Dashboard and ICP Finder without re-uploading.
 
 **Cache strategy:**
-- `ga_csv_cache` — all files except `messages.csv`, compressed with LZ-string
+- `ga_csv_cache` — all files except `messages.csv`, compressed with LZ-string. Payload is JSON `{data:{<file>:<csv>}, src:'dashboard'|'icp'}` (tagged with the writer).
 - `ga_msg_cache` — `messages.csv` only, compressed separately (avoids single-key quota spikes)
+- `ga_icp_data` (localStorage, not session) — ICP-scored contacts, written by **icp-finder only**; the Playbook reads it.
 - Compression library: `lz-string` ~3× ratio on LinkedIn CSV data
 - Fallback: if storage is full, messages cache is skipped silently (yellow banner shown)
 - Quota limits: Chrome ~10MB, Safari ~5MB per origin
+
+**⚠️ Cross-page cache completeness contract (June 22).** Tools share loaded data via `ga_csv_cache` so navigating between them never forces a re-mount. **Any page that writes `ga_csv_cache` must include the activity files** (`Reactions/Comments/Shares.csv`) or the Dashboard's Engagement & Content tabs render empty. The ICP Finder only *parses* Connections+messages, but its folder loader now *reads & caches* the full activity set too. The Dashboard's auto-restore **skips a cache with no activity unless `src==='dashboard'`** (else it would show empty Engagement/Content — a real reported bug; it falls through to the load screen instead). The Playbook needs `ga_icp_data`; if it's absent but a session cache exists, it routes the user to the ICP Finder (one click, auto-restores) rather than showing demo. The session cache is **per-tab** (privacy: clears with the tab) — it carries across same-tab nav links, not across separate tabs.
 
 **Quota support matrix (post-compression):**
 
@@ -315,10 +330,11 @@ dev   →  all work lands here first
 ```
 
 **Scripts:**
-- `push_to_dev.py` — push changes to dev branch (supports `--msg`, `--with-offline`)
-- `create_pr.py` — open PR from dev → main (auto-opens GitHub on 403)
+- `push_to_dev.py` — **auto-resyncs `dev`→`main`** (clean PR diffs; skips resync if a PR is open so it won't auto-close it), then pushes the full file set to dev (supports `--msg`, `--with-offline`)
+- `create_pr.py` — **opens the PR from dev → main automatically** (PAT now has `Pull requests: write`; falls back to the compare URL on 403)
+- `resync_dev.py` — manual idempotent `dev`→`main` sync (drift creeps ~1 commit behind per merge)
 
-**PAT note:** Current PAT has Contents permission only. Pull requests require adding `Pull requests: read & write` in GitHub → Settings → Developer settings → Fine-grained tokens.
+**🔐 Token (June 22):** the GitHub PAT is read from the **`GH_TOKEN` env var** (`~/.zshrc`) — **no longer hardcoded in any script** (was a plaintext leak risk). Token regenerated; scopes `Contents` + `Pull requests` read/write. See `CLAUDE.md` → "GitHub Token (PAT)".
 
 ---
 
@@ -326,7 +342,7 @@ dev   →  all work lands here first
 
 - **Locale-tolerant CSV parsing** — non-English exports parse empty (next "works for anyone" gap)
 - **Customize Your ICP Filter** — per-user keyword editing (interim: "edit keywords" link to `ICP-CUSTOMIZATION.md`)
-- **Harden GitHub token + PR automation** — PAT needs `Pull requests: write`
-- **Hosted UAT feedback form** — aggregate triage vs. the current `mailto` report button
+- **UAT aggregation endgame** — webmail drop + report dialog ✅ done; weekly Gmail-parse routine ✅ done; Google Form → Sheet is the hands-off endgame if volume grows
 - Dropdown filter components (built, reverted)
+- _Shipped June 22: cross-page cache contract, universal Report dialog, searchable company filter, dev auto-resync, **GitHub token hardening + PR automation** — see RELEASE_NOTES_
 - _Shipped since v1.1: Light/Dark mode (all 5 nav pages), ICP scoring explainer + FAQ, real-export hardening, UAT Report button — see RELEASE_NOTES_
