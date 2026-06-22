@@ -315,7 +315,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div class="load-icon">🎯</div>
     <div class="load-title">LinkedIn ICP Finder</div>
     <div class="load-sub">
-      Automatically classify your LinkedIn connections into ICP tiers — decision makers, ecosystem partners, and adjacent contacts. Everything runs in your browser. Your data stays on your device.
+      Automatically classify your LinkedIn connections into ICP tiers — decision makers, ecosystem partners, and adjacent contacts. Everything runs in your browser. Your data stays on your device. <em>Works with English-language LinkedIn exports.</em>
     </div>
 
     <!-- PRIVACY MANIFEST -->
@@ -2015,6 +2015,17 @@ function showError(msg) {
   el.textContent = '⚠ ' + msg; el.style.display = 'block';
 }
 
+// Non-English LinkedIn export → translated CSV headers → empty parse. Say so, with a one-click feature request.
+function showLangNotice() {
+  try { document.getElementById('progress-wrap').style.display = 'none'; } catch(_) {}
+  const el = document.getElementById('error-banner');
+  el.innerHTML = '🌐 <strong>At the moment, our apps only support English.</strong> '
+    + 'Please submit a Report email with a feature request for another language. '
+    + '<button class="report-btn" style="margin-left:10px" '
+    + 'onclick="(window.gaReport?gaReport({feature:\'Language support\'}):reportIssue())">📧 Report</button>';
+  el.style.display = 'block';
+}
+
 async function loadFolder() {
   if (!window.showDirectoryPicker) { showError('Folder picker requires Chrome or Edge. Use "Choose CSV Files" instead.'); return; }
   let dirHandle;
@@ -2062,6 +2073,11 @@ async function loadDemoData() {
 }
 
 async function processFiles(filemap, isDemo) {
+  // Non-English export? Connections.csv lacks the English "First Name" header → empty parse.
+  if (!isDemo && filemap['Connections.csv'] && !/First Name/i.test(filemap['Connections.csv'])) {
+    showLangNotice();
+    return;
+  }
   setProgress(20, 'Reading Connections.csv locally…');
   await new Promise(r => setTimeout(r, 10));
   const connRows = parseCSV(filemap['Connections.csv'], 'First Name');
