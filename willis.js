@@ -187,7 +187,8 @@
   }
   function gaDiag(o){
     o=o||{}; var L=[];
-    if(o.question){ L.push('I couldn\'t find an answer in Willis for:', '  "'+o.question+'"', '', 'What were you trying to do?', ''); }
+    if(o.feature){ L.push('Feature request: '+o.feature, '', '- Which language do you need? ', '- Anything else we should know? ', ''); }
+    else if(o.question){ L.push('I couldn\'t find an answer in Willis for:', '  "'+o.question+'"', '', 'What were you trying to do?', ''); }
     else { L.push('Describe the issue:', '', '- What happened: ', '- What you expected: ', ''); }
     L.push('--- Diagnostics (auto-filled · no LinkedIn data) ---');
     L.push('Tool: '+document.title);
@@ -203,7 +204,7 @@
   }
   function gaReport(o){
     o=o||{}; var EMAIL='rahul@growthautomated.ai';
-    var subject='['+(o.question?'Willis — unanswered':'LinkedIn Toolkit — issue')+'] '+document.title;
+    var subject='['+(o.feature?'LinkedIn Toolkit — feature request':(o.question?'Willis — unanswered':'LinkedIn Toolkit — issue'))+'] '+document.title;
     var ov=document.createElement('div'); ov.className='gar-ov';
     var card=document.createElement('div'); card.className='gar-card'; card.setAttribute('role','dialog'); card.setAttribute('aria-label','Send a report');
     card.innerHTML='<h3>📨 Send us a report</h3><p class="gar-sub">Edit if you like, then copy it or open your email. No LinkedIn data is included.</p>'+
