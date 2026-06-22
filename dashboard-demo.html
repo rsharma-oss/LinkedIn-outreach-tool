@@ -233,7 +233,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div class="load-icon">📊</div>
     <div class="load-title">Load Your LinkedIn Export</div>
     <div class="load-sub">
-      Select all the CSV files from your LinkedIn data export folder. Everything is parsed locally in your browser — nothing is uploaded anywhere.
+      Select all the CSV files from your LinkedIn data export folder. Everything is parsed locally in your browser — nothing is uploaded anywhere. <em>Works with English-language LinkedIn exports.</em>
     </div>
     <div class="load-files">
       <span class="file-pill">Connections.csv</span>
@@ -676,6 +676,19 @@ function showError(msg) {
   el.style.display = 'block';
 }
 
+// Non-English export → translated CSV headers → empty parse. Say so; this page has no Willis,
+// so the feature request goes via a pre-filled mailto.
+function showLangNotice() {
+  try { document.getElementById('progress-wrap').style.display = 'none'; } catch(_) {}
+  const el = document.getElementById('error-banner');
+  const href = 'mailto:rahul@growthautomated.ai?subject='
+    + encodeURIComponent('[LinkedIn Toolkit — feature request] Language support')
+    + '&body=' + encodeURIComponent('Feature request: Language support\n\n- Which language do you need? \n- Anything else we should know? ');
+  el.innerHTML = '🌐 <strong>At the moment, our apps only support English.</strong> '
+    + 'Please <a href="' + href + '">submit a Report email</a> with a feature request for another language.';
+  el.style.display = 'block';
+}
+
 // LinkedIn suffixes some activity files with a member-id (Reactions_5175237.csv …).
 // Strip a trailing _<digits> before the extension so they match the wanted list —
 // without this, Reactions/Comments/Shares/Follows silently load empty on real exports.
@@ -733,6 +746,11 @@ async function loadFromInput(fileList) {
 
 // ─── PROCESS FILES → DATA STORE ──────────────────────────────────────────────
 async function processFiles(filemap) {
+  // Non-English export? Connections.csv lacks the English "First Name" header → empty parse.
+  if (filemap['Connections.csv'] && !/First Name/i.test(filemap['Connections.csv'])) {
+    showLangNotice();
+    return;
+  }
   const steps = [
     { key:'connections', name:'Connections.csv', skip:'First Name', pct:15 },
     { key:'messages',    name:'messages.csv',    skip:null,          pct:30 },

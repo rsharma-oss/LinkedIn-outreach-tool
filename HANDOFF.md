@@ -340,7 +340,7 @@ dev   →  all work lands here first
 
 ## 13. Open Items — See BACKLOG.md
 
-- **Locale-tolerant CSV parsing** — non-English exports parse empty (next "works for anyone" gap)
+- **Language scope** — toolkit supports **English-language LinkedIn exports** ("works for everyone, in English"); only open work is a graceful "switch LinkedIn to English" message for non-English exports (full localization deferred)
 - **Customize Your ICP Filter** — per-user keyword editing (interim: "edit keywords" link to `ICP-CUSTOMIZATION.md`)
 - **UAT aggregation endgame** — webmail drop + report dialog ✅ done; weekly Gmail-parse routine ✅ done; Google Form → Sheet is the hands-off endgame if volume grows
 - Dropdown filter components (built, reverted)

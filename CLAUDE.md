@@ -253,10 +253,10 @@ To change scopes: GitHub → Settings → Developer settings → Fine-grained to
 
 ## What's Next — Check BACKLOG.md
 
-Top open items (June 19):
-1. 🔴 Locale-Tolerant CSV Parsing — non-English exports parse empty (the "works for anyone" gap)
-2. 🔴 Harden GitHub token + PR automation (PAT needs `Pull requests: write` — also unblocks `create_pr.py`)
-3. 🟡 Customize Your ICP Filter (localStorage keyword editor; interim "edit keywords" link already shipped)
-4. 🟡 Hosted UAT feedback form (upgrade the `mailto` Report button to aggregated triage)
+Top open items (June 22):
+1. **Language scope** — toolkit supports **English-language LinkedIn exports** ("works for everyone, in English"). Only open work: a graceful "switch your LinkedIn to English & re-download" message for non-English exports (instead of silent empty charts). Full localization deferred.
+2. 🟡 Customize Your ICP Filter (localStorage keyword editor; interim "edit keywords" link already shipped)
+3. 🟡 Willis follow-ups (inline into offline bundles, expand articles, deep-links, `WILLIS_CONFIG`)
+4. 🟡 UAT aggregation endgame — Google Form → Sheet, if volume grows (webmail drop + report dialog + weekly Gmail routine already done)
 
-Shipped this sprint (June 18–19): unified + centered nav, Light/Dark on all 5 nav pages, messages + member-id-suffix real-export fixes, 🐞 Report button, ICP explainer + FAQs, LinkedIn download links, per-tool CTAs.
+Shipped June 22: cross-page cache fix, universal Report dialog, searchable company filter, dashboard-demo parser parity, dev auto-resync workflow, **GitHub token hardening + PR automation**. (June 18–20: unified nav, Light/Dark, real-export fixes, 🐞 Report, ICP explainer, Willis widget.)

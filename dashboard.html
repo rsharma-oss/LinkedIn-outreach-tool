@@ -317,7 +317,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
   <div class="load-card">
     <div class="load-icon">📊</div>
     <div class="load-title">LinkedIn Intelligence Dashboard</div>
-    <div class="load-sub">Drop your LinkedIn export zip file — or your unzipped folder. Everything runs in your browser. Nothing leaves your device.</div>
+    <div class="load-sub">Drop your LinkedIn export zip file — or your unzipped folder. Everything runs in your browser. Nothing leaves your device. <em>Works with English-language LinkedIn exports.</em></div>
 
     <!-- PRIVACY MANIFEST -->
     <div class="privacy-manifest">
@@ -773,6 +773,18 @@ function showError(msg) {
   el.style.display = 'block';
 }
 
+// Non-English export → LinkedIn translates the CSV column headers, so the English-header
+// parser renders everything empty. Detect it and say so, with a one-click feature request.
+function showLangNotice() {
+  try { document.getElementById('progress-wrap').style.display = 'none'; } catch(_) {}
+  const el = document.getElementById('error-banner');
+  el.innerHTML = '🌐 <strong>At the moment, our apps only support English.</strong> '
+    + 'Please submit a Report email with a feature request for another language. '
+    + '<button class="report-btn" style="margin-left:10px" '
+    + 'onclick="(window.gaReport?gaReport({feature:\'Language support\'}):reportIssue())">📧 Report</button>';
+  el.style.display = 'block';
+}
+
 // ─── LOADING: DRAG & DROP HANDLER ────────────────────────────────────────────
 async function handleDrop(e) {
   e.preventDefault();
@@ -958,6 +970,12 @@ async function loadFromInput(fileList) {
 
 // ─── PROCESS FILES → DATA STORE ──────────────────────────────────────────────
 async function processFiles(filemap, isDemo=false) {
+  // Non-English LinkedIn export? Its Connections.csv lacks the English "First Name" header,
+  // so parsing would render everything empty. Stop and show the language notice instead.
+  if (!isDemo && filemap['Connections.csv'] && !/First Name/i.test(filemap['Connections.csv'])) {
+    showLangNotice();
+    return;
+  }
   const steps = [
     { key:'connections', name:'Connections.csv', skip:'First Name', pct:15 },
     { key:'messages',    name:'messages.csv',    skip:null,          pct:30 },
