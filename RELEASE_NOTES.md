@@ -33,6 +33,9 @@
 - **Positioning:** the toolkit officially supports **English-language LinkedIn exports** ("works for everyone, in English"). A "Works with English-language LinkedIn exports" line now appears on the Dashboard / ICP Finder / dashboard-demo load screens and in how-to.
 - **Graceful non-English handling:** LinkedIn translates the export's CSV column headers by account language, so a non-English export would otherwise render everything empty. All three apps now **detect a non-English export** (the English `First Name` header is absent in `Connections.csv`) and show: _"At the moment, our apps only support English. Please submit a Report email with a feature request for another language."_ — with a one-click Report action (the universal dialog on Dashboard/ICP Finder, a pre-filled `mailto` on dashboard-demo). `gaReport` gained a `feature` mode that pre-frames the email as a language feature request.
 
+### ✅ Full QA — real export, end to end (June 22)
+- Re-validated against the real `Complete_LinkedInDataExport_06-19-2026` export (with `_5175237`-suffixed activity files): **Dashboard** 2,957 connections · 15,538 engagement · 672 content · 6,961 messages, **18/18 charts populated**, company combobox working, no console errors; **ICP Finder** 954 contacts (T1 891 / T2 16 / T3 47); **Playbook** live. Matches the June 19 baseline — no regressions from this sprint.
+
 ---
 
 ## Sprint Wrap — June 18–19, 2026 (Nav, Theming, Real-Export Hardening, UAT)
