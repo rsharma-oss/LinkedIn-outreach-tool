@@ -2021,7 +2021,11 @@ async function loadFolder() {
   try { dirHandle = await window.showDirectoryPicker({mode:'read'}); } catch(e) { return; }
   document.getElementById('progress-wrap').style.display = 'block';
   const filemap = {};
-  const wanted = ['Connections.csv','messages.csv'];
+  // ICP only parses Connections + messages, but we also read the activity files so the
+  // shared cross-page cache (ga_csv_cache) stays COMPLETE — otherwise opening the
+  // Dashboard after loading here leaves its Engagement & Content tabs empty.
+  const wanted = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
+    'Shares.csv','Member_Follows.csv','Invitations.csv','Profile.csv','Positions.csv'];
   try {
     for await (const entry of dirHandle.values()) {
       if (entry.kind === 'file' && wanted.includes(canonicalName(entry.name))) {
