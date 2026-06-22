@@ -23,32 +23,24 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 ---
 
 ### Harden GitHub Token in Push Scripts
-- **Status:** Not started
-- **Scope:** `push_to_dev.py`, `create_pr.py` (and older `push_all_updates.py`, `push_session_cache_fix.py`, `upload_icp_doc.py` if they also embed it)
-- **Problem:** GitHub fine-grained PAT is hardcoded in plaintext (`push_to_dev.py:18`, `create_pr.py:15`). Token sits unencrypted on disk; would leak if the Desktop folder is ever zipped, shared, or synced. (Not currently leaked to the repo — `.py` files are not in the push list.)
-- **Requirements:**
-  - Read token from `os.environ["GH_TOKEN"]` (fail with a clear message if unset)
-  - Rotate the currently-exposed token at github.com → Settings → Developer settings → Fine-grained tokens
-  - Document the env-var setup in `CLAUDE.md` (replace the inline token references)
-  - Optional: load from a git-ignored `.env` / keychain instead of shell env
+- **Status:** ✅ **Resolved June 22, 2026**
+- **What shipped:** All scripts (`push_to_dev.py`, `create_pr.py`, `resync_dev.py`) read the token from `os.environ["GH_TOKEN"]` and exit with a clear message if unset. The real token was **removed from every file on disk** — including the 3 legacy scripts (`push_all_updates.py`, `push_session_cache_fix.py`, `upload_icp_doc.py`). Token **regenerated** on GitHub (the previously-exposed value is now dead) and stored as `export GH_TOKEN=…` in `~/.zshrc` (outside the project folder, so it never travels with the toolkit). Env-var setup documented in `CLAUDE.md`.
+- **Optional later:** macOS Keychain instead of `~/.zshrc` for at-rest encryption.
 
 ---
 
 ### PR Automation — Enable `create_pr.py` to open PRs
-- **Status:** Not started — currently blocked
-- **Problem:** `create_pr.py` fails with `403` because the GitHub PAT has `Contents` permission only, not `Pull requests: write`. PRs must be opened manually at the compare URL after every `push_to_dev.py`.
-- **Fix:** Grant the fine-grained PAT **`Pull requests: Read & write`** (GitHub → Settings → Developer settings → Fine-grained tokens → edit token), then update `TOKEN` in `create_pr.py` (and `push_to_dev.py`).
-- **Do this together with [Harden GitHub Token]** above — both require editing the same token, so rotate + re-scope in one pass.
-- **Nice-to-have:** a single `ship.py` that runs `build_offline_bundle.py` → `push_to_dev.py --with-offline` → `create_pr.py` end to end.
+- **Status:** ✅ **Resolved June 22, 2026** — the regenerated PAT now has `Pull requests: Read & write`, so `create_pr.py` opens the PR automatically (verified: PR #22). The manual compare-URL step is gone. The 403 fallback is still in the code for safety.
+- **Bonus shipped same day:** `push_to_dev.py` now auto-resyncs `dev` to `main` before pushing, so each PR diff shows only that push's changes (no historical drift).
+- **Nice-to-have (still open):** a single `ship.py` that runs `build_offline_bundle.py` → `push_to_dev.py --with-offline` → `create_pr.py` end to end.
 
 ---
 
 ### Sync `dev` Branch from `main` (branch drift)
-- **Status:** Not started
+- **Status:** ✅ **Resolved June 22, 2026** — force-synced `dev` to `main` via `resync_dev.py` (force-updates the dev ref to main's HEAD; no delete/recreate, no empty commits). Verified `identical` (0 behind / 0 ahead). Re-run `python3 resync_dev.py` after future merges if drift creeps back.
 - **Scope:** GitHub branches / `push_to_dev.py` workflow
-- **Problem:** `dev` was cut from an older `main` and has fallen **17 commits behind `main`** (flagged by `create_pr.py` on June 22). Pushes still work because every `push_to_dev.py` overwrites each toolkit file with the local source-of-truth copy — so the **files** on `dev` are current — but the `main...dev` compare diff shows unrelated historical drift, making each PR noisier to review than the actual sprint's changes.
-- **Fix:** Re-sync the branches so they share history again — merge `main` into `dev`, or simplest: delete `dev` and let the next `push_to_dev.py` recreate it fresh from `main` (`ensure_dev_branch()` already does this). After that, each PR diff shows only that sprint's real changes.
-- **Risk:** Low — file blobs are already current; this is **diff hygiene**, not a content bug. Best done right after a merge, when `dev` and `main` are content-equal.
+- **Was:** `dev` was cut from an older `main` and had fallen **19 commits behind** (flagged by `create_pr.py`). Pushes still worked (every `push_to_dev.py` overwrites each file with the local source-of-truth copy), but the `main...dev` compare diff showed unrelated historical drift, making PRs noisier to review.
+- **Note:** Each PR merge adds a merge commit to `main` that `dev` lacks, so `dev` will drift ~1 behind per merge — re-run `resync_dev.py` periodically (it's idempotent and a no-op when already in sync).
 
 ---
 
