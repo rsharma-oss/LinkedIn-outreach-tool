@@ -2,7 +2,13 @@
 
 ---
 
-## Sprint Wrap — June 22, 2026 (Defect fixes · Cross-page cache · Dev workflow · Token security · UAT pipeline · Brand logo)
+## Sprint Wrap — June 22, 2026 (Defect fixes · Cross-page cache · Dev workflow · Token security · UAT pipeline · Brand logo · ICP customization)
+
+### 🎯 ICP — honest positioning (shipped) + customization engine (held)
+- **The issue:** the ICP classifier was hardcoded to one profile (Shopify DTC growth agencies), and unmatched connections were **silently excluded** — so non-niche users got a short/empty list and the tool looked broken. (The coverage stat also had a bug, always showing ~100%.)
+- **Fix A — positioning (shipped):** the load screen + the inline `.icp-note` now say the default ICP is **tuned for Shopify DTC growth agencies** ("customize it, or we'll build yours"), and the headline stat shows **real coverage + an "unmatched" count** instead of hiding non-matches.
+- **Fix B — customization engine (built, held for alignment):** the classifier is now a **tunable engine** (editable T1/T2/T3 keyword lists → live re-tiering, persisted locally), and a full in-app editor is prototyped + verified (live re-tier, persistence, reset). The **editor UI is gated out of this release** pending a co-work session on direction — vertical **presets** vs an **extensible** editor vs **hybrid**. Engine + editor code ship dormant; demo version + brief preserved locally.
+
 
 ### 🎨 Official brand logo (all 7 pages)
 - Replaced the old inline rainbow icon + typed "GrowthAutomated**.ai**" with the **official Growth Automated logo** (horizontal wordmark + woven icon, **no ".ai"**). Deployed as `logo-white.svg` / `logo-color.svg`; **white on dark headers, color on light** (auto-swaps with theme). Single `.ga-logo` element + shared CSS on every page; swap the SVGs to rebrand with zero code changes. (Offline bundles still carry the old icon — rebuild to update.)

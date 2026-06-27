@@ -69,10 +69,15 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 - **Content:** ~40-article wiki inventory mapped out (many "seed" from existing FAQ / icp-note / how-to copy). Full UX + article list → **`WILLIS-WIKI-PLAN.md`**.
 - **IP note:** original character + our own copy only — echo the *approachable-help layout*, nothing trademarked.
 
-### Customize Your ICP Filter
-- **Status:** Not started
-- **Scope:** `icp-finder.html`
-- **Requirements:**
+### 🎯 ICP — Positioning & Customization (the core ICP issue)
+- **Status:** 🟢 **Fix A shipped June 22. Fix B (in-app editor) BUILT but HELD** — gated out of the release pending a **co-work session** to align on customization direction (vertical **presets** vs **extensible** editor vs **hybrid**). See `ICP-COWORK-BRIEF.md`.
+- **Fix A — shipped:** load-screen + `.icp-note` state the ICP is **tuned for Shopify DTC** (customize, or we'll build yours); the headline stat now shows **real coverage + an "unmatched" count** (fixed a bug where `s-total-sub` always read ~100%).
+- **Fix B — built, held:** the classifier is now a **tunable engine** (editable T1/T2/T3 arrays → `compileKw` → `classifyAll`/`reclassify`; live re-tier + `localStorage['ga_icp_kw']` + Playbook via `ga_icp_data`). Verified working (live re-tier, persistence, reset, match counts). The **UI is gated** for this release — engine + editor JS/CSS ship dormant, the modal + "Customize keywords" button are removed. Full demo preserved at `icp-finder-with-editor.held.html`. **Re-enable = restore the modal + `.icp-note` button.**
+- **Next (post co-work):** decide presets/extensible/hybrid + which verticals for **R1**; a preset is just a `{t1,t2,t3}` object fed into the same `ICP_KW` → `reclassify()` path → un-gate.
+- **The issue:** the T1/T2/T3 classifier is **hardcoded to ONE ideal customer profile** — Shopify DTC growth agencies (founder/CMO-type titles + the Shopify tool ecosystem). Any user whose targets fall outside that keyword set sees most connections **match nothing — and "no match = excluded from the ICP entirely"** (rule #4 below) — so the list comes back short or empty and the tool looks broken. It's a single-profile engine currently framed as a generic "ICP Finder." (Same shape as the English-only parsing limit: powerful for the niche, opaque for everyone else.)
+- **Fix A — Positioning (cheap, ship first):** say what it is, up front — _"The default ICP is tuned for **Shopify DTC growth agencies**. Not your market? Customize the keywords (2 min), or we'll build yours."_ Place on the ICP Finder load screen + the inline `.icp-note` + how-to. And **stop silently excluding** unmatched contacts — show an **"Other / unmatched" count** so a non-niche user sees their network isn't empty, just unscored under the default ICP.
+- **Fix B — Customization (the real fix)** · Scope: `icp-finder.html`
+  - **Requirements:**
   - UI panel (modal or sidebar) letting users add/remove keywords per tier
   - Editable keyword lists for T1, T2, T3 — add new keywords, delete existing ones
   - Changes persist to `localStorage` so customizations survive page reload
