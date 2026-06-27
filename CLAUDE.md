@@ -216,6 +216,22 @@ Container is `<header class="hdr">` (playbook's outer wrapper is still `.header`
 
 ---
 
+## Brand Logo (June 22, 2026)
+
+The header brand is the **official Growth Automated logo** (horizontal wordmark + woven icon, no ".ai"), replacing the old inline rainbow-`ga-sym` SVG + typed "GrowthAutomated.ai" text. Deployed as two assets at the repo root: **`logo-white.svg`** (fully white, for dark headers) and **`logo-color.svg`** (colorful, for light headers). Both are in the push `FILES` list.
+
+- **Markup (all 7 pages):** `<a class="logo-link" ...><span class="ga-logo" role="img" aria-label="Growth Automated"></span></a>`.
+- **CSS (same block on every page):**
+  ```css
+  .ga-logo{display:block;width:188px;height:29px;background:url('logo-white.svg') left center/contain no-repeat;flex-shrink:0;}
+  [data-theme="light"] .ga-logo{background-image:url('logo-color.svg');}
+  .ga-logo ~ *{display:none;}   /* hides the old wordmark/sub-label siblings still in markup */
+  ```
+- **Theme swap** is via the `[data-theme="light"]` descendant selector — works on every page regardless of its CSS-var scheme. Dark-only snapshots (`icp-demo`, `dashboard-demo`) never set light, so they stay white. (Dashboard also keeps `--ga-logo` vars from the first pass — functionally identical.)
+- **To change the logo:** replace `logo-white.svg` / `logo-color.svg` (same names) — zero code changes. ⚠️ Offline bundles (`*-offline.html`) still carry the old inline icon — rebuild via `build_offline_bundle.py` to update them.
+
+---
+
 ## Commit Message Format
 
 ```

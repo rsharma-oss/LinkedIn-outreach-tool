@@ -4,6 +4,17 @@ _Last updated: June 22, 2026_
 
 ---
 
+## 🛠 Change Requests (CRs)
+
+### CR-1 — "Try with Sample Data" button: background colour + placement
+- **Status:** Logged — needs specifics before implementing
+- **Where:** the load-screen demo button (`onclick="loadDemoData()"`) on `dashboard.html`, `icp-finder.html`, `dashboard-demo.html`
+- **Current:** outline style — transparent background, purple border (`rgba(139,92,246,0.5)`) + purple text (`#a78bfa`); placed **last**, below the primary "📂 Select Folder" button and an "or" divider.
+- **Ask:** change the **background colour** and the **placement**.
+- **Specifics needed to build:** (1) target background colour — e.g. brand blue `#334FB4`, growth green `#2D9C56`, or a solid fill of the current purple; (2) new placement — e.g. above the primary button / top of the card / elsewhere.
+
+---
+
 ## 🔴 High Priority
 
 ### Language Scope — English LinkedIn exports (positioning + graceful non-English message)
