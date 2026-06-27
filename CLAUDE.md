@@ -99,6 +99,7 @@ python3 $ROOT/push_to_dev.py --with-offline
 - Runs in order: EXCL → T1 → T2 → T3 → unmatched. First match wins.
 - T1: founder/CEO/CMO/VP-level titles (title only) · T2: Shopify ecosystem + fractional/manager (title + company) · T3: broader marketing titles (title only).
 - **Editable keywords (June 22):** T1/T2/T3 are now **editable string lists** (`ICP_DEFAULTS` → `ICP_KW`) compiled to regex via `compileKw()` (short tokens like ceo/cmo/gm get `\b` boundaries). The **in-app editor** (`openICPEditor`/`saveICPEditor`) persists overrides to `localStorage['ga_icp_kw']` and calls `reclassify()` → recompiles + `classifyAll()` (re-runs over the cached `_connRows`/`_msgByPerson`) + re-renders + re-saves `ga_icp_data`. EXCL noise-filter stays hardcoded. "No match" is now **surfaced as an unmatched count** (not silently dropped); the `s-total-sub` ~100% bug is fixed.
+- **⚠️ Editor UI is HELD/gated (June 22):** the engine + editor JS/CSS ship **dormant**, but the modal + the `.icp-note` "Customize keywords" button were **removed** pending a co-work decision on customization direction (vertical **presets** vs **extensible** vs **hybrid**). Fix A (positioning + unmatched count) IS live. Full demo preserved at `icp-finder-with-editor.held.html`; decision brief `ICP-COWORK-BRIEF.md`. **Re-enable** = restore the modal markup + the `.icp-note` button (engine/JS already present). A preset is just a `{t1,t2,t3}` object → `ICP_KW` → `reclassify()`.
 
 **Charts:** Chart.js 4.4.1. Color config: `const GC` object (~line 1039 in dashboard.html)
 - `GC.color` — text color
