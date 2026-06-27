@@ -19,13 +19,13 @@
     --wp-stage:#e8f0fb; --wp-stage-tx:#0f172a; --wp-stage-tx2:#475569;
     --wp-tx:#0f172a; --wp-tx2:rgba(15,23,42,.68); --wp-tx3:rgba(15,23,42,.5); }
 
-  .wz-bubble{position:fixed;right:22px;bottom:22px;width:64px;height:64px;border-radius:50%;
+  .wz-bubble{position:fixed;right:22px;bottom:22px;width:66px;height:66px;border-radius:18px;
     background:var(--wp-stage);border:2px solid var(--wp-li);box-shadow:0 8px 28px rgba(0,0,0,.45);
-    cursor:pointer;z-index:2147483000;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0;
+    cursor:pointer;z-index:2147483000;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;padding:0;
     transition:transform .18s ease, box-shadow .18s ease;}
-  .wz-bubble img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+  .wz-bubble img{width:100%;height:100%;object-fit:contain;object-position:center bottom;}
   .wz-bubble:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 12px 34px rgba(0,119,181,.5);}
-  .wz-online{position:absolute;right:3px;bottom:6px;width:12px;height:12px;border-radius:50%;background:#10b981;border:2px solid var(--wp-stage);}
+  .wz-online{position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:50%;background:#10b981;border:2px solid var(--wp-panel);}
   .wz-tip{position:fixed;right:96px;bottom:40px;background:var(--wp-panel);border:1px solid var(--wp-border);color:var(--wp-tx);
     padding:7px 12px;border-radius:10px;font-size:.8rem;font-weight:600;white-space:nowrap;z-index:2147483000;
     box-shadow:0 6px 20px rgba(0,0,0,.4);opacity:0;transform:translateX(6px);pointer-events:none;transition:all .18s;}
@@ -37,7 +37,7 @@
   .wz-panel.wz-open{display:flex;animation:wzpop .2s ease;}
   @keyframes wzpop{from{opacity:0;transform:translateY(12px) scale(.97);}to{opacity:1;transform:none;}}
   .wz-head{display:flex;align-items:center;gap:12px;padding:15px 15px 12px;border-bottom:1px solid var(--wp-border);}
-  .wz-head img{width:46px;height:46px;flex-shrink:0;border-radius:50%;background:var(--wp-stage);object-fit:cover;object-position:center top;}
+  .wz-head img{width:46px;height:46px;flex-shrink:0;border-radius:12px;background:var(--wp-stage);object-fit:contain;object-position:center bottom;}
   .wz-head .wz-t{flex:1;min-width:0;}
   .wz-name{font-weight:800;font-size:1rem;color:var(--wp-tx);display:flex;align-items:center;gap:7px;}
   .wz-name .wz-dot{width:8px;height:8px;border-radius:50%;background:#10b981;}
