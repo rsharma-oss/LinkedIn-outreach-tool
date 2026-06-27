@@ -2,6 +2,14 @@
 
 ---
 
+## Naming — the product is now "LinkVault" (June 2026)
+
+- The app is named **LinkVault — _the LinkedIn outreach toolkit by Growth Automated_**. Growth Automated stays the agency/maker brand; LinkVault is the product (replaces "LinkedIn Intelligence" / "LinkedIn Toolkit").
+- **Applied across all 7 pages:** header lockup = LinkVault hex-vault icon + "LinkVault" wordmark (white on dark / navy on light) + "by Growth Automated" credit; **favicons + theme-color** (`#0A66C2`) in every `<head>`; `<title>`s → "LinkVault · …"; load-screen titles → "LinkVault Dashboard" / "LinkVault ICP Finder".
+- Assets from the LinkVault brand kit: header mark `linkvault-mark.png` (flood-filled transparent) + favicon set; full kit attached at `LinkVault-brand-assets/`. Verified in both themes; header clean ≥1024px (tight in the uncommon 768–950px window — minor follow-up).
+
+---
+
 ## Sprint Wrap — June 22, 2026 (Defect fixes · Cross-page cache · Dev workflow · Token security · UAT pipeline · Brand logo · ICP customization)
 
 ### 🎯 ICP — honest positioning (shipped) + customization engine (held)
