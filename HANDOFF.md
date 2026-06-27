@@ -156,7 +156,7 @@ The tool uses `sessionStorage` to cache parsed data so users can navigate betwee
 
 ### 5.1 Contact Classification
 
-All connections are run through a 3-tier keyword classifier on load. **The T1/T2/T3 keyword lists are user-editable (June 22)** via an in-app editor (✏️ Customize keywords) — overrides persist to `localStorage['ga_icp_kw']` and re-tier the network live; "no match" is surfaced as an **unmatched count** rather than silently dropped. Defaults below:
+All connections are run through a 3-tier keyword classifier on load. The T1/T2/T3 lists are built on an **editable engine** (June 22) — a full in-app keyword editor is built + verified but **gated/held** pending a co-work decision on customization direction (presets vs extensible). What's **live**: "no match" is surfaced as an **unmatched count** rather than silently dropped (Fix A). Defaults below:
 
 **Tier logic (runs in order, first match wins):**
 
