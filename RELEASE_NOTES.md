@@ -2,7 +2,13 @@
 
 ---
 
-## Sprint Wrap — June 22, 2026 (Defect fixes · Cross-page cache · Dev workflow · Token security · UAT pipeline · Brand logo)
+## Sprint Wrap — June 22, 2026 (Defect fixes · Cross-page cache · Dev workflow · Token security · UAT pipeline · Brand logo · ICP customization)
+
+### 🎯 ICP — honest positioning + in-app customization
+- **The issue:** the ICP classifier was hardcoded to one profile (Shopify DTC growth agencies), and unmatched connections were **silently excluded** — so non-niche users got a short/empty list and the tool looked broken. (The coverage stat also had a bug, always showing ~100%.)
+- **Fix A — positioning:** the load screen + the inline `.icp-note` now say the default ICP is **tuned for Shopify DTC growth agencies** ("customize it, or we'll build yours"), and the headline stat shows **real coverage + an "unmatched" count** instead of hiding non-matches.
+- **Fix B — in-app keyword editor:** a new **"✏️ Customize keywords"** modal lets users edit the T1/T2/T3 keyword lists per tier (one per line, with live counts), **Save & re-tier** the whole network instantly (and the Playbook), **Reset per tier / Reset all**, with a "Custom" badge when overridden. Overrides persist to `localStorage['ga_icp_kw']`. Verified: narrowing T1 dropped its count live, custom set survived reload, reset restored defaults. The classifier is now a tunable engine instead of a fixed list.
+
 
 ### 🎨 Official brand logo (all 7 pages)
 - Replaced the old inline rainbow icon + typed "GrowthAutomated**.ai**" with the **official Growth Automated logo** (horizontal wordmark + woven icon, **no ".ai"**). Deployed as `logo-white.svg` / `logo-color.svg`; **white on dark headers, color on light** (auto-swaps with theme). Single `.ga-logo` element + shared CSS on every page; swap the SVGs to rebrand with zero code changes. (Offline bundles still carry the old icon — rebuild to update.)
