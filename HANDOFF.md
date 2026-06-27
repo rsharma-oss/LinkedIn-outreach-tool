@@ -25,7 +25,7 @@ _Version: 1.6 · Updated June 22, 2026_
 - **UAT "🐞 Report" button** in the header of every nav page → pre-filled `mailto:rahul@growthautomated.ai` with privacy-safe diagnostics (environment + counts + recent console errors, **no LinkedIn data**).
 - **Content / links:** ICP scoring explainer + 2-fold "edit keywords / book time" CTA; "why-not-mobile" & "why-not-Safari" FAQs; LinkedIn data-download link wherever export is explained; per-tool launch CTAs on how-to; footer "Release notes" link. `README.md` + `ICP-CUSTOMIZATION.md` now deployed.
 - **Mobile:** headers now wrap (never overlap) on phones; icp-finder tier cards stack; dashboard + icp-finder show a top-of-page "Built for desktop" notice (mobile-only) linking to the how-to FAQ. ⚠️ Mobile browsers cache HTML hard — pull-to-refresh after deploys.
-- **"Willis" help widget (June 20):** a floating "Ask Willis" wiki on all 5 nav pages — bubble → searchable panel over bundled articles (client-side, no server). `willis.js` (engine) + `willis-articles.js` (14 seed articles) + `willis/*.png` (v2 striped-polo character). Deep-link API `Willis.open/ask/article`. Also packaged as a **reusable kit** for other apps (`~/Desktop/Willis/willis-kit/`).
+- **"Willis" help widget (June 20):** a floating "Ask Willis" wiki on all 5 nav pages — bubble → searchable panel over bundled articles (client-side, no server). `willis.js` (engine, ranked search) + `willis-articles.js` (**40 articles / 10 categories**; was 14 at launch) + `willis/*.png` (v2 striped-polo character). Deep-link API `Willis.open/ask/article`. Also packaged as a **reusable kit** for other apps (`~/Desktop/Willis/willis-kit/`).
 - **Deploy:** use `push_to_dev.py` → `create_pr.py`. The old `push_all_updates.py` is retired.
 
 ---
