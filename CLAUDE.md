@@ -95,12 +95,10 @@ python3 $ROOT/push_to_dev.py --with-offline
 
 ⚠️ **Cross-page cache contract — "load once, use everywhere."** Tools share loaded data via `ga_csv_cache` so navigating between them never asks for a re-mount. **Any page that writes `ga_csv_cache` MUST include the activity files** (`Reactions/Comments/Shares.csv`) or the Dashboard's Engagement & Content tabs render empty. ICP Finder only *parses* Connections+messages, but its folder loader now *reads & caches* the full activity set too (Jun 22). Defensively, the Dashboard's auto-restore **skips a cache with no activity unless `src==='dashboard'`** (else it would show empty Engagement/Content — a real reported bug). The Playbook needs `ga_icp_data` (ICP-scored, icp-finder-only); if it's absent but a session cache exists, the Playbook routes the user to ICP Finder (one click, auto-restores) instead of showing demo.
 
-**ICP Scoring** (icp-finder.html, lines ~1888–1899):
-- Runs in order: EXCL → T1 → T2 → T3 → excluded
-- T1: founder/CEO/CMO/VP-level titles (title only)
-- T2: Shopify ecosystem tools + fractional/manager titles (title + company)
-- T3: broader marketing titles (title only)
-- First match wins. No match = contact excluded from ICP entirely.
+**ICP Scoring** (icp-finder.html):
+- Runs in order: EXCL → T1 → T2 → T3 → unmatched. First match wins.
+- T1: founder/CEO/CMO/VP-level titles (title only) · T2: Shopify ecosystem + fractional/manager (title + company) · T3: broader marketing titles (title only).
+- **Editable keywords (June 22):** T1/T2/T3 are now **editable string lists** (`ICP_DEFAULTS` → `ICP_KW`) compiled to regex via `compileKw()` (short tokens like ceo/cmo/gm get `\b` boundaries). The **in-app editor** (`openICPEditor`/`saveICPEditor`) persists overrides to `localStorage['ga_icp_kw']` and calls `reclassify()` → recompiles + `classifyAll()` (re-runs over the cached `_connRows`/`_msgByPerson`) + re-renders + re-saves `ga_icp_data`. EXCL noise-filter stays hardcoded. "No match" is now **surfaced as an unmatched count** (not silently dropped); the `s-total-sub` ~100% bug is fixed.
 
 **Charts:** Chart.js 4.4.1. Color config: `const GC` object (~line 1039 in dashboard.html)
 - `GC.color` — text color
