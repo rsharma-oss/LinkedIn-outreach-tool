@@ -1,4 +1,4 @@
-# LinkedIn Toolkit — Claude Session Context
+# LinkVault — Claude Session Context
 
 > Read this first. It tells you everything you need to work on this project.
 
@@ -6,12 +6,15 @@
 
 ## What This Is
 
+**The product is named "LinkVault" — _the LinkedIn outreach toolkit by Growth Automated_** (named June 2026). Growth Automated is the agency/maker brand; **LinkVault** is the product. (Repo/URL slug stays `LinkedIn-outreach-tool` for now.)
+
 A fully client-side LinkedIn analytics and outreach tool. Users upload their LinkedIn data export — the tool parses, classifies, and visualises their network. **Nothing leaves the browser.** Hosted on GitHub Pages.
 
 **Live site:** https://rsharma-oss.github.io/LinkedIn-outreach-tool/
 **Repo:** `rsharma-oss/LinkedIn-outreach-tool`
 **Owner:** Rahul Sharma — rahul@growthautomated.ai
 **Target user:** Shopify DTC growth agency founders
+**Brand colors (LinkVault):** LinkedIn Blue `#0A66C2` (primary) · Dark Navy `#0F172A` · White · Gray `#808080`. Wordmark font: Assistant. Icon: blue hex "vault" + white chain-link.
 
 ---
 
@@ -216,9 +219,13 @@ Container is `<header class="hdr">` (playbook's outer wrapper is still `.header`
 
 ---
 
-## Brand Logo (June 22, 2026)
+## Brand Logo
 
-The header brand is the **official Growth Automated logo** (horizontal wordmark + woven icon, no ".ai"), replacing the old inline rainbow-`ga-sym` SVG + typed "GrowthAutomated.ai" text. Deployed as two assets at the repo root: **`logo-white.svg`** (fully white, for dark headers) and **`logo-color.svg`** (colorful, for light headers). Both are in the push `FILES` list.
+**Current (product naming, June 2026): the header is the LinkVault lockup** — `<span class="lv-brand">`: the **`linkvault-mark.png`** icon (blue hex-vault + chain-link, flood-filled transparent so it sits on any bg) + a text wordmark **"LinkVault"** (`.lv-word`, white on dark / navy on light via `[data-theme="light"]`) + a small **"by Growth Automated"** credit (`.lv-by`, `white-space:nowrap`). `.lv-brand ~ *{display:none}` hides the older hidden wordmark siblings. Favicons (`favicon.ico/-16/-32`, `apple-touch-icon.png`) + `<meta name="theme-color" content="#0A66C2">` are in every `<head>`. All these assets are in the push `FILES` list; the full brand kit is attached at project root `LinkVault-brand-assets/` (not deployed).
+- ⚠️ **Header tightness:** the centered-nav header gets cramped in the **~768–950px** window (brand vs. nav) — clean ≥1024px and <768px (mobile notice). Pre-existing trait; minor responsive follow-up (wrap the nav earlier).
+
+### Prior: Growth Automated logo (June 22, 2026) — now superseded in the header
+The header previously used the **official Growth Automated logo** (`logo-white.svg` / `logo-color.svg`, the `.ga-logo` element). LinkVault replaced it as the header mark; the GA logo CSS/assets remain (dormant) and Growth Automated is now the "by Growth Automated" credit. `logo-white.svg` (white, dark headers) + `logo-color.svg` (color, light headers) are still in the push `FILES` list.
 
 - **Markup (all 7 pages):** `<a class="logo-link" ...><span class="ga-logo" role="img" aria-label="Growth Automated"></span></a>`.
 - **CSS (same block on every page):**

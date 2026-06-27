@@ -1,6 +1,8 @@
-# LinkedIn Toolkit
+# LinkVault
 
-Two browser-based tools for analyzing your LinkedIn network — all processing happens locally in your browser. Your data never leaves your device.
+_The LinkedIn outreach toolkit by Growth Automated._
+
+Browser-based tools for analyzing your LinkedIn network — all processing happens locally in your browser. Your data never leaves your device.
 
 ## Tools
 
