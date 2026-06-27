@@ -127,6 +127,30 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .icp-cta-link:hover{background:var(--bg4);color:var(--tx);}
 .icp-cta-primary{background:var(--li);color:#fff;border-color:transparent;}
 .icp-cta-primary:hover{background:var(--li2);color:#fff;}
+button.icp-cta-link{cursor:pointer;background:none;font-family:inherit;}
+button.icp-cta-primary{background:var(--li);}
+button.icp-cta-primary:hover{background:var(--li2);}
+.icp-custom-badge{font-size:0.62rem;font-weight:700;padding:2px 7px;border-radius:9px;background:rgba(139,92,246,0.18);color:#a78bfa;border:1px solid rgba(139,92,246,0.4);vertical-align:middle;margin-left:6px;}
+/* ICP keyword editor modal */
+.icp-edit-ov{position:fixed;inset:0;background:rgba(0,0,0,0.55);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;}
+.icp-edit-card{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;width:min(880px,96vw);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
+.icp-edit-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 6px;}
+.icp-edit-head h3{margin:0;font-size:1.05rem;color:var(--tx);}
+.icp-edit-x{background:none;border:none;color:var(--tx2);font-size:1.2rem;cursor:pointer;line-height:1;}
+.icp-edit-sub{padding:0 20px;margin:4px 0 12px;font-size:0.8rem;color:var(--tx2);line-height:1.5;}
+.icp-edit-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;padding:0 20px;overflow-y:auto;}
+.icp-edit-col label{display:block;font-size:0.78rem;font-weight:700;color:var(--tx);margin-bottom:6px;}
+.icp-edit-col label span{font-weight:600;color:var(--tx3);}
+.icp-edit-col textarea{width:100%;height:230px;resize:vertical;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--tx);font-size:0.78rem;line-height:1.5;padding:8px 10px;font-family:inherit;box-sizing:border-box;}
+.icp-reset{margin-top:6px;font-size:0.7rem;background:none;border:1px solid var(--border2);color:var(--tx2);border-radius:6px;padding:4px 8px;cursor:pointer;}
+.icp-reset:hover{background:var(--bg4);color:var(--tx);}
+.icp-edit-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px 18px;flex-wrap:wrap;}
+#icpEditMsg{font-size:0.78rem;color:#6ee7b7;}
+.icp-edit-btn{font-size:0.8rem;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--border2);background:none;color:var(--tx2);cursor:pointer;margin-left:8px;}
+.icp-edit-btn:hover{background:var(--bg4);color:var(--tx);}
+.icp-edit-primary{background:var(--li);color:#fff;border-color:transparent;}
+.icp-edit-primary:hover{background:var(--li2);}
+@media(max-width:680px){.icp-edit-grid{grid-template-columns:1fr;}.icp-edit-col textarea{height:150px;}}
 
 /* FILTER BAR */
 .filter-bar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
@@ -318,7 +342,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div class="load-icon">🎯</div>
     <div class="load-title">LinkedIn ICP Finder</div>
     <div class="load-sub">
-      Automatically classify your LinkedIn connections into ICP tiers — decision makers, ecosystem partners, and adjacent contacts. Everything runs in your browser. Your data stays on your device. <em>Works with English-language LinkedIn exports.</em>
+      Automatically classify your LinkedIn connections into ICP tiers — decision makers, ecosystem partners, and adjacent contacts. Everything runs in your browser. Your data stays on your device. <em>The default ICP is tuned for Shopify DTC growth agencies — customize it in-app once loaded, or we'll build yours. Works with English-language LinkedIn exports.</em>
     </div>
 
     <!-- PRIVACY MANIFEST -->
@@ -398,11 +422,12 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 
     <!-- ICP scoring transparency + customization CTA -->
     <div class="icp-note">
-      <div class="icp-note-title">ℹ️ How these tiers are scored — and how to make them yours</div>
-      <p class="icp-note-body">Every connection is auto-classified by matching its <strong>job title and company</strong> against a built-in keyword ruleset — the default ICP we use for Shopify DTC growth agencies (founders &amp; marketing leaders → T1, ecommerce tools &amp; ecosystem → T2, broader marketing roles → T3). First match wins; no match means the contact is left out of the results. It's a fixed starting point — <strong>not yet tailored to your business</strong>.</p>
+      <div class="icp-note-title">ℹ️ How these tiers are scored — and how to make them yours <span id="icp-custom-badge" class="icp-custom-badge" style="display:none;">✏️ Custom</span></div>
+      <p class="icp-note-body">Every connection is auto-classified by matching its <strong>job title and company</strong> against a keyword ruleset. The default is <strong>tuned for Shopify DTC growth agencies</strong> (founders &amp; marketing leaders → T1, ecommerce tools &amp; ecosystem → T2, broader marketing roles → T3). First match wins; anything that matches nothing is counted as <strong>"unmatched"</strong> in your totals (not dropped silently). <strong>Not your market?</strong> Customize the keywords — it re-tiers your whole network instantly, right here in your browser.</p>
       <div class="icp-note-cta">
-        <a class="icp-cta-link" href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/ICP-CUSTOMIZATION.md" target="_blank" rel="noopener">📝 Edit the keywords yourself →</a>
-        <a class="icp-cta-link icp-cta-primary" href="demo.html">📅 Book time — we'll build your ICP for you →</a>
+        <button class="icp-cta-link icp-cta-primary" onclick="openICPEditor()">✏️ Customize keywords</button>
+        <a class="icp-cta-link" href="demo.html">📅 Book time — we'll build your ICP for you →</a>
+        <a class="icp-cta-link" href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/ICP-CUSTOMIZATION.md" target="_blank" rel="noopener">Advanced: edit in code ↗</a>
       </div>
     </div>
 
@@ -1950,9 +1975,28 @@ Alex,Chen,,"Toronto, Ontario, Canada",,Founder & CEO @ ShopBoost Agency | Shopif
 
 
 // ─── ICP CLASSIFICATION ───────────────────────────────────────────────────────
-const T1_KEYWORDS = /\bfounder\b|co-founder|ceo\b|chief executive|\bcmo\b|chief marketing|president\b|\bowner\b|managing director|\bvp\b.{0,20}market|\bvp\b.{0,20}growth|director.{0,20}marketing|head of marketing|head of ecommerce|head of e-commerce|chief revenue|\bgm\b|general manager|vp ecommerce|director of growth|head of dtc|ecommerce director|director of ecommerce/i;
-const T2_KEYWORDS = /shopify|klaviyo|gorgias|yotpo|rebuy|recharge|postscript|triple whale|okendo|northbeam|attentive|sendlane|skio|loop returns|richreturns|aftership|shipbob|shipmonk|fractional cmo|fractional head|email marketing manager|growth manager|ecommerce manager|dtc marketing|retention specialist|lifecycle marketing|performance marketing manager|senior brand manager|sms marketing|crm manager|ecommerce strategist/i;
-const T3_KEYWORDS = /marketing manager|digital marketing|content marketing|social media manager|seo manager|brand manager|marketing coordinator|growth hacker|revenue operations|partnerships manager|marketing director|senior marketing|creative director|copy director|brand director|vp brand|marketing lead/i;
+// ── ICP keyword lists — EDITABLE in-app (defaults below; user overrides persist in
+//    localStorage 'ga_icp_kw'). Stored as plain keyword/phrase lists and compiled to a
+//    case-insensitive regex; short alpha tokens (ceo/cmo/gm) get word boundaries.
+const ICP_DEFAULTS = {
+  t1: ["founder","co-founder","ceo","chief executive","cmo","chief marketing","president","owner","managing director","vp marketing","vp growth","director of marketing","head of marketing","head of ecommerce","head of e-commerce","chief revenue","gm","general manager","vp ecommerce","director of growth","head of dtc","ecommerce director","director of ecommerce"],
+  t2: ["shopify","klaviyo","gorgias","yotpo","rebuy","recharge","postscript","triple whale","okendo","northbeam","attentive","sendlane","skio","loop returns","richreturns","aftership","shipbob","shipmonk","fractional cmo","fractional head","email marketing manager","growth manager","ecommerce manager","dtc marketing","retention specialist","lifecycle marketing","performance marketing manager","senior brand manager","sms marketing","crm manager","ecommerce strategist"],
+  t3: ["marketing manager","digital marketing","content marketing","social media manager","seo manager","brand manager","marketing coordinator","growth hacker","revenue operations","partnerships manager","marketing director","senior marketing","creative director","copy director","brand director","vp brand","marketing lead"]
+};
+function loadICPKw(){
+  try{ var s=JSON.parse(localStorage.getItem('ga_icp_kw')); if(s&&s.t1&&s.t2&&s.t3) return s; }catch(e){}
+  return { t1:ICP_DEFAULTS.t1.slice(), t2:ICP_DEFAULTS.t2.slice(), t3:ICP_DEFAULTS.t3.slice() };
+}
+function compileKw(words){
+  var parts=(words||[]).map(function(w){ w=String(w).trim().toLowerCase(); if(!w) return null;
+    var esc=w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    return (w.length<=3 && /^[a-z]+$/.test(w)) ? '\\b'+esc+'\\b' : esc; }).filter(Boolean);
+  return parts.length ? new RegExp(parts.join('|'),'i') : /a^/; // /a^/ = matches nothing
+}
+let ICP_KW = loadICPKw();
+let T1_KEYWORDS = compileKw(ICP_KW.t1);
+let T2_KEYWORDS = compileKw(ICP_KW.t2);
+let T3_KEYWORDS = compileKw(ICP_KW.t3);
 const EXCL_KEYWORDS = /\bretired\b|chief financial|\bcfo\b|chief technology|\bcto\b|board member|real estate|talent acquisition|\brecruiter\b|software engineer|program manager|project manager|\baccountant\b|\blawyer\b|\battorney\b|\bstudent\b|\bintern\b|data scientist|ml engineer|devops|solutions architect|chief operating|\bcoo\b/i;
 
 function classifyTier(title, company) {
@@ -1962,6 +2006,64 @@ function classifyTier(title, company) {
   if (T2_KEYWORDS.test(combined)) return 'T2';
   if (T3_KEYWORDS.test(title)) return 'T3';
   return null;
+}
+
+// ── Re-classification engine — lets the in-app keyword editor re-tier live ───────
+let _connRows = [], _msgByPerson = {}, _totalConns = 0;
+function classifyAll(){
+  ICP = [];
+  _connRows.forEach(function(r){
+    const title=(r['Position']||'').trim();
+    const company=(r['Company']||'').trim();
+    const tier=classifyTier(title,company);
+    if(!tier) return;
+    const connDate=parseDate(r['Connected On']);
+    const days=daysSince(connDate);
+    let recency='cold';
+    if(days!==null){ if(days<30)recency='new'; else if(days<90)recency='fresh'; else if(days<365)recency='warm'; }
+    const fullName=`${r['First Name']||''} ${r['Last Name']||''}`.trim();
+    const msgData=_msgByPerson[fullName]||null;
+    let engagement='never', lastMsgDays=null;
+    if(msgData){ lastMsgDays=daysSince(msgData.lastDate); if(lastMsgDays<90)engagement='active'; else if(lastMsgDays<365)engagement='warm'; else engagement='cold'; }
+    ICP.push({ name:fullName, first:r['First Name']||'', last:r['Last Name']||'', title, company, tier, url:r['URL']||'', connDate, days, recency, msgCount:msgData?msgData.count:0, lastMsgDays, engagement });
+  });
+}
+function saveICPData(){
+  try{ localStorage.setItem('ga_icp_data', JSON.stringify({
+    icp: ICP.map(function(c){ return Object.assign({}, c, {connDate: c.connDate? c.connDate.toISOString():null}); }),
+    totalConns: _totalConns, exported: new Date().toISOString()
+  })); }catch(e){ console.warn('localStorage save failed:', e); }
+}
+function reclassify(){
+  T1_KEYWORDS=compileKw(ICP_KW.t1); T2_KEYWORDS=compileKw(ICP_KW.t2); T3_KEYWORDS=compileKw(ICP_KW.t3);
+  classifyAll();
+  buildStats(false); _icpPage=0; renderTable(); buildOutreachView(); saveICPData();
+}
+
+// ── In-app ICP keyword editor ───────────────────────────────────────────────────
+function readTierBox(t){ var el=document.getElementById('icpkw-'+t); if(!el) return []; return el.value.split('\n').map(function(s){return s.trim().toLowerCase();}).filter(Boolean); }
+function updateEditorCounts(){ ['t1','t2','t3'].forEach(function(t){ var c=document.getElementById('icpc-'+t); if(c) c.textContent=readTierBox(t).length; }); }
+function openICPEditor(){
+  ['t1','t2','t3'].forEach(function(t){ var el=document.getElementById('icpkw-'+t); if(el) el.value=(ICP_KW[t]||[]).join('\n'); });
+  updateEditorCounts();
+  var m=document.getElementById('icpEditMsg'); if(m) m.textContent='';
+  var ov=document.getElementById('icpEditOv'); if(ov) ov.style.display='flex';
+}
+function closeICPEditor(){ var ov=document.getElementById('icpEditOv'); if(ov) ov.style.display='none'; }
+function resetTier(t){ var el=document.getElementById('icpkw-'+t); if(el){ el.value=ICP_DEFAULTS[t].join('\n'); } updateEditorCounts(); }
+function resetAllTiers(){ ['t1','t2','t3'].forEach(resetTier); }
+function icpIsCustom(){ return JSON.stringify(ICP_KW)!==JSON.stringify({t1:ICP_DEFAULTS.t1,t2:ICP_DEFAULTS.t2,t3:ICP_DEFAULTS.t3}); }
+function syncCustomBadge(){ var b=document.getElementById('icp-custom-badge'); if(b) b.style.display=icpIsCustom()?'inline-block':'none'; }
+function saveICPEditor(){
+  ICP_KW = { t1:readTierBox('t1'), t2:readTierBox('t2'), t3:readTierBox('t3') };
+  if(icpIsCustom()){ try{ localStorage.setItem('ga_icp_kw', JSON.stringify(ICP_KW)); }catch(e){} }
+  else { try{ localStorage.removeItem('ga_icp_kw'); }catch(e){} }
+  reclassify(); syncCustomBadge();
+  var t1=ICP.filter(function(c){return c.tier==='T1';}).length,
+      t2=ICP.filter(function(c){return c.tier==='T2';}).length,
+      t3=ICP.filter(function(c){return c.tier==='T3';}).length;
+  var msg=document.getElementById('icpEditMsg');
+  if(msg) msg.textContent='✓ Re-tiered — '+ICP.length.toLocaleString()+' in ICP  (T1 '+t1+' · T2 '+t2+' · T3 '+t3+')';
 }
 
 // ─── DATA & STATE ─────────────────────────────────────────────────────────────
@@ -2108,47 +2210,9 @@ async function processFiles(filemap, isDemo) {
     if (!msgByPerson[name].lastDate || dt > msgByPerson[name].lastDate) msgByPerson[name].lastDate = dt;
   });
 
-  // Classify each connection
-  ICP = [];
-  connRows.forEach(r => {
-    const title   = (r['Position'] || '').trim();
-    const company = (r['Company'] || '').trim();
-    const tier    = classifyTier(title, company);
-    if (!tier) return;
-
-    const connDate = parseDate(r['Connected On']);
-    const days = daysSince(connDate);
-    let recency = 'cold';
-    if (days !== null) {
-      if (days < 30) recency = 'new';
-      else if (days < 90) recency = 'fresh';
-      else if (days < 365) recency = 'warm';
-    }
-
-    const fullName = `${r['First Name'] || ''} ${r['Last Name'] || ''}`.trim();
-    const msgData = msgByPerson[fullName] || null;
-    let engagement = 'never';
-    let lastMsgDays = null;
-    if (msgData) {
-      lastMsgDays = daysSince(msgData.lastDate);
-      if (lastMsgDays < 90) engagement = 'active';
-      else if (lastMsgDays < 365) engagement = 'warm';
-      else engagement = 'cold';
-    }
-
-    ICP.push({
-      name: fullName,
-      first: r['First Name'] || '',
-      last: r['Last Name'] || '',
-      title, company,
-      tier,
-      url: r['URL'] || '',
-      connDate, days, recency,
-      msgCount: msgData?.count || 0,
-      lastMsgDays,
-      engagement,
-    });
-  });
+  // Classify each connection (extracted to classifyAll so the keyword editor can re-run it live)
+  _connRows = connRows; _msgByPerson = msgByPerson; _totalConns = connRows.length;
+  classifyAll();
 
   setProgress(100, 'Building ICP view…');
   await new Promise(r => setTimeout(r, 200));
@@ -2208,7 +2272,9 @@ function buildStats(isDemo) {
   const newConns = ICP.filter(c => c.recency==='new').length;
   const engaged  = ICP.filter(c => c.engagement==='active').length;
   document.getElementById('s-total').textContent = ICP.length.toLocaleString();
-  document.getElementById('s-total-sub').textContent = `${Math.round(ICP.length / (ICP.length + 1) * 100)}% of your network`;
+  const _tot = _totalConns || ICP.length, _unm = Math.max(0, _tot - ICP.length), _pct = _tot ? Math.round(ICP.length / _tot * 100) : 0;
+  document.getElementById('s-total-sub').textContent = `${_pct}% of ${_tot.toLocaleString()} · ${_unm.toLocaleString()} unmatched`;
+  syncCustomBadge();
   document.getElementById('s-t1').textContent = t1.toLocaleString();
   document.getElementById('s-t2').textContent = t2.toLocaleString();
   document.getElementById('s-t3').textContent = t3.toLocaleString();
@@ -2525,6 +2591,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 </script>
 <!-- Willis help widget -->
+<!-- ICP keyword editor modal -->
+<div class="icp-edit-ov" id="icpEditOv">
+  <div class="icp-edit-card" role="dialog" aria-label="Customize ICP keywords">
+    <div class="icp-edit-head"><h3>✏️ Customize your ICP keywords</h3><button class="icp-edit-x" onclick="closeICPEditor()" aria-label="Close">✕</button></div>
+    <p class="icp-edit-sub">One keyword or phrase per line. <b>T1</b> &amp; <b>T3</b> match the job title; <b>T2</b> matches title&nbsp;+&nbsp;company (so tool/brand names work). First match wins, in order T1&nbsp;→&nbsp;T2&nbsp;→&nbsp;T3. Saved to this browser only — re-tiers your network the moment you save.</p>
+    <div class="icp-edit-grid">
+      <div class="icp-edit-col"><label>T1 · Decision Maker <span>(<b id="icpc-t1">0</b>)</span></label><textarea id="icpkw-t1" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t1')">↺ Reset T1</button></div>
+      <div class="icp-edit-col"><label>T2 · Ecosystem <span>(<b id="icpc-t2">0</b>)</span></label><textarea id="icpkw-t2" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t2')">↺ Reset T2</button></div>
+      <div class="icp-edit-col"><label>T3 · Adjacent <span>(<b id="icpc-t3">0</b>)</span></label><textarea id="icpkw-t3" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t3')">↺ Reset T3</button></div>
+    </div>
+    <div class="icp-edit-foot">
+      <span id="icpEditMsg"></span>
+      <div><button class="icp-edit-btn" onclick="resetAllTiers()">↺ Reset all</button><button class="icp-edit-btn icp-edit-primary" onclick="saveICPEditor()">Save &amp; re-tier</button></div>
+    </div>
+  </div>
+</div>
 <script src="willis-articles.js"></script>
 <script src="willis.js"></script>
 </body>
