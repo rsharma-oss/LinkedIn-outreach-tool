@@ -206,7 +206,8 @@ Container is `<header class="hdr">` (playbook's outer wrapper is still `.header`
 
 ## Willis help widget (June 20)
 
-- **What:** a floating "Ask Willis" help wiki on all 5 nav pages — bubble bottom-right → searchable panel (client-side, no server). Files: `willis.js` (engine, self-contained, namespaced `wz-`), `willis-articles.js` (`window.WILLIS_ARTICLES`, 14 seed articles), `willis/*.png` (5-pose character — v2 = the orange/blue striped-polo character).
+- **What:** a floating "Ask Willis" help wiki on all 5 nav pages — bubble bottom-right → searchable panel (client-side, no server). Files: `willis.js` (engine, self-contained, namespaced `wz-`), `willis-articles.js` (`window.WILLIS_ARTICLES`, **40 articles across 10 categories** — expanded from the 14-article launch seed June 22), `willis/*.png` (5-pose character — v2 = the orange/blue striped-polo character).
+- **Search ranking (June 22):** `runSearch` in `willis.js` **scores** every article (title-match > keyword-match; more matched words rank higher) and sorts best-first. The original was a plain any-word filter returning matches in array order — fine for 14 articles, noisy at 40 (e.g. "message templates" hit "messages" in another doc). When adding articles, give each a rich `k:` keyword string so it ranks well.
 - **Integrate:** two tags before `</body>` — `<script src="willis-articles.js"></script>` then `<script src="willis.js"></script>`. Already on dashboard, icp-finder, how-to, demo, playbook. The widget self-injects.
 - **Deep-link API:** `Willis.open()` / `Willis.ask('q')` / `Willis.article('id')` / `Willis.close()`.
 - **Theme:** dark by default; reacts to `html[data-theme="light"]`. Own tokens (`--wp-*`) so it keeps separation regardless of the page theme (don't make it depend on app vars).
