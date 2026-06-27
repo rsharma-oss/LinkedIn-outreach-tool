@@ -422,12 +422,11 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 
     <!-- ICP scoring transparency + customization CTA -->
     <div class="icp-note">
-      <div class="icp-note-title">ℹ️ How these tiers are scored — and how to make them yours <span id="icp-custom-badge" class="icp-custom-badge" style="display:none;">✏️ Custom</span></div>
-      <p class="icp-note-body">Every connection is auto-classified by matching its <strong>job title and company</strong> against a keyword ruleset. The default is <strong>tuned for Shopify DTC growth agencies</strong> (founders &amp; marketing leaders → T1, ecommerce tools &amp; ecosystem → T2, broader marketing roles → T3). First match wins; anything that matches nothing is counted as <strong>"unmatched"</strong> in your totals (not dropped silently). <strong>Not your market?</strong> Customize the keywords — it re-tiers your whole network instantly, right here in your browser.</p>
+      <div class="icp-note-title">ℹ️ How these tiers are scored — and how to make them yours</div>
+      <p class="icp-note-body">Every connection is auto-classified by matching its <strong>job title and company</strong> against a keyword ruleset. The default is <strong>tuned for Shopify DTC growth agencies</strong> (founders &amp; marketing leaders → T1, ecommerce tools &amp; ecosystem → T2, broader marketing roles → T3). First match wins; anything that matches nothing is counted as <strong>"unmatched"</strong> in your totals (not dropped silently). <strong>Not your market?</strong> Tailor it to your business:</p>
       <div class="icp-note-cta">
-        <button class="icp-cta-link icp-cta-primary" onclick="openICPEditor()">✏️ Customize keywords</button>
-        <a class="icp-cta-link" href="demo.html">📅 Book time — we'll build your ICP for you →</a>
-        <a class="icp-cta-link" href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/ICP-CUSTOMIZATION.md" target="_blank" rel="noopener">Advanced: edit in code ↗</a>
+        <a class="icp-cta-link icp-cta-primary" href="demo.html">📅 Book time — we'll build your ICP for you →</a>
+        <a class="icp-cta-link" href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/ICP-CUSTOMIZATION.md" target="_blank" rel="noopener">📝 Edit the keywords yourself →</a>
       </div>
     </div>
 
@@ -2591,22 +2590,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 </script>
 <!-- Willis help widget -->
-<!-- ICP keyword editor modal -->
-<div class="icp-edit-ov" id="icpEditOv">
-  <div class="icp-edit-card" role="dialog" aria-label="Customize ICP keywords">
-    <div class="icp-edit-head"><h3>✏️ Customize your ICP keywords</h3><button class="icp-edit-x" onclick="closeICPEditor()" aria-label="Close">✕</button></div>
-    <p class="icp-edit-sub">One keyword or phrase per line. <b>T1</b> &amp; <b>T3</b> match the job title; <b>T2</b> matches title&nbsp;+&nbsp;company (so tool/brand names work). First match wins, in order T1&nbsp;→&nbsp;T2&nbsp;→&nbsp;T3. Saved to this browser only — re-tiers your network the moment you save.</p>
-    <div class="icp-edit-grid">
-      <div class="icp-edit-col"><label>T1 · Decision Maker <span>(<b id="icpc-t1">0</b>)</span></label><textarea id="icpkw-t1" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t1')">↺ Reset T1</button></div>
-      <div class="icp-edit-col"><label>T2 · Ecosystem <span>(<b id="icpc-t2">0</b>)</span></label><textarea id="icpkw-t2" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t2')">↺ Reset T2</button></div>
-      <div class="icp-edit-col"><label>T3 · Adjacent <span>(<b id="icpc-t3">0</b>)</span></label><textarea id="icpkw-t3" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t3')">↺ Reset T3</button></div>
-    </div>
-    <div class="icp-edit-foot">
-      <span id="icpEditMsg"></span>
-      <div><button class="icp-edit-btn" onclick="resetAllTiers()">↺ Reset all</button><button class="icp-edit-btn icp-edit-primary" onclick="saveICPEditor()">Save &amp; re-tier</button></div>
-    </div>
-  </div>
-</div>
+<!-- ICP keyword editor modal — HELD (Fix B): engine + editor JS/CSS remain in this file
+     but the UI entry point (modal + "Customize keywords" button) is gated out pending the
+     co-work alignment on direction (vertical presets vs extensible vs hybrid). Full demo
+     version: icp-finder-with-editor.held.html · brief: ICP-COWORK-BRIEF.md. Re-enable by
+     restoring this modal + the .icp-note button. -->
 <script src="willis-articles.js"></script>
 <script src="willis.js"></script>
 </body>
