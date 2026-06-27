@@ -1,5 +1,7 @@
-# GrowthAutomated.ai — LinkedIn Toolkit
+# LinkVault — _the LinkedIn outreach toolkit by Growth Automated_
 ## Product Requirements Document & Engineering Handoff
+
+_Named "LinkVault" June 2026 (was "LinkedIn Intelligence / Toolkit"). Growth Automated = maker brand; LinkVault = product._
 
 _Version: 1.6 · Updated June 22, 2026_
 
