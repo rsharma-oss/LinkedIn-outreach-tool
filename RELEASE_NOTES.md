@@ -2,7 +2,10 @@
 
 ---
 
-## Sprint Wrap — June 22, 2026 (Defect fixes · Cross-page cache · Dev workflow · Token security · UAT pipeline)
+## Sprint Wrap — June 22, 2026 (Defect fixes · Cross-page cache · Dev workflow · Token security · UAT pipeline · Brand logo)
+
+### 🎨 Official brand logo (all 7 pages)
+- Replaced the old inline rainbow icon + typed "GrowthAutomated**.ai**" with the **official Growth Automated logo** (horizontal wordmark + woven icon, **no ".ai"**). Deployed as `logo-white.svg` / `logo-color.svg`; **white on dark headers, color on light** (auto-swaps with theme). Single `.ga-logo` element + shared CSS on every page; swap the SVGs to rebrand with zero code changes. (Offline bundles still carry the old icon — rebuild to update.)
 
 ### 🐛 Engagement & Content tabs loaded empty from a partial cross-page cache
 - **Symptom (reported):** load your export on the ICP Finder, then open the Dashboard → Connections and Messages populate, but **Engagement and Content show 0**.
