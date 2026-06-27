@@ -125,8 +125,21 @@
   function runSearch(q){
     q=(q||'').trim().toLowerCase(); if(!q){renderIdle();return;}
     var words=q.split(/\s+/).filter(function(w){return w.length>1;});
-    var hits=ARTICLES.filter(function(a){var hay=(a.title+' '+a.k+' '+a.cat).toLowerCase();
-      return hay.indexOf(q)>-1 || words.some(function(w){return hay.indexOf(w)>-1;});});
+    // Score every article, then rank best-first. (The old version was a plain filter that
+    // returned any-word matches in array order, so with 40 articles the top hit was just
+    // the earliest-listed match — e.g. "message templates" hit "messages" in another doc.)
+    var hits=ARTICLES.map(function(a){
+      var title=(a.title||'').toLowerCase(), keys=(a.k||'').toLowerCase(), cat=(a.cat||'').toLowerCase();
+      var hay=title+' '+keys+' '+cat, s=0;
+      if(title.indexOf(q)>-1) s+=100; else if(keys.indexOf(q)>-1) s+=50; else if(hay.indexOf(q)>-1) s+=25;
+      words.forEach(function(w){
+        if(title.indexOf(w)>-1) s+=10;
+        try{ if(new RegExp('\\b'+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b').test(title)) s+=6; }catch(e){}
+        if(keys.indexOf(w)>-1) s+=4;
+        if(cat.indexOf(w)>-1) s+=2;
+      });
+      return {a:a,s:s};
+    }).filter(function(x){return x.s>0;}).sort(function(x,y){return y.s-x.s;}).map(function(x){return x.a;});
     if(hits.length){
       body.innerHTML=stateCard(ART.got,'Here\'s what I got:',hits.length+' article'+(hits.length>1?'s':'')+' for "'+esc(q)+'".')+
         hits.map(artRow).join('');
