@@ -7,6 +7,10 @@
 ### 🎨 Official brand logo (all 7 pages)
 - Replaced the old inline rainbow icon + typed "GrowthAutomated**.ai**" with the **official Growth Automated logo** (horizontal wordmark + woven icon, **no ".ai"**). Deployed as `logo-white.svg` / `logo-color.svg`; **white on dark headers, color on light** (auto-swaps with theme). Single `.ga-logo` element + shared CSS on every page; swap the SVGs to rebrand with zero code changes. (Offline bundles still carry the old icon — rebuild to update.)
 
+### 🧭 Willis help wiki — 14 → 40 articles + ranked search
+- Expanded the Willis support wiki from the 14-article launch seed to **40 articles across 10 categories** (Start here · Get your data · Loading · Dashboard · ICP Finder · Outreach Playbook · Privacy · Browser & device · Reference · Help & feedback) — every tool, tab, scoring system, and template now has a how-to.
+- Upgraded `runSearch` from a plain any-word filter to a **scored ranking** (title-match > keyword-match; more matched words rank higher), so the best article surfaces first at 40 articles (the old order-based filter mis-ranked multi-word queries). Verified: 10/10 sample queries return the correct top result.
+
 ### 🐛 Engagement & Content tabs loaded empty from a partial cross-page cache
 - **Symptom (reported):** load your export on the ICP Finder, then open the Dashboard → Connections and Messages populate, but **Engagement and Content show 0**.
 - **Root cause:** the ICP Finder only ingests `Connections.csv` + `messages.csv` (all its scoring needs) but writes the **shared** `ga_csv_cache`. The Dashboard's auto-restore accepted that partial cache and read the absent `Reactions/Comments/Shares.csv` as empty arrays.
