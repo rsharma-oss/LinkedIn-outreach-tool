@@ -134,54 +134,91 @@
   }
 })();
 
-/* ---- ICP Profiles: apply a vertical preset, export/import a config (multi-tenant) ---- */
+/* ---- ICP Profiles + config file (v1): preset apply, spec-compliant export/import ---- */
 (function(){
+  var FORMAT='linkvault-icp', VERSION=1;
+  var MATCH={ t1:'title', t2:'title+company', t3:'title' };
+  window.__icpMeta = window.__icpMeta || {
+    name:'Custom ICP',
+    t1:{label:'Decision Maker', description:'Founders, CEOs, CMOs, VPs'},
+    t2:{label:'Ecosystem',      description:'Agencies, vendors, partners'},
+    t3:{label:'Adjacent',       description:'Marketing, growth roles'},
+    exclude:[]
+  };
   function $(id){ return document.getElementById(id); }
+  function arr(x){ return Array.isArray(x) ? x.map(function(s){ return String(s).trim().toLowerCase(); }).filter(Boolean) : []; }
   function profileKeys(){ return (typeof ICP_PROFILES!=='undefined') ? Object.keys(ICP_PROFILES) : []; }
   function fillProfileSelect(){
     var sel=$('icp-profile-select'); if(!sel || typeof ICP_PROFILES==='undefined') return;
     sel.innerHTML='<option value="">— pick a vertical —</option>'+profileKeys().map(function(k){ return '<option value="'+k+'">'+ICP_PROFILES[k].name+'</option>'; }).join('');
   }
-  function relabel(p){
-    [['t1',p.t1],['t2',p.t2],['t3',p.t3]].forEach(function(pair){
-      var sc=$('s-'+pair[0]); if(sc){ var card=sc.closest('.stat-card'); var sub=card&&card.querySelector('.stat-sub'); if(sub) sub.textContent=pair[1].desc; }
+  function applyMeta(){ try{ EXCL_KEYWORDS=(window.__icpMeta.exclude && window.__icpMeta.exclude.length) ? compileKw(window.__icpMeta.exclude) : /a^/; }catch(e){} }
+  function relabel(){
+    var meta=window.__icpMeta;
+    [['t1',meta.t1],['t2',meta.t2],['t3',meta.t3]].forEach(function(pair){
+      var sc=$('s-'+pair[0]); if(sc){ var card=sc.closest('.stat-card'); var sub=card&&card.querySelector('.stat-sub'); if(sub) sub.textContent=pair[1].description||''; }
     });
     var cards=document.querySelectorAll('.tier-explain > div');
-    [p.t1,p.t2,p.t3].forEach(function(t,i){ if(cards[i]){ var ti=cards[i].querySelector('.tier-card-title'); var su=cards[i].querySelector('.tier-card-sub'); if(ti) ti.textContent=t.desc; if(su) su.textContent=t.label+' tier · '+p.name+' ICP.'; } });
+    [meta.t1,meta.t2,meta.t3].forEach(function(t,i){ if(cards[i]){ var ti=cards[i].querySelector('.tier-card-title'); var su=cards[i].querySelector('.tier-card-sub'); if(ti) ti.textContent=t.description||''; if(su) su.textContent=(t.label||'')+' tier · '+(meta.name||'ICP')+'.'; } });
   }
   function syncBoxes(){ ['t1','t2','t3'].forEach(function(t){ var el=$('icpkw-'+t); if(el) el.value=(ICP_KW[t]||[]).join('\n'); }); if(typeof updateEditorCounts==='function') updateEditorCounts(); if(typeof renderTitlePicker==='function') renderTitlePicker(); }
+
   window.applyICPProfile=function(key){
     if(!key || typeof ICP_PROFILES==='undefined' || !ICP_PROFILES[key]) return;
     var p=ICP_PROFILES[key];
     ICP_KW={ t1:p.t1.keywords.slice(), t2:p.t2.keywords.slice(), t3:p.t3.keywords.slice() };
-    try{ EXCL_KEYWORDS=(p.exclude && p.exclude.length) ? compileKw(p.exclude) : /a^/; }catch(e){}
+    window.__icpMeta={ name:p.name,
+      t1:{label:p.t1.label, description:p.t1.desc},
+      t2:{label:p.t2.label, description:p.t2.desc},
+      t3:{label:p.t3.label, description:p.t3.desc},
+      exclude:(p.exclude||[]).slice() };
+    applyMeta();
     try{ localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); localStorage.setItem('ga_icp_profile', key); }catch(e){}
-    reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge();
-    relabel(p); syncBoxes();
+    reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();
     var m=$('icpEditMsg'); if(m) m.textContent='✓ Applied "'+p.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
   };
+
   window.exportICP=function(){
-    var key=null; try{ key=localStorage.getItem('ga_icp_profile'); }catch(e){}
-    var name=(key && typeof ICP_PROFILES!=='undefined' && ICP_PROFILES[key]) ? ICP_PROFILES[key].name : 'Custom ICP';
-    var cfg={ name:name, t1:ICP_KW.t1, t2:ICP_KW.t2, t3:ICP_KW.t3 };
-    var blob=new Blob([JSON.stringify(cfg,null,2)],{type:'application/json'});
-    var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='icp-config-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.json'; a.click();
+    var meta=window.__icpMeta;
+    var cfg={ format:FORMAT, version:VERSION, name:meta.name||'Custom ICP', author:'Growth Automated',
+      tiers:{
+        t1:{ label:meta.t1.label, description:meta.t1.description, match:MATCH.t1, keywords:ICP_KW.t1||[] },
+        t2:{ label:meta.t2.label, description:meta.t2.description, match:MATCH.t2, keywords:ICP_KW.t2||[] },
+        t3:{ label:meta.t3.label, description:meta.t3.description, match:MATCH.t3, keywords:ICP_KW.t3||[] }
+      },
+      exclude:(meta.exclude||[]) };
+    var blob=new Blob([JSON.stringify(cfg,null,2)], {type:'application/json'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download='icp-config-'+String(cfg.name).toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.json'; a.click();
   };
+
   window.importICP=function(file){
     if(!file) return; var rd=new FileReader();
     rd.onload=function(e){
-      try{
-        var cfg=JSON.parse(e.target.result);
-        if(cfg.t1 && cfg.t2 && cfg.t3){
-          ICP_KW={ t1:cfg.t1, t2:cfg.t2, t3:cfg.t3 };
-          try{ localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); localStorage.removeItem('ga_icp_profile'); }catch(_){}
-          reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); syncBoxes();
-          var m=$('icpEditMsg'); if(m) m.textContent='✓ Loaded "'+(cfg.name||'config')+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
-        } else { alert('That JSON does not look like an ICP config (needs t1, t2, t3 arrays).'); }
-      }catch(err){ alert('Could not read that file: '+err.message); }
+      var cfg; try{ cfg=JSON.parse(e.target.result); }catch(err){ alert('Could not read that file: '+err.message); return; }
+      var t1, t2, t3, meta;
+      if(cfg && cfg.tiers && cfg.tiers.t1 && cfg.tiers.t2 && cfg.tiers.t3){
+        if(cfg.format && cfg.format!==FORMAT){ alert('Not a LinkVault ICP config (format: '+cfg.format+').'); return; }
+        if(cfg.version && cfg.version>VERSION){ alert('This config is version '+cfg.version+'; update LinkVault to load it.'); return; }
+        t1=arr(cfg.tiers.t1.keywords); t2=arr(cfg.tiers.t2.keywords); t3=arr(cfg.tiers.t3.keywords);
+        meta={ name:cfg.name||'Loaded ICP',
+          t1:{label:cfg.tiers.t1.label||'Decision Maker', description:cfg.tiers.t1.description||''},
+          t2:{label:cfg.tiers.t2.label||'Ecosystem',      description:cfg.tiers.t2.description||''},
+          t3:{label:cfg.tiers.t3.label||'Adjacent',       description:cfg.tiers.t3.description||''},
+          exclude:arr(cfg.exclude) };
+      } else if(cfg && cfg.t1 && cfg.t2 && cfg.t3){
+        t1=arr(cfg.t1); t2=arr(cfg.t2); t3=arr(cfg.t3);
+        meta={ name:cfg.name||'Loaded ICP', t1:{label:'Decision Maker',description:''}, t2:{label:'Ecosystem',description:''}, t3:{label:'Adjacent',description:''}, exclude:[] };
+      } else { alert('That JSON is not a valid ICP config (needs tiers.t1/t2/t3 with keywords).'); return; }
+      if(!t1.length || !t2.length || !t3.length){ alert('Each tier needs at least one keyword.'); return; }
+      ICP_KW={ t1:t1, t2:t2, t3:t3 }; window.__icpMeta=meta; applyMeta();
+      try{ localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); localStorage.removeItem('ga_icp_profile'); }catch(_){}
+      reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();
+      var m=$('icpEditMsg'); if(m) m.textContent='✓ Loaded "'+meta.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
     };
     rd.readAsText(file);
   };
+
   if(typeof window.openICPEditor==='function'){
     var prev=window.openICPEditor;
     window.openICPEditor=function(){ prev(); fillProfileSelect(); var sel=$('icp-profile-select'); if(sel){ try{ sel.value=localStorage.getItem('ga_icp_profile')||''; }catch(e){} } };
