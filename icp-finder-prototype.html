@@ -315,6 +315,9 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .lv-foot-links a{color:inherit;text-decoration:none;}
 [data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.45);}
 
+.icp-profile-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 20px;margin:0 0 6px;}
+.icp-profile-bar label.pbl{font-size:0.78rem;color:var(--tx2);font-weight:600;}
+.icp-profile-bar select{height:32px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--tx);padding:0 8px;font-size:0.8rem;font-family:inherit;}
 .icp-pick-mode{display:inline-flex;gap:4px;margin:0 0 8px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:3px;}
 .icp-modebtn{font-size:0.78rem;font-weight:600;padding:5px 12px;border-radius:7px;border:none;background:none;color:var(--tx2);cursor:pointer;}
 .icp-modebtn.active{background:var(--li);color:#fff;}
@@ -2046,7 +2049,7 @@ let ICP_KW = loadICPKw();
 let T1_KEYWORDS = compileKw(ICP_KW.t1);
 let T2_KEYWORDS = compileKw(ICP_KW.t2);
 let T3_KEYWORDS = compileKw(ICP_KW.t3);
-const EXCL_KEYWORDS = /\bretired\b|chief financial|\bcfo\b|chief technology|\bcto\b|board member|real estate|talent acquisition|\brecruiter\b|software engineer|program manager|project manager|\baccountant\b|\blawyer\b|\battorney\b|\bstudent\b|\bintern\b|data scientist|ml engineer|devops|solutions architect|chief operating|\bcoo\b/i;
+let EXCL_KEYWORDS = /\bretired\b|chief financial|\bcfo\b|chief technology|\bcto\b|board member|real estate|talent acquisition|\brecruiter\b|software engineer|program manager|project manager|\baccountant\b|\blawyer\b|\battorney\b|\bstudent\b|\bintern\b|data scientist|ml engineer|devops|solutions architect|chief operating|\bcoo\b/i;
 
 function classifyTier(title, company) {
   const combined = (title + ' ' + company).toLowerCase();
@@ -2643,6 +2646,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 <div class="icp-edit-ov" id="icpEditOv">
   <div class="icp-edit-card" role="dialog" aria-label="Customize ICP keywords">
     <div class="icp-edit-head"><h3>✏️ Customize your ICP keywords</h3><button class="icp-edit-x" onclick="closeICPEditor()" aria-label="Close">✕</button></div>
+    <div class="icp-profile-bar"><label class="pbl">Start from a vertical:</label><select id="icp-profile-select"></select><button class="icp-edit-btn icp-edit-primary" onclick="applyICPProfile(document.getElementById('icp-profile-select').value)">Apply</button><span style="flex:1"></span><button class="icp-edit-btn" onclick="exportICP()">⬇ Save config</button><label class="icp-edit-btn" style="cursor:pointer;margin-left:8px;">⬆ Load config<input type="file" accept=".json,application/json" style="display:none" onchange="importICP(this.files[0])"></label></div>
     <div class="icp-edit-tabs">
       <button type="button" class="icp-tab active" id="icptab-pick" onclick="setEditorView('pick')">🔎 Pick from your network</button>
       <button type="button" class="icp-tab" id="icptab-lists" onclick="setEditorView('lists')">✎ Edit keyword lists</button>
@@ -2678,6 +2682,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   </div>
 </div>
 <footer class="lv-footer"><a href="how-to.html" class="lv-foot-logo" aria-label="Growth Automated"></a><div class="lv-foot-tag"><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated</div><div class="lv-foot-links">Not affiliated with LinkedIn · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener">View source ↗</a> · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes ↗</a></div></footer>
+<script src="icp-profiles.js"></script>
 <script src="icp-picker.js"></script>
 
 <script src="willis-articles.js"></script>
