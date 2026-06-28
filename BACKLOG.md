@@ -38,7 +38,7 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 ### PR Automation — Enable `create_pr.py` to open PRs
 - **Status:** ✅ **Resolved June 22, 2026** — the regenerated PAT now has `Pull requests: Read & write`, so `create_pr.py` opens the PR automatically (verified: PR #22). The manual compare-URL step is gone. The 403 fallback is still in the code for safety.
 - **Bonus shipped same day:** `push_to_dev.py` now auto-resyncs `dev` to `main` before pushing, so each PR diff shows only that push's changes (no historical drift).
-- **Nice-to-have (still open):** a single `ship.py` that runs `build_offline_bundle.py` → `push_to_dev.py --with-offline` → `create_pr.py` end to end.
+- ✅ **`ship.py` shipped June 28** — one command runs `build_offline_bundle.py` → `push_to_dev.py --with-offline` → `create_pr.py`, stopping on the first failure. `python3 ship.py --msg "…" [--title "…"] [--no-offline]`. Local dev tool (not deployed).
 
 ---
 
