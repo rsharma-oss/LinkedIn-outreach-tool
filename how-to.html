@@ -402,6 +402,7 @@ a:hover{color:var(--tx);text-decoration:underline;}
 .lv-ga{height:18px;width:115px;background:url('logo-white.svg') left center/contain no-repeat;display:block;}
 [data-theme="light"] .lv-word{color:#0f172a;}
 [data-theme="light"] .lv-ga{background-image:url('logo-color.svg');}
+@media(min-width:681px) and (max-width:950px){.lv-ga{display:none;}} /* #6: hide GA sub-logo in the tight nav band (stays in footer) */
 .lv-brand ~ *{display:none;}
 .lv-footer{text-align:center;padding:46px 20px 40px;border-top:1px solid rgba(255,255,255,0.08);margin-top:48px;}
 [data-theme="light"] .lv-footer{border-top-color:rgba(15,23,42,0.1);}
@@ -593,6 +594,25 @@ a:hover{color:var(--tx);text-decoration:underline;}
       <span class="callout-icon">🏆</span>
       <p><strong>Tier 1 = decision makers.</strong> Tier 2 = partners. Tier 3 = warm leads.</p>
     </div>
+
+    <style>
+      .ht-icp-faq{margin-top:18px;}
+      .ht-icp-faq summary{cursor:pointer;font-weight:700;font-size:0.88rem;color:var(--li,#0A66C2);list-style:none;}
+      .ht-icp-faq summary::-webkit-details-marker{display:none;}
+      .ht-icp-faq summary::before{content:'▸ ';}
+      .ht-icp-faq[open] summary::before{content:'▾ ';}
+      .ht-icp-faq-body{margin-top:10px;font-size:0.82rem;line-height:1.6;color:var(--tx2,#475569);}
+      .ht-icp-faq-body p{margin:0 0 8px;}
+    </style>
+    <details class="ht-icp-faq">
+      <summary>See the default keyword lists</summary>
+      <div class="ht-icp-faq-body">
+        <p><b>T1 · Decision Maker</b> (job title) — founder, ceo, cmo, president, owner, VP / head of / director of marketing · growth · ecommerce…</p>
+        <p><b>T2 · Ecosystem</b> (title + company) — e.g. shopify, klaviyo, gorgias, recharge, attentive… plus roles like fractional cmo, retention specialist…</p>
+        <p><b>T3 · Adjacent</b> (job title) — marketing manager, digital · content · performance marketing, brand manager, growth, creative director…</p>
+        <p style="opacity:.7;">First match wins (T1 → T2 → T3). Not your market? <b>✏️ Customize keywords</b> in the ICP Finder — or we'll build yours.</p>
+      </div>
+    </details>
 
     <a class="btn btn-primary" href="icp-finder.html" style="margin-top:24px;display:inline-flex;font-size:0.95rem;">🎯 Open the ICP Finder →</a>
   </div>
