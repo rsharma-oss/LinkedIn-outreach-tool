@@ -470,10 +470,11 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 
     <!-- ICP scoring transparency + customization CTA -->
     <div class="icp-note">
-      <div class="icp-note-title">ℹ️ How these tiers are scored — and how to make them yours</div>
+      <div class="icp-note-title">ℹ️ How these tiers are scored — and how to make them yours <span id="icp-custom-badge" class="icp-custom-badge" style="display:none;">✏️ Custom</span></div>
       <p class="icp-note-body">Every connection is auto-classified by matching its <strong>job title and company</strong> against a keyword ruleset. The default is <strong>tuned for B2B outreach</strong> (decision-makers → T1, ecosystem tools &amp; partners → T2, broader adjacent roles → T3). First match wins; anything that matches nothing is counted as <strong>"unmatched"</strong> in your totals (not dropped silently). <strong>Not your market?</strong> Tailor it to your business:</p>
       <div class="icp-note-cta">
-        <a class="icp-cta-link icp-cta-primary" href="demo.html">📅 Book time — we'll build your ICP for you →</a>
+        <button class="icp-cta-link icp-cta-primary" onclick="openICPEditor()">✏️ Customize keywords</button>
+        <a class="icp-cta-link" href="demo.html">📅 Book time — we'll build your ICP for you →</a>
         <a class="icp-cta-link" href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/ICP-CUSTOMIZATION.md" target="_blank" rel="noopener">📝 Edit the keywords yourself →</a>
       </div>
       <details class="icp-kw-faq">
@@ -2039,8 +2040,9 @@ const ICP_DEFAULTS = {
   t2: ["shopify","klaviyo","gorgias","yotpo","rebuy","recharge","postscript","triple whale","okendo","northbeam","attentive","sendlane","skio","loop returns","richreturns","aftership","shipbob","shipmonk","fractional cmo","fractional head","email marketing manager","growth manager","ecommerce manager","dtc marketing","retention specialist","lifecycle marketing","performance marketing manager","senior brand manager","sms marketing","crm manager","ecommerce strategist"],
   t3: ["marketing manager","digital marketing","content marketing","social media manager","seo manager","brand manager","marketing coordinator","growth hacker","revenue operations","partnerships manager","marketing director","senior marketing","creative director","copy director","brand director","vp brand","marketing lead"]
 };
+window.ICP_K = { kw:'ga_icp_kw', exact:'ga_icp_exact', profile:'ga_icp_profile' }; // live storage keys (picker reads these)
 function loadICPKw(){
-  try{ var s=JSON.parse(localStorage.getItem('ga_icp_kw')); if(s&&s.t1&&s.t2&&s.t3) return s; }catch(e){}
+  try{ var s=JSON.parse(localStorage.getItem(window.ICP_K.kw)); if(s&&s.t1&&s.t2&&s.t3) return s; }catch(e){}
   return { t1:ICP_DEFAULTS.t1.slice(), t2:ICP_DEFAULTS.t2.slice(), t3:ICP_DEFAULTS.t3.slice() };
 }
 function compileKw(words){
@@ -2053,14 +2055,50 @@ let ICP_KW = loadICPKw();
 let T1_KEYWORDS = compileKw(ICP_KW.t1);
 let T2_KEYWORDS = compileKw(ICP_KW.t2);
 let T3_KEYWORDS = compileKw(ICP_KW.t3);
-const EXCL_KEYWORDS = /\bretired\b|chief financial|\bcfo\b|chief technology|\bcto\b|board member|real estate|talent acquisition|\brecruiter\b|software engineer|program manager|project manager|\baccountant\b|\blawyer\b|\battorney\b|\bstudent\b|\bintern\b|data scientist|ml engineer|devops|solutions architect|chief operating|\bcoo\b/i;
+let EXCL_KEYWORDS = /\bretired\b|chief financial|\bcfo\b|chief technology|\bcto\b|board member|real estate|talent acquisition|\brecruiter\b|software engineer|program manager|project manager|\baccountant\b|\blawyer\b|\battorney\b|\bstudent\b|\bintern\b|data scientist|ml engineer|devops|solutions architect|chief operating|\bcoo\b/i;
+
+// ── R8 two-list matching: exact whole-field picks (titles + companies) alongside substring keywords ──
+//    Picks (network picker / loaded config) match the WHOLE field after light normalization, so a picked
+//    company "Orange" matches the carrier Orange — never the DTC tool "Lucky Orange". Typed keywords stay
+//    substring. Within a tier, exact OR substring hits; first tier wins T1→T2→T3.
+function normTitle(s){ return String(s||'').toLowerCase().replace(/\s+/g,' ').trim(); }
+function normCo(s){ var x=String(s||'').toLowerCase().replace(/[.,]/g,' ').replace(/\s+/g,' ').trim();
+  x=x.replace(/\s+(inc|llc|ltd|limited|corp|corporation|co|company|holdings|group|plc|gmbh|sa|sas|ag|ab|oy|pty|bv|nv|srl|spa)$/,'').trim(); return x; }
+function loadICPExact(){
+  var d={t1:{titles:new Set(),companies:new Set()},t2:{titles:new Set(),companies:new Set()},t3:{titles:new Set(),companies:new Set()}};
+  try{ var s=JSON.parse(localStorage.getItem(window.ICP_K.exact));
+    if(s){ ['t1','t2','t3'].forEach(function(t){ if(s[t]){ (s[t].titles||[]).forEach(function(x){d[t].titles.add(normTitle(x));}); (s[t].companies||[]).forEach(function(x){d[t].companies.add(normCo(x));}); } }); } }catch(e){}
+  return d;
+}
+let ICP_EXACT = loadICPExact();
+function saveICPExact(){
+  try{ var o={}; ['t1','t2','t3'].forEach(function(t){ o[t]={titles:Array.from(ICP_EXACT[t].titles),companies:Array.from(ICP_EXACT[t].companies)}; });
+    localStorage.setItem(window.ICP_K.exact,JSON.stringify(o)); }catch(e){}
+}
+function icpExactEmpty(){ return ['t1','t2','t3'].every(function(t){ return !ICP_EXACT[t].titles.size && !ICP_EXACT[t].companies.size; }); }
+function exactHit(tier,nt,nc,useCompany){ var e=ICP_EXACT[tier]; if(!e) return false;
+  if(nt && e.titles.has(nt)) return true;
+  if(useCompany && nc && e.companies.size){
+    if(e.companies.has(nc)) return true;            // whole-field: "Orange" === "orange"
+    var hit=false; e.companies.forEach(function(c){ if(!hit && c && nc.indexOf(c+' ')===0) hit=true; }); // leading-word: "Bell Canada" starts with "bell "
+    if(hit) return true;
+  }
+  return false; }
+
+// ── Rank × domain tiering: senior rank + a vertical DOMAIN word in the title → T1; lower rank → T3 ──
+const RANK_T1_RE = /\b(chief|president|founder|owner|partner|principal|managing director|senior vice president|executive vice president|vice president|svp|evp|vp|avp|assistant vice president|senior director|director|head of|general manager)\b/i;
+const RANK_T3_RE = /\b(senior manager|manager)\b/i;
+let ICP_DOMAIN = compileKw(["marketing","growth","ecommerce","e-commerce","brand","retention","lifecycle","dtc","digital","acquisition","merchandising"]); // default DTC; replaced on profile/import
 
 function classifyTier(title, company) {
   const combined = (title + ' ' + company).toLowerCase();
   if (EXCL_KEYWORDS.test(combined)) return null;
-  if (T1_KEYWORDS.test(title)) return 'T1';
-  if (T2_KEYWORDS.test(combined)) return 'T2';
-  if (T3_KEYWORDS.test(title)) return 'T3';
+  const t = (title || '').toLowerCase();
+  const nt = normTitle(title), nc = normCo(company);
+  const dom = ICP_DOMAIN.test(t);
+  if (exactHit('t1',nt,nc,false) || T1_KEYWORDS.test(title) || (dom && RANK_T1_RE.test(t)))    return 'T1';
+  if (exactHit('t2',nt,nc,true)  || T2_KEYWORDS.test(combined))                                 return 'T2';
+  if (exactHit('t3',nt,nc,false) || T3_KEYWORDS.test(title) || (dom && RANK_T3_RE.test(t)))     return 'T3';
   return null;
 }
 
@@ -2653,6 +2691,574 @@ document.addEventListener('DOMContentLoaded', async () => {
      version: icp-finder-with-editor.held.html · brief: ICP-COWORK-BRIEF.md. Re-enable by
      restoring this modal + the .icp-note button. -->
 <footer class="lv-footer"><a href="how-to.html" class="lv-foot-logo" aria-label="Growth Automated"></a><div class="lv-foot-tag"><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated</div><div class="lv-foot-links">Not affiliated with LinkedIn · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener">View source ↗</a> · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes ↗</a></div></footer>
+<style>
+.icp-edit-ov{position:fixed;inset:0;background:rgba(0,0,0,0.55);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;}
+.icp-edit-card{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;width:min(880px,96vw);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
+.icp-edit-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 6px;}
+.icp-edit-head h3{margin:0;font-size:1.05rem;color:var(--tx);}
+.icp-edit-x{background:none;border:none;color:var(--tx2);font-size:1.2rem;cursor:pointer;line-height:1;}
+.icp-edit-sub{padding:0 20px;margin:4px 0 12px;font-size:0.8rem;color:var(--tx2);line-height:1.5;}
+.icp-edit-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;padding:0 20px;overflow-y:auto;}
+.icp-edit-col label{display:block;font-size:0.78rem;font-weight:700;color:var(--tx);margin-bottom:6px;}
+.icp-edit-col label span{font-weight:600;color:var(--tx3);}
+.icp-edit-col textarea{width:100%;height:230px;resize:vertical;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--tx);font-size:0.78rem;line-height:1.5;padding:8px 10px;font-family:inherit;box-sizing:border-box;}
+.icp-reset{margin-top:6px;font-size:0.7rem;background:none;border:1px solid var(--border2);color:var(--tx2);border-radius:6px;padding:4px 8px;cursor:pointer;}
+.icp-reset:hover{background:var(--bg4);color:var(--tx);}
+.icp-edit-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px 18px;flex-wrap:wrap;}
+#icpEditMsg{font-size:0.78rem;color:#6ee7b7;}
+.icp-edit-btn{font-size:0.8rem;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--border2);background:none;color:var(--tx2);cursor:pointer;margin-left:8px;}
+.icp-edit-btn:hover{background:var(--bg4);color:var(--tx);}
+.icp-edit-primary{background:var(--li);color:#fff;border-color:transparent;}
+.icp-edit-primary:hover{background:var(--li2);}
+@media(max-width:680px){.icp-edit-grid{grid-template-columns:1fr;}.icp-edit-col textarea{height:150px;}}
+
+/* FILTER BAR */
+.filter-bar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.search-input{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:8px 14px;color:var(--tx);font-size:0.82rem;font-family:inherit;outline:none;width:240px;}
+.search-input:focus{border-color:var(--li);}
+.filter-select{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:7px 14px;color:var(--tx);font-size:0.8rem;font-family:inherit;outline:none;cursor:pointer;font-weight:500;transition:border-color 0.18s,background 0.18s;appearance:auto;}
+.filter-select:hover{border-color:rgba(0,160,220,0.35);background:var(--bg4);}
+.filter-select:focus{border-color:rgba(0,160,220,0.52);box-shadow:0 0 0 3px rgba(0,160,220,0.1);}
+.filter-count{font-size:0.75rem;color:var(--tx3);padding:4px 10px;border:1px solid var(--border);border-radius:10px;margin-left:auto;}
+.filter-count b{color:var(--tx);}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:10px 12px;text-align:left;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--tx3);border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;}
+thead th:hover{color:var(--tx);}
+tbody tr{border-bottom:1px solid var(--hairline);}
+tbody tr:hover{background:var(--hover);}
+td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
+.td-name{font-weight:500;color:var(--tx);}
+.td-muted{color:var(--tx3);font-size:0.78rem;}
+
+/* TIER CELLS */
+.tier-pill{font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+.tp-t1{background:rgba(239,68,68,0.15);color:#fca5a5;border:1px solid rgba(239,68,68,0.3);}
+.tp-t2{background:rgba(249,115,22,0.15);color:#fb923c;border:1px solid rgba(249,115,22,0.3);}
+.tp-t3{background:rgba(0,160,220,0.15);color:var(--li2);border:1px solid rgba(0,160,220,0.3);}
+
+/* RECENCY */
+.rec-new{color:var(--green);font-weight:600;}
+.rec-fresh{color:var(--yellow);}
+.rec-warm{color:var(--tx2);}
+.rec-cold{color:var(--tx3);}
+
+/* ENGAGEMENT */
+.eng-active{color:var(--green);}
+.eng-warm{color:var(--yellow);}
+.eng-cold,.eng-never{color:var(--tx3);}
+
+/* PAGINATION */
+.pagination{display:flex;align-items:center;gap:8px;margin-top:16px;justify-content:flex-end;}
+.pg-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:5px 12px;color:var(--tx2);font-size:0.78rem;cursor:pointer;font-family:inherit;}
+.pg-btn:hover{background:var(--bg4);}
+.pg-btn:disabled{opacity:0.3;cursor:default;}
+.pg-info{font-size:0.75rem;color:var(--tx3);}
+
+/* DEMO BANNER */
+.demo-banner{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);color:#c4b5fd;font-size:0.8rem;padding:10px 18px;border-radius:8px;margin-bottom:18px;display:none;}
+
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--scroll);border-radius:3px;}
+.logo-link{text-decoration:none;display:flex;align-items:center;gap:12px;color:inherit;}
+.logo-link:hover{opacity:0.85;}
+.hdr-nav{flex:0 0 auto;display:flex;align-items:center;gap:4px;}
+.nav-link{padding:7px 12px;border-radius:8px;font-size:0.78rem;font-weight:500;color:var(--nav-idle);text-decoration:none;transition:all 0.18s;white-space:nowrap;border:1px solid transparent;}
+.nav-link:hover{background:var(--hover-strong);color:var(--nav-idle-hover);border-color:var(--border);}
+.nav-link.active{color:var(--tx);background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.44);font-weight:700;}
+.nav-link.cta{background:var(--li);color:#fff;font-weight:600;}
+.nav-link.cta:hover{background:var(--li2);}
+@media(max-width:680px){.hdr-nav{display:none;}}
+@media(max-width:600px){
+  .hdr{padding:11px 14px;gap:8px;flex-wrap:wrap;}
+  .hdr-l{flex:0 1 auto;}
+  .hdr-r{flex:1 1 auto;flex-wrap:wrap;justify-content:flex-end;gap:7px;}
+  .hdr-title{font-size:0.95rem;}
+  .hdr-sub{display:none;}
+  .status-text{display:none;}
+  .report-btn{padding:7px 9px;}
+  .tier-explain{grid-template-columns:1fr;}
+  #load-screen{padding:12px;}
+  .load-card{padding:28px 16px;}
+  /* Privacy manifest — 2-row restack */
+  .pm-row{flex-wrap:wrap;row-gap:2px;align-items:center;}
+  .pm-file{min-width:unset;flex:1;order:1;}
+  .pm-loc{order:2;flex-shrink:0;}
+  .pm-use{width:100%;order:3;font-size:0.71rem;padding-left:0;}
+  /* Buttons — drop hardcoded 300px */
+  .load-buttons .btn{width:100%!important;max-width:none!important;}
+  .load-divider{width:100%!important;}
+  .drop-zone{padding:22px 14px;}
+  .main{padding:20px 14px;}
+}
+
+/* VIEW SWITCHER */
+.view-tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--border);padding-bottom:0;}
+.view-tab{padding:9px 18px;font-size:0.82rem;font-weight:600;color:var(--tab-idle);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all 0.18s;}
+.view-tab:hover{color:var(--tab-hover);background:var(--hover);}
+.view-tab.active{color:var(--tx);border-bottom-color:var(--li);background:rgba(0,160,220,0.1);font-weight:700;}
+
+/* OUTREACH VIEW */
+.or-section{margin-bottom:32px;}
+.or-section-title{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--tx3);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.or-row{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;transition:border-color 0.15s;}
+.or-row:hover{border-color:var(--border2);}
+.or-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.88rem;font-weight:700;flex-shrink:0;}
+.or-av-t1{background:rgba(239,68,68,0.15);color:#f87171;}
+.or-av-t2{background:rgba(249,115,22,0.15);color:#fb923c;}
+.or-info{flex:1;min-width:0;}
+.or-name{font-size:0.87rem;font-weight:600;display:flex;align-items:center;gap:6px;}
+.or-sub{font-size:0.75rem;color:var(--tx3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.or-meta{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.or-days{font-size:0.72rem;font-weight:700;padding:3px 8px;border-radius:6px;}
+.or-days-hot{background:rgba(16,185,129,0.15);color:#34d399;}
+.or-days-warm{background:rgba(249,115,22,0.15);color:#fb923c;}
+.or-days-cool{background:rgba(107,114,128,0.15);color:#9ca3af;}
+.or-link{font-size:0.75rem;color:var(--li2);text-decoration:none;}
+.or-link:hover{text-decoration:underline;}
+.or-empty{text-align:center;padding:40px;color:var(--tx3);font-size:0.82rem;background:var(--card);border:1px dashed var(--border2);border-radius:10px;}
+.or-hint{background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.15);border-radius:10px;padding:14px 18px;font-size:0.8rem;color:var(--tx2);margin-bottom:22px;line-height:1.7;}
+.or-hint strong{color:var(--tx);}
+
+/* TEMPLATES */
+.tpl-grid{display:flex;flex-direction:column;gap:10px;}
+.tpl-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.tpl-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;transition:background 0.15s;}
+.tpl-header:hover{background:var(--bg4);}
+.tpl-header-l{display:flex;align-items:center;gap:10px;}
+.tpl-title{font-size:0.83rem;font-weight:600;}
+.tpl-meta{font-size:0.7rem;color:var(--tx3);margin-top:1px;}
+.tpl-toggle{font-size:0.85rem;color:var(--tx3);transition:transform 0.2s;}
+.tpl-body{display:none;padding:16px;border-top:1px solid var(--border);}
+.tpl-body.open{display:block;}
+.tpl-text{font-size:0.82rem;color:var(--tx2);white-space:pre-wrap;line-height:1.7;background:var(--bg3);border-radius:8px;padding:14px;margin-bottom:10px;font-family:'Inter',sans-serif;}
+.tpl-note{font-size:0.75rem;color:var(--tx3);margin-bottom:10px;font-style:italic;}
+.tpl-copy{padding:7px 14px;background:rgba(0,119,181,0.15);color:var(--li2);border:1px solid rgba(0,119,181,0.3);border-radius:7px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;}
+.tpl-copy:hover{background:rgba(0,119,181,0.25);}
+.tpl-copy.copied{background:rgba(16,185,129,0.15);color:var(--green);border-color:rgba(16,185,129,0.3);}
+/* CUSTOM DROPDOWN */
+.dd-wrap{position:relative;display:inline-block;margin-bottom:16px;}
+.dd-trigger{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;color:var(--tx);font-size:0.8rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.18s;min-width:175px;justify-content:space-between;}
+.dd-trigger:hover{border-color:rgba(0,160,220,0.4);background:var(--bg4);color:var(--tx);}
+.dd-trigger.open{border-color:rgba(0,160,220,0.52);background:var(--bg4);box-shadow:0 0 0 3px rgba(0,160,220,0.1);}
+.dd-chevron{flex-shrink:0;transition:transform 0.2s;color:var(--tx3);margin-top:1px;}
+.dd-trigger.open .dd-chevron{transform:rotate(180deg);}
+.dd-menu{position:absolute;top:calc(100% + 5px);left:0;min-width:190px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,0.5);z-index:200;padding:5px;animation:ddIn 0.12s ease;}
+.dd-menu[hidden]{display:none;}
+@keyframes ddIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+.dd-item{display:block;width:100%;text-align:left;padding:9px 13px;font-size:0.8rem;font-weight:500;color:var(--tx2);background:none;border:none;cursor:pointer;font-family:inherit;border-radius:7px;transition:all 0.12s;}
+.dd-item:hover{background:rgba(255,255,255,0.07);color:var(--tx);}
+.dd-item.active{color:var(--li2);font-weight:700;background:rgba(0,160,220,0.14);}
+.dd-divider{height:1px;background:var(--border);margin:4px 0;}
+.ga-logo{display:block;width:188px;height:29px;background:url('logo-white.svg') left center/contain no-repeat;flex-shrink:0;}
+[data-theme="light"] .ga-logo{background-image:url('logo-color.svg');}
+.ga-logo ~ *{display:none;}
+.lv-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.lv-mark{height:40px;width:auto;display:block;flex-shrink:0;}
+.lv-text{display:flex;flex-direction:column;line-height:1.08;gap:3px;}
+.lv-word{font-family:'Assistant',sans-serif;font-weight:700;font-size:1.15rem;color:#f0f4ff;letter-spacing:-0.01em;}
+.lv-ga{height:18px;width:115px;background:url('logo-white.svg') left center/contain no-repeat;display:block;}
+[data-theme="light"] .lv-word{color:#0f172a;}
+[data-theme="light"] .lv-ga{background-image:url('logo-color.svg');}
+.lv-brand ~ *{display:none;}
+.lv-footer{text-align:center;padding:46px 20px 40px;border-top:1px solid rgba(255,255,255,0.08);margin-top:48px;}
+[data-theme="light"] .lv-footer{border-top-color:rgba(15,23,42,0.1);}
+.lv-foot-logo{display:block;height:56px;width:360px;max-width:78%;margin:0 auto 14px;background:url('logo-white.svg') center/contain no-repeat;}
+[data-theme="light"] .lv-foot-logo{background-image:url('logo-color.svg');}
+.lv-foot-tag{font-size:0.86rem;color:rgba(240,244,255,0.6);margin:0 0 6px;}
+[data-theme="light"] .lv-foot-tag{color:rgba(15,23,42,0.6);}
+.lv-foot-tag b{color:inherit;}
+.lv-foot-links{font-size:0.75rem;color:rgba(240,244,255,0.4);margin:0;}
+.lv-foot-links a{color:inherit;text-decoration:none;}
+[data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.45);}
+
+.icp-profile-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 20px;margin:0 0 6px;}
+.icp-profile-bar label.pbl{font-size:0.78rem;color:var(--tx2);font-weight:600;}
+.icp-profile-bar select{height:32px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--tx);padding:0 8px;font-size:0.8rem;font-family:inherit;}
+.icp-pick-mode{display:inline-flex;gap:4px;margin:0 0 8px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:3px;}
+.icp-modebtn{font-size:0.78rem;font-weight:600;padding:5px 12px;border-radius:7px;border:none;background:none;color:var(--tx2);cursor:pointer;}
+.icp-modebtn.active{background:var(--li);color:#fff;}
+.icp-edit-tabs{display:flex;gap:6px;padding:0 20px;margin:2px 0 10px;}
+.icp-tab{font-size:0.8rem;font-weight:600;padding:6px 12px;border-radius:8px;border:1px solid var(--border2);background:none;color:var(--tx2);cursor:pointer;}
+.icp-tab.active{background:var(--li);color:#fff;border-color:transparent;}
+.icp-edit-view{padding:0 20px;}
+.icp-pick-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;}
+.icp-pick-toolbar input{flex:1;min-width:150px;height:32px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--tx);padding:0 10px;font-size:0.8rem;font-family:inherit;}
+.icp-pick-chips{display:flex;gap:5px;flex-wrap:wrap;}
+.icp-pchip{font-size:0.72rem;font-weight:600;padding:5px 10px;border-radius:999px;border:1px solid var(--border2);background:none;color:var(--tx2);cursor:pointer;}
+.icp-pchip.active{background:rgba(0,160,220,0.18);color:var(--tx);border-color:rgba(0,160,220,0.4);}
+.icp-pick-rows{max-height:300px;overflow-y:auto;border:1px solid var(--border2);border-radius:8px;}
+.icp-pick-row{display:flex;align-items:center;gap:10px;padding:7px 12px;border-bottom:1px solid var(--border);cursor:pointer;font-size:0.82rem;}
+.icp-pick-row:last-child{border-bottom:none;}
+.icp-pick-row input{width:15px;height:15px;}
+.icp-pick-name{flex:1;color:var(--tx);}
+.icp-pick-count{font-size:0.72rem;color:var(--tx3);min-width:34px;text-align:right;}
+.icp-pick-tier{font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:9px;}
+.icp-pick-tier.t1{background:rgba(245,158,11,0.18);color:#f59e0b;}
+.icp-pick-tier.t2{background:rgba(139,92,246,0.18);color:#a78bfa;}
+.icp-pick-tier.t3{background:rgba(0,160,220,0.18);color:#38bdf8;}
+.icp-pick-tier.un{background:rgba(148,163,184,0.15);color:var(--tx3);}
+.icp-pick-bulk{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:8px 12px;background:rgba(0,160,220,0.12);border-radius:8px;font-size:0.8rem;color:var(--tx2);flex-wrap:wrap;}
+</style>
+<div class="icp-edit-ov" id="icpEditOv">
+  <div class="icp-edit-card" role="dialog" aria-label="Customize ICP keywords">
+    <div class="icp-edit-head"><h3>✏️ Customize your ICP keywords</h3><button class="icp-edit-x" onclick="closeICPEditor()" aria-label="Close">✕</button></div>
+    <div class="icp-profile-bar"><label class="pbl">Start from a vertical:</label><select id="icp-profile-select"></select><button class="icp-edit-btn icp-edit-primary" onclick="applyICPProfile(document.getElementById('icp-profile-select').value)">Apply</button><span style="flex:1"></span><button class="icp-edit-btn" onclick="exportICP()">⬇ Save config</button><label class="icp-edit-btn" style="cursor:pointer;margin-left:8px;">⬆ Load config<input type="file" accept=".json,application/json" style="display:none" onchange="importICP(this.files[0])"></label></div>
+    <div class="icp-edit-tabs">
+      <button type="button" class="icp-tab active" id="icptab-pick" onclick="setEditorView('pick')">🔎 Pick from your network</button>
+      <button type="button" class="icp-tab" id="icptab-lists" onclick="setEditorView('lists')">✎ Edit keyword lists</button>
+    </div>
+    <div id="icp-view-pick" class="icp-edit-view">
+      <div class="icp-pick-mode">
+        <button type="button" class="icp-modebtn active" id="icpmode-titles" onclick="setPickMode('titles')">📇 Titles</button>
+        <button type="button" class="icp-modebtn" id="icpmode-companies" onclick="setPickMode('companies')">🏢 Companies</button>
+      </div>
+      <p class="icp-edit-sub" id="icp-pick-help"></p>
+      <div class="icp-pick-toolbar">
+        <input id="icp-pick-search" placeholder="Search…" oninput="renderTitlePicker()" spellcheck="false">
+        <span class="icp-pick-chips" id="icp-pick-chips"></span>
+      </div>
+      <div id="icp-pick-rows" class="icp-pick-rows" onchange="onPickToggle(event)"></div>
+      <div id="icp-pick-bulk" class="icp-pick-bulk" style="display:none;">
+        <span><b id="icp-pick-n">0</b> selected → assign to</span>
+        <span id="icp-pick-actions"></span>
+      </div>
+    </div>
+    <div id="icp-view-lists" class="icp-edit-view" style="display:none;">
+      <p class="icp-edit-sub">One keyword or phrase per line. <b>T1</b> &amp; <b>T3</b> match the job title; <b>T2</b> matches title&nbsp;+&nbsp;company.</p>
+      <div class="icp-edit-grid">
+        <div class="icp-edit-col"><label>T1 · Decision Maker <span>(<b id="icpc-t1">0</b>)</span></label><textarea id="icpkw-t1" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t1')">↺ Reset T1</button></div>
+        <div class="icp-edit-col"><label>T2 · Ecosystem <span>(<b id="icpc-t2">0</b>)</span></label><textarea id="icpkw-t2" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t2')">↺ Reset T2</button></div>
+        <div class="icp-edit-col"><label>T3 · Adjacent <span>(<b id="icpc-t3">0</b>)</span></label><textarea id="icpkw-t3" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t3')">↺ Reset T3</button></div>
+      </div>
+    </div>
+    <div class="icp-edit-foot">
+      <span id="icpEditMsg"></span>
+      <div><button class="icp-edit-btn" onclick="resetAllTiers()">↺ Reset all</button><button class="icp-edit-btn icp-edit-primary" onclick="saveICPEditor()">Save &amp; re-tier</button></div>
+    </div>
+  </div>
+</div>
+<script>/* inlined icp-profiles.js */
+/* ICP Profile library — vertical "starter" ICPs (prototype).
+   Tier model (June 28 co-work):
+     • domain  — function words for the vertical; combined with a seniority rank → T1/T3.
+     • t1.keywords — C-suite/founder titles that are decision-makers regardless of domain.
+     • t2.companies — EXACT named target accounts (global). Anyone there = T2 (account layer).
+     • t3.keywords — adjacent roles + loose sector concepts (the wide net).
+     • exclude — pre-tier noise filter (per vertical).
+   Engine also adds: senior rank × domain → T1, lower rank (Sr Manager/Manager) × domain → T3.
+   Companies match whole-field + leading-word (R8). FIRST DRAFTS to co-work — refine freely. */
+window.ICP_PROFILES = {
+
+  dtc: {
+    name: "Shopify DTC / Ecommerce",
+    domain: ["marketing","growth","ecommerce","e-commerce","brand","retention","lifecycle","dtc","direct-to-consumer","digital","acquisition","merchandising","cro"],
+    t1: { label: "Decision Maker", desc: "Founders & C-suite marketing leaders at DTC brands",
+      keywords: ["founder","co-founder","ceo","chief executive","cmo","chief marketing","chief revenue","president","owner"] },
+    t2: { label: "Named Accounts", desc: "People at Shopify tools & ecommerce vendors",
+      companies: ["shopify","klaviyo","gorgias","yotpo","rebuy","recharge","postscript","triple whale","okendo","attentive","northbeam","aftership","tapcart","skio","bold commerce","shogun","loop"] },
+    t3: { label: "Broader Sector", desc: "Marketing, growth & ecommerce roles + sector signal",
+      keywords: ["marketing manager","digital marketing","content marketing","social media","brand manager","seo","performance marketing","email marketing","sms marketing","retention specialist","lifecycle marketing","ecommerce manager","shopify","klaviyo","dtc"] },
+    exclude: ["retired","chief financial","cfo","chief technology","cto","board member","real estate","recruiter","software engineer","data scientist","student","intern","accountant","lawyer"]
+  },
+
+  saas: {
+    name: "B2B SaaS",
+    domain: ["sales","marketing","product","revenue","growth","go-to-market","gtm","customer success","demand","partnerships","saas","software"],
+    t1: { label: "Decision Maker", desc: "Founders & C-suite GTM / product leaders",
+      keywords: ["founder","co-founder","ceo","cto","cmo","cro","cpo","chief revenue","chief product","chief executive","chief technology","chief marketing","president"] },
+    t2: { label: "Named Accounts", desc: "People at major SaaS platforms",
+      companies: ["salesforce","hubspot","sap","oracle","adobe","atlassian","servicenow","workday","snowflake","datadog","segment","gong","outreach","salesloft","zendesk","stripe","marketo"] },
+    t3: { label: "Broader Sector", desc: "Product, growth & sales roles + sector signal",
+      keywords: ["product manager","growth marketer","sdr","bdr","sales development","account executive","sales engineer","solutions engineer","customer success","revenue operations","marketing operations","demand generation","product marketing","saas","b2b software"] },
+    exclude: ["retired","student","intern","recruiter","talent acquisition"]
+  },
+
+  telecom: {
+    name: "Telecom",
+    domain: ["network","telecom","telecommunications","wireless","mobile","broadband","fiber","fibre","infrastructure","spectrum","5g","connectivity","rf"],
+    t1: { label: "Decision Maker", desc: "Founders & C-suite network / telecom leaders",
+      keywords: ["founder","ceo","cto","cio","chief technology","chief network","chief information","president","managing director"] },
+    t2: { label: "Named Accounts", desc: "People at carriers, equipment & network vendors",
+      companies: ["rogers","telus","bell","shaw","videotron","cogeco","freedom mobile","verizon","at&t","t-mobile","comcast","lumen","orange","vodafone","bt","deutsche telekom","telefonica","telia","telstra","singtel","sk telecom","ntt","ericsson","nokia","cisco","ciena","juniper"] },
+    t3: { label: "Broader Sector", desc: "Network engineering & field roles + sector signal",
+      keywords: ["network engineer","rf engineer","network administrator","telecom engineer","wireless engineer","field engineer","noc","systems engineer","infrastructure engineer","network analyst","telecom","wireless","fiber","broadband","5g"] },
+    exclude: ["retired","student","intern","volunteer"]
+  },
+
+  finserv: {
+    name: "Financial Services / Fintech",
+    domain: ["finance","financial","investment","wealth","asset","banking","risk","credit","capital","treasury","portfolio","securities","markets","fintech"],
+    t1: { label: "Decision Maker", desc: "Founders & C-suite finance / investment leaders",
+      keywords: ["founder","ceo","cfo","cio","chief investment","chief financial","president","managing partner","general partner","managing director"] },
+    t2: { label: "Named Accounts", desc: "People at banks, asset managers, insurers & fintech",
+      companies: ["rbc","td","scotiabank","cibc","bmo","national bank","manulife","sun life","wealthsimple","questrade","blackrock","goldman sachs","jpmorgan","jp morgan","morgan stanley","fidelity","citi","citigroup","wells fargo","bank of america","hsbc","barclays","lloyds","natwest","ubs","deutsche bank","santander","bnp paribas","ing","standard chartered"] },
+    t3: { label: "Broader Sector", desc: "Analysts, advisors & ops roles + sector signal",
+      keywords: ["financial analyst","investment analyst","relationship manager","financial advisor","underwriter","compliance","risk manager","portfolio analyst","wealth management","asset management","banking","fintech","securities","investment management"] },
+    exclude: ["retired","student","intern","volunteer"]
+  }
+
+};
+
+</script>
+<script>/* inlined icp-picker.js */
+/* ICP customization picker — Titles + Companies multi-select (prototype only).
+   Loaded after the main icp-finder script; uses its globals (classifyTier, ICP_KW,
+   _connRows, reclassify, etc.) and overrides openICPEditor to default to the picker.
+   Storage keys come from window.ICP_K (the host page sets them: live → ga_icp_kw / ga_icp_exact,
+   prototype → the _proto variants). Falls back to the _proto keys if the page didn't set them. */
+window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto', profile:'ga_icp_profile' };
+(function(){
+  function esc(x){ return String(x).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function tierOf(t){ try { return classifyTier(t, ''); } catch(e){ return null; } }
+  function titleIndex(){
+    var m={}; (typeof _connRows!=='undefined'?_connRows:[]).forEach(function(r){
+      var t=(r['Position']||'').trim(); if(!t) return; var k=t.toLowerCase();
+      if(!m[k]) m[k]={name:t,count:0}; m[k].count++;
+    });
+    return Object.keys(m).map(function(k){ return m[k]; }).sort(function(a,b){ return b.count-a.count; });
+  }
+  function companyIndex(){
+    var m={}; (typeof _connRows!=='undefined'?_connRows:[]).forEach(function(r){
+      var t=(r['Company']||'').trim(); if(!t || t==='.') return; var k=t.toLowerCase();
+      if(!m[k]) m[k]={name:t,count:0}; m[k].count++;
+    });
+    return Object.keys(m).map(function(k){ return m[k]; }).sort(function(a,b){ return b.count-a.count; });
+  }
+  function companyIsEco(co){ try { return T2_KEYWORDS.test((co||'').toLowerCase()); } catch(e){ return false; } }
+
+  var mode='titles', filter='unmatched', sel={};
+  var HELP={
+    titles:'Tick the job titles that fit your ideal customer, then assign them to a tier. Counts are from your loaded network. Start with <b>Unmatched</b> to grab who the default ICP missed.',
+    companies:'Tick the companies your ideal customers work at, then add them to <b>T2 · Ecosystem</b> (T2 matches the company name). Best for industry / vertical ICPs — e.g. add the carriers for a telecom ICP.'
+  };
+
+  function $(id){ return document.getElementById(id); }
+
+  window.setPickMode=function(m){
+    mode=m; sel={}; filter=(m==='titles')?'unmatched':'all';
+    $('icpmode-titles').classList.toggle('active', m==='titles');
+    $('icpmode-companies').classList.toggle('active', m==='companies');
+    $('icp-pick-search').placeholder=(m==='titles')?'Search your titles…':'Search your companies…';
+    $('icp-pick-help').innerHTML=HELP[m];
+    renderChips(); window.renderTitlePicker();
+  };
+  function renderChips(){
+    var chips=(mode==='titles')
+      ? [['unmatched','Unmatched'],['all','All'],['t1','T1'],['t2','T2'],['t3','T3']]
+      : [['all','All'],['notin','Not in T2'],['in','In T2']];
+    $('icp-pick-chips').innerHTML=chips.map(function(c){
+      return '<button type="button" class="icp-pchip'+(c[0]===filter?' active':'')+'" data-f="'+c[0]+'" onclick="setPickFilter(\''+c[0]+'\',this)">'+c[1]+'</button>';
+    }).join('');
+  }
+  window.setPickFilter=function(f,btn){
+    filter=f;
+    [].forEach.call(document.querySelectorAll('.icp-pchip'), function(b){ b.classList.toggle('active', b===btn); });
+    window.renderTitlePicker();
+  };
+  window.setEditorView=function(v){
+    $('icp-view-pick').style.display=(v==='pick')?'block':'none';
+    $('icp-view-lists').style.display=(v==='lists')?'block':'none';
+    $('icptab-pick').classList.toggle('active', v==='pick');
+    $('icptab-lists').classList.toggle('active', v==='lists');
+    if(v==='pick') window.renderTitlePicker();
+  };
+  window.renderTitlePicker=function(){
+    var q=($('icp-pick-search').value||'').toLowerCase(); var H;
+    if(mode==='titles'){
+      var rows=titleIndex().filter(function(x){
+        if(q && x.name.toLowerCase().indexOf(q)<0) return false;
+        var t=tierOf(x.name);
+        if(filter==='all') return true;
+        if(filter==='unmatched') return !t;
+        return t===filter.toUpperCase();
+      });
+      H=rows.slice(0,600).map(function(x){
+        var t=tierOf(x.name);
+        var badge=t ? ('<span class="icp-pick-tier t'+t[1]+'">'+t+'</span>') : '<span class="icp-pick-tier un">unmatched</span>';
+        var ck=sel[x.name.toLowerCase()]?' checked':'';
+        return '<label class="icp-pick-row"><input type="checkbox" data-t="'+esc(x.name)+'"'+ck+'><span class="icp-pick-name">'+esc(x.name)+'</span>'+badge+'<span class="icp-pick-count">'+x.count+'</span></label>';
+      }).join('');
+    } else {
+      var rows2=companyIndex().filter(function(x){
+        if(q && x.name.toLowerCase().indexOf(q)<0) return false;
+        var eco=companyIsEco(x.name);
+        if(filter==='all') return true;
+        if(filter==='notin') return !eco;
+        return eco;
+      });
+      H=rows2.slice(0,600).map(function(x){
+        var eco=companyIsEco(x.name);
+        var badge=eco ? '<span class="icp-pick-tier t2">in T2</span>' : '<span class="icp-pick-tier un">—</span>';
+        var ck=sel[x.name.toLowerCase()]?' checked':'';
+        return '<label class="icp-pick-row"><input type="checkbox" data-t="'+esc(x.name)+'"'+ck+'><span class="icp-pick-name">'+esc(x.name)+'</span>'+badge+'<span class="icp-pick-count">'+x.count+'</span></label>';
+      }).join('');
+    }
+    $('icp-pick-rows').innerHTML=H || '<div style="padding:16px;color:var(--tx3);font-size:0.8rem;">Nothing here — load your data (Try with sample data) first, or change the filter.</div>';
+    bulk();
+  };
+  window.onPickToggle=function(e){
+    var cb=e.target;
+    if(cb && cb.type==='checkbox'){ var t=cb.getAttribute('data-t').toLowerCase(); if(cb.checked) sel[t]=1; else delete sel[t]; bulk(); }
+  };
+  function actions(){
+    var html;
+    if(mode==='titles'){
+      html='<button type="button" class="icp-edit-btn" onclick="pickAssign(\'t1\')">T1</button><button type="button" class="icp-edit-btn" onclick="pickAssign(\'t2\')">T2</button><button type="button" class="icp-edit-btn" onclick="pickAssign(\'t3\')">T3</button>';
+    } else {
+      html='<button type="button" class="icp-edit-btn icp-edit-primary" onclick="pickAssign(\'t2\')">Add to T2 · Ecosystem</button>';
+    }
+    html+='<button type="button" class="icp-edit-btn" onclick="pickClearSel()">Clear</button>';
+    $('icp-pick-actions').innerHTML=html;
+  }
+  function bulk(){
+    var n=Object.keys(sel).length; var b=$('icp-pick-bulk');
+    $('icp-pick-n').textContent=n; b.style.display=n?'flex':'none'; if(n) actions();
+  }
+  window.pickClearSel=function(){ sel={}; window.renderTitlePicker(); };
+  window.pickAssign=function(tier){
+    var items=Object.keys(sel); if(!items.length) return;
+    // R8: picks are EXACT whole-field matches. Companies always go to T2; titles to the chosen tier.
+    if(mode==='companies'){
+      items.forEach(function(t){ ICP_EXACT.t2.companies.add(normCo(t)); });
+      tier='t2';
+    } else {
+      items.forEach(function(t){ ICP_EXACT[tier].titles.add(normTitle(t)); });
+    }
+    if(typeof saveICPExact==='function') saveICPExact();
+    reclassify();
+    if(typeof syncCustomBadge==='function') syncCustomBadge();
+    if(typeof updateEditorCounts==='function') updateEditorCounts();
+    sel={}; window.renderTitlePicker();
+    var noun=(mode==='companies') ? (items.length>1?'companies':'company') : (items.length>1?'titles':'title');
+    var m=$('icpEditMsg'); if(m) m.textContent='✓ Added '+items.length+' '+noun+' to '+tier.toUpperCase()+' (exact match) — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+  };
+
+  if(typeof window.openICPEditor==='function'){
+    var orig=window.openICPEditor;
+    window.openICPEditor=function(){
+      orig(); sel={}; mode='titles'; filter='unmatched';
+      var sb=$('icp-pick-search'); if(sb) sb.value='';
+      $('icpmode-titles').classList.add('active'); $('icpmode-companies').classList.remove('active');
+      $('icp-pick-help').innerHTML=HELP.titles;
+      renderChips(); window.setEditorView('pick');
+    };
+  }
+})();
+
+/* ---- ICP Profiles + config file (v1): preset apply, spec-compliant export/import ---- */
+(function(){
+  var FORMAT='linkvault-icp', VERSION=1;
+  var MATCH={ t1:'title', t2:'title+company', t3:'title' };
+  window.__icpMeta = window.__icpMeta || {
+    name:'Custom ICP',
+    t1:{label:'Decision Maker', description:'Founders, CEOs, CMOs, VPs'},
+    t2:{label:'Ecosystem',      description:'Agencies, vendors, partners'},
+    t3:{label:'Adjacent',       description:'Marketing, growth roles'},
+    exclude:[]
+  };
+  function $(id){ return document.getElementById(id); }
+  function arr(x){ return Array.isArray(x) ? x.map(function(s){ return String(s).trim().toLowerCase(); }).filter(Boolean) : []; }
+  // R8 exact-list helpers — populate ICP_EXACT (whole-field titles/companies) from a profile or config
+  function clearExact(){ if(typeof ICP_EXACT==='undefined') return; ['t1','t2','t3'].forEach(function(t){ ICP_EXACT[t].titles.clear(); ICP_EXACT[t].companies.clear(); }); }
+  function fillExact(src){ if(typeof ICP_EXACT==='undefined') return; clearExact();
+    ['t1','t2','t3'].forEach(function(t){ var tt=src[t]||{};
+      (tt.titles||[]).forEach(function(x){ ICP_EXACT[t].titles.add(normTitle(x)); });
+      (tt.companies||[]).forEach(function(x){ ICP_EXACT[t].companies.add(normCo(x)); }); });
+    if(typeof saveICPExact==='function') saveICPExact();
+  }
+  function exTitles(t){ return (typeof ICP_EXACT!=='undefined') ? Array.from(ICP_EXACT[t].titles) : []; }
+  function exCompanies(t){ return (typeof ICP_EXACT!=='undefined') ? Array.from(ICP_EXACT[t].companies) : []; }
+  function profileKeys(){ return (typeof ICP_PROFILES!=='undefined') ? Object.keys(ICP_PROFILES) : []; }
+  function fillProfileSelect(){
+    var sel=$('icp-profile-select'); if(!sel || typeof ICP_PROFILES==='undefined') return;
+    sel.innerHTML='<option value="">— pick a vertical —</option>'+profileKeys().map(function(k){ return '<option value="'+k+'">'+ICP_PROFILES[k].name+'</option>'; }).join('');
+  }
+  function applyMeta(){ try{ EXCL_KEYWORDS=(window.__icpMeta.exclude && window.__icpMeta.exclude.length) ? compileKw(window.__icpMeta.exclude) : /a^/; }catch(e){} }
+  function relabel(){
+    var meta=window.__icpMeta;
+    [['t1',meta.t1],['t2',meta.t2],['t3',meta.t3]].forEach(function(pair){
+      var sc=$('s-'+pair[0]); if(sc){ var card=sc.closest('.stat-card'); var sub=card&&card.querySelector('.stat-sub'); if(sub) sub.textContent=pair[1].description||''; }
+    });
+    var cards=document.querySelectorAll('.tier-explain > div');
+    [meta.t1,meta.t2,meta.t3].forEach(function(t,i){ if(cards[i]){ var ti=cards[i].querySelector('.tier-card-title'); var su=cards[i].querySelector('.tier-card-sub'); if(ti) ti.textContent=t.description||''; if(su) su.textContent=(t.label||'')+' tier · '+(meta.name||'ICP')+'.'; } });
+  }
+  function syncBoxes(){ ['t1','t2','t3'].forEach(function(t){ var el=$('icpkw-'+t); if(el) el.value=(ICP_KW[t]||[]).join('\n'); }); if(typeof updateEditorCounts==='function') updateEditorCounts(); if(typeof renderTitlePicker==='function') renderTitlePicker(); }
+
+  window.applyICPProfile=function(key){
+    if(!key || typeof ICP_PROFILES==='undefined' || !ICP_PROFILES[key]) return;
+    var p=ICP_PROFILES[key];
+    ICP_KW={ t1:(p.t1.keywords||[]).slice(), t2:(p.t2.keywords||[]).slice(), t3:(p.t3.keywords||[]).slice() };
+    fillExact(p); // exact carriers/companies + named titles from the profile
+    try{ ICP_DOMAIN=compileKw(p.domain||[]); }catch(e){} // rank × domain function words
+    window.__icpMeta={ name:p.name, domain:(p.domain||[]).slice(),
+      t1:{label:p.t1.label, description:p.t1.desc},
+      t2:{label:p.t2.label, description:p.t2.desc},
+      t3:{label:p.t3.label, description:p.t3.desc},
+      exclude:(p.exclude||[]).slice() };
+    applyMeta();
+    try{ localStorage.setItem(window.ICP_K.kw, JSON.stringify(ICP_KW)); localStorage.setItem(window.ICP_K.profile, key); }catch(e){}
+    reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();
+    var m=$('icpEditMsg'); if(m) m.textContent='✓ Applied "'+p.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+  };
+
+  window.exportICP=function(){
+    var meta=window.__icpMeta;
+    var cfg={ format:FORMAT, version:VERSION, name:meta.name||'Custom ICP', author:'Growth Automated',
+      domain:(meta.domain||[]),
+      tiers:{
+        t1:{ label:meta.t1.label, description:meta.t1.description, titles:exTitles('t1'), keywords:ICP_KW.t1||[] },
+        t2:{ label:meta.t2.label, description:meta.t2.description, companies:exCompanies('t2'), titles:exTitles('t2'), keywords:ICP_KW.t2||[] },
+        t3:{ label:meta.t3.label, description:meta.t3.description, titles:exTitles('t3'), keywords:ICP_KW.t3||[] }
+      },
+      exclude:(meta.exclude||[]) };
+    var blob=new Blob([JSON.stringify(cfg,null,2)], {type:'application/json'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download='icp-config-'+String(cfg.name).toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.json'; a.click();
+  };
+
+  window.importICP=function(file){
+    if(!file) return; var rd=new FileReader();
+    rd.onload=function(e){
+      var cfg; try{ cfg=JSON.parse(e.target.result); }catch(err){ alert('Could not read that file: '+err.message); return; }
+      var t1, t2, t3, meta, isNew=false;
+      if(cfg && cfg.tiers && cfg.tiers.t1 && cfg.tiers.t2 && cfg.tiers.t3){
+        if(cfg.format && cfg.format!==FORMAT){ alert('Not a LinkVault ICP config (format: '+cfg.format+').'); return; }
+        if(cfg.version && cfg.version>VERSION){ alert('This config is version '+cfg.version+'; update LinkVault to load it.'); return; }
+        isNew=true;
+        t1=arr(cfg.tiers.t1.keywords); t2=arr(cfg.tiers.t2.keywords); t3=arr(cfg.tiers.t3.keywords);
+        meta={ name:cfg.name||'Loaded ICP', domain:arr(cfg.domain),
+          t1:{label:cfg.tiers.t1.label||'Decision Maker', description:cfg.tiers.t1.description||''},
+          t2:{label:cfg.tiers.t2.label||'Ecosystem',      description:cfg.tiers.t2.description||''},
+          t3:{label:cfg.tiers.t3.label||'Adjacent',       description:cfg.tiers.t3.description||''},
+          exclude:arr(cfg.exclude) };
+      } else if(cfg && cfg.t1 && cfg.t2 && cfg.t3){
+        t1=arr(cfg.t1); t2=arr(cfg.t2); t3=arr(cfg.t3);
+        meta={ name:cfg.name||'Loaded ICP', domain:[], t1:{label:'Decision Maker',description:''}, t2:{label:'Ecosystem',description:''}, t3:{label:'Adjacent',description:''}, exclude:[] };
+      } else { alert('That JSON is not a valid ICP config (needs tiers.t1/t2/t3 with keywords).'); return; }
+      var exCount=0;
+      if(isNew){ ['t1','t2','t3'].forEach(function(t){ var tt=cfg.tiers[t]||{}; exCount+=(tt.titles||[]).length+(tt.companies||[]).length; }); }
+      if(!t1.length && !t2.length && !t3.length && !exCount){ alert('That config has no keywords or picks.'); return; }
+      ICP_KW={ t1:t1, t2:t2, t3:t3 }; window.__icpMeta=meta; applyMeta();
+      try{ ICP_DOMAIN=compileKw(meta.domain||[]); }catch(_){}
+      if(isNew) fillExact(cfg.tiers); else clearExact();
+      try{ localStorage.setItem(window.ICP_K.kw, JSON.stringify(ICP_KW)); localStorage.removeItem(window.ICP_K.profile); }catch(_){}
+      reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();
+      var m=$('icpEditMsg'); if(m) m.textContent='✓ Loaded "'+meta.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+    };
+    rd.readAsText(file);
+  };
+
+  if(typeof window.openICPEditor==='function'){
+    var prev=window.openICPEditor;
+    window.openICPEditor=function(){ prev(); fillProfileSelect(); var sel=$('icp-profile-select'); if(sel){ try{ sel.value=localStorage.getItem(window.ICP_K.profile)||''; }catch(e){} } };
+  }
+})();
+
+</script>
 
 <script>/* inlined willis-articles */
 /* Willis help wiki — full article set (40). Expanded from the 14-article launch seed.
@@ -2876,10 +3482,24 @@ window.WILLIS_ARTICLES = [
   body:`<p>Once your data's loaded in the ICP Finder, use <b>⬇ Export CSV</b> in the header to download your filtered contacts — name, title, company, tier, recency, and engagement.</p>` },
 
 { id:"customize-icp", title:"Customize your ICP keywords", cat:"ICP Finder",
-  k:"customize edit keywords icp tier change tailor build industry",
-  body:`<p>The tiers are driven by four keyword lists in <code>icp-finder.html</code>. Editing them adapts the tool to any industry.</p>
-  <p>👉 <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/ICP-CUSTOMIZATION.md" target="_blank" rel="noopener">Edit the keywords yourself ↗</a></p>
-  <p>Want it done for you? <a href="demo.html">Book time and we'll build your custom ICP →</a></p>` },
+  k:"customize edit keywords icp tier change tailor build industry vertical preset picker",
+  body:`<p>Open <b>✏️ Customize keywords</b> on the ICP Finder (in the "How these tiers are scored" box). Two ways to tailor it:</p>
+  <ul>
+    <li><b>Pick from your network</b> — see every job title &amp; company you actually have, tick the ones that fit, and assign them to a tier. Start on <b>Unmatched</b> to grab who the default ICP missed.</li>
+    <li><b>Edit keyword lists</b> — type keywords per tier (T1 / T2 / T3) if you prefer.</li>
+  </ul>
+  <p>Or <b>start from a vertical</b> (B2B SaaS, Telecom, Financial Services…) to load a ready-made ICP, then refine. Everything re-tiers instantly and saves to your browser only.</p>
+  <p>Want it built for you? <a href="demo.html">Book time and we'll build your custom ICP →</a></p>` },
+
+{ id:"icp-config", title:"Load an ICP config we built for you", cat:"ICP Finder",
+  k:"load save config json file import export icp custom built shared retarget",
+  body:`<p>If we've built a custom ICP for your business, you'll get a small <b>.json config file</b>. Open <b>✏️ Customize keywords → ⬆ Load config</b>, pick the file, and your whole tool retargets to that ICP instantly — tiers, labels and all.</p>
+  <p>It's just keyword text (no contact data), so it's safe to keep and share. Built your own? <b>⬇ Save config</b> downloads it to reuse or hand off.</p>` },
+
+{ id:"icp-pick-network", title:"Build your ICP from your own network", cat:"ICP Finder",
+  k:"pick network titles companies multi select unmatched tier assign customize",
+  body:`<p>The customizer lets you <b>pick the job titles and companies you actually have</b> (each with a count) instead of guessing keywords.</p>
+  <p>Start on <b>Pick from your network → Unmatched</b> to grab the people the default ICP missed; switch to <b>Companies</b> to add whole organisations to T2 (great for industry ICPs — e.g. add the carriers for a telecom ICP). Tick, assign to a tier, save.</p>` },
 
 /* ──────────────── Outreach Playbook ──────────────── */
 { id:"playbook-overview", title:"What's in the Playbook?", cat:"Outreach Playbook",
