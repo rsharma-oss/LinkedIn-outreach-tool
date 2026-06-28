@@ -498,7 +498,7 @@
 
   <div class="highlight-box">
     <h4>🎯 Your T1 Priority Queue</h4>
-    <p>These 24 contacts are your highest-leverage outreach this week. They're recent connections who match your ideal buyer profile — founders, CEOs, CMOs, and ecommerce heads. Aim to message at least 5–8 per day until you've worked through all of them.</p>
+    <p>These 24 contacts are your highest-leverage outreach this week. They're recent connections who match your ideal buyer profile — founders, CEOs, CMOs, and revenue leaders. Aim to message at least 5–8 per day until you've worked through all of them.</p>
   </div>
 
   <div class="section-label">🔥 Hot — Connected in last 30 days</div>
@@ -1258,7 +1258,7 @@ function showTab(id, el) {
     if (!tab) return;
     tab.querySelectorAll('.person-row, .section-label').forEach(el => el.remove());
     const hBox = tab.querySelector('.highlight-box');
-    if (hBox) hBox.querySelector('p').innerHTML = `These ${recentT1.length} contacts are your highest-leverage outreach. They're recent T1 connections — founders, CEOs, CMOs, ecommerce heads. Aim to message at least 5–8 per day.`;
+    if (hBox) hBox.querySelector('p').innerHTML = `These ${recentT1.length} contacts are your highest-leverage outreach. They're recent T1 connections — founders, CEOs, CMOs, revenue leaders. Aim to message at least 5–8 per day.`;
 
     const hot  = recentT1.filter(c => c.days < 30);
     const warm = recentT1.filter(c => c.days >= 30);
