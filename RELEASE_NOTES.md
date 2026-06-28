@@ -2,6 +2,31 @@
 
 ---
 
+## 🌐 Vertical-neutral positioning + polish — June 28, 2026
+
+_Public release. LinkVault now positions for any B2B vertical, not just Shopify DTC._
+
+- **Hero / promise:** landing headline locked to **"Your next customers are already in your network."** with a neutral subhead (`how-to.html`).
+- **Vertical-neutral copy scrub:** removed Shopify/DTC-specific framing across the ICP Finder, both dashboards, the demos, Willis help, and the ICP tier cards → "tuned for B2B outreach" + generic tier language. The functional ICP keyword data is left intact (it's the customizable default).
+- **CR-1 — sample-data button:** replaced the off-brand purple outline with a prominent on-brand **green "Try with sample data"** button across the ICP Finder + both dashboards.
+- **ICP scoring FAQ:** added a collapsible **"See the exact default keyword lists"** accordion under the scoring explainer (native `<details>`, theme-aware).
+- **Willis now works fully offline:** the offline bundles **inline Willis** (help · search · Report dialog) with base64 art — no internet required.
+- Decisions logged: demo data stays illustrative; `shopify-embed.html` stays bespoke for the Shopify channel; the content-theme detector is flagged for a later domain-aware pass.
+
+---
+
+## 🧪 ICP customizer — built & validated, pending un-gate (June 28, 2026)
+
+_Internal milestone — prototype only (unlisted `icp-finder-prototype.html`); **not yet a public feature.** Gets its public release when un-gated into the live app._
+
+- **R8 two-list matching:** each tier has exact `companies`/`titles` + substring `keywords`. Fixes the "Lucky Orange matched `orange`" collision — `bell` now catches "Bell Canada" / "Rogers Communications" but **not** "Taco Bell" / "Lucky Orange".
+- **Three-axis tiering (rank × domain):** T1 = seniority (C-suite + senior rank × a vertical domain word), T2 = named accounts (exact companies, global CA/US/EU), T3 = broad sector. Floor: Director-up → T1, Senior Manager → T3.
+- **4 vertical presets** (DTC · B2B SaaS · Telecom · Financial Services) with per-vertical domain + global company lists.
+- **Portable config:** Save/Load an ICP as a `linkvault-icp` v1 JSON file (spec: `ICP-CONFIG-FORMAT.md`) — the agency builds & ships a client's config. Verified end-to-end (engine · profiles · export/import · picker).
+- **Live app untouched** — production `icp-finder.html` engine unchanged; held pending the un-gate + packaging decision (free self-serve vs paid done-for-you, $99–$499).
+
+---
+
 ## Naming — the product is now "LinkVault" (June 2026)
 
 - The app is named **LinkVault — _the LinkedIn outreach toolkit by Growth Automated_**. Growth Automated stays the agency/maker brand; LinkVault is the product (replaces "LinkedIn Intelligence" / "LinkedIn Toolkit").
