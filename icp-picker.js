@@ -1,0 +1,226 @@
+/* ICP customization picker — Titles + Companies multi-select (prototype only).
+   Loaded after the main icp-finder script; uses its globals (classifyTier, ICP_KW,
+   _connRows, reclassify, etc.) and overrides openICPEditor to default to the picker. */
+(function(){
+  function esc(x){ return String(x).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function tierOf(t){ try { return classifyTier(t, ''); } catch(e){ return null; } }
+  function titleIndex(){
+    var m={}; (typeof _connRows!=='undefined'?_connRows:[]).forEach(function(r){
+      var t=(r['Position']||'').trim(); if(!t) return; var k=t.toLowerCase();
+      if(!m[k]) m[k]={name:t,count:0}; m[k].count++;
+    });
+    return Object.keys(m).map(function(k){ return m[k]; }).sort(function(a,b){ return b.count-a.count; });
+  }
+  function companyIndex(){
+    var m={}; (typeof _connRows!=='undefined'?_connRows:[]).forEach(function(r){
+      var t=(r['Company']||'').trim(); if(!t || t==='.') return; var k=t.toLowerCase();
+      if(!m[k]) m[k]={name:t,count:0}; m[k].count++;
+    });
+    return Object.keys(m).map(function(k){ return m[k]; }).sort(function(a,b){ return b.count-a.count; });
+  }
+  function companyIsEco(co){ try { return T2_KEYWORDS.test((co||'').toLowerCase()); } catch(e){ return false; } }
+
+  var mode='titles', filter='unmatched', sel={};
+  var HELP={
+    titles:'Tick the job titles that fit your ideal customer, then assign them to a tier. Counts are from your loaded network. Start with <b>Unmatched</b> to grab who the default ICP missed.',
+    companies:'Tick the companies your ideal customers work at, then add them to <b>T2 · Ecosystem</b> (T2 matches the company name). Best for industry / vertical ICPs — e.g. add the carriers for a telecom ICP.'
+  };
+
+  function $(id){ return document.getElementById(id); }
+
+  window.setPickMode=function(m){
+    mode=m; sel={}; filter=(m==='titles')?'unmatched':'all';
+    $('icpmode-titles').classList.toggle('active', m==='titles');
+    $('icpmode-companies').classList.toggle('active', m==='companies');
+    $('icp-pick-search').placeholder=(m==='titles')?'Search your titles…':'Search your companies…';
+    $('icp-pick-help').innerHTML=HELP[m];
+    renderChips(); window.renderTitlePicker();
+  };
+  function renderChips(){
+    var chips=(mode==='titles')
+      ? [['unmatched','Unmatched'],['all','All'],['t1','T1'],['t2','T2'],['t3','T3']]
+      : [['all','All'],['notin','Not in T2'],['in','In T2']];
+    $('icp-pick-chips').innerHTML=chips.map(function(c){
+      return '<button type="button" class="icp-pchip'+(c[0]===filter?' active':'')+'" data-f="'+c[0]+'" onclick="setPickFilter(\''+c[0]+'\',this)">'+c[1]+'</button>';
+    }).join('');
+  }
+  window.setPickFilter=function(f,btn){
+    filter=f;
+    [].forEach.call(document.querySelectorAll('.icp-pchip'), function(b){ b.classList.toggle('active', b===btn); });
+    window.renderTitlePicker();
+  };
+  window.setEditorView=function(v){
+    $('icp-view-pick').style.display=(v==='pick')?'block':'none';
+    $('icp-view-lists').style.display=(v==='lists')?'block':'none';
+    $('icptab-pick').classList.toggle('active', v==='pick');
+    $('icptab-lists').classList.toggle('active', v==='lists');
+    if(v==='pick') window.renderTitlePicker();
+  };
+  window.renderTitlePicker=function(){
+    var q=($('icp-pick-search').value||'').toLowerCase(); var H;
+    if(mode==='titles'){
+      var rows=titleIndex().filter(function(x){
+        if(q && x.name.toLowerCase().indexOf(q)<0) return false;
+        var t=tierOf(x.name);
+        if(filter==='all') return true;
+        if(filter==='unmatched') return !t;
+        return t===filter.toUpperCase();
+      });
+      H=rows.slice(0,600).map(function(x){
+        var t=tierOf(x.name);
+        var badge=t ? ('<span class="icp-pick-tier t'+t[1]+'">'+t+'</span>') : '<span class="icp-pick-tier un">unmatched</span>';
+        var ck=sel[x.name.toLowerCase()]?' checked':'';
+        return '<label class="icp-pick-row"><input type="checkbox" data-t="'+esc(x.name)+'"'+ck+'><span class="icp-pick-name">'+esc(x.name)+'</span>'+badge+'<span class="icp-pick-count">'+x.count+'</span></label>';
+      }).join('');
+    } else {
+      var rows2=companyIndex().filter(function(x){
+        if(q && x.name.toLowerCase().indexOf(q)<0) return false;
+        var eco=companyIsEco(x.name);
+        if(filter==='all') return true;
+        if(filter==='notin') return !eco;
+        return eco;
+      });
+      H=rows2.slice(0,600).map(function(x){
+        var eco=companyIsEco(x.name);
+        var badge=eco ? '<span class="icp-pick-tier t2">in T2</span>' : '<span class="icp-pick-tier un">—</span>';
+        var ck=sel[x.name.toLowerCase()]?' checked':'';
+        return '<label class="icp-pick-row"><input type="checkbox" data-t="'+esc(x.name)+'"'+ck+'><span class="icp-pick-name">'+esc(x.name)+'</span>'+badge+'<span class="icp-pick-count">'+x.count+'</span></label>';
+      }).join('');
+    }
+    $('icp-pick-rows').innerHTML=H || '<div style="padding:16px;color:var(--tx3);font-size:0.8rem;">Nothing here — load your data (Try with sample data) first, or change the filter.</div>';
+    bulk();
+  };
+  window.onPickToggle=function(e){
+    var cb=e.target;
+    if(cb && cb.type==='checkbox'){ var t=cb.getAttribute('data-t').toLowerCase(); if(cb.checked) sel[t]=1; else delete sel[t]; bulk(); }
+  };
+  function actions(){
+    var html;
+    if(mode==='titles'){
+      html='<button type="button" class="icp-edit-btn" onclick="pickAssign(\'t1\')">T1</button><button type="button" class="icp-edit-btn" onclick="pickAssign(\'t2\')">T2</button><button type="button" class="icp-edit-btn" onclick="pickAssign(\'t3\')">T3</button>';
+    } else {
+      html='<button type="button" class="icp-edit-btn icp-edit-primary" onclick="pickAssign(\'t2\')">Add to T2 · Ecosystem</button>';
+    }
+    html+='<button type="button" class="icp-edit-btn" onclick="pickClearSel()">Clear</button>';
+    $('icp-pick-actions').innerHTML=html;
+  }
+  function bulk(){
+    var n=Object.keys(sel).length; var b=$('icp-pick-bulk');
+    $('icp-pick-n').textContent=n; b.style.display=n?'flex':'none'; if(n) actions();
+  }
+  window.pickClearSel=function(){ sel={}; window.renderTitlePicker(); };
+  window.pickAssign=function(tier){
+    var items=Object.keys(sel); if(!items.length) return;
+    items.forEach(function(t){ if(ICP_KW[tier].indexOf(t)<0) ICP_KW[tier].push(t); });
+    try { localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); } catch(e){}
+    reclassify();
+    if(typeof syncCustomBadge==='function') syncCustomBadge();
+    ['t1','t2','t3'].forEach(function(t){ var el=$('icpkw-'+t); if(el) el.value=(ICP_KW[t]||[]).join('\n'); });
+    if(typeof updateEditorCounts==='function') updateEditorCounts();
+    sel={}; window.renderTitlePicker();
+    var noun=(mode==='companies') ? (items.length>1?'companies':'company') : (items.length>1?'titles':'title');
+    var m=$('icpEditMsg'); if(m) m.textContent='✓ Added '+items.length+' '+noun+' to '+tier.toUpperCase()+' — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+  };
+
+  if(typeof window.openICPEditor==='function'){
+    var orig=window.openICPEditor;
+    window.openICPEditor=function(){
+      orig(); sel={}; mode='titles'; filter='unmatched';
+      var sb=$('icp-pick-search'); if(sb) sb.value='';
+      $('icpmode-titles').classList.add('active'); $('icpmode-companies').classList.remove('active');
+      $('icp-pick-help').innerHTML=HELP.titles;
+      renderChips(); window.setEditorView('pick');
+    };
+  }
+})();
+
+/* ---- ICP Profiles + config file (v1): preset apply, spec-compliant export/import ---- */
+(function(){
+  var FORMAT='linkvault-icp', VERSION=1;
+  var MATCH={ t1:'title', t2:'title+company', t3:'title' };
+  window.__icpMeta = window.__icpMeta || {
+    name:'Custom ICP',
+    t1:{label:'Decision Maker', description:'Founders, CEOs, CMOs, VPs'},
+    t2:{label:'Ecosystem',      description:'Agencies, vendors, partners'},
+    t3:{label:'Adjacent',       description:'Marketing, growth roles'},
+    exclude:[]
+  };
+  function $(id){ return document.getElementById(id); }
+  function arr(x){ return Array.isArray(x) ? x.map(function(s){ return String(s).trim().toLowerCase(); }).filter(Boolean) : []; }
+  function profileKeys(){ return (typeof ICP_PROFILES!=='undefined') ? Object.keys(ICP_PROFILES) : []; }
+  function fillProfileSelect(){
+    var sel=$('icp-profile-select'); if(!sel || typeof ICP_PROFILES==='undefined') return;
+    sel.innerHTML='<option value="">— pick a vertical —</option>'+profileKeys().map(function(k){ return '<option value="'+k+'">'+ICP_PROFILES[k].name+'</option>'; }).join('');
+  }
+  function applyMeta(){ try{ EXCL_KEYWORDS=(window.__icpMeta.exclude && window.__icpMeta.exclude.length) ? compileKw(window.__icpMeta.exclude) : /a^/; }catch(e){} }
+  function relabel(){
+    var meta=window.__icpMeta;
+    [['t1',meta.t1],['t2',meta.t2],['t3',meta.t3]].forEach(function(pair){
+      var sc=$('s-'+pair[0]); if(sc){ var card=sc.closest('.stat-card'); var sub=card&&card.querySelector('.stat-sub'); if(sub) sub.textContent=pair[1].description||''; }
+    });
+    var cards=document.querySelectorAll('.tier-explain > div');
+    [meta.t1,meta.t2,meta.t3].forEach(function(t,i){ if(cards[i]){ var ti=cards[i].querySelector('.tier-card-title'); var su=cards[i].querySelector('.tier-card-sub'); if(ti) ti.textContent=t.description||''; if(su) su.textContent=(t.label||'')+' tier · '+(meta.name||'ICP')+'.'; } });
+  }
+  function syncBoxes(){ ['t1','t2','t3'].forEach(function(t){ var el=$('icpkw-'+t); if(el) el.value=(ICP_KW[t]||[]).join('\n'); }); if(typeof updateEditorCounts==='function') updateEditorCounts(); if(typeof renderTitlePicker==='function') renderTitlePicker(); }
+
+  window.applyICPProfile=function(key){
+    if(!key || typeof ICP_PROFILES==='undefined' || !ICP_PROFILES[key]) return;
+    var p=ICP_PROFILES[key];
+    ICP_KW={ t1:p.t1.keywords.slice(), t2:p.t2.keywords.slice(), t3:p.t3.keywords.slice() };
+    window.__icpMeta={ name:p.name,
+      t1:{label:p.t1.label, description:p.t1.desc},
+      t2:{label:p.t2.label, description:p.t2.desc},
+      t3:{label:p.t3.label, description:p.t3.desc},
+      exclude:(p.exclude||[]).slice() };
+    applyMeta();
+    try{ localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); localStorage.setItem('ga_icp_profile', key); }catch(e){}
+    reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();
+    var m=$('icpEditMsg'); if(m) m.textContent='✓ Applied "'+p.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+  };
+
+  window.exportICP=function(){
+    var meta=window.__icpMeta;
+    var cfg={ format:FORMAT, version:VERSION, name:meta.name||'Custom ICP', author:'Growth Automated',
+      tiers:{
+        t1:{ label:meta.t1.label, description:meta.t1.description, match:MATCH.t1, keywords:ICP_KW.t1||[] },
+        t2:{ label:meta.t2.label, description:meta.t2.description, match:MATCH.t2, keywords:ICP_KW.t2||[] },
+        t3:{ label:meta.t3.label, description:meta.t3.description, match:MATCH.t3, keywords:ICP_KW.t3||[] }
+      },
+      exclude:(meta.exclude||[]) };
+    var blob=new Blob([JSON.stringify(cfg,null,2)], {type:'application/json'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download='icp-config-'+String(cfg.name).toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.json'; a.click();
+  };
+
+  window.importICP=function(file){
+    if(!file) return; var rd=new FileReader();
+    rd.onload=function(e){
+      var cfg; try{ cfg=JSON.parse(e.target.result); }catch(err){ alert('Could not read that file: '+err.message); return; }
+      var t1, t2, t3, meta;
+      if(cfg && cfg.tiers && cfg.tiers.t1 && cfg.tiers.t2 && cfg.tiers.t3){
+        if(cfg.format && cfg.format!==FORMAT){ alert('Not a LinkVault ICP config (format: '+cfg.format+').'); return; }
+        if(cfg.version && cfg.version>VERSION){ alert('This config is version '+cfg.version+'; update LinkVault to load it.'); return; }
+        t1=arr(cfg.tiers.t1.keywords); t2=arr(cfg.tiers.t2.keywords); t3=arr(cfg.tiers.t3.keywords);
+        meta={ name:cfg.name||'Loaded ICP',
+          t1:{label:cfg.tiers.t1.label||'Decision Maker', description:cfg.tiers.t1.description||''},
+          t2:{label:cfg.tiers.t2.label||'Ecosystem',      description:cfg.tiers.t2.description||''},
+          t3:{label:cfg.tiers.t3.label||'Adjacent',       description:cfg.tiers.t3.description||''},
+          exclude:arr(cfg.exclude) };
+      } else if(cfg && cfg.t1 && cfg.t2 && cfg.t3){
+        t1=arr(cfg.t1); t2=arr(cfg.t2); t3=arr(cfg.t3);
+        meta={ name:cfg.name||'Loaded ICP', t1:{label:'Decision Maker',description:''}, t2:{label:'Ecosystem',description:''}, t3:{label:'Adjacent',description:''}, exclude:[] };
+      } else { alert('That JSON is not a valid ICP config (needs tiers.t1/t2/t3 with keywords).'); return; }
+      if(!t1.length || !t2.length || !t3.length){ alert('Each tier needs at least one keyword.'); return; }
+      ICP_KW={ t1:t1, t2:t2, t3:t3 }; window.__icpMeta=meta; applyMeta();
+      try{ localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); localStorage.removeItem('ga_icp_profile'); }catch(_){}
+      reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();
+      var m=$('icpEditMsg'); if(m) m.textContent='✓ Loaded "'+meta.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+    };
+    rd.readAsText(file);
+  };
+
+  if(typeof window.openICPEditor==='function'){
+    var prev=window.openICPEditor;
+    window.openICPEditor=function(){ prev(); fillProfileSelect(); var sel=$('icp-profile-select'); if(sel){ try{ sel.value=localStorage.getItem('ga_icp_profile')||''; }catch(e){} } };
+  }
+})();
