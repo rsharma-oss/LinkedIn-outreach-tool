@@ -111,15 +111,20 @@
   window.pickClearSel=function(){ sel={}; window.renderTitlePicker(); };
   window.pickAssign=function(tier){
     var items=Object.keys(sel); if(!items.length) return;
-    items.forEach(function(t){ if(ICP_KW[tier].indexOf(t)<0) ICP_KW[tier].push(t); });
-    try { localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); } catch(e){}
+    // R8: picks are EXACT whole-field matches. Companies always go to T2; titles to the chosen tier.
+    if(mode==='companies'){
+      items.forEach(function(t){ ICP_EXACT.t2.companies.add(normCo(t)); });
+      tier='t2';
+    } else {
+      items.forEach(function(t){ ICP_EXACT[tier].titles.add(normTitle(t)); });
+    }
+    if(typeof saveICPExact==='function') saveICPExact();
     reclassify();
     if(typeof syncCustomBadge==='function') syncCustomBadge();
-    ['t1','t2','t3'].forEach(function(t){ var el=$('icpkw-'+t); if(el) el.value=(ICP_KW[t]||[]).join('\n'); });
     if(typeof updateEditorCounts==='function') updateEditorCounts();
     sel={}; window.renderTitlePicker();
     var noun=(mode==='companies') ? (items.length>1?'companies':'company') : (items.length>1?'titles':'title');
-    var m=$('icpEditMsg'); if(m) m.textContent='✓ Added '+items.length+' '+noun+' to '+tier.toUpperCase()+' — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+    var m=$('icpEditMsg'); if(m) m.textContent='✓ Added '+items.length+' '+noun+' to '+tier.toUpperCase()+' (exact match) — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
   };
 
   if(typeof window.openICPEditor==='function'){
@@ -147,6 +152,16 @@
   };
   function $(id){ return document.getElementById(id); }
   function arr(x){ return Array.isArray(x) ? x.map(function(s){ return String(s).trim().toLowerCase(); }).filter(Boolean) : []; }
+  // R8 exact-list helpers — populate ICP_EXACT (whole-field titles/companies) from a profile or config
+  function clearExact(){ if(typeof ICP_EXACT==='undefined') return; ['t1','t2','t3'].forEach(function(t){ ICP_EXACT[t].titles.clear(); ICP_EXACT[t].companies.clear(); }); }
+  function fillExact(src){ if(typeof ICP_EXACT==='undefined') return; clearExact();
+    ['t1','t2','t3'].forEach(function(t){ var tt=src[t]||{};
+      (tt.titles||[]).forEach(function(x){ ICP_EXACT[t].titles.add(normTitle(x)); });
+      (tt.companies||[]).forEach(function(x){ ICP_EXACT[t].companies.add(normCo(x)); }); });
+    if(typeof saveICPExact==='function') saveICPExact();
+  }
+  function exTitles(t){ return (typeof ICP_EXACT!=='undefined') ? Array.from(ICP_EXACT[t].titles) : []; }
+  function exCompanies(t){ return (typeof ICP_EXACT!=='undefined') ? Array.from(ICP_EXACT[t].companies) : []; }
   function profileKeys(){ return (typeof ICP_PROFILES!=='undefined') ? Object.keys(ICP_PROFILES) : []; }
   function fillProfileSelect(){
     var sel=$('icp-profile-select'); if(!sel || typeof ICP_PROFILES==='undefined') return;
@@ -166,7 +181,8 @@
   window.applyICPProfile=function(key){
     if(!key || typeof ICP_PROFILES==='undefined' || !ICP_PROFILES[key]) return;
     var p=ICP_PROFILES[key];
-    ICP_KW={ t1:p.t1.keywords.slice(), t2:p.t2.keywords.slice(), t3:p.t3.keywords.slice() };
+    ICP_KW={ t1:(p.t1.keywords||[]).slice(), t2:(p.t2.keywords||[]).slice(), t3:(p.t3.keywords||[]).slice() };
+    fillExact(p); // exact carriers/companies + named titles from the profile
     window.__icpMeta={ name:p.name,
       t1:{label:p.t1.label, description:p.t1.desc},
       t2:{label:p.t2.label, description:p.t2.desc},
@@ -182,9 +198,9 @@
     var meta=window.__icpMeta;
     var cfg={ format:FORMAT, version:VERSION, name:meta.name||'Custom ICP', author:'Growth Automated',
       tiers:{
-        t1:{ label:meta.t1.label, description:meta.t1.description, match:MATCH.t1, keywords:ICP_KW.t1||[] },
-        t2:{ label:meta.t2.label, description:meta.t2.description, match:MATCH.t2, keywords:ICP_KW.t2||[] },
-        t3:{ label:meta.t3.label, description:meta.t3.description, match:MATCH.t3, keywords:ICP_KW.t3||[] }
+        t1:{ label:meta.t1.label, description:meta.t1.description, titles:exTitles('t1'), keywords:ICP_KW.t1||[] },
+        t2:{ label:meta.t2.label, description:meta.t2.description, companies:exCompanies('t2'), titles:exTitles('t2'), keywords:ICP_KW.t2||[] },
+        t3:{ label:meta.t3.label, description:meta.t3.description, titles:exTitles('t3'), keywords:ICP_KW.t3||[] }
       },
       exclude:(meta.exclude||[]) };
     var blob=new Blob([JSON.stringify(cfg,null,2)], {type:'application/json'});
@@ -196,10 +212,11 @@
     if(!file) return; var rd=new FileReader();
     rd.onload=function(e){
       var cfg; try{ cfg=JSON.parse(e.target.result); }catch(err){ alert('Could not read that file: '+err.message); return; }
-      var t1, t2, t3, meta;
+      var t1, t2, t3, meta, isNew=false;
       if(cfg && cfg.tiers && cfg.tiers.t1 && cfg.tiers.t2 && cfg.tiers.t3){
         if(cfg.format && cfg.format!==FORMAT){ alert('Not a LinkVault ICP config (format: '+cfg.format+').'); return; }
         if(cfg.version && cfg.version>VERSION){ alert('This config is version '+cfg.version+'; update LinkVault to load it.'); return; }
+        isNew=true;
         t1=arr(cfg.tiers.t1.keywords); t2=arr(cfg.tiers.t2.keywords); t3=arr(cfg.tiers.t3.keywords);
         meta={ name:cfg.name||'Loaded ICP',
           t1:{label:cfg.tiers.t1.label||'Decision Maker', description:cfg.tiers.t1.description||''},
@@ -210,8 +227,11 @@
         t1=arr(cfg.t1); t2=arr(cfg.t2); t3=arr(cfg.t3);
         meta={ name:cfg.name||'Loaded ICP', t1:{label:'Decision Maker',description:''}, t2:{label:'Ecosystem',description:''}, t3:{label:'Adjacent',description:''}, exclude:[] };
       } else { alert('That JSON is not a valid ICP config (needs tiers.t1/t2/t3 with keywords).'); return; }
-      if(!t1.length || !t2.length || !t3.length){ alert('Each tier needs at least one keyword.'); return; }
+      var exCount=0;
+      if(isNew){ ['t1','t2','t3'].forEach(function(t){ var tt=cfg.tiers[t]||{}; exCount+=(tt.titles||[]).length+(tt.companies||[]).length; }); }
+      if(!t1.length && !t2.length && !t3.length && !exCount){ alert('That config has no keywords or picks.'); return; }
       ICP_KW={ t1:t1, t2:t2, t3:t3 }; window.__icpMeta=meta; applyMeta();
+      if(isNew) fillExact(cfg.tiers); else clearExact();
       try{ localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); localStorage.removeItem('ga_icp_profile'); }catch(_){}
       reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();
       var m=$('icpEditMsg'); if(m) m.textContent='✓ Loaded "'+meta.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
