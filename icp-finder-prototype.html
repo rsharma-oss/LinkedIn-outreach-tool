@@ -2079,13 +2079,24 @@ function exactHit(tier,nt,nc,useCompany){ var e=ICP_EXACT[tier]; if(!e) return f
   }
   return false; }
 
+// ── Rank × domain tiering ────────────────────────────────────────────────────
+//    T1 = a SENIOR rank + a vertical DOMAIN word in the title ("Senior Director, Network").
+//    T3 = a LOWER rank (Senior Manager/Manager) + a domain word. Domain is title-only, so
+//    "Director, Marketing" at a telecom carrier is NOT a telecom decision-maker (no telecom
+//    domain word) — it falls to T2 by company instead. Shared ladder, per-vertical ICP_DOMAIN.
+const RANK_T1_RE = /\b(chief|president|founder|owner|partner|principal|managing director|senior vice president|executive vice president|vice president|svp|evp|vp|avp|assistant vice president|senior director|director|head of|general manager)\b/i;
+const RANK_T3_RE = /\b(senior manager|manager)\b/i;
+let ICP_DOMAIN = compileKw(["marketing","growth","ecommerce","e-commerce","brand","retention","lifecycle","dtc","digital","acquisition","merchandising"]); // default DTC; replaced on profile/import
+
 function classifyTier(title, company) {
   const combined = (title + ' ' + company).toLowerCase();
   if (EXCL_KEYWORDS.test(combined)) return null;
+  const t = (title || '').toLowerCase();
   const nt = normTitle(title), nc = normCo(company);
-  if (exactHit('t1',nt,nc,false) || T1_KEYWORDS.test(title))    return 'T1';
-  if (exactHit('t2',nt,nc,true)  || T2_KEYWORDS.test(combined)) return 'T2';
-  if (exactHit('t3',nt,nc,false) || T3_KEYWORDS.test(title))    return 'T3';
+  const dom = ICP_DOMAIN.test(t);                                                        // title names this vertical's function?
+  if (exactHit('t1',nt,nc,false) || T1_KEYWORDS.test(title) || (dom && RANK_T1_RE.test(t)))    return 'T1'; // seniority
+  if (exactHit('t2',nt,nc,true)  || T2_KEYWORDS.test(combined))                                 return 'T2'; // named accounts
+  if (exactHit('t3',nt,nc,false) || T3_KEYWORDS.test(title) || (dom && RANK_T3_RE.test(t)))     return 'T3'; // broad sector
   return null;
 }
 
