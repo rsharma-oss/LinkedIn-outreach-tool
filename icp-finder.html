@@ -488,28 +488,10 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <!-- Filter Bar -->
       <div class="filter-bar">
         <input type="text" class="search-input" id="icp-search" placeholder="Search name, title, company…" oninput="_icpPage=0;renderTable()">
-        <select class="filter-select" id="f-tier" onchange="_icpPage=0;renderTable()">
-          <option value="">All Tiers</option>
-          <option value="T1">T1 · Decision Maker</option>
-          <option value="T2">T2 · Ecosystem</option>
-          <option value="T3">T3 · Adjacent</option>
-        </select>
-        <select class="filter-select" id="f-recency" onchange="_icpPage=0;renderTable()">
-          <option value="">All Recency</option>
-          <option value="new">🟢 New (&lt;30d)</option>
-          <option value="fresh">🟡 Fresh (30–90d)</option>
-          <option value="warm">⚪ Warm (90–365d)</option>
-          <option value="cold">⬇ Cold (&gt;1yr)</option>
-        </select>
-        <select class="filter-select" id="f-engagement" onchange="_icpPage=0;renderTable()">
-          <option value="">All Engagement</option>
-          <option value="active">Active (messaged &lt;90d)</option>
-          <option value="warm">Warm (messaged &lt;1yr)</option>
-          <option value="cold">Cold (messaged &gt;1yr)</option>
-          <option value="never">Never messaged</option>
-        </select>
+        <div id="icp-dd-row" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
         <span class="filter-count"><b id="icp-count">0</b> contacts</span>
       </div>
+      <div class="icp-seg-nav" id="icp-seg-nav"></div>
 
       <!-- Table -->
       <div class="tbl-wrap">
@@ -2369,13 +2351,8 @@ function buildStats(isDemo) {
 // ─── TABLE RENDER ─────────────────────────────────────────────────────────────
 function getFiltered() {
   const q = (document.getElementById('icp-search').value || '').toLowerCase();
-  const ft = document.getElementById('f-tier').value;
-  const fr = document.getElementById('f-recency').value;
-  const fe = document.getElementById('f-engagement').value;
   return ICP.filter(c => {
-    if (ft && c.tier !== ft) return false;
-    if (fr && c.recency !== fr) return false;
-    if (fe && c.engagement !== fe) return false;
+    if (window.icpFilterMatch && !window.icpFilterMatch(c)) return false;
     if (q && !`${c.name} ${c.title} ${c.company}`.toLowerCase().includes(q)) return false;
     return true;
   });
@@ -2932,6 +2909,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 </div>
 <script src="icp-profiles.js"></script>
 <script src="icp-picker.js"></script>
+<script src="icp-filters.js"></script>
 <script src="willis-articles.js"></script>
 <script src="willis.js"></script>
 </body>
