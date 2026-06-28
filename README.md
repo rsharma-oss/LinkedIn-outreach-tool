@@ -12,12 +12,12 @@ Full analytics across your LinkedIn export: network growth, engagement trends, c
 **6 tabs · 18 charts · content strategy scorecard**
 
 ### 🎯 icp-finder.html — ICP Contact Finder
-Automatically classifies your LinkedIn connections into ICP tiers based on job title and company. Filter, sort, and export your ideal customer contacts.
+Automatically classifies your LinkedIn connections into ICP tiers by job title and company, with a unified filter bar (tier · recency · engagement + outreach-segment quick filters). **Customizable** — pick keywords from your own network, start from a vertical preset (DTC · SaaS · Telecom · Financial Services), or load a config built for you. Filter, sort, and export.
 
-**Tiers:**
-- **T1 · Decision Maker** — Founders, CEOs, CMOs, VPs of Marketing/Growth
-- **T2 · Ecosystem** — Shopify, Klaviyo, and ecommerce tool practitioners
-- **T3 · Adjacent** — Marketing and growth professionals
+**Tiers (default — fully customizable):**
+- **T1 · Decision Maker** — founders, C-suite, and senior leaders in your target function
+- **T2 · Ecosystem** — people at your named target companies / ecosystem
+- **T3 · Adjacent** — broader sector roles
 
 ### 🎯 icp-demo.html — ICP Demo (pre-loaded)
 Static version of the ICP finder with anonymized sample data already loaded. No file upload needed — use this to evaluate the tool or share with others.

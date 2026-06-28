@@ -3,7 +3,9 @@
 
 _Named "LinkVault" June 2026 (was "LinkedIn Intelligence / Toolkit"). Growth Automated = maker brand; LinkVault = product._
 
-_Version: 1.6 · Updated June 22, 2026_
+_Version: 1.7 · Updated June 28, 2026_
+
+_Since 1.6: LinkVault rebrand live (logo + naming); **ICP customizer un-gated to production** — vertical presets (DTC · SaaS · Telecom · FinServ), pick-from-network, Save/Load config (`linkvault-icp` v1), two-list + rank×domain matching; unified ICP filter bar (custom dropdowns + segment pills); vertical-neutral positioning + new hero; Willis and the customizer work fully offline. Paid offer = muted done-for-you service (no prices in-app)._
 
 ---
 

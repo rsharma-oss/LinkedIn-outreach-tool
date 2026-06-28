@@ -2,6 +2,18 @@
 
 ---
 
+## 🎛️ Unified ICP filter bar + polish — June 28, 2026
+
+_Public release._
+
+- **Unified filter bar on the ICP List** — three theme-styled custom attribute **dropdowns** (Tier · Recency · Engagement; keyboard-navigable, click-outside / Esc to close) plus a horizontal **quick-filter pill nav** of outreach segments: **All · T1 first message · Follow-up · Re-engage**. Dropdowns and pills compose. New `icp-filters.js`.
+- **Offline customizer:** the offline ICP Finder now inlines `icp-picker.js` + `icp-profiles.js`, so the full customizer (presets · picker · Save/Load) works with **zero internet** — completing the un-gate follow-up.
+- **On-brand polish:** the "✏️ Custom" badge recolored from off-brand purple → brand green; the **"See the default keyword lists" FAQ** mirrored onto the How-It-Works page; the LinkVault + Growth Automated header lockup no longer crowds the nav in the 681–950 px band (8 pages).
+- **Dev tooling:** `ship.py` — one command runs build → push → PR.
+- Verified in preview: filter bar builds (3 dropdowns + 4 pills), Tier→T1 = 140, segment counts correct (T1-first 105 · Follow-up 42 · Re-engage 208), real clicks update the count, **zero console errors**.
+
+---
+
 ## 🚀 ICP customizer is now LIVE (un-gated) — June 28, 2026
 
 _The customizer ships to the live ICP Finder — moving everything from prototype to production._
@@ -11,7 +23,7 @@ _The customizer ships to the live ICP Finder — moving everything from prototyp
 - **Storage:** live keys `ga_icp_kw` / `ga_icp_exact` (the prototype keeps its isolated `_proto` keys — one shared `icp-picker.js` switched by `window.ICP_K`).
 - **Willis:** published the customizer help (customize · load-config · pick-from-network).
 - **Packaging (muted):** the customizer is **free**; the paid offer stays the **done-for-you service** (assisted setup + custom-built config) — a quiet "we'll build your ICP" CTA, no prices in-app.
-- Verified end-to-end in preview: modal renders, presets apply + relabel the cards, live storage keys, **zero console errors**. _Follow-ups: inline the customizer into the offline bundle; tier-distribution sensitivity analysis (backlog)._
+- Verified end-to-end in preview: modal renders, presets apply + relabel the cards, live storage keys, **zero console errors**. _Follow-ups: offline customizer ✅ shipped (see entry above); tier-distribution sensitivity analysis (backlog)._
 
 ---
 
