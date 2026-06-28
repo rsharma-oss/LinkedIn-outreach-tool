@@ -69,6 +69,12 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 - **Content:** ~40-article wiki inventory mapped out (many "seed" from existing FAQ / icp-note / how-to copy). Full UX + article list → **`WILLIS-WIKI-PLAN.md`**.
 - **IP note:** original character + our own copy only — echo the *approachable-help layout*, nothing trademarked.
 
+### Willis Rendering Polish
+- **Status:** 🟢 In progress — **avatar framing fixed June 28** (the bubble was a tight circle that cropped the square portrait to a face = "Curious George"; now a rounded-square with `object-fit:contain` so the full character/polo shows, on both the bubble + panel header). `willis.js`.
+- **Remaining rendering review:** check **all 5 poses** (`willis-main / thumbsup / shrug / cheeky / avatar`) in every state — bubble, panel header, **welcome card, search-result "got it", no-match "shrug"** — for the same crop/face-only issue, odd white-box backgrounds (some art ships on white — flood-fill transparent like `linkvault-mark` if needed), consistent sizing, and centering.
+- **Both themes + mobile:** confirm poses read well on the light *and* dark stage background and in the mobile near-fullscreen sheet (`@media max-width:480px`).
+- **Optional:** slightly larger bubble / pick the most flattering default pose; the art reads a touch cartoonish at small sizes — consider a tighter head-and-shoulders crop of the source art for the bubble specifically.
+
 ### 🎯 ICP — Positioning & Customization (the core ICP issue)
 - **Status:** 🟢 **Fix A shipped June 22. Fix B (in-app editor) BUILT but HELD** — gated out of the release pending a **co-work session** to align on customization direction (vertical **presets** vs **extensible** editor vs **hybrid**). See `ICP-COWORK-BRIEF.md`.
 - **Fix A — shipped:** load-screen + `.icp-note` state the ICP is **tuned for Shopify DTC** (customize, or we'll build yours); the headline stat now shows **real coverage + an "unmatched" count** (fixed a bug where `s-total-sub` always read ~100%).
