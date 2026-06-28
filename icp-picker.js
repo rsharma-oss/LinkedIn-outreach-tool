@@ -133,3 +133,57 @@
     };
   }
 })();
+
+/* ---- ICP Profiles: apply a vertical preset, export/import a config (multi-tenant) ---- */
+(function(){
+  function $(id){ return document.getElementById(id); }
+  function profileKeys(){ return (typeof ICP_PROFILES!=='undefined') ? Object.keys(ICP_PROFILES) : []; }
+  function fillProfileSelect(){
+    var sel=$('icp-profile-select'); if(!sel || typeof ICP_PROFILES==='undefined') return;
+    sel.innerHTML='<option value="">— pick a vertical —</option>'+profileKeys().map(function(k){ return '<option value="'+k+'">'+ICP_PROFILES[k].name+'</option>'; }).join('');
+  }
+  function relabel(p){
+    [['t1',p.t1],['t2',p.t2],['t3',p.t3]].forEach(function(pair){
+      var sc=$('s-'+pair[0]); if(sc){ var card=sc.closest('.stat-card'); var sub=card&&card.querySelector('.stat-sub'); if(sub) sub.textContent=pair[1].desc; }
+    });
+    var cards=document.querySelectorAll('.tier-explain > div');
+    [p.t1,p.t2,p.t3].forEach(function(t,i){ if(cards[i]){ var ti=cards[i].querySelector('.tier-card-title'); var su=cards[i].querySelector('.tier-card-sub'); if(ti) ti.textContent=t.desc; if(su) su.textContent=t.label+' tier · '+p.name+' ICP.'; } });
+  }
+  function syncBoxes(){ ['t1','t2','t3'].forEach(function(t){ var el=$('icpkw-'+t); if(el) el.value=(ICP_KW[t]||[]).join('\n'); }); if(typeof updateEditorCounts==='function') updateEditorCounts(); if(typeof renderTitlePicker==='function') renderTitlePicker(); }
+  window.applyICPProfile=function(key){
+    if(!key || typeof ICP_PROFILES==='undefined' || !ICP_PROFILES[key]) return;
+    var p=ICP_PROFILES[key];
+    ICP_KW={ t1:p.t1.keywords.slice(), t2:p.t2.keywords.slice(), t3:p.t3.keywords.slice() };
+    try{ EXCL_KEYWORDS=(p.exclude && p.exclude.length) ? compileKw(p.exclude) : /a^/; }catch(e){}
+    try{ localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); localStorage.setItem('ga_icp_profile', key); }catch(e){}
+    reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge();
+    relabel(p); syncBoxes();
+    var m=$('icpEditMsg'); if(m) m.textContent='✓ Applied "'+p.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+  };
+  window.exportICP=function(){
+    var key=null; try{ key=localStorage.getItem('ga_icp_profile'); }catch(e){}
+    var name=(key && typeof ICP_PROFILES!=='undefined' && ICP_PROFILES[key]) ? ICP_PROFILES[key].name : 'Custom ICP';
+    var cfg={ name:name, t1:ICP_KW.t1, t2:ICP_KW.t2, t3:ICP_KW.t3 };
+    var blob=new Blob([JSON.stringify(cfg,null,2)],{type:'application/json'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='icp-config-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.json'; a.click();
+  };
+  window.importICP=function(file){
+    if(!file) return; var rd=new FileReader();
+    rd.onload=function(e){
+      try{
+        var cfg=JSON.parse(e.target.result);
+        if(cfg.t1 && cfg.t2 && cfg.t3){
+          ICP_KW={ t1:cfg.t1, t2:cfg.t2, t3:cfg.t3 };
+          try{ localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); localStorage.removeItem('ga_icp_profile'); }catch(_){}
+          reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); syncBoxes();
+          var m=$('icpEditMsg'); if(m) m.textContent='✓ Loaded "'+(cfg.name||'config')+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+        } else { alert('That JSON does not look like an ICP config (needs t1, t2, t3 arrays).'); }
+      }catch(err){ alert('Could not read that file: '+err.message); }
+    };
+    rd.readAsText(file);
+  };
+  if(typeof window.openICPEditor==='function'){
+    var prev=window.openICPEditor;
+    window.openICPEditor=function(){ prev(); fillProfileSelect(); var sel=$('icp-profile-select'); if(sel){ try{ sel.value=localStorage.getItem('ga_icp_profile')||''; }catch(e){} } };
+  }
+})();
