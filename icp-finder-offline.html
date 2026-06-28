@@ -72,6 +72,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .btn-outline:hover{background:var(--bg4);color:var(--tx);}
 .btn-green{background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
 .btn-green:hover{background:rgba(16,185,129,0.25);}
+.btn-sample{background:rgba(16,185,129,0.16);color:var(--green);border:1px solid rgba(16,185,129,0.45);font-weight:700;}
+.btn-sample:hover{background:rgba(16,185,129,0.26);border-color:rgba(16,185,129,0.6);}
 
 /* LOAD SCREEN */
 #load-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 73px);gap:20px;padding:40px;}
@@ -133,6 +135,16 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .icp-note-title{font-size:0.85rem;font-weight:700;margin-bottom:8px;color:var(--tx);}
 .icp-note-body{font-size:0.8rem;color:var(--tx2);line-height:1.65;margin-bottom:14px;}
 .icp-note-cta{display:flex;flex-wrap:wrap;gap:10px;}
+.icp-kw-faq{margin-top:14px;border-top:1px solid var(--border);padding-top:12px;}
+.icp-kw-faq summary{font-size:0.78rem;font-weight:700;color:var(--li);cursor:pointer;list-style:none;}
+.icp-kw-faq summary::-webkit-details-marker{display:none;}
+.icp-kw-faq summary::before{content:'▸ ';font-size:0.7rem;}
+.icp-kw-faq[open] summary::before{content:'▾ ';}
+.icp-kw-faq-body{font-size:0.76rem;color:var(--tx2);line-height:1.65;margin-top:10px;}
+.icp-kw-faq-body p{margin:0 0 9px;}
+.icp-kw-faq-body b{color:var(--tx);}
+.icp-kw-faq-body span{color:var(--tx2);font-weight:500;}
+.icp-kw-faq-note{font-style:italic;}
 .icp-cta-link{font-size:0.8rem;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--border2);color:var(--tx2);text-decoration:none;transition:all 0.18s;}
 .icp-cta-link:hover{background:var(--bg4);color:var(--tx);}
 .icp-cta-primary{background:var(--li);color:#fff;border-color:transparent;}
@@ -403,7 +415,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
         📁 Choose CSV Files — All Browsers
       </button>
       <div class="load-divider">or try the demo</div>
-      <button class="btn btn-outline" onclick="loadDemoData()" style="width:300px;justify-content:center;border-color:rgba(139,92,246,0.5);color:#a78bfa;">
+      <button class="btn btn-sample" onclick="loadDemoData()" style="width:300px;justify-content:center;">
         ✨ Try with sample data
       </button>
     </div>
@@ -442,16 +454,16 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <div class="tier-card">
         <div class="tier-badge t1-badge">T1 · Decision Maker</div>
         <div class="tier-card-title">Founders, CEOs, CMOs, VPs</div>
-        <div class="tier-card-sub">Direct buyers and influencers for agency services. Highest outreach priority.</div>
+        <div class="tier-card-sub">Direct buyers and key influencers. Highest outreach priority.</div>
       </div>
       <div class="tier-card">
         <div class="tier-badge t2-badge">T2 · Ecosystem</div>
-        <div class="tier-card-title">Agency & Ecosystem Partners</div>
+        <div class="tier-card-title">Ecosystem &amp; Partners</div>
         <div class="tier-card-sub">Adjacent vendors, consultants, and practitioners. Good for referrals and partnerships.</div>
       </div>
       <div class="tier-card">
         <div class="tier-badge t3-badge">T3 · Adjacent</div>
-        <div class="tier-card-title">Marketing & Growth Professionals</div>
+        <div class="tier-card-title">Adjacent Professionals</div>
         <div class="tier-card-sub">Adjacent roles with context. Worth nurturing; potential future buyers or champions.</div>
       </div>
     </div>
@@ -464,6 +476,15 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
         <a class="icp-cta-link icp-cta-primary" href="demo.html">📅 Book time — we'll build your ICP for you →</a>
         <a class="icp-cta-link" href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/ICP-CUSTOMIZATION.md" target="_blank" rel="noopener">📝 Edit the keywords yourself →</a>
       </div>
+      <details class="icp-kw-faq">
+        <summary>See the exact default keyword lists</summary>
+        <div class="icp-kw-faq-body">
+          <p><b>T1 · Decision Maker</b> <span>— matched on job title</span><br>founder, co-founder, ceo, cmo, president, owner, managing director, vp / head of / director of marketing · growth · ecommerce, chief revenue, general manager</p>
+          <p><b>T2 · Ecosystem</b> <span>— matched on job title + company</span><br>e.g. shopify, klaviyo, gorgias, recharge, postscript, attentive, triple whale, aftership — plus roles like fractional cmo, retention specialist, lifecycle / email / sms marketing, ecommerce manager, crm manager</p>
+          <p><b>T3 · Adjacent</b> <span>— matched on job title</span><br>marketing manager, digital · content · performance marketing, social media manager, seo manager, brand manager / director, growth hacker, revenue operations, partnerships manager, creative director, marketing lead</p>
+          <p class="icp-kw-faq-note">First match wins (T1 → T2 → T3). Anything matching nothing is counted as <b>unmatched</b> — not dropped. These are the defaults; customize them for your market anytime.</p>
+        </div>
+      </details>
     </div>
 
     <!-- View Switcher -->
