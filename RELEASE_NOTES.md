@@ -2,6 +2,19 @@
 
 ---
 
+## 🚀 ICP customizer is now LIVE (un-gated) — June 28, 2026
+
+_The customizer ships to the live ICP Finder — moving everything from prototype to production._
+
+- **Two-list + rank×domain engine ported into `icp-finder.html`** — exact `companies`/`titles` + substring `keywords`, seniority × domain tiering. Same engine validated in the prototype (R8 holds on ~2.9k real connections).
+- **Customizer UI live:** ✏️ **Customize keywords** opens an editor with **Pick from your network** (multi-select titles + companies, unmatched-first) and **Edit keyword lists**, plus a **vertical preset** dropdown (DTC · SaaS · Telecom · Financial Services) and **Save / Load config** (`linkvault-icp` v1).
+- **Storage:** live keys `ga_icp_kw` / `ga_icp_exact` (the prototype keeps its isolated `_proto` keys — one shared `icp-picker.js` switched by `window.ICP_K`).
+- **Willis:** published the customizer help (customize · load-config · pick-from-network).
+- **Packaging (muted):** the customizer is **free**; the paid offer stays the **done-for-you service** (assisted setup + custom-built config) — a quiet "we'll build your ICP" CTA, no prices in-app.
+- Verified end-to-end in preview: modal renders, presets apply + relabel the cards, live storage keys, **zero console errors**. _Follow-ups: inline the customizer into the offline bundle; tier-distribution sensitivity analysis (backlog)._
+
+---
+
 ## 🌐 Vertical-neutral positioning + polish — June 28, 2026
 
 _Public release. LinkVault now positions for any B2B vertical, not just Shopify DTC._
