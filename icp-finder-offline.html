@@ -152,7 +152,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 button.icp-cta-link{cursor:pointer;background:none;font-family:inherit;}
 button.icp-cta-primary{background:var(--li);}
 button.icp-cta-primary:hover{background:var(--li2);}
-.icp-custom-badge{font-size:0.62rem;font-weight:700;padding:2px 7px;border-radius:9px;background:rgba(139,92,246,0.18);color:#a78bfa;border:1px solid rgba(139,92,246,0.4);vertical-align:middle;margin-left:6px;}
+.icp-custom-badge{font-size:0.62rem;font-weight:700;padding:2px 7px;border-radius:9px;background:rgba(16,185,129,0.16);color:var(--green);border:1px solid rgba(16,185,129,0.4);vertical-align:middle;margin-left:6px;}
 /* ICP keyword editor modal */
 .icp-edit-ov{position:fixed;inset:0;background:rgba(0,0,0,0.55);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;}
 .icp-edit-card{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;width:min(880px,96vw);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
@@ -325,6 +325,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .lv-ga{height:18px;width:115px;background:url('logo-white.svg') left center/contain no-repeat;display:block;}
 [data-theme="light"] .lv-word{color:#0f172a;}
 [data-theme="light"] .lv-ga{background-image:url('logo-color.svg');}
+@media(min-width:681px) and (max-width:950px){.lv-ga{display:none;}} /* #6: hide GA sub-logo in the tight nav band (stays in footer) */
 .lv-brand ~ *{display:none;}
 .lv-footer{text-align:center;padding:46px 20px 40px;border-top:1px solid rgba(255,255,255,0.08);margin-top:48px;}
 [data-theme="light"] .lv-footer{border-top-color:rgba(15,23,42,0.1);}
