@@ -183,7 +183,8 @@
     var p=ICP_PROFILES[key];
     ICP_KW={ t1:(p.t1.keywords||[]).slice(), t2:(p.t2.keywords||[]).slice(), t3:(p.t3.keywords||[]).slice() };
     fillExact(p); // exact carriers/companies + named titles from the profile
-    window.__icpMeta={ name:p.name,
+    try{ ICP_DOMAIN=compileKw(p.domain||[]); }catch(e){} // rank × domain function words
+    window.__icpMeta={ name:p.name, domain:(p.domain||[]).slice(),
       t1:{label:p.t1.label, description:p.t1.desc},
       t2:{label:p.t2.label, description:p.t2.desc},
       t3:{label:p.t3.label, description:p.t3.desc},
@@ -197,6 +198,7 @@
   window.exportICP=function(){
     var meta=window.__icpMeta;
     var cfg={ format:FORMAT, version:VERSION, name:meta.name||'Custom ICP', author:'Growth Automated',
+      domain:(meta.domain||[]),
       tiers:{
         t1:{ label:meta.t1.label, description:meta.t1.description, titles:exTitles('t1'), keywords:ICP_KW.t1||[] },
         t2:{ label:meta.t2.label, description:meta.t2.description, companies:exCompanies('t2'), titles:exTitles('t2'), keywords:ICP_KW.t2||[] },
@@ -218,19 +220,20 @@
         if(cfg.version && cfg.version>VERSION){ alert('This config is version '+cfg.version+'; update LinkVault to load it.'); return; }
         isNew=true;
         t1=arr(cfg.tiers.t1.keywords); t2=arr(cfg.tiers.t2.keywords); t3=arr(cfg.tiers.t3.keywords);
-        meta={ name:cfg.name||'Loaded ICP',
+        meta={ name:cfg.name||'Loaded ICP', domain:arr(cfg.domain),
           t1:{label:cfg.tiers.t1.label||'Decision Maker', description:cfg.tiers.t1.description||''},
           t2:{label:cfg.tiers.t2.label||'Ecosystem',      description:cfg.tiers.t2.description||''},
           t3:{label:cfg.tiers.t3.label||'Adjacent',       description:cfg.tiers.t3.description||''},
           exclude:arr(cfg.exclude) };
       } else if(cfg && cfg.t1 && cfg.t2 && cfg.t3){
         t1=arr(cfg.t1); t2=arr(cfg.t2); t3=arr(cfg.t3);
-        meta={ name:cfg.name||'Loaded ICP', t1:{label:'Decision Maker',description:''}, t2:{label:'Ecosystem',description:''}, t3:{label:'Adjacent',description:''}, exclude:[] };
+        meta={ name:cfg.name||'Loaded ICP', domain:[], t1:{label:'Decision Maker',description:''}, t2:{label:'Ecosystem',description:''}, t3:{label:'Adjacent',description:''}, exclude:[] };
       } else { alert('That JSON is not a valid ICP config (needs tiers.t1/t2/t3 with keywords).'); return; }
       var exCount=0;
       if(isNew){ ['t1','t2','t3'].forEach(function(t){ var tt=cfg.tiers[t]||{}; exCount+=(tt.titles||[]).length+(tt.companies||[]).length; }); }
       if(!t1.length && !t2.length && !t3.length && !exCount){ alert('That config has no keywords or picks.'); return; }
       ICP_KW={ t1:t1, t2:t2, t3:t3 }; window.__icpMeta=meta; applyMeta();
+      try{ ICP_DOMAIN=compileKw(meta.domain||[]); }catch(_){}
       if(isNew) fillExact(cfg.tiers); else clearExact();
       try{ localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); localStorage.removeItem('ga_icp_profile'); }catch(_){}
       reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();

@@ -39,6 +39,8 @@ a:hover{text-decoration:underline;}
 .status-text{font-size:0.75rem;color:var(--tx3);}
 .btn{padding:8px 16px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;gap:7px;transition:all 0.2s;font-family:inherit;}
 .btn-primary{background:var(--li);color:#fff;}
+.btn-sample{background:rgba(16,185,129,0.16);color:var(--green);border:1px solid rgba(16,185,129,0.45);font-weight:700;}
+.btn-sample:hover{background:rgba(16,185,129,0.26);border-color:rgba(16,185,129,0.6);}
 .btn-primary:hover{background:var(--li2);}
 .btn-outline{background:transparent;color:var(--tx2);border:1px solid var(--border2);}
 .btn-outline:hover{background:var(--bg4);color:var(--tx);}
@@ -288,7 +290,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <div class="load-divider">or try the demo</div>
 
       <!-- Option C: Demo mode -->
-      <button class="btn btn-outline" onclick="loadDemoData()" style="width:280px;justify-content:center;border-color:rgba(139,92,246,0.5);color:#a78bfa;">
+      <button class="btn btn-sample" onclick="loadDemoData()" style="width:280px;justify-content:center;">
         ✨ Try Demo — Alex Chen · ShopBoost Agency
       </button>
     </div>
@@ -500,7 +502,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
         <div class="strategy-header">
           <div>
             <div class="strategy-title">Content Strategy Scorecard</div>
-            <div class="strategy-sub">Benchmarks for a Shopify growth agency founder · Target: 8–12 posts/month, 75%+ week consistency</div>
+            <div class="strategy-sub">Benchmarks for a B2B founder posting on LinkedIn · Target: 8–12 posts/month, 75%+ week consistency</div>
           </div>
           <div class="strategy-score-big" id="sc-overall-score">—</div>
         </div>
@@ -549,7 +551,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
         <span>Recent Posts</span>
         <select class="filter-select" id="post-theme-filter" onchange="_postPage=0;renderPosts();" style="font-size:0.73rem;padding:4px 10px;">
           <option value="">All themes</option>
-          <option value="Shopify/Ecom">🛒 Shopify/Ecom</option>
+          <option value="Shopify/Ecom">🛒 Industry/Product</option>
           <option value="Growth/Marketing">📈 Growth/Marketing</option>
           <option value="Agency/Business">🏢 Agency/Business</option>
           <option value="AI/Automation">🤖 AI/Automation</option>
