@@ -2051,12 +2051,41 @@ let T2_KEYWORDS = compileKw(ICP_KW.t2);
 let T3_KEYWORDS = compileKw(ICP_KW.t3);
 let EXCL_KEYWORDS = /\bretired\b|chief financial|\bcfo\b|chief technology|\bcto\b|board member|real estate|talent acquisition|\brecruiter\b|software engineer|program manager|project manager|\baccountant\b|\blawyer\b|\battorney\b|\bstudent\b|\bintern\b|data scientist|ml engineer|devops|solutions architect|chief operating|\bcoo\b/i;
 
+// ── R8 two-list matching: exact whole-field picks (titles + companies) alongside substring keywords ──
+//    Picks (from the network picker or a loaded config) match the WHOLE field after light normalization,
+//    so a picked company "Orange" matches the carrier Orange — never the DTC tool "Lucky Orange". Typed
+//    keywords stay substring (T*_KEYWORDS). Within a tier, exact OR substring hits; first tier wins T1→T2→T3.
+function normTitle(s){ return String(s||'').toLowerCase().replace(/\s+/g,' ').trim(); }
+function normCo(s){ var x=String(s||'').toLowerCase().replace(/[.,]/g,' ').replace(/\s+/g,' ').trim();
+  x=x.replace(/\s+(inc|llc|ltd|limited|corp|corporation|co|company|holdings|group|plc|gmbh|sa|sas|ag|ab|oy|pty|bv|nv|srl|spa)$/,'').trim(); return x; }
+function loadICPExact(){
+  var d={t1:{titles:new Set(),companies:new Set()},t2:{titles:new Set(),companies:new Set()},t3:{titles:new Set(),companies:new Set()}};
+  try{ var s=JSON.parse(localStorage.getItem('ga_icp_exact_proto'));
+    if(s){ ['t1','t2','t3'].forEach(function(t){ if(s[t]){ (s[t].titles||[]).forEach(function(x){d[t].titles.add(normTitle(x));}); (s[t].companies||[]).forEach(function(x){d[t].companies.add(normCo(x));}); } }); } }catch(e){}
+  return d;
+}
+let ICP_EXACT = loadICPExact();
+function saveICPExact(){
+  try{ var o={}; ['t1','t2','t3'].forEach(function(t){ o[t]={titles:Array.from(ICP_EXACT[t].titles),companies:Array.from(ICP_EXACT[t].companies)}; });
+    localStorage.setItem('ga_icp_exact_proto',JSON.stringify(o)); }catch(e){}
+}
+function icpExactEmpty(){ return ['t1','t2','t3'].every(function(t){ return !ICP_EXACT[t].titles.size && !ICP_EXACT[t].companies.size; }); }
+function exactHit(tier,nt,nc,useCompany){ var e=ICP_EXACT[tier]; if(!e) return false;
+  if(nt && e.titles.has(nt)) return true;
+  if(useCompany && nc && e.companies.size){
+    if(e.companies.has(nc)) return true;            // whole-field: "Orange" === "orange"
+    var hit=false; e.companies.forEach(function(c){ if(!hit && c && nc.indexOf(c+' ')===0) hit=true; }); // leading-word: "Bell Canada" starts with "bell "
+    if(hit) return true;
+  }
+  return false; }
+
 function classifyTier(title, company) {
   const combined = (title + ' ' + company).toLowerCase();
   if (EXCL_KEYWORDS.test(combined)) return null;
-  if (T1_KEYWORDS.test(title)) return 'T1';
-  if (T2_KEYWORDS.test(combined)) return 'T2';
-  if (T3_KEYWORDS.test(title)) return 'T3';
+  const nt = normTitle(title), nc = normCo(company);
+  if (exactHit('t1',nt,nc,false) || T1_KEYWORDS.test(title))    return 'T1';
+  if (exactHit('t2',nt,nc,true)  || T2_KEYWORDS.test(combined)) return 'T2';
+  if (exactHit('t3',nt,nc,false) || T3_KEYWORDS.test(title))    return 'T3';
   return null;
 }
 
