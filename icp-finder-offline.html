@@ -3938,5 +3938,7 @@ window.WILLIS_ARTICLES = [
 })();
 
 </script>
+<style>.offline-off{opacity:.4 !important;pointer-events:none !important;cursor:default !important;text-decoration:none !important;}</style>
+<script>(function(){var keep={'dashboard.html':'dashboard-offline.html','icp-finder.html':'icp-finder-offline.html'};function fix(){[].forEach.call(document.querySelectorAll('a[href]'),function(a){var h=a.getAttribute('href')||'';if(keep[h]){a.setAttribute('href',keep[h]);return;}if(/^https?:/i.test(h)||/\.html(\?|#|$)/i.test(h)){a.classList.add('offline-off');a.removeAttribute('href');a.setAttribute('aria-disabled','true');a.setAttribute('title','Not available in the offline build');}});}if(document.readyState!=='loading')fix();else document.addEventListener('DOMContentLoaded',fix);})();</script>
 </body>
 </html>
