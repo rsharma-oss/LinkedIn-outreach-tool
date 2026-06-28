@@ -315,6 +315,9 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .lv-foot-links a{color:inherit;text-decoration:none;}
 [data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.45);}
 
+.icp-pick-mode{display:inline-flex;gap:4px;margin:0 0 8px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:3px;}
+.icp-modebtn{font-size:0.78rem;font-weight:600;padding:5px 12px;border-radius:7px;border:none;background:none;color:var(--tx2);cursor:pointer;}
+.icp-modebtn.active{background:var(--li);color:#fff;}
 .icp-edit-tabs{display:flex;gap:6px;padding:0 20px;margin:2px 0 10px;}
 .icp-tab{font-size:0.8rem;font-weight:600;padding:6px 12px;border-radius:8px;border:1px solid var(--border2);background:none;color:var(--tx2);cursor:pointer;}
 .icp-tab.active{background:var(--li);color:#fff;border-color:transparent;}
@@ -2645,21 +2648,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       <button type="button" class="icp-tab" id="icptab-lists" onclick="setEditorView('lists')">✎ Edit keyword lists</button>
     </div>
     <div id="icp-view-pick" class="icp-edit-view">
-      <p class="icp-edit-sub">Tick the job titles that fit your ideal customer, then assign them to a tier. Counts are from <b>your loaded network</b>. Start with <b>Unmatched</b> to grab who the default ICP missed.</p>
+      <div class="icp-pick-mode">
+        <button type="button" class="icp-modebtn active" id="icpmode-titles" onclick="setPickMode('titles')">📇 Titles</button>
+        <button type="button" class="icp-modebtn" id="icpmode-companies" onclick="setPickMode('companies')">🏢 Companies</button>
+      </div>
+      <p class="icp-edit-sub" id="icp-pick-help"></p>
       <div class="icp-pick-toolbar">
-        <input id="icp-pick-search" placeholder="Search your titles…" oninput="renderTitlePicker()" spellcheck="false">
-        <span class="icp-pick-chips">
-          <button type="button" class="icp-pchip active" data-f="unmatched" onclick="setPickFilter('unmatched',this)">Unmatched</button>
-          <button type="button" class="icp-pchip" data-f="all" onclick="setPickFilter('all',this)">All</button>
-          <button type="button" class="icp-pchip" data-f="t1" onclick="setPickFilter('t1',this)">T1</button>
-          <button type="button" class="icp-pchip" data-f="t2" onclick="setPickFilter('t2',this)">T2</button>
-          <button type="button" class="icp-pchip" data-f="t3" onclick="setPickFilter('t3',this)">T3</button>
-        </span>
+        <input id="icp-pick-search" placeholder="Search…" oninput="renderTitlePicker()" spellcheck="false">
+        <span class="icp-pick-chips" id="icp-pick-chips"></span>
       </div>
       <div id="icp-pick-rows" class="icp-pick-rows" onchange="onPickToggle(event)"></div>
       <div id="icp-pick-bulk" class="icp-pick-bulk" style="display:none;">
         <span><b id="icp-pick-n">0</b> selected → assign to</span>
-        <span><button type="button" class="icp-edit-btn" onclick="pickAssign('t1')">T1</button><button type="button" class="icp-edit-btn" onclick="pickAssign('t2')">T2</button><button type="button" class="icp-edit-btn" onclick="pickAssign('t3')">T3</button><button type="button" class="icp-edit-btn" onclick="pickClearSel()">Clear</button></span>
+        <span id="icp-pick-actions"></span>
       </div>
     </div>
     <div id="icp-view-lists" class="icp-edit-view" style="display:none;">
@@ -2677,28 +2678,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   </div>
 </div>
 <footer class="lv-footer"><a href="how-to.html" class="lv-foot-logo" aria-label="Growth Automated"></a><div class="lv-foot-tag"><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated</div><div class="lv-foot-links">Not affiliated with LinkedIn · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener">View source ↗</a> · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes ↗</a></div></footer>
-<script>
-(function(){
-  function esc(x){return String(x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  function titleIndex(){ var m={}; (typeof _connRows!=='undefined'?_connRows:[]).forEach(function(r){var t=(r['Position']||'').trim(); if(!t)return; var k=t.toLowerCase(); if(!m[k])m[k]={title:t,count:0}; m[k].count++;}); return Object.keys(m).map(function(k){return m[k];}).sort(function(a,b){return b.count-a.count;}); }
-  function tierOf(t){ try{return classifyTier(t,'');}catch(e){return null;} }
-  var filter='unmatched', sel={};
-  window.setPickFilter=function(f,btn){ filter=f; [].forEach.call(document.querySelectorAll('.icp-pchip'),function(b){b.classList.toggle('active',b===btn);}); renderTitlePicker(); };
-  window.setEditorView=function(v){ document.getElementById('icp-view-pick').style.display=(v==='pick')?'block':'none'; document.getElementById('icp-view-lists').style.display=(v==='lists')?'block':'none'; document.getElementById('icptab-pick').classList.toggle('active',v==='pick'); document.getElementById('icptab-lists').classList.toggle('active',v==='lists'); if(v==='pick')renderTitlePicker(); };
-  window.renderTitlePicker=function(){
-    var q=(document.getElementById('icp-pick-search').value||'').toLowerCase();
-    var rows=titleIndex().filter(function(x){ if(q&&x.title.toLowerCase().indexOf(q)<0)return false; var t=tierOf(x.title); if(filter==='all')return true; if(filter==='unmatched')return !t; return t===filter.toUpperCase(); });
-    var H=rows.slice(0,500).map(function(x){ var t=tierOf(x.title); var badge=t?('<span class="icp-pick-tier t'+t[1]+'">'+t+'</span>'):'<span class="icp-pick-tier un">unmatched</span>'; var ck=sel[x.title.toLowerCase()]?' checked':''; return '<label class="icp-pick-row"><input type="checkbox" data-t="'+esc(x.title)+'"'+ck+'><span class="icp-pick-name">'+esc(x.title)+'</span>'+badge+'<span class="icp-pick-count">'+x.count+'</span></label>'; }).join('');
-    document.getElementById('icp-pick-rows').innerHTML=H||'<div style="padding:16px;color:var(--tx3);font-size:0.8rem;">No titles here — load your data (or Try with sample data) first, or switch filter.</div>';
-    bulk();
-  };
-  window.onPickToggle=function(e){ var cb=e.target; if(cb&&cb.type==='checkbox'){ var t=cb.getAttribute('data-t').toLowerCase(); if(cb.checked)sel[t]=1; else delete sel[t]; bulk(); } };
-  function bulk(){ var n=Object.keys(sel).length; var b=document.getElementById('icp-pick-bulk'); document.getElementById('icp-pick-n').textContent=n; b.style.display=n?'flex':'none'; }
-  window.pickClearSel=function(){ sel={}; renderTitlePicker(); };
-  window.pickAssign=function(tier){ var titles=Object.keys(sel); if(!titles.length)return; titles.forEach(function(t){ if(ICP_KW[tier].indexOf(t)<0)ICP_KW[tier].push(t); }); try{localStorage.setItem('ga_icp_kw_proto',JSON.stringify(ICP_KW));}catch(e){} reclassify(); if(typeof syncCustomBadge==='function')syncCustomBadge(); ['t1','t2','t3'].forEach(function(t){var el=document.getElementById('icpkw-'+t); if(el)el.value=(ICP_KW[t]||[]).join('\n');}); if(typeof updateEditorCounts==='function')updateEditorCounts(); sel={}; renderTitlePicker(); var m=document.getElementById('icpEditMsg'); if(m)m.textContent='✓ Added '+titles.length+' title(s) to '+tier.toUpperCase()+' — re-tiered ('+ICP.length.toLocaleString()+' in ICP)'; };
-  if(typeof window.openICPEditor==='function'){ var orig=window.openICPEditor; window.openICPEditor=function(){ orig(); sel={}; filter='unmatched'; var s=document.getElementById('icp-pick-search'); if(s)s.value=''; [].forEach.call(document.querySelectorAll('.icp-pchip'),function(b){b.classList.toggle('active',b.getAttribute('data-f')==='unmatched');}); setEditorView('pick'); }; }
-})();
-</script>
+<script src="icp-picker.js"></script>
+
 <script src="willis-articles.js"></script>
 <script src="willis.js"></script>
 </body>
