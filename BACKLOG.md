@@ -7,7 +7,7 @@ _Last updated: June 22, 2026_
 ## 🛠 Change Requests (CRs)
 
 ### CR-1 — "Try with Sample Data" button: background colour + placement
-- **Status:** Logged — needs specifics before implementing
+- **Status:** ✅ **Resolved June 28** — replaced the off-brand purple outline with an on-brand **soft-green filled `.btn-sample`** (more visible/inviting) across `icp-finder.html`, `dashboard.html`, `dashboard-demo.html`. Placement kept (grouped after the "or try the demo" divider, which already reads well). Verified in preview.
 - **Where:** the load-screen demo button (`onclick="loadDemoData()"`) on `dashboard.html`, `icp-finder.html`, `dashboard-demo.html`
 - **Current:** outline style — transparent background, purple border (`rgba(139,92,246,0.5)`) + purple text (`#a78bfa`); placed **last**, below the primary "📂 Select Folder" button and an "or" divider.
 - **Ask:** change the **background colour** and the **placement**.
@@ -109,7 +109,7 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 ---
 
 ### ICP Scoring FAQ — Document the Coded Defaults
-- **Status:** 🟢 **Partially shipped (June 19)** — an inline "How these tiers are scored" explainer (`.icp-note` block) now appears on the ICP Finder with the T1/T2/T3 logic + customize CTAs. Optional remaining: a dedicated expandable keyword-list accordion and/or a `how-to.html` section.
+- **Status:** ✅ **Done June 28** — the inline "How these tiers are scored" explainer (`.icp-note`) now includes a collapsible **`<details>` accordion ("See the exact default keyword lists")** showing the full T1/T2/T3 default keywords (native, no JS, theme-aware). Also scrubbed the 3 **tier-card** descriptions that were still DTC/agency-flavoured ("for agency services", "Agency & Ecosystem Partners", "Marketing & Growth Professionals" → neutral). Optional remaining: a `how-to.html` mirror.
 - **Scope:** `icp-finder.html` (inline FAQ section or tooltip) + `how-to.html`
 - **Purpose:** Users don't know why a contact was placed in T1 vs T2 vs T3. Transparency builds trust and helps them understand what to customize.
 - **Current hardcoded defaults to document:**
