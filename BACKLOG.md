@@ -38,7 +38,7 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 ### PR Automation — Enable `create_pr.py` to open PRs
 - **Status:** ✅ **Resolved June 22, 2026** — the regenerated PAT now has `Pull requests: Read & write`, so `create_pr.py` opens the PR automatically (verified: PR #22). The manual compare-URL step is gone. The 403 fallback is still in the code for safety.
 - **Bonus shipped same day:** `push_to_dev.py` now auto-resyncs `dev` to `main` before pushing, so each PR diff shows only that push's changes (no historical drift).
-- **Nice-to-have (still open):** a single `ship.py` that runs `build_offline_bundle.py` → `push_to_dev.py --with-offline` → `create_pr.py` end to end.
+- ✅ **`ship.py` shipped June 28** — one command runs `build_offline_bundle.py` → `push_to_dev.py --with-offline` → `create_pr.py`, stopping on the first failure. `python3 ship.py --msg "…" [--title "…"] [--no-offline]`. Local dev tool (not deployed).
 
 ---
 
@@ -149,7 +149,8 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 - **Status:** Decision needed — it's NOT in `push_to_dev.py` FILES (the paste-into-Shopify snippet, not Pages-served). Local copy has the latest edits (download link). Add to the push list if you want it versioned in the repo.
 
 ### Dropdown Components for Filters
-- **Status:** Built (custom `dd-wrap` / `dd-trigger` / `dd-menu`), reverted at user request
+- **Status:** ✅ **Shipped June 28 (mockup-approved redesign)** — unified ICP-List filter bar in `icp-filters.js`: custom attribute **dropdowns** (Tier · Recency · Engagement — themed, chevron-rotate, outside-click + Esc + ↑/↓ keyboard, ARIA listbox) replacing the native selects, **plus a "Quick filters" segment pill nav** below (All · T1 first message · Follow-up · Re-engage) wired through `window.icpFilterMatch`. Verified: filters compose, segments correct (T1-first 105 / Follow-up 42 / Re-engage 208 on demo), zero errors. Inlined into the offline bundle. Segment defs are tunable in `icp-filters.js` (`segPass`).
+- **Status (old):** Built (custom `dd-wrap` / `dd-trigger` / `dd-menu`), reverted at user request
 - **Scope:** `icp-finder.html` template filter section
 - **Requirements:**
   - Replace or supplement `.tpl-filter` pill buttons with a styled `<select>` or custom dropdown
