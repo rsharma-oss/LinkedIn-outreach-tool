@@ -1,6 +1,9 @@
 /* ICP customization picker — Titles + Companies multi-select (prototype only).
    Loaded after the main icp-finder script; uses its globals (classifyTier, ICP_KW,
-   _connRows, reclassify, etc.) and overrides openICPEditor to default to the picker. */
+   _connRows, reclassify, etc.) and overrides openICPEditor to default to the picker.
+   Storage keys come from window.ICP_K (the host page sets them: live → ga_icp_kw / ga_icp_exact,
+   prototype → the _proto variants). Falls back to the _proto keys if the page didn't set them. */
+window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto', profile:'ga_icp_profile' };
 (function(){
   function esc(x){ return String(x).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function tierOf(t){ try { return classifyTier(t, ''); } catch(e){ return null; } }
@@ -190,7 +193,7 @@
       t3:{label:p.t3.label, description:p.t3.desc},
       exclude:(p.exclude||[]).slice() };
     applyMeta();
-    try{ localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); localStorage.setItem('ga_icp_profile', key); }catch(e){}
+    try{ localStorage.setItem(window.ICP_K.kw, JSON.stringify(ICP_KW)); localStorage.setItem(window.ICP_K.profile, key); }catch(e){}
     reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();
     var m=$('icpEditMsg'); if(m) m.textContent='✓ Applied "'+p.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
   };
@@ -235,7 +238,7 @@
       ICP_KW={ t1:t1, t2:t2, t3:t3 }; window.__icpMeta=meta; applyMeta();
       try{ ICP_DOMAIN=compileKw(meta.domain||[]); }catch(_){}
       if(isNew) fillExact(cfg.tiers); else clearExact();
-      try{ localStorage.setItem('ga_icp_kw_proto', JSON.stringify(ICP_KW)); localStorage.removeItem('ga_icp_profile'); }catch(_){}
+      try{ localStorage.setItem(window.ICP_K.kw, JSON.stringify(ICP_KW)); localStorage.removeItem(window.ICP_K.profile); }catch(_){}
       reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();
       var m=$('icpEditMsg'); if(m) m.textContent='✓ Loaded "'+meta.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
     };
@@ -244,6 +247,6 @@
 
   if(typeof window.openICPEditor==='function'){
     var prev=window.openICPEditor;
-    window.openICPEditor=function(){ prev(); fillProfileSelect(); var sel=$('icp-profile-select'); if(sel){ try{ sel.value=localStorage.getItem('ga_icp_profile')||''; }catch(e){} } };
+    window.openICPEditor=function(){ prev(); fillProfileSelect(); var sel=$('icp-profile-select'); if(sel){ try{ sel.value=localStorage.getItem(window.ICP_K.profile)||''; }catch(e){} } };
   }
 })();
