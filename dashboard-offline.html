@@ -3584,10 +3584,24 @@ window.WILLIS_ARTICLES = [
   body:`<p>Once your data's loaded in the ICP Finder, use <b>⬇ Export CSV</b> in the header to download your filtered contacts — name, title, company, tier, recency, and engagement.</p>` },
 
 { id:"customize-icp", title:"Customize your ICP keywords", cat:"ICP Finder",
-  k:"customize edit keywords icp tier change tailor build industry",
-  body:`<p>The tiers are driven by four keyword lists in <code>icp-finder.html</code>. Editing them adapts the tool to any industry.</p>
-  <p>👉 <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/ICP-CUSTOMIZATION.md" target="_blank" rel="noopener">Edit the keywords yourself ↗</a></p>
-  <p>Want it done for you? <a href="demo.html">Book time and we'll build your custom ICP →</a></p>` },
+  k:"customize edit keywords icp tier change tailor build industry vertical preset picker",
+  body:`<p>Open <b>✏️ Customize keywords</b> on the ICP Finder (in the "How these tiers are scored" box). Two ways to tailor it:</p>
+  <ul>
+    <li><b>Pick from your network</b> — see every job title &amp; company you actually have, tick the ones that fit, and assign them to a tier. Start on <b>Unmatched</b> to grab who the default ICP missed.</li>
+    <li><b>Edit keyword lists</b> — type keywords per tier (T1 / T2 / T3) if you prefer.</li>
+  </ul>
+  <p>Or <b>start from a vertical</b> (B2B SaaS, Telecom, Financial Services…) to load a ready-made ICP, then refine. Everything re-tiers instantly and saves to your browser only.</p>
+  <p>Want it built for you? <a href="demo.html">Book time and we'll build your custom ICP →</a></p>` },
+
+{ id:"icp-config", title:"Load an ICP config we built for you", cat:"ICP Finder",
+  k:"load save config json file import export icp custom built shared retarget",
+  body:`<p>If we've built a custom ICP for your business, you'll get a small <b>.json config file</b>. Open <b>✏️ Customize keywords → ⬆ Load config</b>, pick the file, and your whole tool retargets to that ICP instantly — tiers, labels and all.</p>
+  <p>It's just keyword text (no contact data), so it's safe to keep and share. Built your own? <b>⬇ Save config</b> downloads it to reuse or hand off.</p>` },
+
+{ id:"icp-pick-network", title:"Build your ICP from your own network", cat:"ICP Finder",
+  k:"pick network titles companies multi select unmatched tier assign customize",
+  body:`<p>The customizer lets you <b>pick the job titles and companies you actually have</b> (each with a count) instead of guessing keywords.</p>
+  <p>Start on <b>Pick from your network → Unmatched</b> to grab the people the default ICP missed; switch to <b>Companies</b> to add whole organisations to T2 (great for industry ICPs — e.g. add the carriers for a telecom ICP). Tick, assign to a tier, save.</p>` },
 
 /* ──────────────── Outreach Playbook ──────────────── */
 { id:"playbook-overview", title:"What's in the Playbook?", cat:"Outreach Playbook",
