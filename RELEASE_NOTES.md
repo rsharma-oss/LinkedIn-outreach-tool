@@ -2,6 +2,28 @@
 
 ---
 
+## 🎯 ICP customizer UX overhaul — guided flow + one-click per-row tiering — June 29, 2026
+
+_Public release. The "Customize your ICP" experience rebuilt for clarity, then validated against a real 2.9k-connection export._
+
+- **Guided 3-step modal** (was a dense single panel): **Step 1** one-click **industry pills** (DTC · SaaS · Telecom · FinServ); **Step 2** the network picker; the keyword lists + Save/Load config folded into a collapsed **Advanced** disclosure. One **Save & apply** action.
+- **One-click per-row tiering:** every title/company row now carries its own **T1 · T2 · T3 · ✕** buttons — click one and that title is tiered instantly; the current tier is **highlighted**, clicking it again toggles it off. Replaces the old tick-the-boxes-then-assign flow (and the "I selected rows, hit Save, nothing happened" confusion). **By company** mode shows **T2 · ✕**.
+- **Persistent excludes:** added an exact-exclude bucket to the engine (`ICP_EXACT.excl`, checked first in `classifyTier`, saved/loaded with the picks) so a per-row **✕** survives reloads like the tier picks.
+- **Save guard (interim fix, shipped first):** "Save & apply" now warns when rows are selected but no tier was chosen — no more silent no-op.
+- **Validated on a real 2,906-connection export** across all four presets:
+
+  | Preset | In ICP | T1 (seniority) | T2 (named accounts) | T3 (sector) |
+  |---|---|---|---|---|
+  | Shopify DTC | 1,015 (35%) | 925 | 12 (Shopify · Klaviyo · Yotpo) | 78 |
+  | B2B SaaS | 1,147 (39%) | 991 | 8 (Salesforce · ServiceNow) | 148 |
+  | Telecom | 1,135 (39%) | 741 | 385 (Rogers · TELUS) | 9 |
+  | Financial Services | 858 (30%) | 744 | 90 (RBC · TD · Sun Life) | 24 |
+
+  T2 named-accounts differentiate sharply by vertical; T1 (seniority) is broad and vertical-neutral by design (founders/CEOs/directors). Per-row assign / toggle / exclude all verified on real titles — **zero console errors**, light + dark + offline. _(The broad T1 is the parked tier-distribution sensitivity item, not a defect.)_
+- Cache-busting: the picker is loaded as `icp-picker.js?v=N` (now `v=4`); bump `N` whenever `icp-picker.js` changes so returning users don't get a stale picker against new markup. The offline inliner tolerates the query string.
+
+---
+
 ## 🎛️ Unified ICP filter bar + polish — June 28, 2026
 
 _Public release._
