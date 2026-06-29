@@ -377,6 +377,8 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <button class="btn btn-primary" id="btn-folder" onclick="loadFolder()" style="width:280px;justify-content:center;">
         📂 Select Folder — Chrome/Edge
       </button>
+      <div style="font-size:0.72rem;color:var(--tx3);max-width:280px;text-align:center;line-height:1.5;margin:-3px auto 1px;">🔒 Chrome will ask to <b style="color:var(--tx2);">read this folder</b> — that's local-only; nothing is uploaded or leaves your device.</div>
+      <button type="button" onclick="openPrivacyMonitor&&openPrivacyMonitor()" style="background:none;border:none;color:var(--li2);font-size:0.72rem;font-weight:700;cursor:pointer;font-family:inherit;padding:0 0 3px;">🛡 Watch the live upload monitor →</button>
       <div class="load-divider">or</div>
       <button class="btn btn-sample" onclick="loadDemoData()" style="width:280px;justify-content:center;">
         ✨ Try with sample data
@@ -1066,7 +1068,7 @@ async function processFiles(filemap, isDemo=false) {
 
   const loadedFiles = Object.keys(filemap);
   document.getElementById('status-text').textContent =
-    `${fmtFull(D.connections.length)} connections · ${fmtFull(D.messages.length)} messages · ↑ 0 bytes sent`;
+    `${fmtFull(D.connections.length)} connections · ${fmtFull(D.messages.length)} messages · ↑ ${(window.__uploadBytes?window.__uploadBytes():0)} bytes sent`;
 
   // ─── CACHE: save raw CSV for cross-page navigation ─────────────────────────
   // LZ-string compression reduces each key by ~3x, bringing M-activity exports
@@ -3334,6 +3336,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 </script>
 <!-- Willis help widget -->
 <footer class="lv-footer"><a href="how-to.html" class="lv-foot-logo" aria-label="Growth Automated"></a><div class="lv-foot-tag"><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated</div><div class="lv-foot-links">Not affiliated with LinkedIn · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener">View source ↗</a> · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes ↗</a></div></footer>
+<script src="privacy-monitor.js"></script>
 <script src="willis-articles.js"></script>
 <script src="willis.js"></script>
 </body>
