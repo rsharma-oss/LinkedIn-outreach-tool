@@ -2883,41 +2883,72 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .icp-pick-tier.un{background:rgba(148,163,184,0.15);color:var(--tx3);}
 .icp-pick-bulk{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:8px 12px;background:rgba(0,160,220,0.12);border-radius:8px;font-size:0.8rem;color:var(--tx2);flex-wrap:wrap;}
 </style>
+<style>
+.icp-step-label{font-size:0.66rem;font-weight:700;color:#34d399;letter-spacing:0.06em;text-transform:uppercase;margin:2px 0 9px;}
+.icp-step-label span{color:var(--tx3);font-weight:500;letter-spacing:0;text-transform:none;}
+.icp-vert-pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px;}
+.icp-vpill{font-size:0.78rem;font-weight:600;padding:7px 14px;border-radius:999px;background:transparent;border:1px solid var(--border2);color:var(--tx2);cursor:pointer;font-family:inherit;transition:all .15s;}
+.icp-vpill:hover{border-color:rgba(0,160,220,0.4);color:var(--tx);}
+.icp-vpill.active{background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.55);color:var(--tx);font-weight:700;}
+.icp-adv{margin-top:8px;border-top:1px solid var(--border);padding-top:10px;}
+.icp-adv summary{font-size:0.78rem;font-weight:700;color:var(--li2);cursor:pointer;list-style:none;}
+.icp-adv summary::-webkit-details-marker{display:none;}
+.icp-adv summary::before{content:'▸ ';}
+.icp-adv[open] summary::before{content:'▾ ';}
+.icp-adv-body{margin-top:12px;}
+.icp-pick-bulk{display:flex !important;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:9px 12px;font-size:0.78rem;color:var(--tx);}
+.icp-asg{font-size:0.74rem;font-weight:700;padding:5px 12px;border-radius:7px;cursor:pointer;font-family:inherit;border:1px solid;}
+.icp-asg-t1{background:rgba(239,68,68,0.18);color:#fca5a5;border-color:rgba(239,68,68,0.4);}
+.icp-asg-t2{background:rgba(249,115,22,0.18);color:#fdba74;border-color:rgba(249,115,22,0.4);}
+.icp-asg-t3{background:rgba(96,165,250,0.18);color:#93c5fd;border-color:rgba(96,165,250,0.4);}
+.icp-asg-x{background:rgba(148,163,184,0.15);color:#cbd5e1;border-color:rgba(148,163,184,0.35);}
+[data-theme="light"] .icp-asg-t1{color:#991b1b;}
+[data-theme="light"] .icp-asg-t2{color:#9a3412;}
+[data-theme="light"] .icp-asg-t3{color:#1e40af;}
+[data-theme="light"] .icp-asg-x{color:#475569;}
+</style>
 <div class="icp-edit-ov" id="icpEditOv">
-  <div class="icp-edit-card" role="dialog" aria-label="Customize ICP keywords">
-    <div class="icp-edit-head"><h3>✏️ Customize your ICP keywords</h3><button class="icp-edit-x" onclick="closeICPEditor()" aria-label="Close">✕</button></div>
-    <div class="icp-profile-bar"><label class="pbl">Start from a vertical:</label><select id="icp-profile-select"></select><button class="icp-edit-btn icp-edit-primary" onclick="applyICPProfile(document.getElementById('icp-profile-select').value)">Apply</button><span style="flex:1"></span><button class="icp-edit-btn" onclick="exportICP()">⬇ Save config</button><label class="icp-edit-btn" style="cursor:pointer;margin-left:8px;">⬆ Load config<input type="file" accept=".json,application/json" style="display:none" onchange="importICP(this.files[0])"></label></div>
-    <div class="icp-edit-tabs">
-      <button type="button" class="icp-tab active" id="icptab-pick" onclick="setEditorView('pick')">🔎 Pick from your network</button>
-      <button type="button" class="icp-tab" id="icptab-lists" onclick="setEditorView('lists')">✎ Edit keyword lists</button>
-    </div>
+  <div class="icp-edit-card" role="dialog" aria-label="Customize ICP">
+    <div class="icp-edit-head"><h3>✏️ Customize your ICP</h3><button class="icp-edit-x" onclick="closeICPEditor()" aria-label="Close">✕</button></div>
+
+    <div class="icp-step-label">Step 1 · Start from your industry</div>
+    <div class="icp-vert-pills" id="icp-vert-pills"></div>
+
+    <div class="icp-step-label">Step 2 · Add the right people <span>— optional; tweak who's in each tier</span></div>
     <div id="icp-view-pick" class="icp-edit-view">
       <div class="icp-pick-mode">
-        <button type="button" class="icp-modebtn active" id="icpmode-titles" onclick="setPickMode('titles')">📇 Titles</button>
-        <button type="button" class="icp-modebtn" id="icpmode-companies" onclick="setPickMode('companies')">🏢 Companies</button>
+        <button type="button" class="icp-modebtn active" id="icpmode-titles" onclick="setPickMode('titles')">📇 By title</button>
+        <button type="button" class="icp-modebtn" id="icpmode-companies" onclick="setPickMode('companies')">🏢 By company</button>
       </div>
-      <p class="icp-edit-sub" id="icp-pick-help"></p>
       <div class="icp-pick-toolbar">
-        <input id="icp-pick-search" placeholder="Search…" oninput="renderTitlePicker()" spellcheck="false">
+        <input id="icp-pick-search" placeholder="Search your network…" oninput="renderTitlePicker()" spellcheck="false">
         <span class="icp-pick-chips" id="icp-pick-chips"></span>
       </div>
       <div id="icp-pick-rows" class="icp-pick-rows" onchange="onPickToggle(event)"></div>
-      <div id="icp-pick-bulk" class="icp-pick-bulk" style="display:none;">
-        <span><b id="icp-pick-n">0</b> selected → assign to</span>
+      <div id="icp-pick-bulk" class="icp-pick-bulk">
+        <span><b id="icp-pick-n">0</b> selected → add to</span>
         <span id="icp-pick-actions"></span>
       </div>
+      <p class="icp-edit-sub" id="icp-pick-help" style="margin-top:9px;"></p>
     </div>
-    <div id="icp-view-lists" class="icp-edit-view" style="display:none;">
-      <p class="icp-edit-sub">One keyword or phrase per line. <b>T1</b> &amp; <b>T3</b> match the job title; <b>T2</b> matches title&nbsp;+&nbsp;company.</p>
-      <div class="icp-edit-grid">
-        <div class="icp-edit-col"><label>T1 · Decision Maker <span>(<b id="icpc-t1">0</b>)</span></label><textarea id="icpkw-t1" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t1')">↺ Reset T1</button></div>
-        <div class="icp-edit-col"><label>T2 · Ecosystem <span>(<b id="icpc-t2">0</b>)</span></label><textarea id="icpkw-t2" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t2')">↺ Reset T2</button></div>
-        <div class="icp-edit-col"><label>T3 · Adjacent <span>(<b id="icpc-t3">0</b>)</span></label><textarea id="icpkw-t3" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t3')">↺ Reset T3</button></div>
+
+    <details class="icp-adv">
+      <summary>Advanced — edit keyword lists · save / load config</summary>
+      <div class="icp-adv-body" id="icp-view-lists">
+        <div class="icp-profile-bar"><button class="icp-edit-btn" onclick="exportICP()">⬇ Save config</button><label class="icp-edit-btn" style="cursor:pointer;margin-left:8px;">⬆ Load config<input type="file" accept=".json,application/json" style="display:none" onchange="importICP(this.files[0])"></label></div>
+        <p class="icp-edit-sub">One keyword or phrase per line. <b>T1</b> &amp; <b>T3</b> match the job title; <b>T2</b> matches title&nbsp;+&nbsp;company.</p>
+        <div class="icp-edit-grid">
+          <div class="icp-edit-col"><label>T1 · Decision Maker <span>(<b id="icpc-t1">0</b>)</span></label><textarea id="icpkw-t1" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t1')">↺ Reset T1</button></div>
+          <div class="icp-edit-col"><label>T2 · Ecosystem <span>(<b id="icpc-t2">0</b>)</span></label><textarea id="icpkw-t2" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t2')">↺ Reset T2</button></div>
+          <div class="icp-edit-col"><label>T3 · Adjacent <span>(<b id="icpc-t3">0</b>)</span></label><textarea id="icpkw-t3" oninput="updateEditorCounts()" spellcheck="false"></textarea><button class="icp-reset" onclick="resetTier('t3')">↺ Reset T3</button></div>
+        </div>
+        <button class="icp-edit-btn" onclick="resetAllTiers()" style="margin-top:10px;">↺ Reset all keywords</button>
       </div>
-    </div>
+    </details>
+
     <div class="icp-edit-foot">
       <span id="icpEditMsg"></span>
-      <div><button class="icp-edit-btn" onclick="resetAllTiers()">↺ Reset all</button><button class="icp-edit-btn icp-edit-primary" onclick="saveICPEditor()">Save &amp; re-tier</button></div>
+      <button class="icp-edit-btn icp-edit-primary" onclick="saveICPEditor();closeICPEditor();">Save &amp; apply →</button>
     </div>
   </div>
 </div>
@@ -3040,11 +3071,8 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
     window.renderTitlePicker();
   };
   window.setEditorView=function(v){
-    $('icp-view-pick').style.display=(v==='pick')?'block':'none';
-    $('icp-view-lists').style.display=(v==='lists')?'block':'none';
-    $('icptab-pick').classList.toggle('active', v==='pick');
-    $('icptab-lists').classList.toggle('active', v==='lists');
-    if(v==='pick') window.renderTitlePicker();
+    var p=$('icp-view-pick'); if(p) p.style.display='block';   // picker always visible (no tabs); lists live in Advanced
+    if(v!=='lists') window.renderTitlePicker();
   };
   window.renderTitlePicker=function(){
     var q=($('icp-pick-search').value||'').toLowerCase(); var H;
@@ -3087,26 +3115,30 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
   function actions(){
     var html;
     if(mode==='titles'){
-      html='<button type="button" class="icp-edit-btn" onclick="pickAssign(\'t1\')">T1</button><button type="button" class="icp-edit-btn" onclick="pickAssign(\'t2\')">T2</button><button type="button" class="icp-edit-btn" onclick="pickAssign(\'t3\')">T3</button>';
+      html='<button type="button" class="icp-asg icp-asg-t1" onclick="pickAssign(\'t1\')">T1</button><button type="button" class="icp-asg icp-asg-t2" onclick="pickAssign(\'t2\')">T2</button><button type="button" class="icp-asg icp-asg-t3" onclick="pickAssign(\'t3\')">T3</button>';
     } else {
-      html='<button type="button" class="icp-edit-btn icp-edit-primary" onclick="pickAssign(\'t2\')">Add to T2 · Ecosystem</button>';
+      html='<button type="button" class="icp-asg icp-asg-t2" onclick="pickAssign(\'t2\')">Add to T2</button>';
     }
-    html+='<button type="button" class="icp-edit-btn" onclick="pickClearSel()">Clear</button>';
-    $('icp-pick-actions').innerHTML=html;
+    html+='<button type="button" class="icp-asg icp-asg-x" onclick="pickAssign(\'exclude\')">Exclude</button><span style="flex:1"></span><button type="button" class="icp-edit-btn" onclick="pickClearSel()">Clear</button>';
+    var a=$('icp-pick-actions'); if(a) a.innerHTML=html;
   }
-  function bulk(){
-    var n=Object.keys(sel).length; var b=$('icp-pick-bulk');
-    $('icp-pick-n').textContent=n; b.style.display=n?'flex':'none'; if(n) actions();
+  function bulk(){  // assign bar is always visible; just refresh the count + buttons
+    var nEl=$('icp-pick-n'); if(nEl) nEl.textContent=Object.keys(sel).length; actions();
   }
   window.pickClearSel=function(){ sel={}; window.renderTitlePicker(); };
   window.pickAssign=function(tier){
     var items=Object.keys(sel); if(!items.length) return;
-    // R8: picks are EXACT whole-field matches. Companies always go to T2; titles to the chosen tier.
-    if(mode==='companies'){
-      items.forEach(function(t){ ICP_EXACT.t2.companies.add(normCo(t)); });
-      tier='t2';
+    var label;
+    // R8: picks are EXACT whole-field matches. Companies → T2; titles → chosen tier; Exclude → noise filter.
+    if(tier==='exclude'){
+      window.__icpMeta = window.__icpMeta || {}; if(!window.__icpMeta.exclude) window.__icpMeta.exclude=[];
+      items.forEach(function(t){ if(window.__icpMeta.exclude.indexOf(t)<0) window.__icpMeta.exclude.push(t); });
+      try{ EXCL_KEYWORDS = (window.__icpMeta.exclude.length) ? compileKw(window.__icpMeta.exclude) : /a^/; }catch(e){}
+      label='exclude';
+    } else if(mode==='companies'){
+      items.forEach(function(t){ ICP_EXACT.t2.companies.add(normCo(t)); }); tier='t2'; label='T2';
     } else {
-      items.forEach(function(t){ ICP_EXACT[tier].titles.add(normTitle(t)); });
+      items.forEach(function(t){ ICP_EXACT[tier].titles.add(normTitle(t)); }); label=tier.toUpperCase();
     }
     if(typeof saveICPExact==='function') saveICPExact();
     reclassify();
@@ -3114,7 +3146,7 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
     if(typeof updateEditorCounts==='function') updateEditorCounts();
     sel={}; window.renderTitlePicker();
     var noun=(mode==='companies') ? (items.length>1?'companies':'company') : (items.length>1?'titles':'title');
-    var m=$('icpEditMsg'); if(m) m.textContent='✓ Added '+items.length+' '+noun+' to '+tier.toUpperCase()+' (exact match) — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+    var m=$('icpEditMsg'); if(m) m.textContent = (label==='exclude' ? '✓ Excluded '+items.length+' '+noun : '✓ Added '+items.length+' '+noun+' to '+label) + ' — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
   };
 
   if(typeof window.openICPEditor==='function'){
@@ -3153,9 +3185,10 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
   function exTitles(t){ return (typeof ICP_EXACT!=='undefined') ? Array.from(ICP_EXACT[t].titles) : []; }
   function exCompanies(t){ return (typeof ICP_EXACT!=='undefined') ? Array.from(ICP_EXACT[t].companies) : []; }
   function profileKeys(){ return (typeof ICP_PROFILES!=='undefined') ? Object.keys(ICP_PROFILES) : []; }
-  function fillProfileSelect(){
-    var sel=$('icp-profile-select'); if(!sel || typeof ICP_PROFILES==='undefined') return;
-    sel.innerHTML='<option value="">— pick a vertical —</option>'+profileKeys().map(function(k){ return '<option value="'+k+'">'+ICP_PROFILES[k].name+'</option>'; }).join('');
+  function fillProfilePills(){
+    var box=$('icp-vert-pills'); if(!box || typeof ICP_PROFILES==='undefined') return;
+    var active=''; try{ active=localStorage.getItem(window.ICP_K.profile)||''; }catch(e){}
+    box.innerHTML=profileKeys().map(function(k){ return '<button type="button" class="icp-vpill'+(k===active?' active':'')+'" onclick="applyICPProfile(\''+k+'\')">'+ICP_PROFILES[k].name+'</button>'; }).join('');
   }
   function applyMeta(){ try{ EXCL_KEYWORDS=(window.__icpMeta.exclude && window.__icpMeta.exclude.length) ? compileKw(window.__icpMeta.exclude) : /a^/; }catch(e){} }
   function relabel(){
@@ -3181,7 +3214,7 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
       exclude:(p.exclude||[]).slice() };
     applyMeta();
     try{ localStorage.setItem(window.ICP_K.kw, JSON.stringify(ICP_KW)); localStorage.setItem(window.ICP_K.profile, key); }catch(e){}
-    reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();
+    reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes(); fillProfilePills();
     var m=$('icpEditMsg'); if(m) m.textContent='✓ Applied "'+p.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
   };
 
@@ -3234,7 +3267,7 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
 
   if(typeof window.openICPEditor==='function'){
     var prev=window.openICPEditor;
-    window.openICPEditor=function(){ prev(); fillProfileSelect(); var sel=$('icp-profile-select'); if(sel){ try{ sel.value=localStorage.getItem(window.ICP_K.profile)||''; }catch(e){} } };
+    window.openICPEditor=function(){ prev(); fillProfilePills(); };
   }
 })();
 
