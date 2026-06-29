@@ -7,6 +7,18 @@
   if (window.__lvPrivacy) return; window.__lvPrivacy = true;
   var sent = 0;
 
+  var BROWSER = (function(){
+    try{ var br=navigator.userAgentData&&navigator.userAgentData.brands;
+      if(br){ var n=br.map(function(x){return x.brand;}).join(' ');
+        if(/Edge/i.test(n)) return 'Edge'; if(/OPR|Opera/i.test(n)) return 'Opera';
+        if(/Brave/i.test(n)) return 'Brave'; if(/Google Chrome/i.test(n)) return 'Chrome'; } }catch(e){}
+    var ua=navigator.userAgent||'';
+    if(/Edg\//.test(ua)) return 'Edge'; if(/OPR\//.test(ua)) return 'Opera';
+    if(/Chrome\//.test(ua)) return 'Chrome'; if(/Firefox\//.test(ua)) return 'Firefox';
+    if(/Safari\//.test(ua)) return 'Safari'; return 'your browser';
+  })();
+  var HAS_FS = (typeof window!=='undefined' && 'showDirectoryPicker' in window); // folder picker (Chromium only)
+
   function fmt(n){ if(n<1024) return n+' B'; if(n<1048576) return (n/1024).toFixed(1)+' KB'; return (n/1048576).toFixed(1)+' MB'; }
   function sizeOf(b){ try{
     if(b==null) return 0;
@@ -50,13 +62,19 @@
 
   function buildModal(){
     if(document.getElementById('lvpm-ov')) return;
+    var p1 = HAS_FS
+      ? 'When you pick your export folder, <b>'+BROWSER+' asks permission to read it</b> — that’s its standard prompt for any site that opens a local folder. The files are read <b>only into this page’s memory</b>. LinkVault has no server and uploads nothing.'
+      : 'Your export is read <b>only into this page’s memory</b> — '+BROWSER+' never sends it anywhere. LinkVault has no server and uploads nothing.';
+    var p3 = HAS_FS
+      ? 'Prefer not to grant folder access? Use <b>📁 Choose CSV Files</b> instead — same data, no folder prompt.'
+      : 'Load your data with <b>📁 Choose CSV Files</b> — it never leaves your device.';
     var ov = el('<div class="lvpm-ov" id="lvpm-ov" role="dialog" aria-modal="true" aria-label="How LinkVault protects your data">'+
       '<div class="lvpm-modal">'+
         '<h3>🛡 Your data never leaves this page</h3>'+
-        '<p>When you pick your export folder, <b>Chrome asks permission to read it</b> — that’s its standard prompt for any site that opens a local folder. The files are read <b>only into this page’s memory</b>. LinkVault has no server and uploads nothing.</p>'+
+        '<p>'+p1+'</p>'+
         '<p>Don’t take our word for it — watch the <b>live upload monitor</b> in the corner. It counts every byte this page tries to send to any server:</p>'+
         '<div class="lvpm-live" id="lvpm-live"><span class="lvpm-dot"></span><span class="lvpm-big" id="lvpm-live-n">0 B</span><span style="font-size:0.78rem;color:var(--tx2,rgba(240,244,255,0.65));">uploaded · stays at 0; turns red the instant anything is sent</span></div>'+
-        '<p style="font-size:0.78rem;">Prefer not to grant folder access? Use <b>📁 Choose CSV Files</b> instead — same data, no folder prompt.</p>'+
+        '<p style="font-size:0.78rem;">'+p3+'</p>'+
         '<button class="lvpm-x" id="lvpm-x">Got it</button>'+
       '</div></div>');
     document.body.appendChild(ov);
@@ -85,6 +103,8 @@
   function init(){
     var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
     injectBadge(); render();
+    [].forEach.call(document.querySelectorAll('.lvpm-browser'), function(s){ s.textContent=BROWSER; });
+    if(!HAS_FS) [].forEach.call(document.querySelectorAll('.lvpm-fs-note'), function(n){ n.style.display='none'; });
     var ack; try{ ack=localStorage.getItem('lv_privacy_ack'); }catch(e){}
     if(!ack) setTimeout(open, 900);
   }
