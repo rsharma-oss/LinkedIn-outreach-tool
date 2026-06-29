@@ -2038,14 +2038,14 @@ function normTitle(s){ return String(s||'').toLowerCase().replace(/\s+/g,' ').tr
 function normCo(s){ var x=String(s||'').toLowerCase().replace(/[.,]/g,' ').replace(/\s+/g,' ').trim();
   x=x.replace(/\s+(inc|llc|ltd|limited|corp|corporation|co|company|holdings|group|plc|gmbh|sa|sas|ag|ab|oy|pty|bv|nv|srl|spa)$/,'').trim(); return x; }
 function loadICPExact(){
-  var d={t1:{titles:new Set(),companies:new Set()},t2:{titles:new Set(),companies:new Set()},t3:{titles:new Set(),companies:new Set()}};
+  var d={t1:{titles:new Set(),companies:new Set()},t2:{titles:new Set(),companies:new Set()},t3:{titles:new Set(),companies:new Set()},excl:{titles:new Set(),companies:new Set()}};
   try{ var s=JSON.parse(localStorage.getItem(window.ICP_K.exact));
-    if(s){ ['t1','t2','t3'].forEach(function(t){ if(s[t]){ (s[t].titles||[]).forEach(function(x){d[t].titles.add(normTitle(x));}); (s[t].companies||[]).forEach(function(x){d[t].companies.add(normCo(x));}); } }); } }catch(e){}
+    if(s){ ['t1','t2','t3','excl'].forEach(function(t){ if(s[t]){ (s[t].titles||[]).forEach(function(x){d[t].titles.add(normTitle(x));}); (s[t].companies||[]).forEach(function(x){d[t].companies.add(normCo(x));}); } }); } }catch(e){}
   return d;
 }
 let ICP_EXACT = loadICPExact();
 function saveICPExact(){
-  try{ var o={}; ['t1','t2','t3'].forEach(function(t){ o[t]={titles:Array.from(ICP_EXACT[t].titles),companies:Array.from(ICP_EXACT[t].companies)}; });
+  try{ var o={}; ['t1','t2','t3','excl'].forEach(function(t){ o[t]={titles:Array.from(ICP_EXACT[t].titles),companies:Array.from(ICP_EXACT[t].companies)}; });
     localStorage.setItem(window.ICP_K.exact,JSON.stringify(o)); }catch(e){}
 }
 function icpExactEmpty(){ return ['t1','t2','t3'].every(function(t){ return !ICP_EXACT[t].titles.size && !ICP_EXACT[t].companies.size; }); }
@@ -2068,6 +2068,7 @@ function classifyTier(title, company) {
   if (EXCL_KEYWORDS.test(combined)) return null;
   const t = (title || '').toLowerCase();
   const nt = normTitle(title), nc = normCo(company);
+  if (ICP_EXACT.excl && (ICP_EXACT.excl.titles.has(nt) || ICP_EXACT.excl.companies.has(nc))) return null; // per-row picked excludes
   const dom = ICP_DOMAIN.test(t);
   if (exactHit('t1',nt,nc,false) || T1_KEYWORDS.test(title) || (dom && RANK_T1_RE.test(t)))    return 'T1';
   if (exactHit('t2',nt,nc,true)  || T2_KEYWORDS.test(combined))                                 return 'T2';
@@ -2903,6 +2904,13 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 [data-theme="light"] .icp-asg-t2{color:#9a3412;}
 [data-theme="light"] .icp-asg-t3{color:#1e40af;}
 [data-theme="light"] .icp-asg-x{color:#475569;}
+.icp-pick-row .icp-pick-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.icp-row-asg{display:flex;gap:5px;margin-left:auto;flex-shrink:0;}
+.icp-row-asg .icp-asg{padding:3px 9px;font-size:0.7rem;}
+.icp-asg-t1.on{background:#ef4444;color:#fff;border-color:#ef4444;}
+.icp-asg-t2.on{background:#f97316;color:#fff;border-color:#f97316;}
+.icp-asg-t3.on{background:#3b82f6;color:#fff;border-color:#3b82f6;}
+.icp-asg-x.on{background:#64748b;color:#fff;border-color:#64748b;}
 </style>
 <div class="icp-edit-ov" id="icpEditOv">
   <div class="icp-edit-card" role="dialog" aria-label="Customize ICP">
@@ -2921,11 +2929,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
         <input id="icp-pick-search" placeholder="Search your network…" oninput="renderTitlePicker()" spellcheck="false">
         <span class="icp-pick-chips" id="icp-pick-chips"></span>
       </div>
-      <div id="icp-pick-rows" class="icp-pick-rows" onchange="onPickToggle(event)"></div>
-      <div id="icp-pick-bulk" class="icp-pick-bulk">
-        <span><b id="icp-pick-n">0</b> selected → add to</span>
-        <span id="icp-pick-actions"></span>
-      </div>
+      <div id="icp-pick-rows" class="icp-pick-rows" onclick="onRowAssign(event)"></div>
       <p class="icp-edit-sub" id="icp-pick-help" style="margin-top:9px;"></p>
     </div>
 
@@ -2950,7 +2954,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
   </div>
 </div>
 <script src="icp-profiles.js"></script>
-<script src="icp-picker.js?v=3"></script>
+<script src="icp-picker.js?v=4"></script>
 <script src="icp-filters.js"></script>
 <script src="privacy-monitor.js"></script>
 <script src="willis-articles.js"></script>

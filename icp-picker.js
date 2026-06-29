@@ -25,8 +25,8 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
 
   var mode='titles', filter='unmatched', sel={};
   var HELP={
-    titles:'Tick the job titles that fit your ideal customer, then assign them to a tier. Counts are from your loaded network. Start with <b>Unmatched</b> to grab who the default ICP missed.',
-    companies:'Tick the companies your ideal customers work at, then add them to <b>T2 · Ecosystem</b> (T2 matches the company name). Best for industry / vertical ICPs — e.g. add the carriers for a telecom ICP.'
+    titles:'Click <b>T1 · T2 · T3</b> on any row to put that title in a tier — or <b>✕</b> to exclude it. Counts are from your network; start with <b>Unmatched</b> to grab who the default ICP missed. Changes apply instantly.',
+    companies:'Click <b>T2</b> to add a company to your ecosystem tier — or <b>✕</b> to exclude it. Best for industry ICPs (e.g. add the carriers for telecom). Changes apply instantly.'
   };
 
   function $(id){ return document.getElementById(id); }
@@ -56,6 +56,14 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
     var p=$('icp-view-pick'); if(p) p.style.display='block';   // picker always visible (no tabs); lists live in Advanced
     if(v!=='lists') window.renderTitlePicker();
   };
+  function companyInT2(co){ try{ return ICP_EXACT.t2.companies.has(normCo(co)) || companyIsEco(co); }catch(e){ return companyIsEco(co); } }
+  function isExcl(name){ try{ return mode==='companies' ? ICP_EXACT.excl.companies.has(normCo(name)) : ICP_EXACT.excl.titles.has(normTitle(name)); }catch(e){ return false; } }
+  function rowBtns(curTier, excl){  // per-row tier buttons; the current tier (or exclude) is highlighted "on"
+    var tiers = (mode==='companies') ? [['t2','T2']] : [['t1','T1'],['t2','T2'],['t3','T3']];
+    var b = tiers.map(function(p){ var on=(!excl && curTier && curTier.toLowerCase()===p[0])?' on':''; return '<button type="button" class="icp-asg icp-asg-'+p[0]+on+'" data-tier="'+p[0]+'">'+p[1]+'</button>'; }).join('');
+    b += '<button type="button" class="icp-asg icp-asg-x'+(excl?' on':'')+'" data-tier="exclude" title="Exclude from ICP" aria-label="Exclude">✕</button>';
+    return '<span class="icp-row-asg">'+b+'</span>';
+  }
   window.renderTitlePicker=function(){
     var q=($('icp-pick-search').value||'').toLowerCase(); var H;
     if(mode==='titles'){
@@ -63,37 +71,42 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
         if(q && x.name.toLowerCase().indexOf(q)<0) return false;
         var t=tierOf(x.name);
         if(filter==='all') return true;
-        if(filter==='unmatched') return !t;
+        if(filter==='unmatched') return !t && !isExcl(x.name);
         return t===filter.toUpperCase();
       });
-      H=rows.slice(0,600).map(function(x){
-        var t=tierOf(x.name);
-        var badge=t ? ('<span class="icp-pick-tier t'+t[1]+'">'+t+'</span>') : '<span class="icp-pick-tier un">unmatched</span>';
-        var ck=sel[x.name.toLowerCase()]?' checked':'';
-        return '<label class="icp-pick-row"><input type="checkbox" data-t="'+esc(x.name)+'"'+ck+'><span class="icp-pick-name">'+esc(x.name)+'</span>'+badge+'<span class="icp-pick-count">'+x.count+'</span></label>';
-      }).join('');
+      H=rows.slice(0,600).map(function(x){ var ex=isExcl(x.name); var t=ex?null:tierOf(x.name);
+        return '<div class="icp-pick-row" data-t="'+esc(x.name)+'"><span class="icp-pick-name">'+esc(x.name)+'</span><span class="icp-pick-count">'+x.count+'</span>'+rowBtns(t,ex)+'</div>'; }).join('');
     } else {
       var rows2=companyIndex().filter(function(x){
         if(q && x.name.toLowerCase().indexOf(q)<0) return false;
-        var eco=companyIsEco(x.name);
+        var eco=companyInT2(x.name);
         if(filter==='all') return true;
         if(filter==='notin') return !eco;
         return eco;
       });
-      H=rows2.slice(0,600).map(function(x){
-        var eco=companyIsEco(x.name);
-        var badge=eco ? '<span class="icp-pick-tier t2">in T2</span>' : '<span class="icp-pick-tier un">—</span>';
-        var ck=sel[x.name.toLowerCase()]?' checked':'';
-        return '<label class="icp-pick-row"><input type="checkbox" data-t="'+esc(x.name)+'"'+ck+'><span class="icp-pick-name">'+esc(x.name)+'</span>'+badge+'<span class="icp-pick-count">'+x.count+'</span></label>';
-      }).join('');
+      H=rows2.slice(0,600).map(function(x){ var ex=isExcl(x.name); var eco=!ex && companyInT2(x.name);
+        return '<div class="icp-pick-row" data-t="'+esc(x.name)+'"><span class="icp-pick-name">'+esc(x.name)+'</span><span class="icp-pick-count">'+x.count+'</span>'+rowBtns(eco?'T2':null,ex)+'</div>'; }).join('');
     }
     $('icp-pick-rows').innerHTML=H || '<div style="padding:16px;color:var(--tx3);font-size:0.8rem;">Nothing here — load your data (Try with sample data) first, or change the filter.</div>';
-    bulk();
   };
-  window.onPickToggle=function(e){
-    var cb=e.target;
-    if(cb && cb.type==='checkbox'){ var t=cb.getAttribute('data-t').toLowerCase(); if(cb.checked) sel[t]=1; else delete sel[t]; bulk(); }
+  window.onRowAssign=function(e){
+    var btn=e.target.closest && e.target.closest('.icp-asg'); if(!btn) return;
+    var row=btn.closest('.icp-pick-row'); if(!row) return;
+    assignOne(row.getAttribute('data-t'), btn.getAttribute('data-tier'));
   };
+  function assignOne(name, tier){  // one click moves an item to a tier (or excludes); clicking its current tier toggles off
+    var isCo=(mode==='companies'); var key=isCo?normCo(name):normTitle(name);
+    function coll(t){ return isCo ? ICP_EXACT[t].companies : ICP_EXACT[t].titles; }
+    var target=(tier==='exclude')?'excl':(isCo?'t2':tier);
+    var wasThere=coll(target).has(key);
+    ['t1','t2','t3','excl'].forEach(function(t){ coll(t).delete(key); });
+    if(!wasThere) coll(target).add(key);
+    if(typeof saveICPExact==='function') saveICPExact();
+    reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge();
+    window.renderTitlePicker();
+    var verb=wasThere?'Removed':(tier==='exclude'?'Excluded':'Moved to '+(isCo?'T2':tier.toUpperCase()));
+    var m=$('icpEditMsg'); if(m) m.textContent='✓ '+verb+' "'+name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+  }
   function actions(){
     var html;
     if(mode==='titles'){
