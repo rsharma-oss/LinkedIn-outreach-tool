@@ -108,6 +108,7 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
     var nEl=$('icp-pick-n'); if(nEl) nEl.textContent=Object.keys(sel).length; actions();
   }
   window.pickClearSel=function(){ sel={}; window.renderTitlePicker(); };
+  window.icpPendingPicks=function(){ return Object.keys(sel).length; }; // ticked-but-not-yet-assigned
   window.pickAssign=function(tier){
     var items=Object.keys(sel); if(!items.length) return;
     var label;
