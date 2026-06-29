@@ -77,6 +77,11 @@ window.WILLIS_ARTICLES = [
   body:`<p>Load once, use everywhere — <b>in the same tab</b>. Your parsed data is kept in the browser's <b>sessionStorage</b>, so moving from the Dashboard to the ICP Finder to the Playbook doesn't ask you to re-upload.</p>
   <p>It <b>clears when you close the tab</b> (that's the privacy promise). Opening a tool in a brand-new tab starts fresh.</p>` },
 
+{ id:"upload-monitor", title:"Does my data get uploaded? (live monitor)", cat:"Privacy",
+  k:"upload monitor privacy data safe leave device bytes sent server chrome permission folder read network secure",
+  body:`<p><b>No.</b> LinkVault has no server — your export is read into this page and never sent anywhere. To prove it, there's a <b>live upload monitor</b> 🛡 in the top bar that counts every byte this page tries to send to any server. It stays at <b>0 B uploaded</b>, and would turn <b>red the instant</b> anything left your device. Click it any time for the details.</p>
+  <p><b>Why does Chrome ask permission?</b> When you click <b>Select Folder</b>, Chrome shows a "view files" prompt — that's its standard permission for any site that reads a local folder. It just lets the tool read your CSVs <b>into this page</b>; nothing is copied off your device. Prefer to skip it? Use <b>📁 Choose CSV Files</b> instead.</p>` },
+
 { id:"empty-data", title:"My charts or tabs are empty — what's wrong?", cat:"Loading your data",
   k:"empty blank charts zero data not loading missing troubleshoot engagement content problem",
   body:`<p>A few common causes:</p>
