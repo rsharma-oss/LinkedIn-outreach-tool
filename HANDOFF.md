@@ -345,8 +345,10 @@ dev   →  all work lands here first
 ## 13. Open Items — See BACKLOG.md
 
 - **Language scope** — toolkit supports **English-language LinkedIn exports** ("works for everyone, in English"); only open work is a graceful "switch LinkedIn to English" message for non-English exports (full localization deferred)
-- **Customize Your ICP Filter** — per-user keyword editing (interim: "edit keywords" link to `ICP-CUSTOMIZATION.md`)
+- **✅ Customize Your ICP — SHIPPED & overhauled (June 28–29).** Live in-app customizer: 4 vertical presets (DTC · SaaS · Telecom · FinServ), **one-click per-row T1/T2/T3/✕ tiering** in the network picker (current tier highlighted; clicking it toggles off; persistent exact-exclude bucket), keyword lists + Save/Load config under an Advanced disclosure. Validated against a real 2,906-connection export across all 4 presets (T2 named-accounts differentiate by vertical; T1 seniority broad/neutral by design). Two-list + rank×domain engine — see RELEASE_NOTES + CLAUDE.md.
 - **UAT aggregation endgame** — webmail drop + report dialog ✅ done; weekly Gmail-parse routine ✅ done; Google Form → Sheet is the hands-off endgame if volume grows
 - Dropdown filter components (built, reverted)
+- _Shipped June 29: ICP customizer UX overhaul — guided 3-step modal + one-click per-row tiering + persistent exact-exclude engine; validated on a real 2.9k-connection export — see RELEASE_NOTES_
+- _Shipped June 28: ICP customizer un-gated to live, unified ICP filter bar, vertical-neutral positioning, offline customizer + Willis, `ship.py` — see RELEASE_NOTES_
 - _Shipped June 22: cross-page cache contract, universal Report dialog, searchable company filter, dev auto-resync, **GitHub token hardening + PR automation** — see RELEASE_NOTES_
 - _Shipped since v1.1: Light/Dark mode (all 5 nav pages), ICP scoring explainer + FAQ, real-export hardening, UAT Report button — see RELEASE_NOTES_
