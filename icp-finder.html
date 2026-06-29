@@ -2117,6 +2117,15 @@ function openICPEditor(){
   var ov=document.getElementById('icpEditOv'); if(ov) ov.style.display='flex';
 }
 function closeICPEditor(){ var ov=document.getElementById('icpEditOv'); if(ov) ov.style.display='none'; }
+function icpSaveApply(){
+  var pend = (typeof window.icpPendingPicks==='function') ? window.icpPendingPicks() : 0;
+  if(pend>0){  // ticked people but never chose a tier — the #1 confusion. Guide, don't silently no-op.
+    var m=document.getElementById('icpEditMsg'); if(m) m.textContent='⚠ You have '+pend+' selected — click a tier (T1 · T2 · T3 · Exclude) above to add them, or Clear.';
+    var bar=document.getElementById('icp-pick-bulk'); if(bar) bar.scrollIntoView({block:'center'});
+    return;
+  }
+  saveICPEditor(); closeICPEditor();
+}
 function resetTier(t){ var el=document.getElementById('icpkw-'+t); if(el){ el.value=ICP_DEFAULTS[t].join('\n'); } updateEditorCounts(); }
 function resetAllTiers(){ ['t1','t2','t3'].forEach(resetTier); }
 function icpIsCustom(){ return JSON.stringify(ICP_KW)!==JSON.stringify({t1:ICP_DEFAULTS.t1,t2:ICP_DEFAULTS.t2,t3:ICP_DEFAULTS.t3}); }
@@ -2936,12 +2945,12 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 
     <div class="icp-edit-foot">
       <span id="icpEditMsg"></span>
-      <button class="icp-edit-btn icp-edit-primary" onclick="saveICPEditor();closeICPEditor();">Save &amp; apply →</button>
+      <button class="icp-edit-btn icp-edit-primary" onclick="icpSaveApply()">Save &amp; apply →</button>
     </div>
   </div>
 </div>
 <script src="icp-profiles.js"></script>
-<script src="icp-picker.js?v=2"></script>
+<script src="icp-picker.js?v=3"></script>
 <script src="icp-filters.js"></script>
 <script src="privacy-monitor.js"></script>
 <script src="willis-articles.js"></script>
