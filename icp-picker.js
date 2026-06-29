@@ -53,11 +53,8 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
     window.renderTitlePicker();
   };
   window.setEditorView=function(v){
-    $('icp-view-pick').style.display=(v==='pick')?'block':'none';
-    $('icp-view-lists').style.display=(v==='lists')?'block':'none';
-    $('icptab-pick').classList.toggle('active', v==='pick');
-    $('icptab-lists').classList.toggle('active', v==='lists');
-    if(v==='pick') window.renderTitlePicker();
+    var p=$('icp-view-pick'); if(p) p.style.display='block';   // picker always visible (no tabs); lists live in Advanced
+    if(v!=='lists') window.renderTitlePicker();
   };
   window.renderTitlePicker=function(){
     var q=($('icp-pick-search').value||'').toLowerCase(); var H;
@@ -100,26 +97,30 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
   function actions(){
     var html;
     if(mode==='titles'){
-      html='<button type="button" class="icp-edit-btn" onclick="pickAssign(\'t1\')">T1</button><button type="button" class="icp-edit-btn" onclick="pickAssign(\'t2\')">T2</button><button type="button" class="icp-edit-btn" onclick="pickAssign(\'t3\')">T3</button>';
+      html='<button type="button" class="icp-asg icp-asg-t1" onclick="pickAssign(\'t1\')">T1</button><button type="button" class="icp-asg icp-asg-t2" onclick="pickAssign(\'t2\')">T2</button><button type="button" class="icp-asg icp-asg-t3" onclick="pickAssign(\'t3\')">T3</button>';
     } else {
-      html='<button type="button" class="icp-edit-btn icp-edit-primary" onclick="pickAssign(\'t2\')">Add to T2 · Ecosystem</button>';
+      html='<button type="button" class="icp-asg icp-asg-t2" onclick="pickAssign(\'t2\')">Add to T2</button>';
     }
-    html+='<button type="button" class="icp-edit-btn" onclick="pickClearSel()">Clear</button>';
-    $('icp-pick-actions').innerHTML=html;
+    html+='<button type="button" class="icp-asg icp-asg-x" onclick="pickAssign(\'exclude\')">Exclude</button><span style="flex:1"></span><button type="button" class="icp-edit-btn" onclick="pickClearSel()">Clear</button>';
+    var a=$('icp-pick-actions'); if(a) a.innerHTML=html;
   }
-  function bulk(){
-    var n=Object.keys(sel).length; var b=$('icp-pick-bulk');
-    $('icp-pick-n').textContent=n; b.style.display=n?'flex':'none'; if(n) actions();
+  function bulk(){  // assign bar is always visible; just refresh the count + buttons
+    var nEl=$('icp-pick-n'); if(nEl) nEl.textContent=Object.keys(sel).length; actions();
   }
   window.pickClearSel=function(){ sel={}; window.renderTitlePicker(); };
   window.pickAssign=function(tier){
     var items=Object.keys(sel); if(!items.length) return;
-    // R8: picks are EXACT whole-field matches. Companies always go to T2; titles to the chosen tier.
-    if(mode==='companies'){
-      items.forEach(function(t){ ICP_EXACT.t2.companies.add(normCo(t)); });
-      tier='t2';
+    var label;
+    // R8: picks are EXACT whole-field matches. Companies → T2; titles → chosen tier; Exclude → noise filter.
+    if(tier==='exclude'){
+      window.__icpMeta = window.__icpMeta || {}; if(!window.__icpMeta.exclude) window.__icpMeta.exclude=[];
+      items.forEach(function(t){ if(window.__icpMeta.exclude.indexOf(t)<0) window.__icpMeta.exclude.push(t); });
+      try{ EXCL_KEYWORDS = (window.__icpMeta.exclude.length) ? compileKw(window.__icpMeta.exclude) : /a^/; }catch(e){}
+      label='exclude';
+    } else if(mode==='companies'){
+      items.forEach(function(t){ ICP_EXACT.t2.companies.add(normCo(t)); }); tier='t2'; label='T2';
     } else {
-      items.forEach(function(t){ ICP_EXACT[tier].titles.add(normTitle(t)); });
+      items.forEach(function(t){ ICP_EXACT[tier].titles.add(normTitle(t)); }); label=tier.toUpperCase();
     }
     if(typeof saveICPExact==='function') saveICPExact();
     reclassify();
@@ -127,7 +128,7 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
     if(typeof updateEditorCounts==='function') updateEditorCounts();
     sel={}; window.renderTitlePicker();
     var noun=(mode==='companies') ? (items.length>1?'companies':'company') : (items.length>1?'titles':'title');
-    var m=$('icpEditMsg'); if(m) m.textContent='✓ Added '+items.length+' '+noun+' to '+tier.toUpperCase()+' (exact match) — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+    var m=$('icpEditMsg'); if(m) m.textContent = (label==='exclude' ? '✓ Excluded '+items.length+' '+noun : '✓ Added '+items.length+' '+noun+' to '+label) + ' — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
   };
 
   if(typeof window.openICPEditor==='function'){
@@ -166,9 +167,10 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
   function exTitles(t){ return (typeof ICP_EXACT!=='undefined') ? Array.from(ICP_EXACT[t].titles) : []; }
   function exCompanies(t){ return (typeof ICP_EXACT!=='undefined') ? Array.from(ICP_EXACT[t].companies) : []; }
   function profileKeys(){ return (typeof ICP_PROFILES!=='undefined') ? Object.keys(ICP_PROFILES) : []; }
-  function fillProfileSelect(){
-    var sel=$('icp-profile-select'); if(!sel || typeof ICP_PROFILES==='undefined') return;
-    sel.innerHTML='<option value="">— pick a vertical —</option>'+profileKeys().map(function(k){ return '<option value="'+k+'">'+ICP_PROFILES[k].name+'</option>'; }).join('');
+  function fillProfilePills(){
+    var box=$('icp-vert-pills'); if(!box || typeof ICP_PROFILES==='undefined') return;
+    var active=''; try{ active=localStorage.getItem(window.ICP_K.profile)||''; }catch(e){}
+    box.innerHTML=profileKeys().map(function(k){ return '<button type="button" class="icp-vpill'+(k===active?' active':'')+'" onclick="applyICPProfile(\''+k+'\')">'+ICP_PROFILES[k].name+'</button>'; }).join('');
   }
   function applyMeta(){ try{ EXCL_KEYWORDS=(window.__icpMeta.exclude && window.__icpMeta.exclude.length) ? compileKw(window.__icpMeta.exclude) : /a^/; }catch(e){} }
   function relabel(){
@@ -194,7 +196,7 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
       exclude:(p.exclude||[]).slice() };
     applyMeta();
     try{ localStorage.setItem(window.ICP_K.kw, JSON.stringify(ICP_KW)); localStorage.setItem(window.ICP_K.profile, key); }catch(e){}
-    reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes();
+    reclassify(); if(typeof syncCustomBadge==='function') syncCustomBadge(); relabel(); syncBoxes(); fillProfilePills();
     var m=$('icpEditMsg'); if(m) m.textContent='✓ Applied "'+p.name+'" — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
   };
 
@@ -247,6 +249,6 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
 
   if(typeof window.openICPEditor==='function'){
     var prev=window.openICPEditor;
-    window.openICPEditor=function(){ prev(); fillProfileSelect(); var sel=$('icp-profile-select'); if(sel){ try{ sel.value=localStorage.getItem(window.ICP_K.profile)||''; }catch(e){} } };
+    window.openICPEditor=function(){ prev(); fillProfilePills(); };
   }
 })();
