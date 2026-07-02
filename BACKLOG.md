@@ -15,6 +15,21 @@ _Last updated: June 29, 2026_
 
 ---
 
+### CR-2 — Elevate the "Get your LinkedIn data" CTA (above the fold + higher contrast) — desktop + mobile
+- **Status:** 🔴 **Open** (filed June 29, 2026)
+- **Problem:** Getting the LinkedIn data export is **the single most important action** — nothing in the toolkit works without it — yet today it's a **low-emphasis inline text link** buried inside "Step 1" of the load instructions (`<a … style="color:var(--li2)">Get a copy of your data ↗</a>`). It sits **below the fold** on both desktop and mobile (under the folder/CSV picker buttons + the numbered steps), and in **dark mode** `--li2` renders as a **dark, low-contrast blue** that's easy to miss.
+- **Where:** the load screen on `icp-finder.html` (~line 394) and `dashboard.html` (~396), plus `how-to.html` step 1 (~478). All three use an inline `--li2` link inside a `.load-step` / step paragraph.
+- **Ask:** make **"Get your LinkedIn data ↗"** a **primary, above-the-fold CTA** with strong contrast in both themes, on desktop and mobile.
+- **Requirements / candidate approach:**
+  - Promote it to a **prominent button** (brand-blue filled, `.btn-primary`-weight), not an inline text link — keep the ↗ / "opens LinkedIn in a new tab" affordance.
+  - **Above the fold:** place it at/near the top of the load card so a first-time visitor sees "① Get your data" before scrolling. The folder/CSV picker (for users who already have their export) can sit just below.
+  - **Contrast:** ensure ≥ WCAG AA in **dark mode** (don't rely on `--li2`) against the dark card background; verify light mode too.
+  - Keep the "Request archive → wait for LinkedIn's email" context nearby so users know it isn't instant.
+  - **Mobile:** full-width button, not a thin inline link.
+- **Verify:** first-view screenshot desktop + mobile, dark + light — the data CTA is visible without scrolling and passes contrast.
+
+---
+
 ## 🔴 High Priority
 
 ### Language Scope — English LinkedIn exports (positioning + graceful non-English message)
