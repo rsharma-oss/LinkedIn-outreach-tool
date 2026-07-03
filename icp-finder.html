@@ -63,6 +63,14 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .btn-green{background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
 .btn-green:hover{background:rgba(16,185,129,0.25);}
 .btn-sample{background:rgba(16,185,129,0.16);color:var(--green);border:1px solid rgba(16,185,129,0.45);font-weight:700;}
+/* CR-2 — primary "get your LinkedIn data" CTA (solid --li #0077B5 + white = 4.88:1, AA in both themes) */
+.btn-getdata{display:flex;align-items:center;gap:12px;width:100%;max-width:360px;margin:2px auto 16px;padding:13px 16px;background:var(--li);color:#fff;border-radius:12px;text-decoration:none;font-family:inherit;box-shadow:0 4px 16px rgba(0,119,181,0.38);border:1px solid rgba(255,255,255,0.14);transition:transform .12s ease,box-shadow .12s ease;}
+.btn-getdata:hover{transform:translateY(-1px);box-shadow:0 7px 22px rgba(0,119,181,0.5);}
+.btn-getdata .bgd-num{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.24);color:#fff;font-weight:800;font-size:0.9rem;display:flex;align-items:center;justify-content:center;}
+.btn-getdata .bgd-txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25;text-align:left;flex:1 1 auto;}
+.btn-getdata .bgd-txt b{font-size:0.98rem;font-weight:800;color:#fff;letter-spacing:.1px;}
+.btn-getdata .bgd-sub{font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.9);margin-top:1px;}
+.btn-getdata .bgd-arw{flex:0 0 auto;font-size:1.15rem;color:#fff;}
 .btn-sample:hover{background:rgba(16,185,129,0.26);border-color:rgba(16,185,129,0.6);}
 
 /* LOAD SCREEN */
@@ -382,6 +390,13 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       Automatically classify your LinkedIn connections into ICP tiers — decision makers, ecosystem partners, and adjacent contacts. Everything runs in your browser. Your data stays on your device. <em>The default ICP is tuned for B2B outreach — customize it in-app once loaded, or we'll build yours. Works with English-language LinkedIn exports.</em>
     </div>
 
+    <!-- CR-2: primary above-the-fold CTA -->
+    <a class="btn-getdata" href="https://www.linkedin.com/mypreferences/d/download-my-data" target="_blank" rel="noopener" title="Opens LinkedIn in a new tab">
+      <span class="bgd-num">1</span>
+      <span class="bgd-txt"><b>Get your LinkedIn data</b><span class="bgd-sub">Opens LinkedIn → Request archive (email arrives ~10 min–24 h)</span></span>
+      <span class="bgd-arw">↗</span>
+    </a>
+
     <!-- PRIVACY MANIFEST -->
     <div class="privacy-manifest">
       <div class="pm-title">🔒 What this tool reads — and where it stays</div>
@@ -391,7 +406,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     </div>
 
     <div class="load-steps">
-      <div class="load-step"><span class="step-num">1</span><span>Export your LinkedIn data: Settings → Data Privacy → <a href="https://www.linkedin.com/mypreferences/d/download-my-data" target="_blank" rel="noopener" style="color:var(--li2);">Get a copy of your data ↗</a> → Request archive</span></div>
+      <div class="load-step"><span class="step-num">1</span><span>Get your export from LinkedIn — tap <b>Get your LinkedIn data</b> above → <b>Request archive</b>, then wait for LinkedIn's email</span></div>
       <div class="load-step"><span class="step-num">2</span><span>Unzip the download and load <b>Connections.csv</b> (and optionally <b>messages.csv</b> for engagement data)</span></div>
       <div class="load-step"><span class="step-num">3</span><span>Your contacts are classified, scored, and ready to filter instantly</span></div>
     </div>
