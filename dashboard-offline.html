@@ -83,6 +83,14 @@ a:hover{text-decoration:underline;}
 .btn{padding:8px 16px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;gap:7px;transition:all 0.2s;font-family:inherit;}
 .btn-primary{background:var(--li);color:#fff;}
 .btn-sample{background:rgba(16,185,129,0.16);color:var(--green);border:1px solid rgba(16,185,129,0.45);font-weight:700;}
+/* CR-2 — primary "get your LinkedIn data" CTA (solid --li #0077B5 + white = 4.88:1, AA in both themes) */
+.btn-getdata{display:flex;align-items:center;gap:12px;width:100%;max-width:360px;margin:2px auto 16px;padding:13px 16px;background:var(--li);color:#fff;border-radius:12px;text-decoration:none;font-family:inherit;box-shadow:0 4px 16px rgba(0,119,181,0.38);border:1px solid rgba(255,255,255,0.14);transition:transform .12s ease,box-shadow .12s ease;}
+.btn-getdata:hover{transform:translateY(-1px);box-shadow:0 7px 22px rgba(0,119,181,0.5);}
+.btn-getdata .bgd-num{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.24);color:#fff;font-weight:800;font-size:0.9rem;display:flex;align-items:center;justify-content:center;}
+.btn-getdata .bgd-txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25;text-align:left;flex:1 1 auto;}
+.btn-getdata .bgd-txt b{font-size:0.98rem;font-weight:800;color:#fff;letter-spacing:.1px;}
+.btn-getdata .bgd-sub{font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.9);margin-top:1px;}
+.btn-getdata .bgd-arw{flex:0 0 auto;font-size:1.15rem;color:#fff;}
 .btn-sample:hover{background:rgba(16,185,129,0.26);border-color:rgba(16,185,129,0.6);}
 .btn-primary:hover{background:var(--li2);}
 .btn-outline{background:transparent;color:var(--tx2);border:1px solid var(--border2);}
@@ -373,6 +381,13 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div class="load-title">LinkVault Dashboard</div>
     <div class="load-sub">Drop your LinkedIn export zip file — or your unzipped folder. Everything runs in your browser. Nothing leaves your device. <em>Works with English-language LinkedIn exports.</em></div>
 
+    <!-- CR-2: primary above-the-fold CTA -->
+    <a class="btn-getdata" href="https://www.linkedin.com/mypreferences/d/download-my-data" target="_blank" rel="noopener" title="Opens LinkedIn in a new tab">
+      <span class="bgd-num">1</span>
+      <span class="bgd-txt"><b>Get your LinkedIn data</b><span class="bgd-sub">Opens LinkedIn → Request archive (email arrives ~10 min–24 h)</span></span>
+      <span class="bgd-arw">↗</span>
+    </a>
+
     <!-- PRIVACY MANIFEST -->
     <div class="privacy-manifest">
       <div class="pm-title">🔒 What this tool reads — and where it stays</div>
@@ -421,7 +436,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div class="error-banner" id="error-banner"></div>
 
     <div class="load-steps-grid">
-      <div class="load-step-row"><span class="step-num">1</span><span>Go to LinkedIn → <b>Settings</b> → <b>Data Privacy</b> → <a href="https://www.linkedin.com/mypreferences/d/download-my-data" target="_blank" rel="noopener" style="color:var(--li2);"><b>Get a copy of your data ↗</b></a> → Request archive</span></div>
+      <div class="load-step-row"><span class="step-num">1</span><span>Tap <b>Get your LinkedIn data</b> above (or LinkedIn → <b>Settings → Data Privacy</b>) → <b>Request archive</b></span></div>
       <div class="load-step-row"><span class="step-num">2</span><span>Wait for the email (up to 24h) and download the <b>.zip file</b></span></div>
       <div class="load-step-row"><span class="step-num">3</span><span>Drag the zip straight onto the box above — no unzipping needed</span></div>
     </div>
