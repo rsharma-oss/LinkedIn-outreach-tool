@@ -69,41 +69,54 @@ a:hover{color:var(--tx);text-decoration:underline;}
 .hero{
   background:var(--hero-grad);
   border-bottom:1px solid var(--border);
-  padding:80px 40px 72px;
+  padding:18px 40px 22px;
+  min-height:calc(100vh - 74px);
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
   text-align:center;
 }
+/* flex spacers distribute the first screen so the primary CTA lands ~68% from top */
+.hero-sp1{flex:0.5 1 0;min-height:6px;}
+.hero-sp2{flex:1.35 1 0;min-height:14px;}
+.hero-sp3{flex:0.75 1 0;min-height:6px;}
 .hero-badge{
   display:inline-flex;align-items:center;gap:7px;
   background:rgba(0,119,181,0.12);
   border:1px solid rgba(0,119,181,0.3);
   border-radius:20px;
   padding:5px 14px;
-  font-size:0.75rem;
+  font-size:0.72rem;
   font-weight:600;
   color:var(--li2);
-  margin-bottom:24px;
+  margin-bottom:12px;
   letter-spacing:0.03em;
   text-transform:uppercase;
 }
 .hero h1{
-  font-size:clamp(2rem,5vw,3.2rem);
+  font-size:clamp(2.1rem,5vw,3.4rem);
   font-weight:800;
-  line-height:1.15;
+  line-height:1.08;
   letter-spacing:-0.03em;
-  margin-bottom:16px;
+  margin-bottom:6px;
   background:var(--head-grad);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
 }
-.hero-sub{
-  font-size:1.15rem;
-  color:var(--tx2);
-  margin-bottom:36px;
-  font-weight:400;
+.hero-vp{
+  font-size:clamp(1.4rem,2.7vw,2.05rem);
+  font-weight:800;color:var(--tx);
+  line-height:1.15;letter-spacing:-0.02em;
+  margin:2px 0 12px;
+  white-space:nowrap;   /* one clean line on desktop — no wrap */
 }
-.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-.hero-vp{font-size:clamp(1.45rem,3.4vw,2.15rem);font-weight:800;color:var(--tx);line-height:1.2;letter-spacing:-0.02em;margin:6px 0 18px;}
+.hero-sub{
+  font-size:1.02rem;
+  color:var(--tx2);
+  max-width:600px;margin:0 auto;
+  font-weight:400;line-height:1.5;
+}
+.hero-getdata{margin:0 auto;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
 .btn{
   display:inline-flex;align-items:center;gap:8px;
   padding:13px 26px;
@@ -385,7 +398,12 @@ a:hover{color:var(--tx);text-decoration:underline;}
   .hdr-sub{display:none;}
   .report-btn{padding:7px 9px;}
   .hdr-nav .nav-link:not(.cta){display:none;}
-  .hero{padding:56px 20px 52px;}
+  .hero{padding:30px 20px 34px;min-height:0;display:block;}
+  .hero-sp1,.hero-sp2,.hero-sp3{display:none;}
+  .hero h1{font-size:2.4rem;}
+  .hero-vp{white-space:normal;text-wrap:balance;font-size:1.5rem;max-width:15ch;margin:6px auto 14px;}
+  .hero-sub{margin:0 auto 18px;}
+  .hero-getdata{margin:18px auto;}
   .section{padding:52px 20px;}
   .tool-section{padding:52px 20px;}
   .before-card{flex-direction:column;gap:20px;padding:28px 24px;}
@@ -458,14 +476,22 @@ a:hover{color:var(--tx);text-decoration:underline;}
      HERO
 ══════════════════════════════════════════ -->
 <section class="hero">
+  <div class="hero-sp1"></div>
   <div class="hero-badge">🔒 100% local · No server · Open source</div>
   <h1>LinkVault</h1>
   <p class="hero-vp">Your next customers are already in your network.</p>
-  <p class="hero-sub">The free LinkedIn outreach toolkit by Growth Automated — it ranks your connections into a prioritized outreach list: who's a decision-maker, who's at a target account, who to message first. Private, in your browser.</p>
+  <p class="hero-sub">The free LinkedIn outreach toolkit by Growth Automated — it ranks your connections into a prioritized outreach list: who to message first. Private, in your browser.</p>
+  <div class="hero-sp2"></div>
+  <a class="btn-getdata hero-getdata" href="https://www.linkedin.com/mypreferences/d/download-my-data" target="_blank" rel="noopener" title="Opens LinkedIn in a new tab">
+    <span class="bgd-num">1</span>
+    <span class="bgd-txt"><b>Get your LinkedIn data</b><span class="bgd-sub">Opens LinkedIn → Request archive</span></span>
+    <span class="bgd-arw">↗</span>
+  </a>
   <div class="hero-btns">
     <a class="btn btn-outline" href="#flow">Watch the Flow ↓</a>
     <a class="btn btn-primary" href="demo.html">Request a Demo →</a>
   </div>
+  <div class="hero-sp3"></div>
 </section>
 
 <!-- ══════════════════════════════════════════
