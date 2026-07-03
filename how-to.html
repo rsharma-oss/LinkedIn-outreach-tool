@@ -69,15 +69,14 @@ a:hover{color:var(--tx);text-decoration:underline;}
 .hero{
   background:var(--hero-grad);
   border-bottom:1px solid var(--border);
-  padding:18px 40px 22px;
-  min-height:calc(100vh - 74px);
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  padding:44px 40px 40px;
+  display:flex;flex-direction:column;align-items:center;
   text-align:center;
 }
-/* flex spacers distribute the first screen so the primary CTA lands ~68% from top */
-.hero-sp1{flex:0.5 1 0;min-height:6px;}
-.hero-sp2{flex:1.35 1 0;min-height:14px;}
-.hero-sp3{flex:0.75 1 0;min-height:6px;}
+/* compact hero — no full-viewport fill; a single modest gap sets the CTA apart */
+.hero-sp1{display:none;}
+.hero-sp2{height:22px;}
+.hero-sp3{display:none;}
 .hero-badge{
   display:inline-flex;align-items:center;gap:7px;
   background:rgba(0,119,181,0.12);
