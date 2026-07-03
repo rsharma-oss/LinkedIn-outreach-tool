@@ -82,14 +82,17 @@ a:hover{color:var(--tx);text-decoration:underline;}
   background:rgba(0,119,181,0.12);
   border:1px solid rgba(0,119,181,0.3);
   border-radius:20px;
-  padding:5px 14px;
+  padding:6px 15px;
   font-size:0.72rem;
   font-weight:600;
   color:var(--li2);
-  margin-bottom:12px;
+  margin:22px 0 0;
   letter-spacing:0.03em;
   text-transform:uppercase;
+  cursor:pointer;font-family:inherit;transition:all .15s;
 }
+.hero-badge:hover{background:rgba(0,119,181,0.22);border-color:rgba(0,119,181,0.55);}
+.hero-badge .hb-mon{font-weight:800;color:var(--tx);}
 .hero h1{
   font-size:clamp(2.1rem,5vw,3.4rem);
   font-weight:800;
@@ -476,7 +479,6 @@ a:hover{color:var(--tx);text-decoration:underline;}
 ══════════════════════════════════════════ -->
 <section class="hero">
   <div class="hero-sp1"></div>
-  <div class="hero-badge">🔒 100% local · No server · Open source</div>
   <h1>LinkVault</h1>
   <p class="hero-vp">Your next customers are already in your network.</p>
   <p class="hero-sub">The free LinkedIn outreach toolkit by Growth Automated — it ranks your connections into a prioritized outreach list: who to message first. Private, in your browser.</p>
@@ -490,6 +492,7 @@ a:hover{color:var(--tx);text-decoration:underline;}
     <a class="btn btn-outline" href="#flow">Watch the Flow ↓</a>
     <a class="btn btn-primary" href="demo.html">Request a Demo →</a>
   </div>
+  <button type="button" class="hero-badge" onclick="openPrivacyMonitor&&openPrivacyMonitor()" title="See the live upload monitor — this page has sent 0 bytes">🔒 100% local · No server · Open source · <span class="hb-mon">watch the live monitor ↗</span></button>
   <div class="hero-sp3"></div>
 </section>
 
