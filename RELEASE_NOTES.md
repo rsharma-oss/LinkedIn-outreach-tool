@@ -2,6 +2,17 @@
 
 ---
 
+## 🔗 "Get your LinkedIn data" — front-and-center CTA — June 29, 2026
+
+_Public release. The most important first action is now impossible to miss._
+
+- **New primary CTA** — getting the LinkedIn export is the one thing the whole toolkit depends on, so it's now a **prominent button** ("① Get your LinkedIn data ↗ · Opens LinkedIn → Request archive") placed **above the fold** at the top of the load card on the **ICP Finder** and **Dashboard**, and in the "First: Get your LinkedIn data" card on **How It Works**.
+- **Readable in every theme** — solid LinkedIn-blue (`#0077B5`) with white text = **4.88:1 contrast, passes WCAG AA in both light and dark mode**. Replaces the old low-contrast inline link (`#00a0dc`, ~2.9:1) that was buried in the step text and hard to see in dark mode.
+- **Mobile** — full-width button, not a thin inline link.
+- Verified on all three pages, desktop + mobile, light + dark — zero console errors.
+
+---
+
 ## 🎯 ICP customizer UX overhaul — guided flow + one-click per-row tiering — June 29, 2026
 
 _Public release. The "Customize your ICP" experience rebuilt for clarity, then validated against a real 2.9k-connection export._
