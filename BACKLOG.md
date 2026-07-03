@@ -16,7 +16,7 @@ _Last updated: June 29, 2026_
 ---
 
 ### CR-2 — Elevate the "Get your LinkedIn data" CTA (above the fold + higher contrast) — desktop + mobile
-- **Status:** 🔴 **Open** (filed June 29, 2026)
+- **Status:** ✅ **Resolved June 29, 2026** — added a prominent **`.btn-getdata`** CTA (numbered "1" badge · "Get your LinkedIn data" · "Opens LinkedIn → Request archive" · ↗) placed **above the fold** near the top of the load card on `icp-finder.html` + `dashboard.html` (above the privacy manifest), and in the "First: Get your LinkedIn data" card on `how-to.html`. Solid **`--li` #0077B5 background + white text = 4.88:1 contrast (passes WCAG AA in both themes)** — replacing the old low-contrast inline `--li2` (#00a0dc, ~2.9:1) links, which are now removed from Step 1 on all three pages. Full-width on mobile. Verified in preview: renders on all 3 pages, above the fold, dark + light + mobile, zero console errors.
 - **Problem:** Getting the LinkedIn data export is **the single most important action** — nothing in the toolkit works without it — yet today it's a **low-emphasis inline text link** buried inside "Step 1" of the load instructions (`<a … style="color:var(--li2)">Get a copy of your data ↗</a>`). It sits **below the fold** on both desktop and mobile (under the folder/CSV picker buttons + the numbered steps), and in **dark mode** `--li2` renders as a **dark, low-contrast blue** that's easy to miss.
 - **Where:** the load screen on `icp-finder.html` (~line 394) and `dashboard.html` (~396), plus `how-to.html` step 1 (~478). All three use an inline `--li2` link inside a `.load-step` / step paragraph.
 - **Ask:** make **"Get your LinkedIn data ↗"** a **primary, above-the-fold CTA** with strong contrast in both themes, on desktop and mobile.
@@ -155,9 +155,10 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 ### UAT Feedback Aggregation (triage view for 🐞 Report)
 - **Status:** 🟢 **Partially done — webmail failure RESOLVED June 22.**
 - **Resolved (June 22):** the universal report dialog (`gaReport` in `willis.js`) now offers **Copy / Gmail compose / Mail app**, so webmail-only testers are no longer silently dropped (the original `mailto`-only failure). It overrides the per-page 🐞 Report site-wide (via `window.reportIssue`) and is wired into Willis's no-match state. Diagnostics stay privacy-safe (env/counts only — **no LinkedIn data**).
-- **Remaining = aggregation only:** reports still arrive as individual emails to rahul@growthautomated.ai — there's no single triage view. Two paths (pick one):
-  - **A) Automate from Gmail** — label incoming reports + auto-parse their structured body into a Google Sheet / recurring digest. **No app change**; leverages emails already arriving. (Gmail integration + a scheduled digest.)
-  - **B) Replace with a Google Form** — point the report flow at a pre-filled Google Form (diagnostics passed via URL params); responses auto-collect in a linked Sheet. Requires editing `gaReport`; cleanest native aggregation, lowest ongoing maintenance.
+- **✅ DECISION (June 29, 2026): go with A (automate from Gmail); B deferred.** Rationale: the report flow already works (Copy/Gmail/Mail), reports already arrive at rahul@growthautomated.ai, and a weekly Gmail "UAT Reports" routine + `UAT-REPORTS.md` already exist — so A is a pure extension of what's there (**no app change, no new dependency**). B (Google Form) would mean editing a working flow + adding a third-party endpoint that slightly muddies the "no server / nothing leaves your browser" positioning, for **low current volume**. **B is the escalation path** — revisit only when email/Gmail triage becomes painful at higher volume.
+- **Remaining = aggregation only (per decision A):** reports arrive as individual emails to rahul@growthautomated.ai — no single triage view yet. **Next step:** extend the weekly Gmail routine to **label incoming reports + parse their structured body into a table** (in `UAT-REPORTS.md` or a linked Google Sheet). ⚠️ Caveat: the Gmail connector is currently read-only (labeling needs a reconnect) and headless/scheduled runs may not inherit Gmail access — so the parse/digest may need to run from an interactive session until that's sorted.
+  - **A) Automate from Gmail (CHOSEN)** — label incoming reports + auto-parse their structured body into a Google Sheet / recurring digest. **No app change**; leverages emails already arriving. (Gmail integration + a scheduled digest.)
+  - **B) Replace with a Google Form (DEFERRED — escalation if volume grows)** — point the report flow at a pre-filled Google Form (diagnostics passed via URL params); responses auto-collect in a linked Sheet. Requires editing `gaReport`; cleanest native aggregation, lowest ongoing maintenance.
 - **Constraint:** user-initiated only; no always-on server; no LinkedIn data in reports.
 
 ### Deploy / version `shopify-embed.html`
@@ -210,6 +211,8 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 ## ✅ Recently Completed (see RELEASE_NOTES.md)
 
 **June 29, 2026**
+- **CR-2 — "Get your LinkedIn data" CTA elevated** — new prominent `.btn-getdata` button (solid `--li` #0077B5 + white, AA 4.88:1 in both themes) above the fold on `icp-finder.html`, `dashboard.html`, `how-to.html`; removed the old low-contrast inline `--li2` links. Verified desktop + mobile, dark + light, zero errors.
+- **UAT aggregation — A/B decided:** chose **A (automate from Gmail; no app change)**; **B (Google Form) deferred** as the escalation path if volume grows.
 - **ICP customizer UX overhaul** — guided 3-step "Customize your ICP" modal (industry pills · network picker · Advanced keyword lists) + **one-click per-row T1/T2/T3/✕ tiering** (current tier highlighted, click-to-toggle-off, persistent exact-exclude `ICP_EXACT.excl`). Eliminated the tick-then-Save "nothing happened" confusion (PRs #49–#51). **Validated on a real 2,906-connection export across all 4 presets** — assign/toggle/exclude work on real titles; zero errors; light + dark + offline.
 
 **June 28, 2026**
