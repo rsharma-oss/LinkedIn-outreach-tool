@@ -45,6 +45,12 @@
   .wz-x{background:transparent;border:none;color:var(--wp-tx2);font-size:1.4rem;cursor:pointer;line-height:1;padding:2px 6px;border-radius:6px;}
   .wz-x:hover{background:var(--wp-border);color:var(--wp-tx);}
   .wz-asklabel{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--wp-tx3);padding:13px 16px 6px;}
+  .wz-actions{display:flex;gap:8px;margin:12px 0 4px;}
+  .wz-actbtn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 8px;border-radius:10px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;border:1px solid var(--wp-border);transition:all .15s;white-space:nowrap;}
+  .wz-act-demo{background:var(--wp-li);color:#fff;border-color:transparent;}
+  .wz-act-demo:hover{background:var(--wp-li2);text-decoration:none;}
+  .wz-act-report{background:var(--wp-card);color:var(--wp-tx);}
+  .wz-act-report:hover{background:var(--wp-input);}
   .wz-ask{display:flex;gap:8px;padding:0 16px 14px;}
   .wz-ask input{flex:1;background:var(--wp-input);border:1px solid var(--wp-border);border-radius:10px;color:var(--wp-tx);
     padding:11px 13px;font-size:.9rem;font-family:inherit;outline:none;min-width:0;}
@@ -118,9 +124,12 @@
   function renderIdle(){
     body.innerHTML =
       stateCard(ART.welcoming,'Welcome! Ask me anything.','Type a question above — exporting your data, how ICP tiers work, why it won\'t load…')+
+      '<div class="wz-actions"><a class="wz-actbtn wz-act-demo" href="demo.html">📅 Book a demo →</a>'+
+        '<button type="button" class="wz-actbtn wz-act-report" id="wzReportHome">🐞 Report a bug</button></div>'+
       '<div class="wz-sect">Popular topics</div>'+
       ARTICLES.slice(0,5).map(artRow).join('');
     wireRows();
+    var rh=document.getElementById('wzReportHome'); if(rh) rh.onclick=function(){ gaReport(); };
   }
   function runSearch(q){
     q=(q||'').trim().toLowerCase(); if(!q){renderIdle();return;}
