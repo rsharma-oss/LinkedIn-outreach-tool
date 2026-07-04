@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>(function(){try{var t=localStorage.getItem('ga_theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('ga_theme');if(t!=='dark')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <script>window.__gaErrs=[];addEventListener('error',function(e){try{window.__gaErrs.push((e.message||'error')+' @'+((e.filename||'').split('/').pop())+':'+(e.lineno||0));if(window.__gaErrs.length>10)window.__gaErrs.shift();}catch(_){}});</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -352,6 +352,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 <!-- HEADER -->
 <header class="hdr">
   <div class="hdr-l">
+    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button>
     <a href="how-to.html" class="logo-link" title="LinkVault — by Growth Automated"><span class="lv-brand"><img class="lv-mark" src="linkvault-mark.png" alt="LinkVault"><span class="lv-text"><span class="lv-word">LinkVault</span><span class="lv-ga" role="img" aria-label="by Growth Automated"></span></span></span></a>
   </div>
   <nav class="hdr-nav">
@@ -359,11 +360,10 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <a class="nav-link active" href="dashboard.html">📊 Dashboard</a>
     <a class="nav-link" href="icp-finder.html">🎯 ICP Finder</a>
     <a class="nav-link" href="outreach-playbook-demo.html">📋 Playbook</a>
-    <a class="nav-link cta" href="demo.html">Book Demo</a>
   </nav>
   <div class="hdr-r">
-    <button class="report-btn" onclick="reportIssue()" title="Report an issue or give feedback">🐞 Report</button>
-    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button>
+    
+    
     <div class="status-dot" id="status-dot"></div>
     <div class="status-text" id="status-text">No data loaded</div>
     <button class="btn btn-outline" id="reload-btn" onclick="document.getElementById('file-input').click()" style="display:none;">🔄 Reload</button>
@@ -3471,9 +3471,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     if(document.getElementById('lvpm-badge')) return;
     var badge = el('<button type="button" class="lvpm-badge" id="lvpm-badge" title="Live upload monitor — bytes this page has sent to any server. Click to learn more." aria-label="Live upload monitor: 0 bytes uploaded. Click to learn more."><span class="lvpm-dot"></span><span>🛡 <span class="lvpm-n">0 B</span> uploaded</span></button>');
     badge.addEventListener('click', open);
-    var anchor = document.getElementById('theme-btn') || document.querySelector('.theme-toggle, [onclick*="toggleTheme"]');
-    if(anchor && anchor.parentNode){ anchor.parentNode.insertBefore(badge, anchor); }
-    else { badge.style.position='fixed'; badge.style.top='14px'; badge.style.right='16px'; badge.style.zIndex='8000'; document.body.appendChild(badge); }
+    var hr = document.querySelector('.hdr-r');
+    if(hr){ hr.appendChild(badge); }   // keep the monitor on the right (theme toggle moved to the left)
+    else {
+      var anchor = document.getElementById('theme-btn') || document.querySelector('.theme-toggle, [onclick*="toggleTheme"]');
+      if(anchor && anchor.parentNode){ anchor.parentNode.insertBefore(badge, anchor); }
+      else { badge.style.position='fixed'; badge.style.top='14px'; badge.style.right='16px'; badge.style.zIndex='8000'; document.body.appendChild(badge); }
+    }
   }
   function render(){
     var b=document.getElementById('lvpm-badge'); var alert = sent>0; var txt=fmt(sent);
@@ -3902,6 +3906,12 @@ window.WILLIS_ARTICLES = [
   .wz-x{background:transparent;border:none;color:var(--wp-tx2);font-size:1.4rem;cursor:pointer;line-height:1;padding:2px 6px;border-radius:6px;}
   .wz-x:hover{background:var(--wp-border);color:var(--wp-tx);}
   .wz-asklabel{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--wp-tx3);padding:13px 16px 6px;}
+  .wz-actions{display:flex;gap:8px;margin:12px 0 4px;}
+  .wz-actbtn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 8px;border-radius:10px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;border:1px solid var(--wp-border);transition:all .15s;white-space:nowrap;}
+  .wz-act-demo{background:var(--wp-li);color:#fff;border-color:transparent;}
+  .wz-act-demo:hover{background:var(--wp-li2);text-decoration:none;}
+  .wz-act-report{background:var(--wp-card);color:var(--wp-tx);}
+  .wz-act-report:hover{background:var(--wp-input);}
   .wz-ask{display:flex;gap:8px;padding:0 16px 14px;}
   .wz-ask input{flex:1;background:var(--wp-input);border:1px solid var(--wp-border);border-radius:10px;color:var(--wp-tx);
     padding:11px 13px;font-size:.9rem;font-family:inherit;outline:none;min-width:0;}
@@ -3975,9 +3985,12 @@ window.WILLIS_ARTICLES = [
   function renderIdle(){
     body.innerHTML =
       stateCard(ART.welcoming,'Welcome! Ask me anything.','Type a question above — exporting your data, how ICP tiers work, why it won\'t load…')+
+      '<div class="wz-actions"><a class="wz-actbtn wz-act-demo" href="demo.html">📅 Book a demo →</a>'+
+        '<button type="button" class="wz-actbtn wz-act-report" id="wzReportHome">🐞 Report a bug</button></div>'+
       '<div class="wz-sect">Popular topics</div>'+
       ARTICLES.slice(0,5).map(artRow).join('');
     wireRows();
+    var rh=document.getElementById('wzReportHome'); if(rh) rh.onclick=function(){ gaReport(); };
   }
   function runSearch(q){
     q=(q||'').trim().toLowerCase(); if(!q){renderIdle();return;}

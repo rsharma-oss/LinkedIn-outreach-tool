@@ -89,9 +89,13 @@
     if(document.getElementById('lvpm-badge')) return;
     var badge = el('<button type="button" class="lvpm-badge" id="lvpm-badge" title="Live upload monitor — bytes this page has sent to any server. Click to learn more." aria-label="Live upload monitor: 0 bytes uploaded. Click to learn more."><span class="lvpm-dot"></span><span>🛡 <span class="lvpm-n">0 B</span> uploaded</span></button>');
     badge.addEventListener('click', open);
-    var anchor = document.getElementById('theme-btn') || document.querySelector('.theme-toggle, [onclick*="toggleTheme"]');
-    if(anchor && anchor.parentNode){ anchor.parentNode.insertBefore(badge, anchor); }
-    else { badge.style.position='fixed'; badge.style.top='14px'; badge.style.right='16px'; badge.style.zIndex='8000'; document.body.appendChild(badge); }
+    var hr = document.querySelector('.hdr-r');
+    if(hr){ hr.appendChild(badge); }   // keep the monitor on the right (theme toggle moved to the left)
+    else {
+      var anchor = document.getElementById('theme-btn') || document.querySelector('.theme-toggle, [onclick*="toggleTheme"]');
+      if(anchor && anchor.parentNode){ anchor.parentNode.insertBefore(badge, anchor); }
+      else { badge.style.position='fixed'; badge.style.top='14px'; badge.style.right='16px'; badge.style.zIndex='8000'; document.body.appendChild(badge); }
+    }
   }
   function render(){
     var b=document.getElementById('lvpm-badge'); var alert = sent>0; var txt=fmt(sent);

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>(function(){try{var t=localStorage.getItem('ga_theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('ga_theme');if(t!=='dark')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <script>window.__gaErrs=[];addEventListener('error',function(e){try{window.__gaErrs.push((e.message||'error')+' @'+((e.filename||'').split('/').pop())+':'+(e.lineno||0));if(window.__gaErrs.length>10)window.__gaErrs.shift();}catch(_){}});</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -324,6 +324,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 <!-- HEADER -->
 <header class="hdr">
   <div class="hdr-l">
+    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button>
     <a href="how-to.html" class="logo-link" title="LinkVault — by Growth Automated"><span class="lv-brand"><img class="lv-mark" src="linkvault-mark.png" alt="LinkVault"><span class="lv-text"><span class="lv-word">LinkVault</span><span class="lv-ga" role="img" aria-label="by Growth Automated"></span></span></span></a>
   </div>
   <nav class="hdr-nav">
@@ -331,11 +332,10 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <a class="nav-link active" href="dashboard.html">📊 Dashboard</a>
     <a class="nav-link" href="icp-finder.html">🎯 ICP Finder</a>
     <a class="nav-link" href="outreach-playbook-demo.html">📋 Playbook</a>
-    <a class="nav-link cta" href="demo.html">Book Demo</a>
   </nav>
   <div class="hdr-r">
-    <button class="report-btn" onclick="reportIssue()" title="Report an issue or give feedback">🐞 Report</button>
-    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button>
+    
+    
     <div class="status-dot" id="status-dot"></div>
     <div class="status-text" id="status-text">No data loaded</div>
     <button class="btn btn-outline" id="reload-btn" onclick="document.getElementById('file-input').click()" style="display:none;">🔄 Reload</button>
