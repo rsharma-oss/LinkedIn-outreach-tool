@@ -56,7 +56,19 @@
   ".lvpm-live .lvpm-big{font-size:1.05rem;font-weight:800;color:#34d399;}"+
   ".lvpm-live.alert{background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.4);}"+
   ".lvpm-live.alert .lvpm-big{color:#f87171;}"+
-  ".lvpm-x{background:var(--li,#0A66C2);color:#fff;border:none;border-radius:9px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:inherit;width:100%;}";
+  ".lvpm-x{background:var(--li,#0A66C2);color:#fff;border:none;border-radius:9px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:inherit;width:100%;}"+
+  /* Light theme (site default since Jul 2026). Explicit literals — pages use differing var
+     schemes (the playbook defines none of --card/--tx), so vars with dark fallbacks would
+     render this dark on light pages. */
+  "html[data-theme=light] .lvpm-badge{border-color:rgba(4,120,87,0.45);background:rgba(16,185,129,0.12);color:#047857;}"+
+  "html[data-theme=light] .lvpm-badge:hover{background:rgba(16,185,129,0.2);}"+
+  "html[data-theme=light] .lvpm-badge.alert{border-color:rgba(185,28,28,0.5);background:rgba(239,68,68,0.1);color:#b91c1c;}"+
+  "html[data-theme=light] .lvpm-ov{background:rgba(15,23,42,0.35);}"+
+  "html[data-theme=light] .lvpm-modal{background:#ffffff;border-color:rgba(15,23,42,0.13);color:#0f172a;box-shadow:0 24px 70px rgba(15,23,42,0.22);}"+
+  "html[data-theme=light] .lvpm-modal p{color:rgba(15,23,42,0.68);}"+
+  "html[data-theme=light] .lvpm-modal b{color:#0f172a;}"+
+  "html[data-theme=light] .lvpm-live .lvpm-big{color:#047857;}"+
+  "html[data-theme=light] .lvpm-live.alert .lvpm-big{color:#b91c1c;}";
 
   function el(html){ var d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstChild; }
 
@@ -90,12 +102,10 @@
     var badge = el('<button type="button" class="lvpm-badge" id="lvpm-badge" title="Live upload monitor — bytes this page has sent to any server. Click to learn more." aria-label="Live upload monitor: 0 bytes uploaded. Click to learn more."><span class="lvpm-dot"></span><span>🛡 <span class="lvpm-n">0 B</span> uploaded</span></button>');
     badge.addEventListener('click', open);
     var hr = document.querySelector('.hdr-r');
-    if(hr){ hr.appendChild(badge); }   // keep the monitor on the right (theme toggle moved to the left)
-    else {
-      var anchor = document.getElementById('theme-btn') || document.querySelector('.theme-toggle, [onclick*="toggleTheme"]');
-      if(anchor && anchor.parentNode){ anchor.parentNode.insertBefore(badge, anchor); }
-      else { badge.style.position='fixed'; badge.style.top='14px'; badge.style.right='16px'; badge.style.zIndex='8000'; document.body.appendChild(badge); }
-    }
+    if(hr){ hr.appendChild(badge); }   // keep the monitor on the right (theme toggle lives on the left)
+    // No theme-btn anchor tier: the toggle moved to the LEFT zone (Jul 2026), so anchoring on it
+    // would put the badge on the wrong side. Fall straight to a fixed top-right position.
+    else { badge.style.position='fixed'; badge.style.top='14px'; badge.style.right='16px'; badge.style.zIndex='8000'; document.body.appendChild(badge); }
   }
   function render(){
     var b=document.getElementById('lvpm-badge'); var alert = sent>0; var txt=fmt(sent);
