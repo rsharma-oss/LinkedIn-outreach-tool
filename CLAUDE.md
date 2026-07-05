@@ -39,6 +39,8 @@ Supporting docs (keep these updated):
 
 ## Branch Strategy
 
+⚠️ **`.nojekyll` at the repo root is LOAD-BEARING (July 3 2026).** GitHub Pages runs Jekyll by default, and Jekyll **fails** on the `{{` sequences inside the inlined Chart.js in `dashboard-offline.html` — deploys silently stalled at "building" then failed until `.nojekyll` was added to `main` (commit `760adac`). It tells Pages to serve the static files raw. **Never delete it**; it lives only on GitHub (not in the local push FILES) and survives the resync flow because resync mirrors `main`.
+
 ```
 main   →  production (GitHub Pages auto-deploys from here)
 dev    →  all work happens here — push here by default
@@ -125,16 +127,15 @@ python3 $ROOT/push_to_dev.py --with-offline
 
 **L1 nav — CANONICAL (June 18 2026).** One shared nav across ALL 7 pages (dashboard, icp-finder, how-to, outreach-playbook-demo, demo, icp-demo, dashboard-demo). Markup is identical everywhere except the `.active` link; only the brand sub-label and `.hdr-r` controls vary per page.
 
-Order (as of **July 4 2026**): `📘 How It Works · 📊 Dashboard · 🎯 ICP Finder · 📋 Playbook`. **Book Demo was removed from the nav** — demo booking now lives as a **"📅 Book a demo →"** button in the Willis panel. The `.nav-link.cta` CSS below is retained but **dead** (no `.cta` link remains in any nav; a mobile rule `.hdr-nav .nav-link:not(.cta){display:none}` therefore hides *all* header links on mobile — tool-switching on mobile is via page content + the always-visible Willis bubble).
+Order (as of **July 4 2026**): `📘 How It Works · 📊 Dashboard · 🎯 ICP Finder · 📋 Playbook`. **Book Demo was removed from the nav** — demo booking now lives as a **"📅 Book a demo →"** button in the Willis panel. The `.nav-link.cta` CSS was **deleted from all 7 pages** in the post-review cleanup (see below); mobile hides the whole nav via `@media(max-width:680px){.hdr-nav{display:none}}` on every page — tool-switching on mobile is via page content + the always-visible Willis bubble.
 
 CSS uses **literal colors** on the 5 non-themed pages (how-to, demo, playbook, icp-demo, dashboard-demo) so they render identically regardless of each file's variable scheme. The 2 themed apps (dashboard, icp-finder) use theme vars (`--nav-idle`, `--nav-idle-hover`, `--hover-strong`) whose **dark defaults equal these literals** — so dark rendering is identical everywhere, and the nav adapts in light mode. Reference (dark values):
 ```css
 .nav-link        { color: rgba(240,244,255,0.3); border:1px solid transparent; }
 .nav-link:hover  { color: rgba(240,244,255,0.8); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.06); }
 .nav-link.active { color: #f0f4ff; background: rgba(0,160,220,0.26); border-color: rgba(0,160,220,0.44); font-weight:700; }
-.nav-link.cta    { background: #0077B5; color:#fff; font-weight:600; }
-.nav-link.cta:hover { background: #00a0dc; }
 ```
+_(`.nav-link.cta` rules removed July 4 2026 — no CTA link exists in any nav; don't re-add one without restoring the CSS on all 7 pages.)_
 Container is `<header class="hdr">` (playbook's outer wrapper is still `.header` — visually identical). If you touch the nav, change it in all 7 files. The old `.hn-link` class is retired.
 
 **Post-review hardening (July 4 2026, PR follows #58):** the dead `.nav-link.cta` CSS was **deleted from all 7 pages**; how-to's mobile rule `.hdr-nav .nav-link:not(.cta){display:none}` (which, with no .cta left, hid the whole nav) was replaced by `@media(max-width:680px){.hdr-nav{display:none}}` — same behavior as the app pages, so how-to keeps its nav at 681–768px. A guarded **"Report an issue" link now lives in every `.lv-foot-links` footer** (`window.reportIssue&&reportIssue()` — willis.js upgrades it to the gaReport dialog; the per-page mailto fallback catches willis-load failures). The two dark-only snapshots (icp-demo, dashboard-demo) now **load Willis** (articles + engine tags before `</body>`), restoring a booking + report path there.
