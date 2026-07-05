@@ -16,6 +16,17 @@ _Public release. A 8-angle adversarial code review of the recent UI sprints surf
 
 ---
 
+## 🧭 Cleaner header · light-first · hero refresh — July 3–4, 2026
+
+_Public release (PRs #55–#58). The chrome gets out of the way; the toolkit leads with the one action that matters._
+
+- **Light mode is now the default** for new visitors (dark remains one click away and your saved choice is respected). The theme toggle moved to the **far left** of the header.
+- **Decluttered header:** **Book Demo** and **🐞 Report** left the nav — both now live in **Willis** ("📅 Book a demo →" and "🐞 Report a bug" right on his home panel), so help, booking, and feedback share one obvious place. A "Report an issue" link in every footer is the belt-and-suspenders fallback.
+- **How It Works hero, rebuilt:** compact single-screen intro (no more scrolling past empty space), the value prop on one clean line, the **"① Get your LinkedIn data" button** front and center with "Watch the Flow" beside it — and the "🔒 100% local · No server" badge is now a **button that opens the live upload monitor**, so the privacy claim is one click from its proof.
+- The live **"🛡 0 B uploaded" monitor badge** anchors the right side of every header.
+
+---
+
 ## 🔗 "Get your LinkedIn data" — front-and-center CTA — June 29, 2026
 
 _Public release. The most important first action is now impossible to miss._

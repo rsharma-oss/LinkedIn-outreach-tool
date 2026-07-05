@@ -21,6 +21,17 @@ _Since 1.6: LinkVault rebrand live (logo + naming); **ICP customizer un-gated to
 
 ---
 
+## 0a. What's New (July 3–4, 2026)
+
+- **Header declutter:** **Book Demo removed from the nav** (all 7 pages) and the **🐞 Report button removed from the header** — both live in the **Willis panel** now ("📅 Book a demo →" + "🐞 Report a bug" on its home view). A guarded **"Report an issue" link sits in every footer** as the no-Willis fallback. The **theme toggle moved to the far LEFT** of the header; the **live-upload monitor badge** anchors right (`.hdr-r`).
+- **Light is the default theme.** The FOUC script sets `data-theme="light"` unless `ga_theme==='dark'`. All dark-hardcoded UI got explicit light styles in the follow-up hardening (monitor badge, error banners, manifest links, hero badge, privacy modal).
+- **How It Works hero rebuilt:** compact (no full-screen fill), one-line value prop, the **"① Get your LinkedIn data" CTA** + "Watch the Flow", and the "100% local" badge is now a button that **opens the live upload monitor**.
+- **Willis is a site-neutral, reusable kit:** `willis.js` reads **`window.WILLIS_CONFIG`** `{name, tagline, placeholder, reportEmail, actions[]}` (LinkVault's config tops `willis-articles.js`); the engine carries no site data. Willis now loads on **all 7 pages** (the two demo snapshots included — restoring their booking/report path).
+- **Offline bundles:** two-layer link policy — DOMContentLoaded shading **plus a click-time guard** for runtime-injected links (Willis panel/articles); the LinkedIn data-download URL is **allowlisted** so the step-1 CTA stays live offline.
+- **Code-review hardening sprint (July 4):** 8-angle adversarial review of the June 29–July 4 work → **10 confirmed findings, all fixed** (contrast family, mobile-nav `:not(.cta)` bug, `window.`-prefixed guards, listener leak, dead CSS). ⚠️ `.nojekyll` on `main` is **load-bearing** (Jekyll chokes on the inlined offline JS; deploys failed without it).
+
+---
+
 ## 0b. What's New (June 18–19, 2026)
 
 - **Unified, centered nav** across all 7 pages (`📘 How It Works · 📊 Dashboard · 🎯 ICP Finder · 📋 Playbook · [Book Demo]`) — balanced 3-column flex header keeps it at true page-center everywhere.
@@ -263,8 +274,9 @@ All templates have: title, category tag, usage note, template text with `[placeh
 - 📊 Dashboard → `dashboard.html`
 - 🎯 ICP Finder → `icp-finder.html`
 - 📋 Playbook → `outreach-playbook-demo.html`
-- Book Demo (CTA) → `demo.html`
-- Right zone (`.hdr-r`): **🐞 Report** button + **🌙/☀️ theme toggle** + page-specific controls (status, reload, export)
+- Left zone (`.hdr-l`): **☀️/🌙 theme toggle** (far left, before the brand) — default theme is **light** (July 4 2026)
+- Right zone (`.hdr-r`): **🛡 live-upload monitor badge** (injected by `privacy-monitor.js`) + page-specific controls (status, reload, export)
+- _Book Demo + 🐞 Report moved into the **Willis panel** (July 4 2026); `demo.html` is reached via Willis, how-to's bottom CTA, or the ICP Finder's in-app link. Every footer carries a guarded "Report an issue" fallback link._
 
 **L2 Dashboard tabs:**
 Overview · Network · Engagement · Content · Messages · Connections Table
