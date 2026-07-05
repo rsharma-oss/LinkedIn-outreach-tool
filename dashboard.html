@@ -96,6 +96,10 @@ a:hover{text-decoration:underline;}
 .progress-bar{background:linear-gradient(90deg,var(--li),var(--li2));height:100%;border-radius:8px;width:0%;transition:width 0.4s;}
 .progress-label{font-size:0.75rem;color:var(--tx3);text-align:center;margin-top:6px;}
 .error-banner{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#fca5a5;font-size:0.8rem;padding:10px 16px;border-radius:8px;margin-top:12px;display:none;text-align:left;line-height:1.5;}
+[data-theme="light"] .error-banner{background:rgba(239,68,68,0.08);border-color:rgba(185,28,28,0.35);color:#b91c1c;}
+.pm-link{color:rgba(110,231,183,0.7);}
+[data-theme="light"] .pm-link{color:#047857;}
+[data-theme="light"] .file-pill{color:#1d4ed8;}
 /* PRIVACY MANIFEST */
 .privacy-manifest{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:14px 18px;margin-bottom:16px;text-align:left;}
 .pm-title{font-size:0.7rem;font-weight:700;color:#6ee7b7;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
@@ -245,8 +249,6 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .nav-link{padding:7px 12px;border-radius:8px;font-size:0.78rem;font-weight:500;color:var(--nav-idle);text-decoration:none;transition:all 0.18s;white-space:nowrap;border:1px solid transparent;}
 .nav-link:hover{background:var(--hover-strong);color:var(--nav-idle-hover);border-color:var(--border);}
 .nav-link.active{color:var(--tx);background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.44);font-weight:700;}
-.nav-link.cta{background:var(--li);color:#fff;font-weight:600;}
-.nav-link.cta:hover{background:var(--li2);}
 @media(max-width:680px){.hdr-nav{display:none;}}
 @media(max-width:600px){
   /* Header — compact single row, no overlap (nav already hidden <680px) */
@@ -324,7 +326,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 <!-- HEADER -->
 <header class="hdr">
   <div class="hdr-l">
-    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">🌙</button>
+    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
     <a href="how-to.html" class="logo-link" title="LinkVault — by Growth Automated"><span class="lv-brand"><img class="lv-mark" src="linkvault-mark.png" alt="LinkVault"><span class="lv-text"><span class="lv-word">LinkVault</span><span class="lv-ga" role="img" aria-label="by Growth Automated"></span></span></span></a>
   </div>
   <nav class="hdr-nav">
@@ -367,7 +369,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <div class="pm-row"><span class="pm-file">messages.csv</span><span class="pm-use">Message history &amp; dates</span><span class="pm-loc">browser only</span></div>
       <div class="pm-row"><span class="pm-file">Reactions / Comments</span><span class="pm-use">Engagement activity charts</span><span class="pm-loc">browser only</span></div>
       <div class="pm-row"><span class="pm-file">Profile / Positions</span><span class="pm-use">Your own profile snapshot</span><span class="pm-loc">browser only</span></div>
-      <div class="pm-note">No server. No upload. All processing runs in your browser's local memory and disappears when you close the tab. <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" style="color:rgba(110,231,183,0.7);">View source on GitHub ↗</a></div>
+      <div class="pm-note">No server. No upload. All processing runs in your browser's local memory and disappears when you close the tab. <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" class="pm-link">View source on GitHub ↗</a></div>
     </div>
 
     <!-- DROP ZONE -->
@@ -393,7 +395,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
         📂 Select Folder — Chrome/Edge
       </button>
       <div class="lvpm-fs-note" style="font-size:0.72rem;color:var(--tx3);max-width:280px;text-align:center;line-height:1.5;margin:-3px auto 1px;">🔒 <span class="lvpm-browser">Chrome</span> will ask to <b style="color:var(--tx2);">read this folder</b> — that's local-only; nothing is uploaded or leaves your device.</div>
-      <button type="button" onclick="openPrivacyMonitor&&openPrivacyMonitor()" style="background:none;border:none;color:var(--li2);font-size:0.72rem;font-weight:700;cursor:pointer;font-family:inherit;padding:0 0 3px;">🛡 Watch the live upload monitor →</button>
+      <button type="button" onclick="window.openPrivacyMonitor&&window.openPrivacyMonitor()" style="background:none;border:none;color:var(--li2);font-size:0.72rem;font-weight:700;cursor:pointer;font-family:inherit;padding:0 0 3px;">🛡 Watch the live upload monitor →</button>
       <div class="load-divider">or</div>
       <button class="btn btn-sample" onclick="loadDemoData()" style="width:280px;justify-content:center;">
         ✨ Try with sample data
@@ -3350,9 +3352,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 </script>
 <!-- Willis help widget -->
-<footer class="lv-footer"><a href="how-to.html" class="lv-foot-logo" aria-label="Growth Automated"></a><div class="lv-foot-tag"><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated</div><div class="lv-foot-links">Not affiliated with LinkedIn · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener">View source ↗</a> · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes ↗</a></div></footer>
-<script src="privacy-monitor.js"></script>
-<script src="willis-articles.js"></script>
-<script src="willis.js"></script>
+<footer class="lv-footer"><a href="how-to.html" class="lv-foot-logo" aria-label="Growth Automated"></a><div class="lv-foot-tag"><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated</div><div class="lv-foot-links">Not affiliated with LinkedIn · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener">View source ↗</a> · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes ↗</a> · <a href="#" onclick="window.reportIssue&&reportIssue();return false;">Report an issue</a></div></footer>
+<script src="privacy-monitor.js?v=2"></script>
+<script src="willis-articles.js?v=2"></script>
+<script src="willis.js?v=2"></script>
 </body>
 </html>
