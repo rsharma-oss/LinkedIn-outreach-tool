@@ -2,6 +2,20 @@
 
 ---
 
+## 🔎 Code-review hardening sprint — July 4, 2026
+
+_Public release. A 8-angle adversarial code review of the recent UI sprints surfaced 10 confirmed issues + a cleanup list; all fixed in one pass._
+
+- **Default-light readability restored** — the theme-default flip had left dark-designed elements unreadable on light: the **"0 B uploaded" monitor badge** (≈1.9:1 → dark green, AA), **error banners** on both apps (≈1.9:1 → dark red — load errors were effectively invisible), the privacy-manifest **GitHub links**, and the how-to **privacy badge**. The **privacy explainer modal** also now themes correctly on the Playbook (it was auto-opening dark-on-light). Dark mode unchanged.
+- **Mobile nav fixed on How It Works** — a leftover `:not(.cta)` rule (whose only member was the removed Book Demo link) was hiding the *entire* nav at ≤768px; how-to now matches the app pages (full nav ≥681px, hidden below).
+- **Demo funnel restored on the shareable demo pages** — `icp-demo` / `dashboard-demo` (the prospect-facing snapshots) now load Willis, giving them the **Book-a-demo** and **Report** paths they lost when the nav CTA moved.
+- **Willis is now a genuinely reusable kit** — new **`WILLIS_CONFIG`** (name · tagline · placeholder · report email · action buttons): all LinkVault-specific data moved out of the engine into the site layer. Other apps can drop the kit in with their own config.
+- **Report is failure-proof again** — a small guarded **"Report an issue"** link in every page footer (works even if the help widget fails to load); fixed a listener leak in the report dialog.
+- **Offline bundles: smarter link policy** — runtime-injected links (e.g. Willis's Book-a-demo) used to escape the offline link-shader and could navigate the offline page to a nonexistent file, losing your loaded session; a click-time guard now blocks them. And the **"Get your LinkedIn data" CTA now stays live** in the offline files (it was being disabled along with everything external).
+- **Hygiene:** dead post-declutter CSS removed across all 7 pages; hero spacer scaffolding removed; the get-data CTA's copy + styles aligned across all 4 placements ("email arrives ~10 min–24 h" now everywhere); cache-busting (`?v=2`) added to the Willis + privacy-monitor scripts so returning browsers can't mix stale/fresh copies; theme toggle's initial icon now matches the light default.
+
+---
+
 ## 🔗 "Get your LinkedIn data" — front-and-center CTA — June 29, 2026
 
 _Public release. The most important first action is now impossible to miss._

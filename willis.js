@@ -8,6 +8,15 @@
               shrug:BASE+'willis-shrug.png', cheeky:BASE+'willis-cheeky.png', avatar:BASE+'willis-avatar.png' };
   var ARTICLES = window.WILLIS_ARTICLES || [];
 
+  /* Per-site config (window.WILLIS_CONFIG, set before this script — e.g. in willis-articles.js).
+     Keeps site-specific data (booking link, report email, branding) OUT of the engine so the
+     kit stays drop-in reusable. Everything has a neutral default. */
+  var DEF = { name:'Willis', tagline:'Your guide · online',
+              placeholder:'Ask a question…',
+              reportEmail:'', actions:[] };
+  var CFG = (function(){ var c=window.WILLIS_CONFIG||{}, o={}, k;
+    for(k in DEF) o[k]=(c[k]!=null?c[k]:DEF[k]); return o; })();
+
   /* ---------- styles (self-contained; theme via html[data-theme="light"]) ---------- */
   var css = `
   .wz-root{ --wp-panel:#1b2436; --wp-input:#121a2b; --wp-card:#252f47; --wp-border:rgba(255,255,255,.12);
@@ -105,11 +114,11 @@
     '<div class="wz-tip">Need a hand? Ask Willis</div>'+
     '<div class="wz-panel" id="wzPanel" role="dialog" aria-label="Ask Willis">'+
       '<div class="wz-head"><img src="'+ART.avatar+'" alt="Willis">'+
-        '<div class="wz-t"><div class="wz-name"><span class="wz-dot"></span> Willis</div>'+
-        '<div class="wz-status">Your guide to the toolkit · online</div></div>'+
+        '<div class="wz-t"><div class="wz-name"><span class="wz-dot"></span> '+esc(CFG.name)+'</div>'+
+        '<div class="wz-status">'+esc(CFG.tagline)+'</div></div>'+
         '<button class="wz-x" id="wzClose" aria-label="Close Willis">×</button></div>'+
       '<div class="wz-asklabel">Ask Willis</div>'+
-      '<div class="wz-ask"><input id="wzInput" type="text" placeholder="Whatchu talkin&#39; &#39;bout, Willis?" autocomplete="off" aria-label="Ask Willis a question">'+
+      '<div class="wz-ask"><input id="wzInput" type="text" placeholder="'+esc(CFG.placeholder)+'" autocomplete="off" aria-label="Ask '+esc(CFG.name)+' a question">'+
         '<button id="wzAsk">Ask</button></div>'+
       '<div class="wz-body" id="wzBody"></div></div>';
   document.body.appendChild(root);
@@ -124,12 +133,26 @@
   function renderIdle(){
     body.innerHTML =
       stateCard(ART.welcoming,'Welcome! Ask me anything.','Type a question above — exporting your data, how ICP tiers work, why it won\'t load…')+
-      '<div class="wz-actions"><a class="wz-actbtn wz-act-demo" href="demo.html">📅 Book a demo →</a>'+
-        '<button type="button" class="wz-actbtn wz-act-report" id="wzReportHome">🐞 Report a bug</button></div>'+
+      actionsRow()+
       '<div class="wz-sect">Popular topics</div>'+
       ARTICLES.slice(0,5).map(artRow).join('');
-    wireRows();
-    var rh=document.getElementById('wzReportHome'); if(rh) rh.onclick=function(){ gaReport(); };
+    wireRows(); wireActions();
+  }
+  /* Site-configured action buttons (CFG.actions): {label, href, primary} → link;
+     {label, action:'report', primary} → opens the report dialog. Empty by default. */
+  function actionsRow(){
+    if(!CFG.actions.length) return '';
+    return '<div class="wz-actions">'+CFG.actions.map(function(a,i){
+      var cls='wz-actbtn '+(a.primary?'wz-act-demo':'wz-act-report');
+      if(a.href) return '<a class="'+cls+'" href="'+esc(a.href)+'">'+esc(a.label)+'</a>';
+      return '<button type="button" class="'+cls+'" data-wzact="'+i+'">'+esc(a.label)+'</button>';
+    }).join('')+'</div>';
+  }
+  function wireActions(){
+    [].forEach.call(body.querySelectorAll('[data-wzact]'),function(b){
+      var a=CFG.actions[+b.getAttribute('data-wzact')]||{};
+      b.onclick=function(){ if(a.action==='report') gaReport(); else if(typeof a.onclick==='function') a.onclick(); };
+    });
   }
   function runSearch(q){
     q=(q||'').trim().toLowerCase(); if(!q){renderIdle();return;}
@@ -225,7 +248,7 @@
     return L.join('\n');
   }
   function gaReport(o){
-    o=o||{}; var EMAIL='rahul@growthautomated.ai';
+    o=o||{}; var EMAIL=CFG.reportEmail||'rahul@growthautomated.ai';
     var subject='['+(o.feature?'LinkedIn Toolkit — feature request':(o.question?'Willis — unanswered':'LinkedIn Toolkit — issue'))+'] '+document.title;
     var ov=document.createElement('div'); ov.className='gar-ov';
     var card=document.createElement('div'); card.className='gar-card'; card.setAttribute('role','dialog'); card.setAttribute('aria-label','Send a report');
@@ -238,9 +261,10 @@
       '<div class="gar-btns" style="margin-top:8px"><button class="gar-b" id="garClose">Close</button></div>';
     ov.appendChild(card); document.body.appendChild(ov);
     var ta=card.querySelector('#garTa'); ta.value=gaDiag(o);
-    function done(){ if(ov.parentNode) ov.parentNode.removeChild(ov); }
+    function done(){ if(ov.parentNode) ov.parentNode.removeChild(ov); document.removeEventListener('keydown',escKey); }
+    function escKey(e){ if(e.key==='Escape') done(); }
     ov.addEventListener('click',function(e){ if(e.target===ov)done(); });
-    document.addEventListener('keydown',function esc(e){ if(e.key==='Escape'){done();document.removeEventListener('keydown',esc);} });
+    document.addEventListener('keydown',escKey);
     card.querySelector('#garClose').onclick=done;
     card.querySelector('#garCopy').onclick=function(){ var btn=this;
       function ok(){ btn.textContent='✓ Copied — now email it'; }

@@ -2,6 +2,21 @@
    Each: {id, title, cat, k:keywords, body:HTML}. Plain, scannable, one job each.
    Categories (browse order): Start here · Get your data · Loading your data · Dashboard ·
    ICP Finder · Outreach Playbook · Privacy · Browser & device · Reference · Help & feedback. */
+
+/* LinkVault's Willis config — the SITE layer. The willis.js engine ships neutral and reads
+   window.WILLIS_CONFIG; all LinkVault-specific data (booking link, report email, branding)
+   lives here so the engine stays a drop-in reusable kit for other apps. */
+window.WILLIS_CONFIG = {
+  name: 'Willis',
+  tagline: 'Your guide to the toolkit · online',
+  placeholder: "Whatchu talkin' 'bout, Willis?",
+  reportEmail: 'rahul@growthautomated.ai',
+  actions: [
+    { label: '📅 Book a demo →', href: 'demo.html', primary: true },
+    { label: '🐞 Report a bug', action: 'report' }
+  ]
+};
+
 window.WILLIS_ARTICLES = [
 
 /* ──────────────── Start here ──────────────── */
