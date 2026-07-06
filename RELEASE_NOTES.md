@@ -2,6 +2,16 @@
 
 ---
 
+## 🏷 v1.0-gc2 — LinkVault naming in Willis — July 5, 2026
+
+_Gold-candidate patch (scoped exception to the gc1 freeze). Brand-consistency only — no behavior changes._
+
+- **Willis now speaks LinkVault:** tagline "Your guide to **LinkVault** · online", the Start-here article is "**What is LinkVault?**", and report emails are subjected **"[LinkVault — issue] / [LinkVault — feature request]"** (was "LinkedIn Toolkit").
+- **Engine stays product-neutral:** the product's name comes from a new **`WILLIS_CONFIG.productName`** key (falls back to the page title) — the last hardcoded product string left the reusable engine, so Willis remains drop-in for other apps.
+- Script tags bumped to `?v=3`; offline bundles rebuilt; the willis-kit (engine + README) refreshed to match.
+
+---
+
 ## 🔎 Code-review hardening sprint — July 4, 2026
 
 _Public release. A 8-angle adversarial code review of the recent UI sprints surfaced 10 confirmed issues + a cleanup list; all fixed in one pass._
