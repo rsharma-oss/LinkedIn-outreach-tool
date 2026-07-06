@@ -13,6 +13,7 @@
      kit stays drop-in reusable. Everything has a neutral default. */
   var DEF = { name:'Willis', tagline:'Your guide · online',
               placeholder:'Ask a question…',
+              productName:'',   /* used where the engine must name the PRODUCT (report subjects); falls back to document.title */
               reportEmail:'', actions:[] };
   var CFG = (function(){ var c=window.WILLIS_CONFIG||{}, o={}, k;
     for(k in DEF) o[k]=(c[k]!=null?c[k]:DEF[k]); return o; })();
@@ -249,7 +250,8 @@
   }
   function gaReport(o){
     o=o||{}; var EMAIL=CFG.reportEmail||'rahul@growthautomated.ai';
-    var subject='['+(o.feature?'LinkedIn Toolkit — feature request':(o.question?'Willis — unanswered':'LinkedIn Toolkit — issue'))+'] '+document.title;
+    var PN=CFG.productName||document.title||'App';
+    var subject='['+(o.feature?PN+' — feature request':(o.question?CFG.name+' — unanswered':PN+' — issue'))+'] '+document.title;
     var ov=document.createElement('div'); ov.className='gar-ov';
     var card=document.createElement('div'); card.className='gar-card'; card.setAttribute('role','dialog'); card.setAttribute('aria-label','Send a report');
     card.innerHTML='<h3>📨 Send us a report</h3><p class="gar-sub">Edit if you like, then copy it or open your email. No LinkedIn data is included.</p>'+

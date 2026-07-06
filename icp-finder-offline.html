@@ -3551,7 +3551,8 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
    lives here so the engine stays a drop-in reusable kit for other apps. */
 window.WILLIS_CONFIG = {
   name: 'Willis',
-  tagline: 'Your guide to the toolkit · online',
+  productName: 'LinkVault',
+  tagline: 'Your guide to LinkVault · online',
   placeholder: "Whatchu talkin' 'bout, Willis?",
   reportEmail: 'rahul@growthautomated.ai',
   actions: [
@@ -3563,9 +3564,9 @@ window.WILLIS_CONFIG = {
 window.WILLIS_ARTICLES = [
 
 /* ──────────────── Start here ──────────────── */
-{ id:"what-is-toolkit", title:"What is the LinkedIn Toolkit?", cat:"Start here",
-  k:"what is toolkit overview about intro three tools summary",
-  body:`<p>It's a set of <b>three free, private tools</b> that turn your LinkedIn data export into something useful:</p>
+{ id:"what-is-toolkit", title:"What is LinkVault?", cat:"Start here",
+  k:"what is linkvault toolkit overview about intro three tools summary",
+  body:`<p><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated — is a set of <b>three free, private tools</b> that turn your LinkedIn data export into something useful:</p>
   <ul>
     <li><b>📊 Dashboard</b> — analytics on your whole network.</li>
     <li><b>🎯 ICP Finder</b> — scores every connection so you know who to reach out to.</li>
@@ -3930,6 +3931,7 @@ window.WILLIS_ARTICLES = [
      kit stays drop-in reusable. Everything has a neutral default. */
   var DEF = { name:'Willis', tagline:'Your guide · online',
               placeholder:'Ask a question…',
+              productName:'',   /* used where the engine must name the PRODUCT (report subjects); falls back to document.title */
               reportEmail:'', actions:[] };
   var CFG = (function(){ var c=window.WILLIS_CONFIG||{}, o={}, k;
     for(k in DEF) o[k]=(c[k]!=null?c[k]:DEF[k]); return o; })();
@@ -4166,7 +4168,8 @@ window.WILLIS_ARTICLES = [
   }
   function gaReport(o){
     o=o||{}; var EMAIL=CFG.reportEmail||'rahul@growthautomated.ai';
-    var subject='['+(o.feature?'LinkedIn Toolkit — feature request':(o.question?'Willis — unanswered':'LinkedIn Toolkit — issue'))+'] '+document.title;
+    var PN=CFG.productName||document.title||'App';
+    var subject='['+(o.feature?PN+' — feature request':(o.question?CFG.name+' — unanswered':PN+' — issue'))+'] '+document.title;
     var ov=document.createElement('div'); ov.className='gar-ov';
     var card=document.createElement('div'); card.className='gar-card'; card.setAttribute('role','dialog'); card.setAttribute('aria-label','Send a report');
     card.innerHTML='<h3>📨 Send us a report</h3><p class="gar-sub">Edit if you like, then copy it or open your email. No LinkedIn data is included.</p>'+

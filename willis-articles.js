@@ -8,7 +8,8 @@
    lives here so the engine stays a drop-in reusable kit for other apps. */
 window.WILLIS_CONFIG = {
   name: 'Willis',
-  tagline: 'Your guide to the toolkit · online',
+  productName: 'LinkVault',
+  tagline: 'Your guide to LinkVault · online',
   placeholder: "Whatchu talkin' 'bout, Willis?",
   reportEmail: 'rahul@growthautomated.ai',
   actions: [
@@ -20,9 +21,9 @@ window.WILLIS_CONFIG = {
 window.WILLIS_ARTICLES = [
 
 /* ──────────────── Start here ──────────────── */
-{ id:"what-is-toolkit", title:"What is the LinkedIn Toolkit?", cat:"Start here",
-  k:"what is toolkit overview about intro three tools summary",
-  body:`<p>It's a set of <b>three free, private tools</b> that turn your LinkedIn data export into something useful:</p>
+{ id:"what-is-toolkit", title:"What is LinkVault?", cat:"Start here",
+  k:"what is linkvault toolkit overview about intro three tools summary",
+  body:`<p><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated — is a set of <b>three free, private tools</b> that turn your LinkedIn data export into something useful:</p>
   <ul>
     <li><b>📊 Dashboard</b> — analytics on your whole network.</li>
     <li><b>🎯 ICP Finder</b> — scores every connection so you know who to reach out to.</li>
