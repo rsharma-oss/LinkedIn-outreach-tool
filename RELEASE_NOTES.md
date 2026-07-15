@@ -2,6 +2,16 @@
 
 ---
 
+## ♿ WCAG contrast hotfix — light mode readable everywhere — July 15, 2026
+
+_Gold-candidate hotfix (v1.0-gc2 baseline). Fixes "fonts don't render properly" in light mode — text that was designed for dark backgrounds was rendering near-invisible on light._
+
+- **The bug:** hardcoded dark-theme colors ignored the theme system — near-white `<strong>` text in the how-to FAQ (**1.1:1** contrast on white), white manifest filenames, mint/lavender/amber status text, and the cyan `#00a0dc` accent family (~2.9:1) all failed WCAG in the now-default light theme.
+- **The fix:** a full **WCAG AA audit** (programmatic contrast check of every visible text element) across all 5 themed pages in **both themes and loaded app states** — then theme-correct overrides: light link/accent blue is now `#0369a1`, status colors (tier badges, engagement dots, stat values, demo banner) get dark-shade light-mode equivalents, muted text raised to compliant alphas in **both** themes (dark idle tabs/nav/footer were also below AA).
+- **Result: zero WCAG AA text-contrast failures** on How-It-Works, Dashboard, ICP Finder, Demo, and Playbook — light + dark, load screens + loaded app views. Dark mode's look is preserved (muted things stay muted — just compliantly so).
+
+---
+
 ## 🏷 v1.0-gc2 — LinkVault naming in Willis — July 5, 2026
 
 _Gold-candidate patch (scoped exception to the gc1 freeze). Brand-consistency only — no behavior changes._
