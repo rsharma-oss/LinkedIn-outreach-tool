@@ -12,25 +12,29 @@
   --bg:#080c14; --bg2:#0d1220; --bg3:#131926; --bg4:#1a2235; --card:#111827;
   --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
   --li:#0077B5; --li2:#00a0dc; --glow:rgba(0,119,181,0.18);
-  --tx:#f0f4ff; --tx2:rgba(240,244,255,0.65); --tx3:rgba(240,244,255,0.38);
+  --tx:#f0f4ff; --tx2:rgba(240,244,255,0.65); --tx3:rgba(240,244,255,0.55);
   /* theme-adaptive (dark defaults — overridden by [data-theme="light"]) */
   --hdr-grad:linear-gradient(135deg,#0a0f1e,#0d1525);
   --hero-grad:linear-gradient(160deg,#0a0f1e 0%,#0d1525 50%,#0a1628 100%);
   --head-grad:linear-gradient(135deg,#f0f4ff 0%,#a5c8f0 100%);
   --cta-grad:linear-gradient(135deg,#0a0f1e,#0a1628);
   --hover-strong:rgba(255,255,255,0.08);
-  --nav-idle:rgba(240,244,255,0.3); --nav-idle-hover:rgba(240,244,255,0.8);
+  --nav-idle:rgba(240,244,255,0.55); --nav-idle-hover:rgba(240,244,255,0.8);
 }
 [data-theme="light"]{
   --bg:#eef1f7; --bg2:#ffffff; --bg3:#f4f6fb; --bg4:#e7ecf5; --card:#ffffff;
   --border:rgba(15,23,42,0.1); --border2:rgba(15,23,42,0.18); --glow:rgba(0,119,181,0.12);
-  --tx:#0f172a; --tx2:rgba(15,23,42,0.7); --tx3:rgba(15,23,42,0.5);
+  --tx:#0f172a; --tx2:rgba(15,23,42,0.7); --tx3:rgba(15,23,42,0.62);
   --hdr-grad:linear-gradient(135deg,#ffffff,#eef1f7);
   --hero-grad:linear-gradient(160deg,#ffffff 0%,#eef1f7 50%,#e3eefb 100%);
   --head-grad:linear-gradient(135deg,#0f172a 0%,#0077B5 100%);
   --cta-grad:linear-gradient(135deg,#eef1f7,#e3eefb);
   --hover-strong:rgba(15,23,42,0.07);
   --nav-idle:rgba(15,23,42,0.55); --nav-idle-hover:rgba(15,23,42,0.9);
+  --li2:#0369a1;
+  --dlgreen:#047857;
+  --warn:#b45309;
+  --ok:#047857;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.6;}
@@ -191,7 +195,7 @@ a:hover{color:var(--tx);text-decoration:underline;}
 .btn-getdata .bgd-num{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.24);color:#fff;font-weight:800;font-size:0.9rem;display:flex;align-items:center;justify-content:center;}
 .btn-getdata .bgd-txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25;text-align:left;flex:1 1 auto;}
 .btn-getdata .bgd-txt b{font-size:0.98rem;font-weight:800;color:#fff;letter-spacing:.1px;}
-.btn-getdata .bgd-sub{font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.9);margin-top:1px;}
+.btn-getdata .bgd-sub{font-size:0.7rem;font-weight:600;color:#fff;margin-top:1px;}
 .btn-getdata .bgd-arw{flex:0 0 auto;font-size:1.15rem;color:#fff;}
 .tip-box{
   background:rgba(0,119,181,0.08);
@@ -432,10 +436,16 @@ a:hover{color:var(--tx);text-decoration:underline;}
 .lv-foot-tag{font-size:0.86rem;color:rgba(240,244,255,0.6);margin:0 0 6px;}
 [data-theme="light"] .lv-foot-tag{color:rgba(15,23,42,0.6);}
 .lv-foot-tag b{color:inherit;}
-.lv-foot-links{font-size:0.75rem;color:rgba(240,244,255,0.4);margin:0;}
+.lv-foot-links{font-size:0.75rem;color:rgba(240,244,255,0.55);margin:0;}
 .lv-foot-links a{color:inherit;text-decoration:none;}
-[data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.45);}
+[data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.62);}
 
+/* WCAG light-mode overrides (July 7 2026) — dark values unchanged */
+[data-theme="light"] .pm-title{color:#047857;}
+[data-theme="light"] .pm-file{color:#0f172a;}
+[data-theme="light"] .pm-loc{color:#047857;border-color:rgba(4,120,87,0.4);}
+[data-theme="light"] .btn-sample{color:#047857;border-color:rgba(4,120,87,0.5);}
+[data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.62);}
 </style>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -453,7 +463,7 @@ a:hover{color:var(--tx);text-decoration:underline;}
     <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
     <a href="how-to.html" style="text-decoration:none;display:flex;align-items:center;gap:12px;color:inherit;"><span class="lv-brand"><img class="lv-mark" src="linkvault-mark.png" alt="LinkVault"><span class="lv-text"><span class="lv-word">LinkVault</span><span class="lv-ga" role="img" aria-label="by Growth Automated"></span></span></span>
     <div>
-      <div class="hdr-title" style="font-family:'Assistant',sans-serif;font-weight:700;">GrowthAutomated<span style="color:#00a0dc">.ai</span></div>
+      <div class="hdr-title" style="font-family:'Assistant',sans-serif;font-weight:700;">GrowthAutomated<span style="color:var(--li2)">.ai</span></div>
       <div class="hdr-sub">How It Works</div>
     </div></a>
   </div>
@@ -701,12 +711,12 @@ a:hover{color:var(--tx);text-decoration:underline;}
         </label>
         <div class="faq-body">
           <div class="faq-body-inner" style="line-height:1.8;">
-            <p style="margin-bottom:10px;">Yes — and you don't have to take our word for it. This app is a static HTML file hosted on GitHub Pages. <strong style="color:#f0f4ff;">There is no server. It physically cannot receive your data.</strong> Everything runs in your browser's local memory and disappears the moment you close the tab.</p>
+            <p style="margin-bottom:10px;">Yes — and you don't have to take our word for it. This app is a static HTML file hosted on GitHub Pages. <strong>There is no server. It physically cannot receive your data.</strong> Everything runs in your browser's local memory and disappears the moment you close the tab.</p>
             <p style="margin-bottom:6px;">Three ways to verify this yourself:</p>
             <ol style="margin:0 0 12px 18px;display:flex;flex-direction:column;gap:6px;">
-              <li><strong style="color:#f0f4ff;">Open DevTools → Network tab</strong> (right-click → Inspect). Load your data. You'll see requests for fonts and chart libraries — and nothing else. Zero bytes of your data sent anywhere.</li>
-              <li><strong style="color:#f0f4ff;">Right-click → View Page Source.</strong> Every line of code is plain JavaScript. There are no upload calls, no tracking scripts, no analytics.</li>
-              <li><strong style="color:#f0f4ff;">Read the full source on GitHub →</strong> <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" style="color:var(--li2);">github.com/rsharma-oss/LinkedIn-outreach-tool</a></li>
+              <li><strong>Open DevTools → Network tab</strong> (right-click → Inspect). Load your data. You'll see requests for fonts and chart libraries — and nothing else. Zero bytes of your data sent anywhere.</li>
+              <li><strong>Right-click → View Page Source.</strong> Every line of code is plain JavaScript. There are no upload calls, no tracking scripts, no analytics.</li>
+              <li><strong>Read the full source on GitHub →</strong> <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" style="color:var(--li2);">github.com/rsharma-oss/LinkedIn-outreach-tool</a></li>
             </ol>
           </div>
         </div>
@@ -750,8 +760,8 @@ a:hover{color:var(--tx);text-decoration:underline;}
         <div class="faq-body">
           <div class="faq-body-inner" style="line-height:1.8;">
             <p style="margin-bottom:12px;">One LinkedIn data request triggers two separate zip files — both uploaded exactly the same way (drag &amp; drop or Chrome/Edge folder picker). They just arrive at different times:</p>
-            <p style="margin-bottom:8px;"><strong style="color:#f0f4ff;">Basic export</strong> — arrives within 24 hours. Contains your <strong>Connections</strong> and <strong>Messages</strong>. This is everything the ICP Finder and Playbook need — start here as soon as it lands.</p>
-            <p style="margin-bottom:12px;"><strong style="color:#f0f4ff;">Complete export</strong> — arrives within 72 hours. Adds your Reactions, Comments, Posts, Invitations, and full profile history. Load this into the Dashboard to unlock engagement trends, content analysis, and your full network health score.</p>
+            <p style="margin-bottom:8px;"><strong>Basic export</strong> — arrives within 24 hours. Contains your <strong>Connections</strong> and <strong>Messages</strong>. This is everything the ICP Finder and Playbook need — start here as soon as it lands.</p>
+            <p style="margin-bottom:12px;"><strong>Complete export</strong> — arrives within 72 hours. Adds your Reactions, Comments, Posts, Invitations, and full profile history. Load this into the Dashboard to unlock engagement trends, content analysis, and your full network health score.</p>
             <table style="width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:4px;">
               <thead>
                 <tr style="border-bottom:1px solid var(--border2);">
@@ -763,18 +773,18 @@ a:hover{color:var(--tx);text-decoration:underline;}
               <tbody>
                 <tr style="border-bottom:1px solid var(--border);">
                   <td style="padding:7px 8px;color:var(--tx2);">📊 Dashboard</td>
-                  <td style="text-align:center;padding:7px 8px;color:#f59e0b;">Partial — connections &amp; messages only</td>
-                  <td style="text-align:center;padding:7px 8px;color:#10b981;">✓ Full analytics</td>
+                  <td style="text-align:center;padding:7px 8px;color:var(--warn,#f59e0b);">Partial — connections &amp; messages only</td>
+                  <td style="text-align:center;padding:7px 8px;color:var(--ok,#10b981);">✓ Full analytics</td>
                 </tr>
                 <tr style="border-bottom:1px solid var(--border);">
                   <td style="padding:7px 8px;color:var(--tx2);">🎯 ICP Finder</td>
-                  <td style="text-align:center;padding:7px 8px;color:#10b981;">✓ Fully works</td>
-                  <td style="text-align:center;padding:7px 8px;color:#10b981;">✓ Fully works</td>
+                  <td style="text-align:center;padding:7px 8px;color:var(--ok,#10b981);">✓ Fully works</td>
+                  <td style="text-align:center;padding:7px 8px;color:var(--ok,#10b981);">✓ Fully works</td>
                 </tr>
                 <tr>
                   <td style="padding:7px 8px;color:var(--tx2);">📋 Playbook</td>
-                  <td style="text-align:center;padding:7px 8px;color:#10b981;">✓ Fully works</td>
-                  <td style="text-align:center;padding:7px 8px;color:#10b981;">✓ Fully works</td>
+                  <td style="text-align:center;padding:7px 8px;color:var(--ok,#10b981);">✓ Fully works</td>
+                  <td style="text-align:center;padding:7px 8px;color:var(--ok,#10b981);">✓ Fully works</td>
                 </tr>
               </tbody>
             </table>
@@ -828,10 +838,10 @@ a:hover{color:var(--tx);text-decoration:underline;}
     <h2 class="section-title" style="margin-bottom:16px;">Run it with Wi&#8209;Fi off.</h2>
     <p style="font-size:0.97rem;color:var(--tx2);max-width:560px;margin:0 auto 32px;line-height:1.7;">Download the tools as standalone HTML files. Open them in your browser, turn off your internet, and load your data. If anything were being sent to a server, it would fail. It doesn't.</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">
-      <a class="btn" href="dashboard-offline.html" download style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.35);color:#6ee7b7;padding:10px 22px;border-radius:8px;font-size:0.87rem;font-weight:600;display:inline-flex;align-items:center;gap:8px;">
+      <a class="btn" href="dashboard-offline.html" download style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.35);color:var(--dlgreen,#6ee7b7);padding:10px 22px;border-radius:8px;font-size:0.87rem;font-weight:600;display:inline-flex;align-items:center;gap:8px;">
         ⬇&nbsp;Dashboard (offline)
       </a>
-      <a class="btn" href="icp-finder-offline.html" download style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.35);color:#6ee7b7;padding:10px 22px;border-radius:8px;font-size:0.87rem;font-weight:600;display:inline-flex;align-items:center;gap:8px;">
+      <a class="btn" href="icp-finder-offline.html" download style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.35);color:var(--dlgreen,#6ee7b7);padding:10px 22px;border-radius:8px;font-size:0.87rem;font-weight:600;display:inline-flex;align-items:center;gap:8px;">
         ⬇&nbsp;ICP Finder (offline)
       </a>
     </div>
