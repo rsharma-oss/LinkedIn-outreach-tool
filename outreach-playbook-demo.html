@@ -25,7 +25,7 @@
     --purple: #8b5cf6;
     --text-primary: #f0f4ff;
     --text-secondary: rgba(240,244,255,0.65);
-    --text-muted: rgba(240,244,255,0.38);
+    --text-muted: rgba(240,244,255,0.55);
     --tier1: #10b981;
     --tier1-bg: rgba(16,185,129,0.1);
     --tier2: #f59e0b;
@@ -37,22 +37,27 @@
     /* theme-adaptive (dark defaults — overridden by [data-theme="light"]) */
     --hdr-grad: linear-gradient(135deg,#0a0f1e,#0d1525);
     --hover-strong: rgba(255,255,255,0.08);
-    --nav-idle: rgba(240,244,255,0.3);
+    --nav-idle: rgba(240,244,255,0.55);
     --nav-idle-hover: rgba(240,244,255,0.8);
   }
   [data-theme="light"]{
     --bg-primary:#eef1f7;--bg-elevated:#ffffff;--bg-surface:#f4f6fb;--bg-hover:#e7ecf5;--bg-card:#ffffff;
     --border:rgba(15,23,42,0.1);--border-active:rgba(37,99,235,0.4);
-    --text-primary:#0f172a;--text-secondary:rgba(15,23,42,0.7);--text-muted:rgba(15,23,42,0.5);
+    --text-primary:#0f172a;--text-secondary:rgba(15,23,42,0.7);--text-muted:rgba(15,23,42,0.62);
+    --accent:#1d4ed8;--green:#047857;--yellow:#b45309;--red:#b91c1c;--purple:#6d28d9;
+    --tier1:#047857;--tier2:#b45309;--urgent:#b91c1c;--liblue:#1d4ed8;--lilav:#6d28d9;--lilav2:#5b21b6;--lired:#b91c1c;--liamber:#b45309;--limint:#047857;
     --hdr-grad:linear-gradient(135deg,#ffffff,#eef1f7);
     --hover-strong:rgba(15,23,42,0.07);
     --nav-idle:rgba(15,23,42,0.55);--nav-idle-hover:rgba(15,23,42,0.9);
-  }
+  --li2:#0369a1;
+  --tx3:rgba(15,23,42,0.62);
+  --ok:#047857;
+}
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; line-height: 1.6; }
 
-  .demo-banner { background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(59,130,246,0.08)); border-bottom: 1px solid rgba(139,92,246,0.3); padding: 10px 48px; font-size: 0.8rem; color: #c4b5fd; display: flex; align-items: center; gap: 10px; }
-  .demo-banner strong { color: #e9d5ff; }
+  .demo-banner { background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(59,130,246,0.08)); border-bottom: 1px solid rgba(139,92,246,0.3); padding: 10px 48px; font-size: 0.8rem; color: var(--lilav,#c4b5fd); display: flex; align-items: center; gap: 10px; }
+  .demo-banner strong { color: var(--lilav2,#e9d5ff); }
 
   .header {
     background: var(--hdr-grad);
@@ -67,7 +72,7 @@
   }
   .header-title { font-size: 1rem; font-weight: 700; }
   .header-sub { font-size: 0.76rem; color: var(--text-muted); margin-top: 1px; }
-  .header-badge { background: var(--accent-glow); border: 1px solid var(--border-active); color: #93c5fd; font-size: 0.72rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+  .header-badge { background: var(--accent-glow); border: 1px solid var(--border-active); color: var(--liblue,#93c5fd); font-size: 0.72rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
 
   .nav-tabs { background: var(--bg-elevated); border-bottom: 1px solid var(--border); padding: 0 48px; display: flex; gap: 2px; overflow-x: auto; }
   .nav-tab { padding: 14px 18px; font-size: 0.84rem; font-weight: 500; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 7px; }
@@ -101,15 +106,15 @@
   .t2 { background: var(--tier2-bg); color: var(--tier2); border: 1px solid rgba(245,158,11,0.3); }
   .t3 { background: var(--tier3-bg); color: var(--tier3); border: 1px solid rgba(107,114,128,0.25); }
   .turgent { background: var(--urgent-bg); color: var(--urgent); border: 1px solid rgba(239,68,68,0.3); }
-  .tblue { background: rgba(59,130,246,0.1); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
-  .tpurple { background: rgba(139,92,246,0.1); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.3); }
+  .tblue { background: rgba(59,130,246,0.1); color: var(--liblue,#93c5fd); border: 1px solid rgba(59,130,246,0.3); }
+  .tpurple { background: rgba(139,92,246,0.1); color: var(--lilav,#c4b5fd); border: 1px solid rgba(139,92,246,0.3); }
 
   .highlight-box { background: linear-gradient(135deg, rgba(59,130,246,0.07), rgba(99,102,241,0.05)); border: 1px solid rgba(99,102,241,0.22); border-radius: 12px; padding: 18px 22px; margin-bottom: 24px; }
-  .highlight-box h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 7px; color: #93c5fd; }
+  .highlight-box h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 7px; color: var(--liblue,#93c5fd); }
   .highlight-box p { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.7; }
 
   .urgent-box { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.25); border-radius: 12px; padding: 18px 22px; margin-bottom: 24px; }
-  .urgent-box h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 10px; color: #fca5a5; }
+  .urgent-box h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 10px; color: var(--lired,#fca5a5); }
 
   .person-row {
     display: flex; align-items: center; gap: 12px;
@@ -159,12 +164,12 @@
   .cadence-action { flex: 1; font-size: 0.86rem; color: var(--text-secondary); }
   .cadence-action strong { color: var(--text-primary); }
   .ctag { font-size: 0.7rem; font-weight: 600; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
-  .ct-connect { background: rgba(59,130,246,0.14); color: #93c5fd; }
-  .ct-message { background: rgba(139,92,246,0.14); color: #c4b5fd; }
-  .ct-content { background: rgba(16,185,129,0.12); color: #6ee7b7; }
-  .ct-follow { background: rgba(245,158,11,0.12); color: #fcd34d; }
+  .ct-connect { background: rgba(59,130,246,0.14); color: var(--liblue,#93c5fd); }
+  .ct-message { background: rgba(139,92,246,0.14); color: var(--lilav,#c4b5fd); }
+  .ct-content { background: rgba(16,185,129,0.12); color: var(--limint,#6ee7b7); }
+  .ct-follow { background: rgba(245,158,11,0.12); color: var(--liamber,#fcd34d); }
   .ct-review { background: rgba(107,114,128,0.14); color: #9ca3af; }
-  .ct-urgent { background: var(--urgent-bg); color: #fca5a5; }
+  .ct-urgent { background: var(--urgent-bg); color: var(--lired,#fca5a5); }
 
   .data-table { width: 100%; border-collapse: collapse; font-size: 0.835rem; }
   .data-table th { text-align: left; padding: 10px 14px; background: var(--bg-hover); border: 1px solid var(--border); font-size: 0.73rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -178,7 +183,7 @@
   .checklist li { display: flex; align-items: flex-start; gap: 9px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 0.855rem; color: var(--text-secondary); }
   .checklist li:last-child { border-bottom: none; }
 
-  .tag-pill { display: inline-block; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.22); color: #93c5fd; font-size: 0.71rem; font-weight: 600; padding: 2px 9px; border-radius: 20px; margin: 2px; }
+  .tag-pill { display: inline-block; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.22); color: var(--liblue,#93c5fd); font-size: 0.71rem; font-weight: 600; padding: 2px 9px; border-radius: 20px; margin: 2px; }
 
   .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
   .mb16 { margin-bottom: 16px; }
@@ -226,10 +231,19 @@
 .lv-foot-tag{font-size:0.86rem;color:rgba(240,244,255,0.6);margin:0 0 6px;}
 [data-theme="light"] .lv-foot-tag{color:rgba(15,23,42,0.6);}
 .lv-foot-tag b{color:inherit;}
-.lv-foot-links{font-size:0.75rem;color:rgba(240,244,255,0.4);margin:0;}
+.lv-foot-links{font-size:0.75rem;color:rgba(240,244,255,0.55);margin:0;}
 .lv-foot-links a{color:inherit;text-decoration:none;}
-[data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.45);}
+[data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.62);}
 
+/* WCAG light-mode overrides (July 7 2026) — dark values unchanged */
+[data-theme="light"] .pm-title{color:#047857;}
+[data-theme="light"] .pm-file{color:#0f172a;}
+[data-theme="light"] .pm-loc{color:#047857;border-color:rgba(4,120,87,0.4);}
+[data-theme="light"] .btn-sample{color:#047857;border-color:rgba(4,120,87,0.5);}
+[data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.62);}
+/* WCAG light-mode overrides (July 15 2026) */
+[data-theme="light"] .demo-banner{color:#5b21b6;}
+[data-theme="light"] .demo-banner strong{color:#4c1d95;}
 </style>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -248,7 +262,7 @@
     <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
     <a href="how-to.html" class="logo-link"><span class="lv-brand"><img class="lv-mark" src="linkvault-mark.png" alt="LinkVault"><span class="lv-text"><span class="lv-word">LinkVault</span><span class="lv-ga" role="img" aria-label="by Growth Automated"></span></span></span>
     <div>
-      <div class="header-title" style="font-family:'Assistant',sans-serif;font-weight:700;">GrowthAutomated<span style="color:#00a0dc">.ai</span></div>
+      <div class="header-title" style="font-family:'Assistant',sans-serif;font-weight:700;">GrowthAutomated<span style="color:var(--li2)">.ai</span></div>
       <div class="header-sub">Outreach Playbook</div>
     </div></a>
   </div>
@@ -289,7 +303,7 @@
 
   <div class="highlight-box">
     <h4>🎯 The Big Picture</h4>
-    <p>Your network has a strong foundation of <strong style="color: #93c5fd;">891 ICP-fit contacts</strong> — Founders, CEOs, CMOs, and VPs who match your ideal buyer profile. Of those, <strong style="color: #93c5fd;">24 connected in the last 90 days</strong> and are primed for a first message. You also have <strong style="color: #93c5fd;">43 past conversations</strong> worth re-engaging and <strong style="color: #fca5a5;">8 time-sensitive actions</strong> that need your attention today.</p>
+    <p>Your network has a strong foundation of <strong style="color: var(--liblue,#93c5fd);">891 ICP-fit contacts</strong> — Founders, CEOs, CMOs, and VPs who match your ideal buyer profile. Of those, <strong style="color: var(--liblue,#93c5fd);">24 connected in the last 90 days</strong> and are primed for a first message. You also have <strong style="color: var(--liblue,#93c5fd);">43 past conversations</strong> worth re-engaging and <strong style="color: var(--lired,#fca5a5);">8 time-sensitive actions</strong> that need your attention today.</p>
   </div>
 
   <div class="grid-3 mb24">
@@ -1130,8 +1144,8 @@ function showTab(id, el) {
 
   const banner = document.querySelector('.demo-banner');
   if (banner) {
-    banner.style.cssText += ';background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(59,130,246,0.05));border-color:rgba(16,185,129,0.25);color:#6ee7b7;';
-    banner.innerHTML = `✅ <strong>Live data</strong> — showing your real LinkedIn network · synced from ICP Finder on ${dateStr}. <a href="icp-finder.html" style="color:#6ee7b7;margin-left:8px">← Back to ICP Finder</a>`;
+    banner.style.cssText += ';background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(59,130,246,0.05));border-color:rgba(16,185,129,0.25);color:var(--limint,#6ee7b7);';
+    banner.innerHTML = `✅ <strong>Live data</strong> — showing your real LinkedIn network · synced from ICP Finder on ${dateStr}. <a href="icp-finder.html" style="color:var(--limint,#6ee7b7);margin-left:8px">← Back to ICP Finder</a>`;
   }
 
   // ── Update nav badges ──────────────────────────────────────────────────────
@@ -1147,7 +1161,7 @@ function showTab(id, el) {
   if (statVals[3]) statVals[3].textContent = reengage.length.toLocaleString();
 
   const hbP = document.querySelector('#tab-overview .highlight-box p');
-  if (hbP) hbP.innerHTML = `Your network has <strong style="color:#93c5fd">${ICP.length.toLocaleString()} ICP-fit contacts</strong> — Founders, CEOs, CMOs, and VPs who match your ideal buyer profile. Of those, <strong style="color:#93c5fd">${recentT1.length} connected in the last 90 days</strong> and are primed for a first message. You also have <strong style="color:#93c5fd">${reengage.length} past conversations</strong> worth re-engaging and <strong style="color:#fca5a5">${urgent.length} time-sensitive actions</strong> that need your attention today.`;
+  if (hbP) hbP.innerHTML = `Your network has <strong style="color:var(--liblue,#93c5fd)">${ICP.length.toLocaleString()} ICP-fit contacts</strong> — Founders, CEOs, CMOs, and VPs who match your ideal buyer profile. Of those, <strong style="color:var(--liblue,#93c5fd)">${recentT1.length} connected in the last 90 days</strong> and are primed for a first message. You also have <strong style="color:var(--liblue,#93c5fd)">${reengage.length} past conversations</strong> worth re-engaging and <strong style="color:var(--lired,#fca5a5)">${urgent.length} time-sensitive actions</strong> that need your attention today.`;
 
   // Update recency card bars
   const n30  = ICP.filter(c => c.days !== null && c.days < 30).length;
