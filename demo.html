@@ -43,7 +43,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .nav-link.active{color:var(--tx);background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.44);font-weight:700;}
 .theme-toggle{background:var(--hover-strong);color:var(--tx2);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;font-size:0.95rem;line-height:1;cursor:pointer;transition:all 0.18s;}
 .theme-toggle:hover{background:var(--bg4);color:var(--tx);}
-@media(max-width:680px){.hdr-nav{display:none;}}
+@media(max-width:680px){.hdr-nav .nav-link{display:none;}}
 .hdr-title{font-size:1rem;font-weight:700;}
 .hdr-sub{font-size:0.72rem;color:var(--tx3);margin-top:1px;}
 .hdr-r a{font-size:0.82rem;color:var(--tx2);text-decoration:none;display:flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;border:1px solid var(--border2);transition:all 0.2s;}
@@ -204,7 +204,6 @@ footer{text-align:center;padding:24px;border-top:1px solid var(--border);font-si
 <!-- HEADER -->
 <header class="hdr">
   <div class="hdr-l">
-    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
     <a href="how-to.html" style="text-decoration:none;display:flex;align-items:center;flex-shrink:0;"><span class="lv-brand"><img class="lv-mark" src="linkvault-mark.png" alt="LinkVault"><span class="lv-text"><span class="lv-word">LinkVault</span><span class="lv-ga" role="img" aria-label="by Growth Automated"></span></span></span>
     <div>
       <div class="hdr-title" style="font-family:'Assistant',sans-serif;font-weight:700;">GrowthAutomated<span style="color:var(--li2)">.ai</span></div>
@@ -212,6 +211,7 @@ footer{text-align:center;padding:24px;border-top:1px solid var(--border);font-si
     </div></a>
   </div>
   <nav class="hdr-nav">
+    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
     <a class="nav-link" href="how-to.html">📘 How It Works</a>
     <a class="nav-link" href="dashboard.html">📊 Dashboard</a>
     <a class="nav-link" href="icp-finder.html">🎯 ICP Finder</a>
