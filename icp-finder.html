@@ -398,6 +398,22 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .wm-copy{margin-top:9px;background:var(--li);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:0.74rem;font-weight:700;cursor:pointer;font-family:inherit;}
 .wm-x{float:right;background:none;border:none;color:var(--tx3);cursor:pointer;font-size:1rem;line-height:1;}
 </style>
+<style>
+/* Suggested-from-your-data cards — always approve-per-item, never auto-applied */
+.sg-card{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px 14px;margin:0 0 10px;}
+.sg-h{display:flex;align-items:center;gap:8px;font-size:0.78rem;font-weight:800;color:var(--tx);margin:0 0 3px;}
+.sg-sub{font-size:0.72rem;color:var(--tx2);margin:0 0 9px;line-height:1.45;}
+.sg-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.sg-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border2);border-radius:999px;padding:4px 10px;font-size:0.72rem;color:var(--tx);font-family:inherit;cursor:default;}
+.sg-chip b{font-weight:700;}
+.sg-chip .sg-n{color:var(--tx3);font-size:0.68rem;}
+.sg-add{background:var(--li);color:#fff;border:none;border-radius:6px;padding:2px 8px;font-size:0.68rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.sg-add:hover{filter:brightness(1.1);}
+.sg-add.done{background:var(--ok,#047857);}
+.sg-all{background:var(--li);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:0.74rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:9px;}
+.sg-t{background:var(--bg4);color:var(--tx2);border:1px solid var(--border2);border-radius:6px;padding:2px 7px;font-size:0.66rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.sg-t:hover{background:var(--li);color:#fff;}
+</style>
 </head>
 <body>
 
@@ -459,6 +475,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <div class="pm-row"><span class="pm-file">Connections.csv</span><span class="pm-use">Names, companies &amp; roles — scored locally</span><span class="pm-loc">browser only</span></div>
       <div class="pm-row"><span class="pm-file">messages.csv</span><span class="pm-use">Message recency &amp; engagement per contact</span><span class="pm-loc">browser only</span></div>
       <div class="pm-note">No server. No upload. All processing runs in your browser's local memory. <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" class="pm-link">View source on GitHub ↗</a></div>
+      <div class="pm-ignore" style="margin-top:9px;padding-top:9px;border-top:1px dashed var(--border2);font-size:0.72rem;color:var(--tx2);line-height:1.55;"><b style="color:var(--tx);">🚫 And what it never opens.</b> Your export also contains ad clicks, ad-targeting profile, login IPs &amp; security history, billing receipts, phone numbers and email addresses. LinkVault <b>never reads those files</b> — they have nothing to do with outreach.</div>
     </div>
 
     <div class="load-steps">
@@ -2296,7 +2313,7 @@ async function loadFolder() {
   // Dashboard after loading here leaves its Engagement & Content tabs empty.
   const wanted = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
     'Shares.csv','Member_Follows.csv','Invitations.csv','Profile.csv','Positions.csv',
-  'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv'];
+  'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv','SearchQueries.csv'];
   try {
     for await (const entry of dirHandle.values()) {
       if (entry.kind === 'file' && wanted.includes(canonicalName(entry.name))) {
@@ -2313,7 +2330,7 @@ async function loadFolder() {
 // ─── UAT#2 follow-up: zip support + resilient reads + merge (parity with Dashboard) ──
 const LV_WANTED = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
   'Shares.csv','Member_Follows.csv','Invitations.csv','Profile.csv','Positions.csv',
-  'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv'];
+  'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv','SearchQueries.csv'];
 let _fileStore = {};
 let _readFailures = [];
 
@@ -2465,7 +2482,9 @@ async function processFiles(filemap, isDemo) {
   // LZ-string compression reduces each key by ~3x — fixes Safari 5 MB quota for
   // M-activity profiles. H-activity (80K msgs) remains Chrome-only at ~8 MB compressed.
   if (!isDemo) {
-    const mainMap = Object.fromEntries(Object.entries(filemap).filter(([k]) => k !== 'messages.csv'));
+    // SearchQueries.csv is read for ICP suggestions but deliberately NOT cached — it is the
+    // largest file in the export (9k+ rows) and would push Safari past its ~5MB quota.
+    const mainMap = Object.fromEntries(Object.entries(filemap).filter(([k]) => k !== 'messages.csv' && k !== 'SearchQueries.csv'));
     try {
       sessionStorage.setItem('ga_csv_cache', LZString.compress(JSON.stringify({data: mainMap, src:'icp'})));
     } catch(e) { console.warn('CSV session cache failed:', e); }
@@ -3088,6 +3107,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div class="icp-step-label">Step 1 · Start from your industry</div>
     <div class="icp-vert-pills" id="icp-vert-pills"></div>
 
+    <div id="icp-suggest"></div>
     <div class="icp-step-label">Step 2 · Add the right people <span>— optional; tweak who's in each tier</span></div>
     <div id="icp-view-pick" class="icp-edit-view">
       <div class="icp-pick-mode">
@@ -3124,7 +3144,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 </div>
 <script src="icp-profiles.js"></script>
 <script src="lv-warmth.js?v=1"></script>
-<script src="icp-picker.js?v=4"></script>
+<script src="icp-picker.js?v=5"></script>
 <script src="icp-filters.js"></script>
 <script src="privacy-monitor.js?v=2"></script>
 <script src="willis-articles.js?v=3"></script>
