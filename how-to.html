@@ -446,6 +446,15 @@ a:hover{color:var(--tx);text-decoration:underline;}
 [data-theme="light"] .pm-loc{color:#047857;border-color:rgba(4,120,87,0.4);}
 [data-theme="light"] .btn-sample{color:#047857;border-color:rgba(4,120,87,0.5);}
 [data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.62);}
+/* Header crowding fix: below 1000px the brand + nav + controls no longer fit on one
+   row — .hdr-l would shrink to 0 (min-width:0) and the brand overlapped the nav. Let the
+   header wrap and drop the nav to its own centered row instead of colliding. */
+@media(max-width:1000px){
+  .hdr{flex-wrap:wrap;}
+  .hdr-l{flex:1 1 auto;min-width:auto;}
+  .hdr-r{flex:0 0 auto;}
+  .hdr-nav{order:3;flex:1 0 100%;justify-content:center;margin-top:9px;}
+}
 </style>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">

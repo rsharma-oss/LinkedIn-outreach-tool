@@ -8,6 +8,7 @@
 <title>LinkVault · ICP Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
 <style>
 :root{
@@ -346,6 +347,15 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 [data-theme="light"] .btn-sample{color:#047857;border-color:rgba(4,120,87,0.5);}
 [data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.62);}
 @media(max-width:1050px){.status-text{display:none;}} /* rebalance header: nav stays centered mid-band */
+/* Header crowding fix: below 1000px the brand + nav + controls no longer fit on one
+   row — .hdr-l would shrink to 0 (min-width:0) and the brand overlapped the nav. Let the
+   header wrap and drop the nav to its own centered row instead of colliding. */
+@media(max-width:1000px){
+  .hdr{flex-wrap:wrap;}
+  .hdr-l{flex:1 1 auto;min-width:auto;}
+  .hdr-r{flex:0 0 auto;}
+  .hdr-nav{order:3;flex:1 0 100%;justify-content:center;margin-top:9px;}
+}
 </style>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -405,7 +415,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
   </div>
 </header>
 
-<input type="file" id="file-input" multiple accept=".csv" onchange="loadFromInput(this.files)">
+<input type="file" id="file-input" multiple accept=".csv,.zip,text/csv,application/zip" onchange="handlePicked(this.files); this.value='';">
 
 <!-- LOAD SCREEN -->
 <div id="load-screen">
@@ -444,7 +454,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <button type="button" onclick="window.openPrivacyMonitor&&window.openPrivacyMonitor()" style="background:none;border:none;color:var(--li2);font-size:0.72rem;font-weight:700;cursor:pointer;font-family:inherit;padding:0 0 3px;">🛡 Watch the live upload monitor →</button>
       <div class="load-divider">or select files</div>
       <button class="btn btn-outline" onclick="document.getElementById('file-input').click()" style="width:300px;justify-content:center;">
-        📁 Choose CSV Files — All Browsers
+        📁 Choose CSV or .zip — All Browsers
       </button>
       <div class="load-divider">or try the demo</div>
       <button class="btn btn-sample" onclick="loadDemoData()" style="width:300px;justify-content:center;">
@@ -2263,27 +2273,89 @@ async function loadFolder() {
   try {
     for await (const entry of dirHandle.values()) {
       if (entry.kind === 'file' && wanted.includes(canonicalName(entry.name))) {
-        const file = await entry.getFile();
-        filemap[canonicalName(entry.name)] = await file.text();
+        try {
+          const file = await entry.getFile();
+          filemap[canonicalName(entry.name)] = await file.text();
+        } catch(err) { _readFailures.push(canonicalName(entry.name)); }
       }
     }
   } catch(e) { showError('Could not read folder: ' + e.message); return; }
-  await processFiles(filemap, false);
+  await processFiles(mergeIntoStore(Object.entries(filemap).map(([name, text]) => ({name, text}))), false);
+}
+
+// ─── UAT#2 follow-up: zip support + resilient reads + merge (parity with Dashboard) ──
+const LV_WANTED = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
+  'Shares.csv','Member_Follows.csv','Invitations.csv','Profile.csv','Positions.csv'];
+let _fileStore = {};
+let _readFailures = [];
+
+/* Always settles — a file that fails to read can never hang the batch (Safari). */
+function readFileSafe(file, name) {
+  return new Promise(resolve => {
+    const nm = canonicalName(name || file.name);
+    let done = false;
+    const finish = r => { if (!done) { done = true; resolve(r); } };
+    try {
+      const reader = new FileReader();
+      reader.onload  = e => finish({name: nm, text: e.target.result});
+      reader.onerror = () => finish({name: nm, err: (reader.error && reader.error.message) || 'read error'});
+      reader.onabort = () => finish({name: nm, err: 'read aborted'});
+      reader.readAsText(file, 'UTF-8');
+    } catch (err) { finish({name: nm, err: err.message || String(err)}); }
+  });
+}
+function mergeIntoStore(results) {
+  _readFailures = [];
+  results.forEach(r => {
+    if (r && r.text != null) _fileStore[r.name] = r.text;
+    else if (r && r.err) _readFailures.push(r.name + ' (' + r.err + ')');
+  });
+  return _fileStore;
+}
+/* Routes zips vs CSVs, case-insensitively — .ZIP from macOS/Safari now works. */
+async function handlePicked(fileList) {
+  const files = Array.from(fileList || []);
+  if (!files.length) return;
+  for (const z of files.filter(f => /\.zip$/i.test(f.name))) await loadFromZip(z);
+  const csvs = files.filter(f => !/\.zip$/i.test(f.name));
+  if (csvs.length) await loadFromInput(csvs);
+}
+/* Read the LinkedIn export straight from the .zip — no manual unzip needed. */
+async function loadFromZip(zipFile) {
+  if (typeof JSZip === 'undefined') { showError('Zip support did not load. Refresh and try again.'); return; }
+  document.getElementById('progress-wrap').style.display = 'block';
+  try {
+    const zip = await JSZip.loadAsync(zipFile);
+    const found = {};
+    const jobs = [];
+    zip.forEach((path, entry) => {
+      const nm = canonicalName(path.split('/').pop());
+      if (!entry.dir && LV_WANTED.includes(nm)) jobs.push(entry.async('string').then(t => { found[nm] = t; }));
+    });
+    await Promise.all(jobs);
+    if (!Object.keys(found).length) {
+      showError('No LinkedIn CSV files found in that zip. Make sure it is your LinkedIn data export.');
+      document.getElementById('progress-wrap').style.display = 'none';
+      return;
+    }
+    await processFiles(mergeIntoStore(Object.entries(found).map(([name, text]) => ({name, text}))), false);
+  } catch (err) {
+    showError('Could not read zip file: ' + err.message);
+    document.getElementById('progress-wrap').style.display = 'none';
+  }
 }
 
 async function loadFromInput(fileList) {
   if (!fileList || fileList.length === 0) return;
   document.getElementById('progress-wrap').style.display = 'block';
-  const filemap = {};
-  const readPromises = Array.from(fileList).map(file =>
-    new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onload = e => { filemap[canonicalName(file.name)] = e.target.result; resolve(); };
-      reader.readAsText(file, 'UTF-8');
-    })
-  );
-  await Promise.all(readPromises);
-  await processFiles(filemap, false);
+  const results = await Promise.all(Array.from(fileList).map(f => readFileSafe(f)));
+  const merged = mergeIntoStore(results);
+  if (!Object.keys(merged).length) {
+    showError('None of those files could be read. Try selecting your CSVs again.');
+    document.getElementById('progress-wrap').style.display = 'none';
+    return;
+  }
+  await processFiles(merged, false);
 }
 
 async function loadDemoData() {
