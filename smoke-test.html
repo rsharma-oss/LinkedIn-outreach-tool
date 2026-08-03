@@ -31,7 +31,7 @@ iframe{width:1200px;height:800px;border:0;position:absolute;left:-9999px;top:0}
 <body>
 <div class="wrap">
   <h1>🧪 LinkVault Smoke Test</h1>
-  <div class="sub">End-to-end checks against the real pages, using synthetic fixtures only — no LinkedIn data. Open this in any browser to verify that browser.</div>
+  <div class="sub">End-to-end checks against the real pages, using synthetic fixtures only — no LinkedIn data. Open this in any browser to verify that browser. <b>Your saved ICP settings are snapshotted before the run and restored after</b>, so testing never disturbs your setup.</div>
   <div id="env"></div>
   <div id="summary"></div>
   <button id="run">▶ Run tests</button>
@@ -99,8 +99,27 @@ async function until(fn,ms=15000){
 /* let/const at a script's top level are NOT properties of window, so reaching in as
    frame.contentWindow.ICP yields undefined. Evaluate inside the frame's own scope. */
 function ev(w, expr){ return w.eval(expr); }
-function prep(w){ try{ w.localStorage.setItem('lv_privacy_ack','1'); w.sessionStorage.clear();
-  w.localStorage.removeItem('ga_icp_kw'); w.localStorage.removeItem('ga_icp_exact'); }catch(e){} }
+
+/* TEST ISOLATION — the pages read their saved ICP config at parse time, so clearing it
+   after the iframe loads is too late: a user's own customisations would still be in
+   effect and the tier assertions would fail against *their* ICP, not the default.
+   We're same-origin, so snapshot those keys here, clear them BEFORE loading, and put
+   them back when the run ends. Never destroy real settings to make a test pass. */
+const OWNED = ['ga_icp_kw','ga_icp_exact','ga_icp_profile','ga_icp_data'];
+let SNAP = null;
+function isolate(){
+  if(SNAP) return;
+  SNAP = {};
+  OWNED.forEach(k=>{ SNAP[k]=localStorage.getItem(k); localStorage.removeItem(k); });
+  try{ localStorage.setItem('lv_privacy_ack','1'); sessionStorage.clear(); }catch(e){}
+}
+function restore(){
+  if(!SNAP) return;
+  OWNED.forEach(k=>{ if(SNAP[k]!==null) localStorage.setItem(k, SNAP[k]); else localStorage.removeItem(k); });
+  SNAP = null;
+}
+window.addEventListener('beforeunload', restore);   // don't strand settings if the tab closes mid-run
+function prep(w){ try{ w.localStorage.setItem('lv_privacy_ack','1'); w.sessionStorage.clear(); }catch(e){} }
 
 /* ── ICP FINDER ───────────────────────────────────────────────────────────── */
 G('ICP Finder');
@@ -214,6 +233,7 @@ document.getElementById('env').textContent =
 
 document.getElementById('run').onclick=async function(){
   this.disabled=true; this.textContent='Running…';
+  isolate();                       // must happen BEFORE any page loads
   const out=document.getElementById('out'); out.innerHTML='';
   const sum=document.getElementById('summary'); sum.style.display='none';
   let pass=0, fail=0, cur=null, box=null;
@@ -231,6 +251,7 @@ document.getElementById('run').onclick=async function(){
       row.innerHTML+='<span class="m">'+(e.message||e)+'</span>'; fail++;
     }
   }
+  restore();                       // hand the user their own ICP config back
   sum.className=fail?'fail':'pass'; sum.style.display='block';
   sum.textContent=fail? ('✗ '+fail+' failed · '+pass+' passed')
                       : ('✓ All '+pass+' checks passed — this browser is good');
