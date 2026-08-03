@@ -3,13 +3,13 @@
 
 _Named "LinkVault" June 2026 (was "LinkedIn Intelligence / Toolkit"). Growth Automated = maker brand; LinkVault = product._
 
-_Version: 1.7 · Updated June 28, 2026_
+_Version: 1.8 · Updated August 3, 2026_
 
 _Since 1.6: LinkVault rebrand live (logo + naming); **ICP customizer un-gated to production** — vertical presets (DTC · SaaS · Telecom · FinServ), pick-from-network, Save/Load config (`linkvault-icp` v1), two-list + rank×domain matching; unified ICP filter bar (custom dropdowns + segment pills); vertical-neutral positioning + new hero; Willis and the customizer work fully offline. Paid offer = muted done-for-you service (no prices in-app)._
 
 ---
 
-## 0. What's New (June 22, 2026)
+## 0c. What's New (June 22, 2026)
 
 - **Cross-page cache contract** — fixed Engagement/Content loading empty when data was loaded on the ICP Finder first. Any page writing `ga_csv_cache` must include the activity files; the Dashboard now refuses an activity-less cache unless it authored it (`src==='dashboard'`), the ICP Finder folder loader caches the full activity set, and the Playbook routes to the ICP Finder (auto-restore) instead of showing demo. See §3.
 - **Universal 🐞 Report dialog** — `gaReport` in `willis.js` (Copy / Gmail / Mail app) overrides every page's Report site-wide via `window.reportIssue`, fixing the `mailto`-only failure for webmail testers. Parses UA to a readable line; no LinkedIn data. Wired into Willis's no-match state.
@@ -18,6 +18,18 @@ _Since 1.6: LinkVault rebrand live (logo + naming); **ICP customizer un-gated to
 - **Dev workflow** — `push_to_dev.py` auto-resyncs `dev`→`main` before each push (clean PR diffs) with an open-PR guard; `create_pr.py` opens PRs automatically; `resync_dev.py` added. See §12.
 - **Security** — GitHub PAT moved to the `GH_TOKEN` env var (regenerated, removed from all files on disk). See §12.
 - **UAT pipeline** — `UAT-REPORTS.md` triage doc + weekly Saturday "UAT Reports — weekly catch-up" routine aggregating report emails from Gmail.
+
+---
+
+## 0. What's New (August 3, 2026 — v1.1 "relationships")
+
+- **`lv-warmth.js` — new shared relationship engine** (icp-finder + dashboard + both offline bundles). Reads endorsements (given/received), recommendations (given/received) and company follows; joins on normalised LinkedIn URL with a name fallback (309/311 + 122/122 verified). Exposes `build/get/followedWithConnections/topSkills/timeline/stats`.
+- **ICP Finder:** sortable **Relationship** column + popover with *why you know them* and a copyable opener. **Suggest-and-approve ICP suggestions** in the customizer: followed-companies → T2, search-history terms → T1/T3.
+- **Dashboard:** new **Relationships** panel (4 stat cards + warmth doughnut, top endorsed skills, endorsement timeline).
+- **Loader hardened (UAT#2/Safari):** `readFileSafe()` always settles, `_fileStore` merges instead of replacing, `handlePicked()` routes case-insensitive zips, mount report names missing files. **ICP Finder gained zip support** (JSZip).
+- **Privacy:** load screens now list the files LinkVault deliberately never reads.
+- **Entry URLs:** root `index.html` redirect (bare URL used to 404) + `/linkvault` vanity path.
+- ⚠️ **`SearchQueries.csv` is read but never cached** (9k+ rows vs Safari's ~5MB quota).
 
 ---
 
