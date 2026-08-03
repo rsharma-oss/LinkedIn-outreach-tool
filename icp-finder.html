@@ -378,6 +378,26 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 [data-theme="light"] .view-tab{color:rgba(15,23,42,0.62);}
 [data-theme="light"] .icp-seg-pill.active{color:#075985;}
 </style>
+<style>
+/* Relationship warmth — why you actually know this person */
+.wm{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:0.7rem;font-weight:700;cursor:pointer;border:1px solid transparent;font-family:inherit;white-space:nowrap;}
+.wm-strong{background:rgba(239,68,68,0.14);color:#b91c1c;border-color:rgba(239,68,68,0.35);}
+.wm-warm{background:rgba(245,158,11,0.16);color:#b45309;border-color:rgba(245,158,11,0.4);}
+.wm-light{background:rgba(0,119,181,0.12);color:#0369a1;border-color:rgba(0,119,181,0.3);}
+.wm-cold{background:transparent;color:var(--tx3);border-color:var(--border2);cursor:default;}
+[data-theme="dark"] .wm-strong,:root:not([data-theme="light"]) .wm-strong{color:#fca5a5;}
+:root:not([data-theme="light"]) .wm-warm{color:#fcd34d;}
+:root:not([data-theme="light"]) .wm-light{color:#7dd3fc;}
+.wm:hover{filter:brightness(1.08);}
+.wm-pop{position:fixed;z-index:9500;max-width:330px;background:var(--card);border:1px solid var(--border2);border-radius:12px;box-shadow:0 18px 46px rgba(0,0,0,.32);padding:14px 16px;font-size:0.8rem;color:var(--tx);display:none;}
+.wm-pop.open{display:block;}
+.wm-pop h4{font-size:0.85rem;font-weight:800;margin:0 0 8px;}
+.wm-pop ul{list-style:none;margin:0 0 10px;padding:0;}
+.wm-pop li{display:flex;gap:7px;align-items:flex-start;margin:0 0 5px;color:var(--tx2);line-height:1.45;}
+.wm-open{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:9px 11px;font-size:0.78rem;line-height:1.5;color:var(--tx);font-style:italic;}
+.wm-copy{margin-top:9px;background:var(--li);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:0.74rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.wm-x{float:right;background:none;border:none;color:var(--tx3);cursor:pointer;font-size:1rem;line-height:1;}
+</style>
 </head>
 <body>
 
@@ -558,6 +578,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
               <th onclick="sortICP('date')">Connected ↕</th>
               <th onclick="sortICP('recency')">Recency</th>
               <th onclick="sortICP('engagement')">Engagement</th>
+              <th onclick="sortICP('warmth')">Relationship ↕</th>
               <th>↗</th>
             </tr>
           </thead>
@@ -2130,6 +2151,9 @@ function classifyTier(title, company) {
 // ── Re-classification engine — lets the in-app keyword editor re-tier live ───────
 let _connRows = [], _msgByPerson = {}, _totalConns = 0;
 function classifyAll(){
+  // Relationship signals first — endorsements/recommendations/follows make each contact
+  // a person you actually know, not just a row. Safe no-op when those files are absent.
+  if(window.LVWarmth){ try{ LVWarmth.build(_rawFiles||{}); }catch(e){ console.warn('warmth build skipped:',e); } }
   ICP = [];
   _connRows.forEach(function(r){
     const title=(r['Position']||'').trim();
@@ -2144,7 +2168,9 @@ function classifyAll(){
     const msgData=_msgByPerson[fullName]||null;
     let engagement='never', lastMsgDays=null;
     if(msgData){ lastMsgDays=daysSince(msgData.lastDate); if(lastMsgDays<90)engagement='active'; else if(lastMsgDays<365)engagement='warm'; else engagement='cold'; }
-    ICP.push({ name:fullName, first:r['First Name']||'', last:r['Last Name']||'', title, company, tier, url:r['URL']||'', connDate, days, recency, msgCount:msgData?msgData.count:0, lastMsgDays, engagement });
+    const _c={ name:fullName, first:r['First Name']||'', last:r['Last Name']||'', title, company, tier, url:r['URL']||'', connDate, days, recency, msgCount:msgData?msgData.count:0, lastMsgDays, engagement };
+    _c.warmth = (window.LVWarmth && LVWarmth.isBuilt()) ? LVWarmth.get(_c) : null;
+    ICP.push(_c);
   });
 }
 function saveICPData(){
@@ -2269,7 +2295,8 @@ async function loadFolder() {
   // shared cross-page cache (ga_csv_cache) stays COMPLETE — otherwise opening the
   // Dashboard after loading here leaves its Engagement & Content tabs empty.
   const wanted = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
-    'Shares.csv','Member_Follows.csv','Invitations.csv','Profile.csv','Positions.csv'];
+    'Shares.csv','Member_Follows.csv','Invitations.csv','Profile.csv','Positions.csv',
+  'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv'];
   try {
     for await (const entry of dirHandle.values()) {
       if (entry.kind === 'file' && wanted.includes(canonicalName(entry.name))) {
@@ -2285,7 +2312,8 @@ async function loadFolder() {
 
 // ─── UAT#2 follow-up: zip support + resilient reads + merge (parity with Dashboard) ──
 const LV_WANTED = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
-  'Shares.csv','Member_Follows.csv','Invitations.csv','Profile.csv','Positions.csv'];
+  'Shares.csv','Member_Follows.csv','Invitations.csv','Profile.csv','Positions.csv',
+  'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv'];
 let _fileStore = {};
 let _readFailures = [];
 
@@ -2368,6 +2396,7 @@ async function loadDemoData() {
 }
 
 async function processFiles(filemap, isDemo) {
+  window._rawFiles = filemap;
   // Non-English export? Connections.csv lacks the English "First Name" header → empty parse.
   if (!isDemo && filemap['Connections.csv'] && !/First Name/i.test(filemap['Connections.csv'])) {
     showLangNotice();
@@ -2507,6 +2536,7 @@ function renderTable() {
       case 'date':       av=a.days??9999; bv=b.days??9999; break;
       case 'recency':    av=REC_SORT[a.recency]||9; bv=REC_SORT[b.recency]||9; break;
       case 'engagement': av=ENG_SORT[a.engagement]||9; bv=ENG_SORT[b.engagement]||9; break;
+      case 'warmth':     av=-(a.warmth?a.warmth.score:0); bv=-(b.warmth?b.warmth.score:0); break;
       default:           av=a.name; bv=b.name;
     }
     if (typeof av === 'string') return _icpSort.dir * av.localeCompare(bv);
@@ -2538,12 +2568,40 @@ function renderTable() {
         <span class="${engCls[c.engagement]}">${engLabel[c.engagement]}</span>
         ${c.msgCount ? `<span class="td-muted" style="margin-left:4px">${c.msgCount}msg</span>` : ''}
       </td>
+      <td>${relCell(c)}</td>
       <td>${c.url ? `<a href="${c.url}" target="_blank" style="color:var(--li2);font-size:0.75rem">↗</a>` : ''}</td>
-    </tr>`).join('') || '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--tx3)">No contacts match the current filters</td></tr>';
+    </tr>`).join('') || '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--tx3)">No contacts match the current filters</td></tr>';
 
   document.getElementById('icp-page-info').textContent = `Page ${_icpPage+1} of ${pages} (${total.toLocaleString()} contacts)`;
   document.getElementById('icp-prev').disabled = _icpPage === 0;
   document.getElementById('icp-next').disabled = _icpPage >= pages - 1;
+}
+
+
+// ─── Relationship warmth cell + detail popover ───────────────────────────────
+const WM_LABEL={strong:'🔥 Strong',warm:'🌤 Warm',light:'🔹 Light',cold:'—'};
+function relCell(c){
+  const w=c.warmth;
+  if(!w) return '<span class="td-muted" style="font-size:0.7rem">—</span>';
+  if(w.label==='cold') return '<span class="wm wm-cold">—</span>';
+  const idx=ICP.indexOf(c);
+  return `<button type="button" class="wm wm-${w.label}" onclick="showWarmth(${idx},event)" title="Why you know them">${WM_LABEL[w.label]}${w.mutual?' ⇄':''}</button>`;
+}
+function showWarmth(i,ev){
+  const c=ICP[i]; if(!c||!c.warmth) return;
+  let p=document.getElementById('wm-pop');
+  if(!p){ p=document.createElement('div'); p.id='wm-pop'; p.className='wm-pop'; document.body.appendChild(p);
+    document.addEventListener('click',e=>{ if(!p.contains(e.target)&&!e.target.closest('.wm')) p.classList.remove('open'); }); }
+  const w=c.warmth;
+  p.innerHTML=`<button class="wm-x" onclick="document.getElementById('wm-pop').classList.remove('open')">×</button>`+
+    `<h4>${c.name} · ${WM_LABEL[w.label]}</h4>`+
+    `<ul>${w.reasons.map(r=>`<li><span>${r.icon}</span><span>${r.text}</span></li>`).join('')}</ul>`+
+    (w.opener?`<div class="wm-open">${w.opener}</div><button class="wm-copy" onclick="navigator.clipboard&&navigator.clipboard.writeText(this.previousElementSibling.textContent).then(()=>{this.textContent='✓ Copied';})">📋 Copy opener</button>`:'');
+  p.classList.add('open');
+  const r=ev.currentTarget.getBoundingClientRect();
+  p.style.top=Math.min(window.innerHeight-260, r.bottom+8)+'px';
+  p.style.left=Math.max(12, Math.min(window.innerWidth-350, r.left-140))+'px';
+  ev.stopPropagation();
 }
 
 function icpPage(dir) {
@@ -3065,6 +3123,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
   </div>
 </div>
 <script src="icp-profiles.js"></script>
+<script src="lv-warmth.js?v=1"></script>
 <script src="icp-picker.js?v=4"></script>
 <script src="icp-filters.js"></script>
 <script src="privacy-monitor.js?v=2"></script>
