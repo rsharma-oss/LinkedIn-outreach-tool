@@ -244,7 +244,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .nav-link{padding:7px 12px;border-radius:8px;font-size:0.78rem;font-weight:500;color:var(--nav-idle);text-decoration:none;transition:all 0.18s;white-space:nowrap;border:1px solid transparent;}
 .nav-link:hover{background:var(--hover-strong);color:var(--nav-idle-hover);border-color:var(--border);}
 .nav-link.active{color:var(--tx);background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.44);font-weight:700;}
-@media(max-width:680px){.hdr-nav{display:none;}}
+@media(max-width:680px){.hdr-nav .nav-link{display:none;}}
 @media(max-width:600px){
   .hdr{padding:11px 14px;gap:8px;flex-wrap:wrap;}
   .hdr-l{flex:0 1 auto;}
@@ -355,6 +355,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 [data-theme="light"] .pm-loc{color:#047857;border-color:rgba(4,120,87,0.4);}
 [data-theme="light"] .btn-sample{color:#047857;border-color:rgba(4,120,87,0.5);}
 [data-theme="light"] .lv-foot-links{color:rgba(15,23,42,0.62);}
+@media(max-width:1050px){.status-text{display:none;}} /* rebalance header: nav stays centered mid-band */
 </style>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -392,7 +393,6 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 <!-- HEADER -->
 <header class="hdr">
   <div class="hdr-l">
-    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
     <a href="how-to.html" class="logo-link"><span class="lv-brand"><img class="lv-mark" src="linkvault-mark.png" alt="LinkVault"><span class="lv-text"><span class="lv-word">LinkVault</span><span class="lv-ga" role="img" aria-label="by Growth Automated"></span></span></span>
     <div>
       <div class="hdr-title" style="font-family:'Assistant',sans-serif;font-weight:700;">GrowthAutomated<span style="color:var(--li2)">.ai</span></div>
@@ -400,6 +400,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     </div></a>
   </div>
   <nav class="hdr-nav">
+    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
     <a class="nav-link" href="how-to.html">📘 How It Works</a>
     <a class="nav-link" href="dashboard.html">📊 Dashboard</a>
     <a class="nav-link active" href="icp-finder.html">🎯 ICP Finder</a>
@@ -2799,7 +2800,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .nav-link{padding:7px 12px;border-radius:8px;font-size:0.78rem;font-weight:500;color:var(--nav-idle);text-decoration:none;transition:all 0.18s;white-space:nowrap;border:1px solid transparent;}
 .nav-link:hover{background:var(--hover-strong);color:var(--nav-idle-hover);border-color:var(--border);}
 .nav-link.active{color:var(--tx);background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.44);font-weight:700;}
-@media(max-width:680px){.hdr-nav{display:none;}}
+@media(max-width:680px){.hdr-nav .nav-link{display:none;}}
 @media(max-width:600px){
   .hdr{padding:11px 14px;gap:8px;flex-wrap:wrap;}
   .hdr-l{flex:0 1 auto;}
