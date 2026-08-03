@@ -2,6 +2,30 @@
 
 ---
 
+## 🤝 v1.1 — Your network, as relationships — August 3, 2026
+
+_Public release. LinkVault stops treating your network as rows and starts treating it as people you already know._
+
+- **Relationship warmth.** Endorsements, recommendations and the companies you follow now power a **Relationship** column in the ICP list. Click a badge and you see *why* you know someone — "They wrote you a recommendation", "They endorsed you for Strategy & Product Management" — plus a ready-to-send opener grounded in that shared moment. On a real 2,963-connection network, **34% of contacts** turned out to carry a genuine relationship signal, including people who looked stone-cold by recency and message history.
+- **Suggestions built from your own data — you approve every one.**
+  - **Companies you follow, where you already know people** become one-click **T2 named accounts**. On the reference network that moved T2 from 17 → 340 contacts.
+  - **Terms you actually search for** on LinkedIn become approvable **T1/T3 keywords** — the ICP you've been hunting by hand, offered back to you.
+  Nothing is ever applied automatically: rewriting someone's targeting from inferred signals is exactly the kind of "smart" that quietly ruins a list.
+- **New Dashboard panel — Relationships.** People you actually know · strong ties · what you're known for (skills others endorsed you for) · companies you follow. Plus warmth distribution, top endorsed skills, and **endorsement activity by year** — a 13-year record of when your network was most engaged with you.
+- **Privacy: what LinkVault never opens.** Your export also contains ad clicks (the single largest file), your ad-targeting profile, login IPs, billing receipts and phone numbers. LinkVault doesn't read any of it — and now says so, right on the load screen.
+
+---
+
+## 🍎 Safari loading fixed — mount every file, add files anytime, drop a .zip — August 3, 2026
+
+_Public release. From UAT report #2, dogfooded in Safari 26._
+
+- **Files no longer go missing silently.** Some CSVs would fail to mount with no warning — so charts came up empty and it looked like the app was broken. Every file read is now failure-proof, and a banner tells you **exactly which files loaded and which are missing**, with a one-click "add the missing files".
+- **You can add a CSV after loading.** Previously each load replaced everything, so grabbing a file you missed silently discarded the rest. Files now **merge** — the button is **➕ Add files**.
+- **Drop the .zip straight in — no unzipping.** Uppercase `.ZIP` (what macOS and Safari usually hand you) was being missed entirely. Fixed in both tools, and **ICP Finder now reads zips too**.
+
+---
+
 ## ♿ WCAG contrast hotfix — light mode readable everywhere — July 15, 2026
 
 _Gold-candidate hotfix (v1.0-gc2 baseline). Fixes "fonts don't render properly" in light mode — text that was designed for dark backgrounds was rendering near-invisible on light._

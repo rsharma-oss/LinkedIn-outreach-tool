@@ -24,6 +24,7 @@ A fully client-side LinkedIn analytics and outreach tool. Users upload their Lin
 |------|-----------|
 | `dashboard.html` | Full analytics dashboard — 6 tabs, Chart.js, sessionStorage cache |
 | `icp-finder.html` | ICP classifier + outreach planner + message templates |
+| `lv-warmth.js` | **Relationship warmth engine** — shared by icp-finder + dashboard (see below) |
 | `how-to.html` | Landing / instructions page |
 | `outreach-playbook-demo.html` | Demo playbook page (own CSS-var scheme — see Theming) |
 | `demo.html` | Book-demo page (also a themed nav page) |
@@ -217,11 +218,51 @@ Container is `<header class="hdr">` (playbook's outer wrapper is still `.header`
 
 ---
 
+---
+
+## Relationship warmth layer (`lv-warmth.js`, Aug 3 2026)
+
+**What it is:** a shared engine that turns the export's *relationship* files into a per-person warmth signal, so a connection stops being a row and becomes "someone you actually know, and here's why". Loaded by **icp-finder + dashboard** (and inlined into both offline bundles).
+
+- **Reads (all optional, degrade gracefully):** `Endorsement_Given_Info.csv`, `Endorsement_Received_Info.csv`, `Recommendations_Given.csv`, `Recommendations_Received.csv`, `Company Follows.csv`.
+- **Join key:** normalised LinkedIn public URL, falling back to normalised full name. Verified on a real export: **309/311 given, 122/122 received** matched by URL; the name fallback closes the rest.
+- **API:** `LVWarmth.build(filemap)` → `get(contact)` → `{score, label, reasons[], mutual, followsCompany, opener}`; plus `followedWithConnections(contacts)`, `topSkills(n)`, `timeline()`, `stats()`.
+- **Scoring:** recommendation received 45 · given 40 · they-endorsed-you 25+ · you-endorsed-them 20+ · messages up to 25 · company follow 6. Labels: `strong` ≥60, `warm` ≥25, `light` >0, else `cold`.
+- **ICP Finder:** sortable **Relationship** column; the badge opens a popover with *why you know them* + a grounded, copyable opener. Contacts are decorated in `classifyAll()` (`c.warmth`).
+- **Dashboard:** a **Relationships** panel on Overview — 4 stat cards + warmth doughnut, top endorsed skills, and endorsement activity by year. Rendered by `renderRelationships()`.
+- ⚠️ Keep site/product data OUT of this module — it's engine-only, same rule as `willis.js`.
+
+## ICP suggestions — suggest-and-approve (`icp-picker.js`, Aug 3 2026)
+
+`renderICPSuggestions()` fills `#icp-suggest` in the customizer with two evidence-based nudges. **Nothing is ever auto-applied** — auto-rewriting an ICP from inferred signals would silently distort targeting, so every item is one discrete, reversible click.
+
+1. **Companies you follow where you also have connections** → one-click (or "add all") **T2 named accounts**. On the reference export this took T2 from 17 → 340 contacts.
+2. **Recurring terms from `SearchQueries.csv`** → approvable **T1/T3 keywords** (stop-worded, deduped against existing lists, ≥8 occurrences, top 14).
+
+⚠️ **`SearchQueries.csv` is read but deliberately NEVER cached** — 9k+ rows would push Safari past its ~5MB quota (the exact UAT#2 failure mode). It's filtered out of `ga_csv_cache` alongside `messages.csv`.
+
+## Loader hardening (UAT#2 — Safari, Aug 3 2026)
+
+Three real bugs, all browser-agnostic in cause:
+1. **Every `FileReader` had `onload` but no `onerror`/`onabort`** → a file that failed to read never settled its promise; `Promise.all` hung or the dataset silently came up short ("not all csv mount → charts don't load"). Fixed with **`readFileSafe()`**, used by every load path, which **always settles**.
+2. **Each load REPLACED the dataset** → no way to add a file you missed. Fixed with a persistent **`_fileStore`** that merges (later reads win); the button is now **➕ Add files**.
+3. **`.zip` detection was case-sensitive** (`endsWith('.zip')` missed `Export.ZIP`, which macOS/Safari commonly produce). Fixed with `/\.zip$/i` + a single **`handlePicked()`** dispatcher for picker and drop, and a widened `accept` (Safari's accept filtering is unreliable).
+
+Plus a **mount report** (`renderMountNote`) naming exactly which files loaded and which are missing, with an inline "add the missing files" button — the missing feedback that made the original bug invisible. **ICP Finder gained full zip support** at the same time (JSZip added — which also cleared the long-standing `✗ jszip tag not found in icp-finder.html` build warning).
+
+## Privacy manifest — the ignore-list
+
+Both load screens now state what LinkVault **never opens**: ad clicks (the largest file in the export at 17k rows), ad-targeting profile, login IPs & security history, billing receipts, phone numbers, email addresses. Restraint stated as a feature, alongside the live "0 B uploaded" monitor.
+
+## Entry URLs
+
+`index.html` (repo root) redirects the bare Pages URL → `how-to.html` (it used to 404), and `linkvault/index.html` gives the vanity path `/linkvault`. Both are in the push `FILES` list. _(`rsharma-oss.github.io/linkvault` — account-level — would need a separate repo; not set up.)_
+
 ## Willis help widget (June 20)
 
 - **What:** a floating "Ask Willis" help wiki on all 5 nav pages — bubble bottom-right → searchable panel (client-side, no server). Files: `willis.js` (engine, self-contained, namespaced `wz-`), `willis-articles.js` (`window.WILLIS_ARTICLES`, **40 articles across 10 categories** — expanded from the 14-article launch seed June 22), `willis/*.png` (5-pose character — v2 = the orange/blue striped-polo character).
 - **`WILLIS_CONFIG` — the engine is now site-neutral (July 4 2026).** `willis.js` reads **`window.WILLIS_CONFIG`** (set BEFORE it loads — LinkVault's lives at the top of `willis-articles.js`): `{name, productName, tagline, placeholder, reportEmail, actions:[{label, href|action:'report', primary}]}` — `name` is the ASSISTANT (Willis), **`productName` is the PRODUCT (LinkVault)**, used in report subjects (`[LinkVault — issue]`); falls back to document.title. `renderIdle()` builds the panel's action buttons from `CFG.actions` (LinkVault ships "📅 Book a demo →" → demo.html + "🐞 Report a bug" → gaReport) — these are where the old nav Book Demo + Report went; the engine itself has **no LinkVault data** (neutral defaults: no actions, generic placeholder), so the willis-kit is genuinely drop-in for other apps. `gaReport` uses `CFG.reportEmail`. ⚠️ Keep site data in `WILLIS_CONFIG`/articles, never in `willis.js`.
-- **Cache-bust (July 4 2026):** the Willis + privacy-monitor tags are versioned — `willis-articles.js?v=3`, `willis.js?v=3`, `privacy-monitor.js?v=2` on all pages. **Bump `v` whenever these files change** or returning users get a stale copy (we hit exactly this: cached articles without WILLIS_CONFIG + fresh engine = no action buttons). `inline_willis`/`inline_icp` in `build_offline_bundle.py` are query-tolerant.
+- **Cache-bust (July 4 2026):** the Willis + privacy-monitor tags are versioned — `willis-articles.js?v=3`, `willis.js?v=3`, `privacy-monitor.js?v=2`, `icp-picker.js?v=5`, `lv-warmth.js?v=1` on all pages. **Bump `v` whenever these files change** or returning users get a stale copy (we hit exactly this: cached articles without WILLIS_CONFIG + fresh engine = no action buttons). `inline_willis`/`inline_icp` in `build_offline_bundle.py` are query-tolerant.
 - **Search ranking (June 22):** `runSearch` in `willis.js` **scores** every article (title-match > keyword-match; more matched words rank higher) and sorts best-first. The original was a plain any-word filter returning matches in array order — fine for 14 articles, noisy at 40 (e.g. "message templates" hit "messages" in another doc). When adding articles, give each a rich `k:` keyword string so it ranks well.
 - **Integrate:** two tags before `</body>` — `<script src="willis-articles.js"></script>` then `<script src="willis.js"></script>`. Already on dashboard, icp-finder, how-to, demo, playbook. The widget self-injects.
 - **Deep-link API:** `Willis.open()` / `Willis.ask('q')` / `Willis.article('id')` / `Willis.close()`.
