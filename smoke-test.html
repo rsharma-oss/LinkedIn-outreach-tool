@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkVault · Smoke Test</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#0b1020;--card:#141a2c;--tx:#e8edff;--tx2:rgba(232,237,255,.62);--ok:#10b981;--bad:#ef4444;--warn:#f59e0b;--li:#0077B5;}
+@media(prefers-color-scheme:light){:root{--bg:#eef1f7;--card:#fff;--tx:#0f172a;--tx2:rgba(15,23,42,.66);}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--tx);padding:28px 20px;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-size:1.4rem;font-weight:800;margin-bottom:4px}
+.sub{color:var(--tx2);font-size:.88rem;margin-bottom:18px}
+#env{background:var(--card);border-radius:10px;padding:10px 14px;font-size:.78rem;color:var(--tx2);margin-bottom:14px}
+#summary{border-radius:12px;padding:16px 18px;font-weight:800;font-size:1.05rem;margin-bottom:16px;display:none}
+#summary.pass{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.5);color:var(--ok)}
+#summary.fail{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.5);color:var(--bad)}
+.grp{background:var(--card);border-radius:12px;padding:6px 0;margin-bottom:12px;overflow:hidden}
+.grp h2{font-size:.82rem;font-weight:800;padding:10px 16px 6px;letter-spacing:.03em;text-transform:uppercase;color:var(--tx2)}
+.t{display:flex;gap:10px;align-items:baseline;padding:6px 16px;font-size:.85rem;border-top:1px solid rgba(128,128,128,.12)}
+.t .i{flex:0 0 auto;font-weight:800}
+.t.p .i{color:var(--ok)} .t.f .i{color:var(--bad)} .t.s .i{color:var(--warn)}
+.t .d{flex:1}
+.t .m{color:var(--tx2);font-size:.78rem}
+button{background:var(--li);color:#fff;border:none;border-radius:9px;padding:10px 18px;font-weight:700;cursor:pointer;font-family:inherit;font-size:.88rem}
+iframe{width:1200px;height:800px;border:0;position:absolute;left:-9999px;top:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🧪 LinkVault Smoke Test</h1>
+  <div class="sub">End-to-end checks against the real pages, using synthetic fixtures only — no LinkedIn data. Open this in any browser to verify that browser.</div>
+  <div id="env"></div>
+  <div id="summary"></div>
+  <button id="run">▶ Run tests</button>
+  <div id="out" style="margin-top:16px"></div>
+</div>
+<iframe id="frame"></iframe>
+
+<script>
+/* ── Fixtures: tiny, synthetic, deterministic ─────────────────────────────── */
+const FIX = {
+'Connections.csv':
+`First Name,Last Name,URL,Email Address,Company,Position,Connected On
+Ada,Lovelace,https://www.linkedin.com/in/adalove,,Acme Corp,Chief Executive Officer,01 Jan 2020
+Bob,Marley,https://www.linkedin.com/in/bobm,,Shopify,Partner Manager,02 Feb 2021
+Cara,Nero,https://www.linkedin.com/in/caran,,Rogers Communications,Marketing Manager,03 Mar 2022
+Dan,Oh,https://www.linkedin.com/in/dano,,Tiny Co,Student,04 Apr 2023
+`,
+'Endorsement_Given_Info.csv':
+`Endorsement Date,Skill Name,Endorsee First Name,Endorsee Last Name,Endorsee Public Url,Endorsement Status
+2022/01/01 10:00:00,Strategy,Ada,Lovelace,www.linkedin.com/in/adalove,ACCEPTED
+2022/01/02 10:00:00,Growth,Cara,Nero,www.linkedin.com/in/caran,ACCEPTED
+`,
+'Endorsement_Received_Info.csv':
+`Endorsement Date,Skill Name,Endorser First Name,Endorser Last Name,Endorser Public Url,Endorsement Status
+2023/05/01 10:00:00,Product Management,Ada,Lovelace,www.linkedin.com/in/adalove,ACCEPTED
+`,
+'Recommendations_Received.csv':
+`First Name,Last Name,Company,Job Title,Text,Creation Date,Status
+Ada,Lovelace,Acme Corp,CEO,Great to work with,01/01/20 09:00 AM,VISIBLE
+`,
+'Company Follows.csv':
+`Organization,Followed On
+Shopify,Thu Jul 16 14:32:30 UTC 2026
+`,
+/* deliberately includes an embedded newline in CONTENT — the exact shape that made a
+   naive line-count look like data loss (7,109 records vs 20,735 physical lines). */
+'messages.csv':
+`CONVERSATION ID,CONVERSATION TITLE,FROM,SENDER PROFILE URL,TO,RECIPIENT PROFILE URLS,DATE,SUBJECT,CONTENT,FOLDER,ATTACHMENTS,IS MESSAGE DRAFT,IS CONVERSATION DRAFT
+c1,,Ada Lovelace,https://www.linkedin.com/in/adalove,Rahul Sharma,,2026-06-01 10:00:00,,"Hello there
+this spans two lines",INBOX,,false,false
+c2,,Rahul Sharma,,Bob Marley,,2026-06-02 10:00:00,,Short note,INBOX,,false,false
+`
+};
+
+const R=[]; let group='';
+function G(n){ group=n; }
+function t(name, fn){ R.push({group, name, fn}); }
+function file(n){ return new File([FIX[n]], n, {type:'text/csv'}); }
+function allFiles(){ return Object.keys(FIX).map(file); }
+
+const frame=document.getElementById('frame');
+function load(page){
+  return new Promise((res,rej)=>{
+    const to=setTimeout(()=>rej(new Error('page load timed out')),20000);
+    frame.onload=()=>{clearTimeout(to);res(frame.contentWindow);};
+    frame.src=page+'?smoke='+Date.now();
+  });
+}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function until(fn,ms=15000){
+  const t0=Date.now();
+  while(Date.now()-t0<ms){ try{ if(fn()) return true; }catch(e){} await wait(120); }
+  return false;
+}
+/* let/const at a script's top level are NOT properties of window, so reaching in as
+   frame.contentWindow.ICP yields undefined. Evaluate inside the frame's own scope. */
+function ev(w, expr){ return w.eval(expr); }
+function prep(w){ try{ w.localStorage.setItem('lv_privacy_ack','1'); w.sessionStorage.clear();
+  w.localStorage.removeItem('ga_icp_kw'); w.localStorage.removeItem('ga_icp_exact'); }catch(e){} }
+
+/* ── ICP FINDER ───────────────────────────────────────────────────────────── */
+G('ICP Finder');
+let W=null;
+t('page loads and exposes its loader', async()=>{
+  W=await load('icp-finder.html'); prep(W);
+  if(typeof W.handlePicked!=='function') throw new Error('handlePicked missing');
+  return 'handlePicked present';
+});
+t('mounts all 6 fixture files (merge, not replace)', async()=>{
+  W.handlePicked(allFiles());
+  const ok=await until(()=>ev(W,'Object.keys(_fileStore||{}).length')>=6);
+  if(!ok) throw new Error('only mounted: '+ev(W,"Object.keys(_fileStore||{}).join(', ')"));
+  return ev(W,'Object.keys(_fileStore).length')+' files';
+});
+t('parses 4 connections (multi-line CSV safe)', async()=>{
+  const ok=await until(()=>ev(W,'typeof ICP!=="undefined" && _totalConns')===4);
+  if(!ok) throw new Error('got '+ev(W,'typeof _totalConns!=="undefined"?_totalConns:"undefined"'));
+  return '4 connections';
+});
+t('classifies tiers (CEO→T1, Shopify→T2)', async()=>{
+  const ada=ev(W,'ICP.find(c=>c.name.indexOf("Ada")===0)'), bob=ev(W,'ICP.find(c=>c.name.indexOf("Bob")===0)');
+  if(!ada||ada.tier!=='T1') throw new Error('Ada tier='+(ada&&ada.tier));
+  if(!bob||bob.tier!=='T2') throw new Error('Bob tier='+(bob&&bob.tier));
+  return 'T1 ✓ T2 ✓';
+});
+t('warmth engine builds and scores', async()=>{
+  if(!W.LVWarmth||!W.LVWarmth.isBuilt()) throw new Error('LVWarmth not built');
+  const ada=ev(W,'ICP.find(c=>c.name.indexOf("Ada")===0)');
+  if(!ada.warmth) throw new Error('no warmth on Ada');
+  if(ada.warmth.label!=='strong') throw new Error('Ada label='+ada.warmth.label);
+  if(!ada.warmth.mutual) throw new Error('mutual not detected');
+  return 'Ada strong/mutual, score '+ada.warmth.score;
+});
+t('warmth produces a grounded opener', async()=>{
+  const ada=ev(W,'ICP.find(c=>c.name.indexOf("Ada")===0)');
+  if(!/recommendation/i.test(ada.warmth.opener||'')) throw new Error('opener="'+ada.warmth.opener+'"');
+  return 'opener references the recommendation';
+});
+t('company-follow shortlist computed', async()=>{
+  const l=ev(W,'LVWarmth.followedWithConnections(ICP)');
+  if(!l.length||l[0].company!=='Shopify') throw new Error(JSON.stringify(l));
+  return 'Shopify ×'+l[0].count;
+});
+t('reads a .ZIP (uppercase) without unzipping', async()=>{
+  if(typeof W.JSZip==='undefined') throw new Error('JSZip absent');
+  const z=new W.JSZip(); z.file('Connections.csv',FIX['Connections.csv']);
+  const blob=await z.generateAsync({type:'blob'});
+  ev(W,'_fileStore={}');                       // clear so the zip must supply the data
+  W.handlePicked([new File([blob],'Export.ZIP',{type:'application/zip'})]);
+  const ok=await until(()=>ev(W,'!!_fileStore["Connections.csv"]') && ev(W,'_totalConns')===4);
+  if(!ok) throw new Error('zip did not mount (store='+ev(W,'Object.keys(_fileStore).join(",")')+')');
+  return 'uppercase .ZIP mounted, 4 connections'
+});
+t('unreadable file cannot hang the batch', async()=>{
+  const bad=new File([''],'Positions.csv'); Object.defineProperty(bad,'size',{value:9});
+  const t0=Date.now(); W.handlePicked([bad]);
+  const ok=await until(()=>Date.now()-t0>400, 8000);
+  if(Date.now()-t0>7000) throw new Error('appears hung');
+  return 'settled in '+(Date.now()-t0)+'ms';
+});
+t('no console errors', async()=>{
+  const e=(W.__gaErrs||[]);
+  if(e.length) throw new Error(e.slice(0,2).join(' | '));
+  return '0 errors';
+});
+
+/* ── DASHBOARD ────────────────────────────────────────────────────────────── */
+G('Dashboard');
+let D=null;
+t('page loads', async()=>{ D=await load('dashboard.html'); prep(D);
+  if(typeof D.handlePicked!=='function') throw new Error('handlePicked missing'); return 'ok'; });
+t('mounts fixtures and parses connections', async()=>{
+  D.handlePicked(allFiles());
+  const ok=await until(()=>ev(D,'typeof D!=="undefined" && D.connections ? D.connections.length : -1')===4);
+  if(!ok) throw new Error('connections='+ev(D,'typeof D!=="undefined"&&D.connections?D.connections.length:"undefined"'));
+  return '4 connections';
+});
+t('messages parsed as records, not lines', async()=>{
+  const ok=await until(()=>ev(D,'typeof D!=="undefined"&&D.messages?D.messages.length:-1')===2);
+  if(!ok) throw new Error('expected 2 message records, got '+ev(D,'typeof D!=="undefined"&&D.messages?D.messages.length:"none"'));
+  return '2 records (fixture has an embedded newline)';
+});
+t('mount report names missing files', async()=>{
+  const ok=await until(()=>{const n=D.document.getElementById('mount-note');return n&&/missing/i.test(n.textContent);});
+  if(!ok){ const n=D.document.getElementById('mount-note');
+    throw new Error(n?('note: '+n.textContent.slice(0,60)):'no mount note'); }
+  return 'reports missing files';
+});
+t('Relationships panel renders with charts', async()=>{
+  const ok=await until(()=>{const s=D.document.getElementById('rel-section');return s&&s.style.display==='block';});
+  if(!ok) throw new Error('panel hidden');
+  const made=ev(D,'["chart-rel-warmth","chart-rel-skills","chart-rel-timeline"].filter(function(id){return charts&&charts[id];})');
+  if(made.length!==3) throw new Error('charts: '+made.join(','));
+  return '3 charts';
+});
+t('privacy ignore-list is stated', async()=>{
+  const el=D.document.querySelector('.pm-ignore');
+  if(!el||!/never reads/i.test(el.textContent)) throw new Error('missing');
+  return 'present';
+});
+t('no console errors', async()=>{
+  const e=(D.__gaErrs||[]);
+  if(e.length) throw new Error(e.slice(0,2).join(' | '));
+  return '0 errors';
+});
+
+/* ── runner ───────────────────────────────────────────────────────────────── */
+document.getElementById('env').textContent =
+  navigator.userAgent + ' · ' + screen.width + '×' + screen.height;
+
+document.getElementById('run').onclick=async function(){
+  this.disabled=true; this.textContent='Running…';
+  const out=document.getElementById('out'); out.innerHTML='';
+  const sum=document.getElementById('summary'); sum.style.display='none';
+  let pass=0, fail=0, cur=null, box=null;
+  for(const test of R){
+    if(test.group!==cur){ cur=test.group; box=document.createElement('div'); box.className='grp';
+      box.innerHTML='<h2>'+cur+'</h2>'; out.appendChild(box); }
+    const row=document.createElement('div'); row.className='t s';
+    row.innerHTML='<span class="i">…</span><span class="d">'+test.name+'</span>';
+    box.appendChild(row);
+    try{ const msg=await test.fn();
+      row.className='t p'; row.querySelector('.i').textContent='✓';
+      row.innerHTML+='<span class="m">'+(msg||'')+'</span>'; pass++;
+    }catch(e){
+      row.className='t f'; row.querySelector('.i').textContent='✗';
+      row.innerHTML+='<span class="m">'+(e.message||e)+'</span>'; fail++;
+    }
+  }
+  sum.className=fail?'fail':'pass'; sum.style.display='block';
+  sum.textContent=fail? ('✗ '+fail+' failed · '+pass+' passed')
+                      : ('✓ All '+pass+' checks passed — this browser is good');
+  this.disabled=false; this.textContent='▶ Run again';
+};
+</script>
+</body>
+</html>
