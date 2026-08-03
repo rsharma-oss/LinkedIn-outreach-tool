@@ -427,7 +427,7 @@ a:hover{color:var(--tx);text-decoration:underline;}
 [data-theme="light"] .lv-word{color:#0f172a;}
 [data-theme="light"] .lv-ga{background-image:url('logo-color.svg');}
 @media(min-width:681px) and (max-width:950px){.lv-ga{display:none;}}
-@media(max-width:680px){.hdr-nav{display:none;}} /* match the app pages: full nav ≥681px, hidden below */ /* #6: hide GA sub-logo in the tight nav band (stays in footer) */
+@media(max-width:680px){.hdr-nav .nav-link{display:none;}} /* match the app pages: full nav ≥681px, hidden below */ /* #6: hide GA sub-logo in the tight nav band (stays in footer) */
 .lv-brand ~ *{display:none;}
 .lv-footer{text-align:center;padding:46px 20px 40px;border-top:1px solid rgba(255,255,255,0.08);margin-top:48px;}
 [data-theme="light"] .lv-footer{border-top-color:rgba(15,23,42,0.1);}
@@ -460,7 +460,6 @@ a:hover{color:var(--tx);text-decoration:underline;}
 ══════════════════════════════════════════ -->
 <header class="hdr">
   <div class="hdr-l">
-    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
     <a href="how-to.html" style="text-decoration:none;display:flex;align-items:center;gap:12px;color:inherit;"><span class="lv-brand"><img class="lv-mark" src="linkvault-mark.png" alt="LinkVault"><span class="lv-text"><span class="lv-word">LinkVault</span><span class="lv-ga" role="img" aria-label="by Growth Automated"></span></span></span>
     <div>
       <div class="hdr-title" style="font-family:'Assistant',sans-serif;font-weight:700;">GrowthAutomated<span style="color:var(--li2)">.ai</span></div>
@@ -468,6 +467,7 @@ a:hover{color:var(--tx);text-decoration:underline;}
     </div></a>
   </div>
   <nav class="hdr-nav">
+    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
     <a class="nav-link active" href="how-to.html">📘 How It Works</a>
     <a class="nav-link" href="dashboard.html">📊 Dashboard</a>
     <a class="nav-link" href="icp-finder.html">🎯 ICP Finder</a>
