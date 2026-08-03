@@ -762,7 +762,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <div class="psub">Browse, search, and filter all your LinkedIn connections</div>
 
       <div class="filter-bar">
-        <input type="text" class="search-input" id="conn-search" placeholder="Search name, company, or title…" oninput="filterConnections()">
+        <input type="text" class="search-input" aria-label="Search contacts by name, title or company" id="conn-search" placeholder="Search name, company, or title…" oninput="filterConnections()">
         <div class="cdd"><input class="filter-select cdd-input" id="conn-company" placeholder="All companies" autocomplete="off"><div class="cdd-menu" id="conn-company-menu"></div></div>
         <select class="filter-select" id="conn-year" onchange="filterConnections()"><option value="">All years</option></select>
         <span class="filter-count"><b id="conn-count">0</b> connections</span>
@@ -3553,6 +3553,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 <!-- Willis help widget -->
 <footer class="lv-footer"><a href="how-to.html" class="lv-foot-logo" aria-label="Growth Automated"></a><div class="lv-foot-tag"><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated</div><div class="lv-foot-links">Not affiliated with LinkedIn · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener">View source ↗</a> · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes ↗</a> · <a href="#" onclick="window.reportIssue&&reportIssue();return false;">Report an issue</a></div></footer>
 <script src="lv-warmth.js?v=1"></script>
+<script src="lv-a11y.js?v=1"></script>
 <script src="privacy-monitor.js?v=2"></script>
 <script src="willis-articles.js?v=3"></script>
 <script src="willis.js?v=3"></script>

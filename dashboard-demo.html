@@ -602,7 +602,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <div class="psub">Browse, search, and filter all your LinkedIn connections</div>
 
       <div class="filter-bar">
-        <input type="text" class="search-input" id="conn-search" placeholder="Search name, company, or title…" oninput="filterConnections()">
+        <input type="text" class="search-input" aria-label="Search contacts by name, title or company" id="conn-search" placeholder="Search name, company, or title…" oninput="filterConnections()">
         <div class="cdd"><input class="filter-select cdd-input" id="conn-company" placeholder="All companies" autocomplete="off"><div class="cdd-menu" id="conn-company-menu"></div></div>
         <select class="filter-select" id="conn-year" onchange="filterConnections()"><option value="">All years</option></select>
         <span class="filter-count"><b id="conn-count">0</b> connections</span>
