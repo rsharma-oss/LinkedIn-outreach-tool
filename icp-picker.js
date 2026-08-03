@@ -197,6 +197,100 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
   }
   function syncBoxes(){ ['t1','t2','t3'].forEach(function(t){ var el=$('icpkw-'+t); if(el) el.value=(ICP_KW[t]||[]).join('\n'); }); if(typeof updateEditorCounts==='function') updateEditorCounts(); if(typeof renderTitlePicker==='function') renderTitlePicker(); }
 
+
+  /* ── Suggested from your own data ────────────────────────────────────────────
+     Two evidence-based nudges, both SUGGEST-AND-APPROVE — nothing is applied until
+     you click. Auto-rewriting someone's ICP from inferred signals would silently
+     distort their targeting, so every item is a discrete, reversible choice.
+       1. Companies you follow where you also have connections → T2 named accounts
+       2. Recurring terms from your LinkedIn search history    → T1 / T3 keywords  */
+  var SG_STOP = new Set(('the and for with from that this you your are was our their they them of in on at to a an '+
+    'people search results linkedin profile profiles company companies job jobs new all more see who is it by or '+
+    'canada toronto ontario inc ltd llc corp group services solutions technologies').split(' '));
+
+  function sgSearchTerms(){
+    var raw = (window._rawFiles||{})['SearchQueries.csv'];
+    if(!raw || typeof Papa==='undefined') return [];
+    var rows;
+    try{ rows = Papa.parse(raw.trim(),{header:true,skipEmptyLines:true}).data||[]; }catch(e){ return []; }
+    var have = {};
+    ['t1','t2','t3'].forEach(function(t){ (ICP_KW[t]||[]).forEach(function(k){ have[String(k).toLowerCase()]=1; }); });
+    var counts = {};
+    rows.forEach(function(r){
+      var q = String(r['Search Query']||'').toLowerCase();
+      (q.match(/[a-z][a-z\-']{3,}/g)||[]).forEach(function(w){
+        if(SG_STOP.has(w) || have[w]) return;
+        counts[w]=(counts[w]||0)+1;
+      });
+    });
+    return Object.keys(counts).map(function(w){ return {term:w,count:counts[w]}; })
+      .filter(function(x){ return x.count>=8; })
+      .sort(function(a,b){ return b.count-a.count; }).slice(0,14);
+  }
+
+  function sgEsc(t){ return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  window.renderICPSuggestions = function(){
+    var box = $('icp-suggest'); if(!box) return;
+    var html = '';
+
+    // 1 — companies you follow, ranked by how many connections you have there
+    var follows = (window.LVWarmth && LVWarmth.isBuilt() && typeof ICP!=='undefined')
+      ? LVWarmth.followedWithConnections(ICP) : [];
+    follows = follows.filter(function(f){ return !ICP_EXACT.t2.companies.has(normCo(f.company)); });
+    if(follows.length){
+      var reach = follows.reduce(function(a,f){ return a+f.count; },0);
+      html += '<div class="sg-card"><div class="sg-h">🏢 Companies you follow — and already know people at</div>'+
+        '<div class="sg-sub">You follow <b>'+follows.length+'</b> compan'+(follows.length===1?'y':'ies')+
+        ' where you have <b>'+reach+'</b> connection'+(reach===1?'':'s')+'. These make natural <b>T2 named accounts</b>.</div>'+
+        '<div class="sg-chips">'+follows.slice(0,12).map(function(f,i){
+          return '<span class="sg-chip"><b>'+sgEsc(f.company)+'</b><span class="sg-n">'+f.count+'</span>'+
+                 '<button type="button" class="sg-add" data-sgco="'+i+'">+ T2</button></span>';
+        }).join('')+'</div>'+
+        (follows.length>1?'<button type="button" class="sg-all" id="sg-all-co">Add all '+Math.min(12,follows.length)+' to T2</button>':'')+
+        '</div>';
+    }
+
+    // 2 — what you actually search for
+    var terms = sgSearchTerms();
+    if(terms.length){
+      html += '<div class="sg-card"><div class="sg-h">🔍 What you actually search for</div>'+
+        '<div class="sg-sub">Recurring terms from your LinkedIn search history — the ICP you already hunt for by hand. Add the ones that fit: <b>T1</b> for seniority, <b>T3</b> for function.</div>'+
+        '<div class="sg-chips">'+terms.map(function(t,i){
+          return '<span class="sg-chip"><b>'+sgEsc(t.term)+'</b><span class="sg-n">×'+t.count+'</span>'+
+                 '<button type="button" class="sg-t" data-sgkw="'+i+'" data-tier="t1">T1</button>'+
+                 '<button type="button" class="sg-t" data-sgkw="'+i+'" data-tier="t3">T3</button></span>';
+        }).join('')+'</div></div>';
+    }
+
+    box.innerHTML = html;
+    if(!html) return;
+
+    function addCompany(f){
+      ICP_EXACT.t2.companies.add(normCo(f.company));
+      if(typeof saveICPExact==='function') saveICPExact();
+    }
+    [].forEach.call(box.querySelectorAll('[data-sgco]'), function(b){
+      b.onclick=function(){ addCompany(follows[+b.getAttribute('data-sgco')]);
+        reclassify(); b.textContent='✓ Added'; b.classList.add('done'); b.disabled=true;
+        var m=$('icpEditMsg'); if(m) m.textContent='✓ Added to T2 — re-tiered ('+ICP.length.toLocaleString()+' in ICP)'; };
+    });
+    var all=$('sg-all-co');
+    if(all) all.onclick=function(){ follows.slice(0,12).forEach(addCompany); reclassify();
+      var m=$('icpEditMsg'); if(m) m.textContent='✓ Added '+Math.min(12,follows.length)+' companies to T2 — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+      window.renderICPSuggestions(); };
+    [].forEach.call(box.querySelectorAll('[data-sgkw]'), function(b){
+      b.onclick=function(){
+        var t=terms[+b.getAttribute('data-sgkw')], tier=b.getAttribute('data-tier');
+        if(ICP_KW[tier].indexOf(t.term)<0) ICP_KW[tier].push(t.term);
+        try{ localStorage.setItem(window.ICP_K.kw, JSON.stringify(ICP_KW)); }catch(e){}
+        reclassify(); syncBoxes();
+        var m=$('icpEditMsg'); if(m) m.textContent='✓ Added "'+t.term+'" to '+tier.toUpperCase()+' — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+        window.renderICPSuggestions();
+      };
+    });
+  };
+
   window.applyICPProfile=function(key){
     if(!key || typeof ICP_PROFILES==='undefined' || !ICP_PROFILES[key]) return;
     var p=ICP_PROFILES[key];
@@ -263,6 +357,6 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
 
   if(typeof window.openICPEditor==='function'){
     var prev=window.openICPEditor;
-    window.openICPEditor=function(){ prev(); fillProfilePills(); };
+    window.openICPEditor=function(){ prev(); fillProfilePills(); if(window.renderICPSuggestions) renderICPSuggestions(); };
   }
 })();
