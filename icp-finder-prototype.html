@@ -503,7 +503,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div id="view-icp">
       <!-- Filter Bar -->
       <div class="filter-bar">
-        <input type="text" class="search-input" id="icp-search" placeholder="Search name, title, company…" oninput="_icpPage=0;renderTable()">
+        <input type="text" class="search-input" aria-label="Search contacts by name, title or company" id="icp-search" placeholder="Search name, title, company…" oninput="_icpPage=0;renderTable()">
         <select class="filter-select" id="f-tier" onchange="_icpPage=0;renderTable()">
           <option value="">All Tiers</option>
           <option value="T1">T1 · Decision Maker</option>
@@ -2735,6 +2735,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 <script src="icp-profiles.js"></script>
 <script src="icp-picker.js"></script>
 
+<script src="lv-a11y.js?v=1"></script>
 <script src="privacy-monitor.js?v=2"></script>
 <script src="willis-articles.js?v=3"></script>
 <script src="willis.js?v=3"></script>
