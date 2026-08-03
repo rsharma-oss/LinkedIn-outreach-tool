@@ -343,6 +343,15 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .icp-pick-tier.t3{background:rgba(0,160,220,0.18);color:#38bdf8;}
 .icp-pick-tier.un{background:rgba(148,163,184,0.15);color:var(--tx3);}
 .icp-pick-bulk{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:8px 12px;background:rgba(0,160,220,0.12);border-radius:8px;font-size:0.8rem;color:var(--tx2);flex-wrap:wrap;}
+/* Header crowding fix: below 1000px the brand + nav + controls no longer fit on one
+   row — .hdr-l would shrink to 0 (min-width:0) and the brand overlapped the nav. Let the
+   header wrap and drop the nav to its own centered row instead of colliding. */
+@media(max-width:1000px){
+  .hdr{flex-wrap:wrap;}
+  .hdr-l{flex:1 1 auto;min-width:auto;}
+  .hdr-r{flex:0 0 auto;}
+  .hdr-nav{order:3;flex:1 0 100%;justify-content:center;margin-top:9px;}
+}
 </style>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
