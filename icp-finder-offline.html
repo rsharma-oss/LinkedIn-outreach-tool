@@ -422,6 +422,22 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .wm-copy{margin-top:9px;background:var(--li);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:0.74rem;font-weight:700;cursor:pointer;font-family:inherit;}
 .wm-x{float:right;background:none;border:none;color:var(--tx3);cursor:pointer;font-size:1rem;line-height:1;}
 </style>
+<style>
+/* Suggested-from-your-data cards — always approve-per-item, never auto-applied */
+.sg-card{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px 14px;margin:0 0 10px;}
+.sg-h{display:flex;align-items:center;gap:8px;font-size:0.78rem;font-weight:800;color:var(--tx);margin:0 0 3px;}
+.sg-sub{font-size:0.72rem;color:var(--tx2);margin:0 0 9px;line-height:1.45;}
+.sg-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.sg-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border2);border-radius:999px;padding:4px 10px;font-size:0.72rem;color:var(--tx);font-family:inherit;cursor:default;}
+.sg-chip b{font-weight:700;}
+.sg-chip .sg-n{color:var(--tx3);font-size:0.68rem;}
+.sg-add{background:var(--li);color:#fff;border:none;border-radius:6px;padding:2px 8px;font-size:0.68rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.sg-add:hover{filter:brightness(1.1);}
+.sg-add.done{background:var(--ok,#047857);}
+.sg-all{background:var(--li);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:0.74rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:9px;}
+.sg-t{background:var(--bg4);color:var(--tx2);border:1px solid var(--border2);border-radius:6px;padding:2px 7px;font-size:0.66rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.sg-t:hover{background:var(--li);color:#fff;}
+</style>
 </head>
 <body>
 <div style="background:rgba(16,185,129,0.1);border-bottom:1px solid rgba(16,185,129,0.2);padding:8px 24px;text-align:center;font-size:0.75rem;color:#6ee7b7;">📦 Offline build — all libraries bundled inline. No internet required.</div>
@@ -485,6 +501,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <div class="pm-row"><span class="pm-file">Connections.csv</span><span class="pm-use">Names, companies &amp; roles — scored locally</span><span class="pm-loc">browser only</span></div>
       <div class="pm-row"><span class="pm-file">messages.csv</span><span class="pm-use">Message recency &amp; engagement per contact</span><span class="pm-loc">browser only</span></div>
       <div class="pm-note">No server. No upload. All processing runs in your browser's local memory. <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" class="pm-link">View source on GitHub ↗</a></div>
+      <div class="pm-ignore" style="margin-top:9px;padding-top:9px;border-top:1px dashed var(--border2);font-size:0.72rem;color:var(--tx2);line-height:1.55;"><b style="color:var(--tx);">🚫 And what it never opens.</b> Your export also contains ad clicks, ad-targeting profile, login IPs &amp; security history, billing receipts, phone numbers and email addresses. LinkVault <b>never reads those files</b> — they have nothing to do with outreach.</div>
     </div>
 
     <div class="load-steps">
@@ -2322,7 +2339,7 @@ async function loadFolder() {
   // Dashboard after loading here leaves its Engagement & Content tabs empty.
   const wanted = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
     'Shares.csv','Member_Follows.csv','Invitations.csv','Profile.csv','Positions.csv',
-  'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv'];
+  'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv','SearchQueries.csv'];
   try {
     for await (const entry of dirHandle.values()) {
       if (entry.kind === 'file' && wanted.includes(canonicalName(entry.name))) {
@@ -2339,7 +2356,7 @@ async function loadFolder() {
 // ─── UAT#2 follow-up: zip support + resilient reads + merge (parity with Dashboard) ──
 const LV_WANTED = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
   'Shares.csv','Member_Follows.csv','Invitations.csv','Profile.csv','Positions.csv',
-  'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv'];
+  'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv','SearchQueries.csv'];
 let _fileStore = {};
 let _readFailures = [];
 
@@ -2491,7 +2508,9 @@ async function processFiles(filemap, isDemo) {
   // LZ-string compression reduces each key by ~3x — fixes Safari 5 MB quota for
   // M-activity profiles. H-activity (80K msgs) remains Chrome-only at ~8 MB compressed.
   if (!isDemo) {
-    const mainMap = Object.fromEntries(Object.entries(filemap).filter(([k]) => k !== 'messages.csv'));
+    // SearchQueries.csv is read for ICP suggestions but deliberately NOT cached — it is the
+    // largest file in the export (9k+ rows) and would push Safari past its ~5MB quota.
+    const mainMap = Object.fromEntries(Object.entries(filemap).filter(([k]) => k !== 'messages.csv' && k !== 'SearchQueries.csv'));
     try {
       sessionStorage.setItem('ga_csv_cache', LZString.compress(JSON.stringify({data: mainMap, src:'icp'})));
     } catch(e) { console.warn('CSV session cache failed:', e); }
@@ -3114,6 +3133,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div class="icp-step-label">Step 1 · Start from your industry</div>
     <div class="icp-vert-pills" id="icp-vert-pills"></div>
 
+    <div id="icp-suggest"></div>
     <div class="icp-step-label">Step 2 · Add the right people <span>— optional; tweak who's in each tier</span></div>
     <div id="icp-view-pick" class="icp-edit-view">
       <div class="icp-pick-mode">
@@ -3576,6 +3596,100 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
   }
   function syncBoxes(){ ['t1','t2','t3'].forEach(function(t){ var el=$('icpkw-'+t); if(el) el.value=(ICP_KW[t]||[]).join('\n'); }); if(typeof updateEditorCounts==='function') updateEditorCounts(); if(typeof renderTitlePicker==='function') renderTitlePicker(); }
 
+
+  /* ── Suggested from your own data ────────────────────────────────────────────
+     Two evidence-based nudges, both SUGGEST-AND-APPROVE — nothing is applied until
+     you click. Auto-rewriting someone's ICP from inferred signals would silently
+     distort their targeting, so every item is a discrete, reversible choice.
+       1. Companies you follow where you also have connections → T2 named accounts
+       2. Recurring terms from your LinkedIn search history    → T1 / T3 keywords  */
+  var SG_STOP = new Set(('the and for with from that this you your are was our their they them of in on at to a an '+
+    'people search results linkedin profile profiles company companies job jobs new all more see who is it by or '+
+    'canada toronto ontario inc ltd llc corp group services solutions technologies').split(' '));
+
+  function sgSearchTerms(){
+    var raw = (window._rawFiles||{})['SearchQueries.csv'];
+    if(!raw || typeof Papa==='undefined') return [];
+    var rows;
+    try{ rows = Papa.parse(raw.trim(),{header:true,skipEmptyLines:true}).data||[]; }catch(e){ return []; }
+    var have = {};
+    ['t1','t2','t3'].forEach(function(t){ (ICP_KW[t]||[]).forEach(function(k){ have[String(k).toLowerCase()]=1; }); });
+    var counts = {};
+    rows.forEach(function(r){
+      var q = String(r['Search Query']||'').toLowerCase();
+      (q.match(/[a-z][a-z\-']{3,}/g)||[]).forEach(function(w){
+        if(SG_STOP.has(w) || have[w]) return;
+        counts[w]=(counts[w]||0)+1;
+      });
+    });
+    return Object.keys(counts).map(function(w){ return {term:w,count:counts[w]}; })
+      .filter(function(x){ return x.count>=8; })
+      .sort(function(a,b){ return b.count-a.count; }).slice(0,14);
+  }
+
+  function sgEsc(t){ return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  window.renderICPSuggestions = function(){
+    var box = $('icp-suggest'); if(!box) return;
+    var html = '';
+
+    // 1 — companies you follow, ranked by how many connections you have there
+    var follows = (window.LVWarmth && LVWarmth.isBuilt() && typeof ICP!=='undefined')
+      ? LVWarmth.followedWithConnections(ICP) : [];
+    follows = follows.filter(function(f){ return !ICP_EXACT.t2.companies.has(normCo(f.company)); });
+    if(follows.length){
+      var reach = follows.reduce(function(a,f){ return a+f.count; },0);
+      html += '<div class="sg-card"><div class="sg-h">🏢 Companies you follow — and already know people at</div>'+
+        '<div class="sg-sub">You follow <b>'+follows.length+'</b> compan'+(follows.length===1?'y':'ies')+
+        ' where you have <b>'+reach+'</b> connection'+(reach===1?'':'s')+'. These make natural <b>T2 named accounts</b>.</div>'+
+        '<div class="sg-chips">'+follows.slice(0,12).map(function(f,i){
+          return '<span class="sg-chip"><b>'+sgEsc(f.company)+'</b><span class="sg-n">'+f.count+'</span>'+
+                 '<button type="button" class="sg-add" data-sgco="'+i+'">+ T2</button></span>';
+        }).join('')+'</div>'+
+        (follows.length>1?'<button type="button" class="sg-all" id="sg-all-co">Add all '+Math.min(12,follows.length)+' to T2</button>':'')+
+        '</div>';
+    }
+
+    // 2 — what you actually search for
+    var terms = sgSearchTerms();
+    if(terms.length){
+      html += '<div class="sg-card"><div class="sg-h">🔍 What you actually search for</div>'+
+        '<div class="sg-sub">Recurring terms from your LinkedIn search history — the ICP you already hunt for by hand. Add the ones that fit: <b>T1</b> for seniority, <b>T3</b> for function.</div>'+
+        '<div class="sg-chips">'+terms.map(function(t,i){
+          return '<span class="sg-chip"><b>'+sgEsc(t.term)+'</b><span class="sg-n">×'+t.count+'</span>'+
+                 '<button type="button" class="sg-t" data-sgkw="'+i+'" data-tier="t1">T1</button>'+
+                 '<button type="button" class="sg-t" data-sgkw="'+i+'" data-tier="t3">T3</button></span>';
+        }).join('')+'</div></div>';
+    }
+
+    box.innerHTML = html;
+    if(!html) return;
+
+    function addCompany(f){
+      ICP_EXACT.t2.companies.add(normCo(f.company));
+      if(typeof saveICPExact==='function') saveICPExact();
+    }
+    [].forEach.call(box.querySelectorAll('[data-sgco]'), function(b){
+      b.onclick=function(){ addCompany(follows[+b.getAttribute('data-sgco')]);
+        reclassify(); b.textContent='✓ Added'; b.classList.add('done'); b.disabled=true;
+        var m=$('icpEditMsg'); if(m) m.textContent='✓ Added to T2 — re-tiered ('+ICP.length.toLocaleString()+' in ICP)'; };
+    });
+    var all=$('sg-all-co');
+    if(all) all.onclick=function(){ follows.slice(0,12).forEach(addCompany); reclassify();
+      var m=$('icpEditMsg'); if(m) m.textContent='✓ Added '+Math.min(12,follows.length)+' companies to T2 — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+      window.renderICPSuggestions(); };
+    [].forEach.call(box.querySelectorAll('[data-sgkw]'), function(b){
+      b.onclick=function(){
+        var t=terms[+b.getAttribute('data-sgkw')], tier=b.getAttribute('data-tier');
+        if(ICP_KW[tier].indexOf(t.term)<0) ICP_KW[tier].push(t.term);
+        try{ localStorage.setItem(window.ICP_K.kw, JSON.stringify(ICP_KW)); }catch(e){}
+        reclassify(); syncBoxes();
+        var m=$('icpEditMsg'); if(m) m.textContent='✓ Added "'+t.term+'" to '+tier.toUpperCase()+' — re-tiered ('+ICP.length.toLocaleString()+' in ICP)';
+        window.renderICPSuggestions();
+      };
+    });
+  };
+
   window.applyICPProfile=function(key){
     if(!key || typeof ICP_PROFILES==='undefined' || !ICP_PROFILES[key]) return;
     var p=ICP_PROFILES[key];
@@ -3642,7 +3756,7 @@ window.ICP_K = window.ICP_K || { kw:'ga_icp_kw_proto', exact:'ga_icp_exact_proto
 
   if(typeof window.openICPEditor==='function'){
     var prev=window.openICPEditor;
-    window.openICPEditor=function(){ prev(); fillProfilePills(); };
+    window.openICPEditor=function(){ prev(); fillProfilePills(); if(window.renderICPSuggestions) renderICPSuggestions(); };
   }
 })();
 
