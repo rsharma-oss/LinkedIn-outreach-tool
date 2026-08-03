@@ -3248,6 +3248,7 @@ window.ICP_PROFILES = {
    Everything stays in memory — this module never touches the network. */
 window.LVWarmth = (function () {
   var IDX = {};            // key → signals
+  var EV = [];             // {date, dir:'given'|'received', skill} — for dashboard aggregates
   var FOLLOWED = new Set();// normalised company names you follow
   var BUILT = false;
 
@@ -3284,7 +3285,7 @@ window.LVWarmth = (function () {
   }
 
   function build(filemap) {
-    IDX = {}; FOLLOWED = new Set(); BUILT = false;
+    IDX = {}; FOLLOWED = new Set(); EV = []; BUILT = false;
     filemap = filemap || {};
 
     rows(filemap['Endorsement_Given_Info.csv']).forEach(function (r) {
@@ -3292,12 +3293,14 @@ window.LVWarmth = (function () {
       var s = slot(r['Endorsee Public Url'], (r['Endorsee First Name'] || '') + ' ' + (r['Endorsee Last Name'] || ''));
       var sk = (r['Skill Name'] || '').trim();
       if (sk && s.endorsedThem.indexOf(sk) < 0) s.endorsedThem.push(sk);
+      EV.push({ date: r['Endorsement Date'] || '', dir: 'given', skill: sk });
     });
     rows(filemap['Endorsement_Received_Info.csv']).forEach(function (r) {
       if ((r['Endorsement Status'] || 'ACCEPTED').toUpperCase().indexOf('ACCEPT') !== 0) return;
       var s = slot(r['Endorser Public Url'], (r['Endorser First Name'] || '') + ' ' + (r['Endorser Last Name'] || ''));
       var sk = (r['Skill Name'] || '').trim();
       if (sk && s.endorsedYou.indexOf(sk) < 0) s.endorsedYou.push(sk);
+      EV.push({ date: r['Endorsement Date'] || '', dir: 'received', skill: sk });
     });
     rows(filemap['Recommendations_Given.csv']).forEach(function (r) {
       slot('', (r['First Name'] || '') + ' ' + (r['Last Name'] || '')).recGiven = true;
@@ -3379,6 +3382,28 @@ window.LVWarmth = (function () {
       });
       return Object.keys(counts).map(function (k) { return { company: k, count: counts[k] }; })
         .sort(function (a, b) { return b.count - a.count; });
+    },
+
+    /* Skills others endorsed YOU for — what your network thinks you're good at. */
+    topSkills: function (n) {
+      var c = {};
+      EV.forEach(function (e) { if (e.dir === 'received' && e.skill) c[e.skill] = (c[e.skill] || 0) + 1; });
+      return Object.keys(c).map(function (k) { return { skill: k, count: c[k] }; })
+        .sort(function (a, b) { return b.count - a.count; }).slice(0, n || 8);
+    },
+    /* Endorsements per year, both directions — when your network was most active. */
+    timeline: function () {
+      var g = {}, r = {};
+      EV.forEach(function (e) {
+        var y = (String(e.date).match(/(19|20)\d{2}/) || [])[0];
+        if (!y) return;
+        if (e.dir === 'given') g[y] = (g[y] || 0) + 1; else r[y] = (r[y] || 0) + 1;
+      });
+      var years = Object.keys(g).concat(Object.keys(r))
+        .filter(function (v, i, a) { return a.indexOf(v) === i; }).sort();
+      return { years: years,
+        given: years.map(function (y) { return g[y] || 0; }),
+        received: years.map(function (y) { return r[y] || 0; }) };
     },
     stats: function () {
       var seen = {}, people = 0, eThem = 0, eYou = 0, recs = 0;

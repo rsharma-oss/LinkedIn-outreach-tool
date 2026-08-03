@@ -541,6 +541,32 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
         </div>
       </div>
     </div>
+      <!-- ── RELATIONSHIPS (endorsements · recommendations · follows) ── -->
+      <div id="rel-section" style="display:none;">
+        <div class="ptitle" style="margin-top:34px;">Relationships</div>
+        <div class="psub">Who you actually know — endorsements, recommendations and the companies you follow</div>
+        <div class="stat-grid" id="rel-stats"></div>
+        <div class="chart-grid">
+          <div class="chart-card">
+            <div class="chart-title">Relationship Strength</div>
+            <div class="chart-sub">How warm your network really is</div>
+            <div class="chart-wrap"><canvas id="chart-rel-warmth" height="180"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">What You're Known For</div>
+            <div class="chart-sub">Skills others endorsed you for</div>
+            <div class="chart-wrap"><canvas id="chart-rel-skills" height="180"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-grid single">
+          <div class="chart-card">
+            <div class="chart-title">Endorsement Activity Over Time</div>
+            <div class="chart-sub">Given vs received, by year</div>
+            <div class="chart-wrap"><canvas id="chart-rel-timeline" height="110"></canvas></div>
+          </div>
+        </div>
+      </div>
+
 
     <!-- ====== NETWORK ====== -->
     <div class="pane" id="pane-network">
@@ -926,7 +952,8 @@ async function loadFromZip(zipFile) {
   document.getElementById('progress-label').textContent = 'Reading zip…';
 
   const wanted = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
-    'Shares.csv','Invitations.csv','Member_Follows.csv','Profile.csv','Positions.csv'];
+    'Shares.csv','Invitations.csv','Member_Follows.csv','Profile.csv','Positions.csv',
+    'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv'];
 
   try {
     const zip = await JSZip.loadAsync(zipFile);
@@ -964,7 +991,8 @@ async function loadFromDirectoryEntry(dirEntry) {
   document.getElementById('progress-label').textContent = 'Reading folder…';
 
   const wanted = new Set(['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
-    'Shares.csv','Invitations.csv','Member_Follows.csv','Profile.csv','Positions.csv']);
+    'Shares.csv','Invitations.csv','Member_Follows.csv','Profile.csv','Positions.csv',
+    'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv']);
 
   const filemap = {};
 
@@ -1033,7 +1061,8 @@ async function loadFolder() {
 
   const filemap = {};
   const wanted = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
-    'Shares.csv','Invitations.csv','Member_Follows.csv','Profile.csv','Positions.csv'];
+    'Shares.csv','Invitations.csv','Member_Follows.csv','Profile.csv','Positions.csv',
+    'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv'];
 
   try {
     for await (const entry of dirHandle.values()) {
@@ -1058,7 +1087,8 @@ async function loadFolder() {
 // dataset, so there was no way to add a file you missed; (c) .zip detection was
 // case-sensitive. All three are handled here, in one place used by every load path.
 const LV_WANTED = ['Connections.csv','messages.csv','Reactions.csv','Comments.csv',
-  'Shares.csv','Invitations.csv','Member_Follows.csv','Profile.csv','Positions.csv'];
+  'Shares.csv','Invitations.csv','Member_Follows.csv','Profile.csv','Positions.csv',
+    'Endorsement_Given_Info.csv','Endorsement_Received_Info.csv','Recommendations_Given.csv','Recommendations_Received.csv','Company Follows.csv'];
 let _fileStore = {};          // merged across loads — never replaced wholesale
 let _readFailures = [];       // files that genuinely failed to read this pass
 
@@ -1215,6 +1245,8 @@ async function processFiles(filemap, isDemo=false) {
   document.getElementById('status-dot').classList.add('loaded');
   document.getElementById('reload-btn').style.display = 'flex';
 
+  if (window.LVWarmth) { try { LVWarmth.build(filemap); } catch(e) { console.warn('warmth build skipped:', e); } }
+  try { renderRelationships(); } catch(e) { console.warn('relationship panel skipped:', e); }
   if (!isDemo) renderMountNote(filemap);
   const loadedFiles = Object.keys(filemap);
   document.getElementById('status-text').textContent =
@@ -1235,6 +1267,51 @@ async function processFiles(filemap, isDemo=false) {
       } catch(e) { console.warn('Messages session cache skipped (storage full):', e); }
     }
   }
+}
+
+
+// ─── RELATIONSHIPS: endorsements, recommendations, company follows ────────────
+function renderRelationships(){
+  const sec=document.getElementById('rel-section');
+  if(!sec || !window.LVWarmth || !LVWarmth.isBuilt()) return;
+  const st=LVWarmth.stats();
+  if(!st.people && !st.followed){ sec.style.display='none'; return; }
+
+  // warmth across the whole connection base (dashboard has no tiers — score everyone)
+  const buckets={strong:0,warm:0,light:0,cold:0};
+  (D.connections||[]).forEach(c=>{
+    const w=LVWarmth.get({ name:`${c['First Name']||''} ${c['Last Name']||''}`.trim(), first:c['First Name']||'',
+                           url:c['URL']||'', company:c['Company']||'' });
+    if(w) buckets[w.label]++;
+  });
+  const known=buckets.strong+buckets.warm+buckets.light;
+  const followOverlap=LVWarmth.followedWithConnections((D.connections||[]).map(c=>({company:c['Company']||''})));
+
+  document.getElementById('rel-stats').innerHTML = [
+    ['sc-li',  known.toLocaleString(), 'People You Actually Know', `${Math.round(known/Math.max(1,(D.connections||[]).length)*100)}% of your network`],
+    ['sc-red', buckets.strong.toLocaleString(), 'Strong Ties', 'Recommendations + mutual endorsements'],
+    ['sc-green', st.endorsedYou.toLocaleString(), 'Endorsed You', `across ${LVWarmth.topSkills(99).length} skills`],
+    ['sc-orange', st.followed.toLocaleString(), 'Companies You Follow', `${followOverlap.length} where you have connections`]
+  ].map(([cls,v,l,sub])=>`<div class="stat-card ${cls}"><div class="stat-val">${v}</div><div class="stat-label">${l}</div><div class="stat-sub">${sub}</div></div>`).join('');
+
+  doughnutChart('chart-rel-warmth',
+    ['🔥 Strong','🌤 Warm','🔹 Light','❄️ Cold'],
+    [buckets.strong,buckets.warm,buckets.light,buckets.cold],
+    ['#ef4444','#f59e0b','#0077B5','#94a3b8']);
+
+  const sk=LVWarmth.topSkills(8);
+  // barChart is vertical-only; skill names run long, so truncate the axis labels
+  if(sk.length) barChart('chart-rel-skills',
+    sk.map(x=>x.skill.length>16 ? x.skill.slice(0,15)+'…' : x.skill),
+    [{label:'Endorsements', data:sk.map(x=>x.count), color:'#10b981'}], {maxX:8});
+
+  const tl=LVWarmth.timeline();
+  if(tl.years.length) lineChart('chart-rel-timeline', tl.years, [
+    {label:'Received', data:tl.received, color:'#10b981', area:'rgba(16,185,129,0.12)'},
+    {label:'Given',    data:tl.given,    color:'#0077B5', area:'rgba(0,119,181,0.10)'}]);
+
+  sec.style.display='block';
+  if(typeof applyChartTheme==='function') applyChartTheme();
 }
 
 // ─── GROUPING HELPERS ────────────────────────────────────────────────────────
@@ -3486,6 +3563,196 @@ document.addEventListener('DOMContentLoaded', async () => {
 </script>
 <!-- Willis help widget -->
 <footer class="lv-footer"><a href="how-to.html" class="lv-foot-logo" aria-label="Growth Automated"></a><div class="lv-foot-tag"><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated</div><div class="lv-foot-links">Not affiliated with LinkedIn · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener">View source ↗</a> · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes ↗</a> · <a href="#" onclick="window.reportIssue&&reportIssue();return false;">Report an issue</a></div></footer>
+<script>/* inlined lv-warmth.js */
+/* LinkVault — relationship warmth engine (shared by ICP Finder + Dashboard).
+   Turns the export's *relationship* files into a per-person warmth signal, so a connection
+   stops being a row and becomes "someone you actually know, and here's why".
+
+   Reads (all optional — every signal degrades gracefully):
+     Endorsement_Given_Info.csv     — people YOU endorsed, and for which skill
+     Endorsement_Received_Info.csv  — people who endorsed YOU
+     Recommendations_Given.csv      — you wrote them a recommendation (strongest tie)
+     Recommendations_Received.csv   — they wrote you one
+     Company Follows.csv            — companies you follow (account-level affinity)
+
+   Join key: normalised LinkedIn public URL (verified 309/311 + 122/122 on a real export),
+   falling back to normalised full name so nothing is lost when a URL is absent.
+   Everything stays in memory — this module never touches the network. */
+window.LVWarmth = (function () {
+  var IDX = {};            // key → signals
+  var EV = [];             // {date, dir:'given'|'received', skill} — for dashboard aggregates
+  var FOLLOWED = new Set();// normalised company names you follow
+  var BUILT = false;
+
+  function normUrl(u) {
+    u = (u || '').trim().toLowerCase();
+    if (!u) return '';
+    u = u.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '');
+    return u.indexOf('linkedin.com/in/') === 0 ? u : '';
+  }
+  function normName(n) { return (n || '').trim().toLowerCase().replace(/\s+/g, ' '); }
+  function normCo(c) {
+    return (c || '').trim().toLowerCase()
+      .replace(/[.,]/g, '')
+      .replace(/\s+(inc|llc|ltd|limited|corp|corporation|co|company|plc|sa|nv|gmbh|group|holdings)$/g, '')
+      .trim();
+  }
+  function keys(url, name) {
+    var out = [], u = normUrl(url), n = normName(name);
+    if (u) out.push('u:' + u);
+    if (n) out.push('n:' + n);
+    return out;
+  }
+  function slot(url, name) {
+    var ks = keys(url, name), rec = null;
+    for (var i = 0; i < ks.length; i++) if (IDX[ks[i]]) { rec = IDX[ks[i]]; break; }
+    if (!rec) rec = { endorsedThem: [], endorsedYou: [], recGiven: false, recReceived: false };
+    ks.forEach(function (k) { IDX[k] = rec; });   // alias every key to the same record
+    return rec;
+  }
+  function rows(text) {
+    if (!text || typeof Papa === 'undefined') return [];
+    try { return (Papa.parse(text.trim(), { header: true, skipEmptyLines: true }).data) || []; }
+    catch (e) { return []; }
+  }
+
+  function build(filemap) {
+    IDX = {}; FOLLOWED = new Set(); EV = []; BUILT = false;
+    filemap = filemap || {};
+
+    rows(filemap['Endorsement_Given_Info.csv']).forEach(function (r) {
+      if ((r['Endorsement Status'] || 'ACCEPTED').toUpperCase().indexOf('ACCEPT') !== 0) return;
+      var s = slot(r['Endorsee Public Url'], (r['Endorsee First Name'] || '') + ' ' + (r['Endorsee Last Name'] || ''));
+      var sk = (r['Skill Name'] || '').trim();
+      if (sk && s.endorsedThem.indexOf(sk) < 0) s.endorsedThem.push(sk);
+      EV.push({ date: r['Endorsement Date'] || '', dir: 'given', skill: sk });
+    });
+    rows(filemap['Endorsement_Received_Info.csv']).forEach(function (r) {
+      if ((r['Endorsement Status'] || 'ACCEPTED').toUpperCase().indexOf('ACCEPT') !== 0) return;
+      var s = slot(r['Endorser Public Url'], (r['Endorser First Name'] || '') + ' ' + (r['Endorser Last Name'] || ''));
+      var sk = (r['Skill Name'] || '').trim();
+      if (sk && s.endorsedYou.indexOf(sk) < 0) s.endorsedYou.push(sk);
+      EV.push({ date: r['Endorsement Date'] || '', dir: 'received', skill: sk });
+    });
+    rows(filemap['Recommendations_Given.csv']).forEach(function (r) {
+      slot('', (r['First Name'] || '') + ' ' + (r['Last Name'] || '')).recGiven = true;
+    });
+    rows(filemap['Recommendations_Received.csv']).forEach(function (r) {
+      slot('', (r['First Name'] || '') + ' ' + (r['Last Name'] || '')).recReceived = true;
+    });
+    rows(filemap['Company Follows.csv']).forEach(function (r) {
+      var o = normCo(r['Organization']); if (o) FOLLOWED.add(o);
+    });
+    BUILT = true;
+    return module.stats();
+  }
+
+  /* Warmth for one contact. msgCount/lastMsgDays come from the caller's existing message data
+     so messaging still counts — endorsements simply add a second, independent axis (and a much
+     smaller one, which matters when messages.csv is too big for Safari's storage quota). */
+  function get(contact) {
+    if (!BUILT) return null;
+    var c = contact || {};
+    var ks = keys(c.url, c.name), rec = null;
+    for (var i = 0; i < ks.length; i++) if (IDX[ks[i]]) { rec = IDX[ks[i]]; break; }
+    var followsCo = !!(c.company && FOLLOWED.has(normCo(c.company)));
+    rec = rec || { endorsedThem: [], endorsedYou: [], recGiven: false, recReceived: false };
+
+    var score = 0, reasons = [];
+    if (rec.recReceived) { score += 45; reasons.push({ icon: '🏆', text: 'They wrote you a recommendation' }); }
+    if (rec.recGiven)    { score += 40; reasons.push({ icon: '✍️', text: 'You wrote them a recommendation' }); }
+    if (rec.endorsedYou.length) {
+      score += 25 + Math.min(10, rec.endorsedYou.length * 2);
+      reasons.push({ icon: '⭐', text: 'They endorsed you for ' + rec.endorsedYou.slice(0, 2).join(' & ') +
+        (rec.endorsedYou.length > 2 ? ' +' + (rec.endorsedYou.length - 2) : '') });
+    }
+    if (rec.endorsedThem.length) {
+      score += 20 + Math.min(8, rec.endorsedThem.length * 2);
+      reasons.push({ icon: '👍', text: 'You endorsed them for ' + rec.endorsedThem.slice(0, 2).join(' & ') +
+        (rec.endorsedThem.length > 2 ? ' +' + (rec.endorsedThem.length - 2) : '') });
+    }
+    if (c.msgCount) {
+      score += Math.min(25, 8 + c.msgCount * 2);
+      reasons.push({ icon: '💬', text: c.msgCount + ' message' + (c.msgCount === 1 ? '' : 's') +
+        (c.lastMsgDays != null ? ' · last ' + (c.lastMsgDays < 60 ? 'recently' : Math.round(c.lastMsgDays / 30) + ' months ago') : '') });
+    }
+    if (followsCo) { score += 6; reasons.push({ icon: '🏢', text: 'You follow ' + c.company }); }
+
+    var label = score >= 60 ? 'strong' : score >= 25 ? 'warm' : score > 0 ? 'light' : 'cold';
+    return {
+      score: score, label: label, reasons: reasons,
+      mutual: !!(rec.endorsedYou.length && rec.endorsedThem.length) || (rec.recGiven && rec.recReceived),
+      followsCompany: followsCo,
+      opener: opener(c, rec, followsCo)
+    };
+  }
+
+  /* A first line you could actually send — grounded in a real shared moment, not a template. */
+  function opener(c, rec, followsCo) {
+    var first = (c.first || (c.name || '').split(' ')[0] || 'there');
+    if (rec.recReceived) return 'Hi ' + first + ' — you wrote me a recommendation a while back, and I still appreciate it. Would love to catch up.';
+    if (rec.recGiven)    return 'Hi ' + first + ' — I recommended you back when we worked together. Curious what you’re building now.';
+    if (rec.endorsedYou.length) return 'Hi ' + first + ' — thanks again for endorsing me for ' + rec.endorsedYou[0] + '. What are you focused on these days?';
+    if (rec.endorsedThem.length) return 'Hi ' + first + ' — I endorsed you for ' + rec.endorsedThem[0] + ' a while ago. How’s that side of the work going?';
+    if (c.msgCount)      return 'Hi ' + first + ' — it’s been a while since we spoke. Wanted to reconnect.';
+    if (followsCo)       return 'Hi ' + first + ' — I follow what ' + c.company + ' is doing. Would love to compare notes.';
+    return '';
+  }
+
+  var module = {
+    build: build,
+    get: get,
+    isBuilt: function () { return BUILT; },
+    followedCompanies: function () { return Array.from(FOLLOWED); },
+    /* Companies you follow AND have connections at — the T2 named-account shortlist. */
+    followedWithConnections: function (contacts) {
+      var counts = {};
+      (contacts || []).forEach(function (c) {
+        var co = normCo(c.company); if (!co || !FOLLOWED.has(co)) return;
+        if (!counts[c.company]) counts[c.company] = 0;
+        counts[c.company]++;
+      });
+      return Object.keys(counts).map(function (k) { return { company: k, count: counts[k] }; })
+        .sort(function (a, b) { return b.count - a.count; });
+    },
+
+    /* Skills others endorsed YOU for — what your network thinks you're good at. */
+    topSkills: function (n) {
+      var c = {};
+      EV.forEach(function (e) { if (e.dir === 'received' && e.skill) c[e.skill] = (c[e.skill] || 0) + 1; });
+      return Object.keys(c).map(function (k) { return { skill: k, count: c[k] }; })
+        .sort(function (a, b) { return b.count - a.count; }).slice(0, n || 8);
+    },
+    /* Endorsements per year, both directions — when your network was most active. */
+    timeline: function () {
+      var g = {}, r = {};
+      EV.forEach(function (e) {
+        var y = (String(e.date).match(/(19|20)\d{2}/) || [])[0];
+        if (!y) return;
+        if (e.dir === 'given') g[y] = (g[y] || 0) + 1; else r[y] = (r[y] || 0) + 1;
+      });
+      var years = Object.keys(g).concat(Object.keys(r))
+        .filter(function (v, i, a) { return a.indexOf(v) === i; }).sort();
+      return { years: years,
+        given: years.map(function (y) { return g[y] || 0; }),
+        received: years.map(function (y) { return r[y] || 0; }) };
+    },
+    stats: function () {
+      var seen = {}, people = 0, eThem = 0, eYou = 0, recs = 0;
+      Object.keys(IDX).forEach(function (k) {
+        var r = IDX[k]; if (seen[r.__id = r.__id || Math.random()]) return; seen[r.__id] = 1;
+        people++;
+        if (r.endorsedThem.length) eThem++;
+        if (r.endorsedYou.length) eYou++;
+        if (r.recGiven || r.recReceived) recs++;
+      });
+      return { people: people, endorsedThem: eThem, endorsedYou: eYou, recommendations: recs, followed: FOLLOWED.size };
+    }
+  };
+  return module;
+})();
+
+</script>
 <script>/* inlined privacy-monitor.js */
 /* LinkVault — live upload monitor + privacy explainer (shared, all pages).
    Instruments every outbound data channel (fetch / XHR / sendBeacon / WebSocket) and counts the
