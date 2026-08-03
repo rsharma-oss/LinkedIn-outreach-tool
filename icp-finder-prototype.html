@@ -211,7 +211,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 .nav-link.active{color:var(--tx);background:rgba(0,160,220,0.26);border-color:rgba(0,160,220,0.44);font-weight:700;}
 .nav-link.cta{background:var(--li);color:#fff;font-weight:600;}
 .nav-link.cta:hover{background:var(--li2);}
-@media(max-width:680px){.hdr-nav{display:none;}}
+@media(max-width:680px){.hdr-nav .nav-link{display:none;}}
 @media(max-width:600px){
   .hdr{padding:11px 14px;gap:8px;flex-wrap:wrap;}
   .hdr-l{flex:0 1 auto;}
@@ -363,7 +363,6 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 <!-- HEADER -->
 <header class="hdr">
   <div class="hdr-l">
-    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
     <a href="how-to.html" class="logo-link"><span class="lv-brand"><img class="lv-mark" src="linkvault-mark.png" alt="LinkVault"><span class="lv-text"><span class="lv-word">LinkVault</span><span class="lv-ga" role="img" aria-label="by Growth Automated"></span></span></span>
     <div>
       <div class="hdr-title" style="font-family:'Assistant',sans-serif;font-weight:700;">GrowthAutomated<span style="color:#00a0dc">.ai</span></div>
@@ -371,6 +370,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     </div></a>
   </div>
   <nav class="hdr-nav">
+    <button class="btn btn-icon" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
     <a class="nav-link" href="how-to.html">📘 How It Works</a>
     <a class="nav-link" href="dashboard.html">📊 Dashboard</a>
     <a class="nav-link active" href="icp-finder.html">🎯 ICP Finder</a>
