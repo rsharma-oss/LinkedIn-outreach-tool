@@ -1,6 +1,6 @@
 # GrowthAutomated.ai — LinkedIn Toolkit Backlog
 
-_Last updated: June 29, 2026_
+_Last updated: August 3, 2026_
 
 ---
 
@@ -31,6 +31,17 @@ _Last updated: June 29, 2026_
 ---
 
 ## 🔴 High Priority
+
+### 🔴 Open — release-readiness gaps (raised Aug 3, 2026)
+- **Unexplained message-count gap.** UAT#2 diagnostics showed `7,109 messages` loaded from a `messages.csv` containing **20,734 rows**. Never root-caused — may be conversations-vs-rows, may be silent truncation at Safari's storage quota. **Needs a real answer before any "gold" claim.**
+- **No automated tests.** Every release is hand-QA'd in one browser. A smoke harness (load fixtures → assert counts/tiers/charts) would catch regressions the manual pass misses.
+- **Browser matrix is thin.** Chromium continuously; Safari validated once by the owner; **Firefox and Edge never tested**.
+- **Single-network validation.** All ICP/tier tuning rests on one senior-skewed 2.9k network. The parked tier-distribution question can't be settled without varied networks.
+- **Accessibility unaudited.** WCAG contrast was fixed reactively; no keyboard-nav or screen-reader pass. The new warmth popover has no focus trap/ARIA.
+- **Scale ceiling untested.** Unknown behaviour at 10k+ connections; Safari's ~5MB quota is a known cliff with no graceful degradation message.
+- **Manual cache-busting.** `?v=N` bumps are by hand and have already caused two stale-JS incidents.
+- **UAT #4 (onboarding friction)** still unaddressed.
+
 
 ### Language Scope — English LinkedIn exports (positioning + graceful non-English message)
 - **Positioning (decided June 22):** the toolkit **officially supports English-language LinkedIn exports** — any LinkedIn account set to English, in any country. Stated plainly: **"Works for everyone, in English."** This is a deliberate scope decision, **not a defect** to chase.
@@ -209,6 +220,13 @@ _(Light / Dark Mode shipped v2 across all 5 nav pages June 18–19 — moved to 
 ---
 
 ## ✅ Recently Completed (see RELEASE_NOTES.md)
+
+**August 3, 2026 — v1.1 relationships**
+- **Relationship warmth layer** (`lv-warmth.js`) — endorsements, recommendations, company follows → per-person warmth, "why you know them", grounded openers. 34% of a real 2,963-connection network carries a signal.
+- **Suggest-and-approve ICP suggestions** — followed companies → T2 (17 → 340 contacts on the reference network); search-history terms → T1/T3 (T1 988 → 1,349).
+- **Dashboard Relationships panel** — warmth distribution, top endorsed skills, endorsement timeline.
+- **UAT#2 Safari loader fix** — resilient reads, merge-not-replace, case-insensitive zip, mount report; ICP Finder zip support.
+- **Privacy ignore-list** on both load screens. **Root + `/linkvault` entry URLs.** **Header overlap fix** (<1000px).
 
 **July 4, 2026**
 - **Code-review hardening sprint** — an 8-angle adversarial review (3 correctness + reuse/simplification/efficiency/altitude/conventions, all candidates independently verified) of the June 29–July 4 sprints found **10 confirmed issues**; all fixed same-day in 3 tranches: (1) default-light contrast family (monitor badge · error banners · pm-links · hero badge · playbook modal) + how-to mobile-nav `:not(.cta)` bug + `window.`-prefixed monitor guards + ☀️ initial icon; (2) **`WILLIS_CONFIG`** (site-neutral engine) + Willis on the demo snapshots + guarded footer Report links; (3) offline click-time link guard + LinkedIn-URL allowlist + dead-CSS/spacer cleanup + CTA copy alignment + gaReport listener-leak fix + prototype nav alignment + `?v=2` cache-busting for willis/privacy-monitor. See RELEASE_NOTES July 4.
