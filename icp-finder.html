@@ -2167,6 +2167,23 @@ function classifyTier(title, company) {
 
 // ── Re-classification engine — lets the in-app keyword editor re-tier live ───────
 let _connRows = [], _msgByPerson = {}, _totalConns = 0;
+
+/* Storage quota is a real cliff on large exports (Safari ~5MB, Chrome ~10MB). The cache
+   write used to fail silently — the user then hit "load your data" again on the next tool
+   with no idea why. Tell them plainly, and say what still works. */
+function lvQuotaNote(which){
+  var main=document.querySelector('#app .main')||document.querySelector('#app'); if(!main) return;
+  var n=document.getElementById('quota-note');
+  if(!n){ n=document.createElement('div'); n.id='quota-note';
+    n.style.cssText='margin:0 0 18px;padding:11px 14px;border-radius:10px;font-size:0.8rem;line-height:1.55;'+
+      'background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);color:var(--tx);';
+    main.insertBefore(n, main.firstChild); }
+  n.innerHTML='\u26a0\ufe0f <b>Your export is too large for this browser to share between tools.</b> '+
+    'Everything on <b>this</b> page is loaded and correct \u2014 but the other tools won\'t see it, so you\'ll be asked to load your files again there. '+
+    'Chrome holds roughly twice as much as Safari if you want to avoid the re-load.'+
+    ' <button onclick="this.parentNode.style.display=\'none\'" style="margin-left:6px;background:none;border:none;color:var(--tx2);cursor:pointer;font-size:0.9rem;">\u00d7</button>';
+}
+
 function classifyAll(){
   // Relationship signals first — endorsements/recommendations/follows make each contact
   // a person you actually know, not just a row. Safe no-op when those files are absent.
@@ -2487,11 +2504,11 @@ async function processFiles(filemap, isDemo) {
     const mainMap = Object.fromEntries(Object.entries(filemap).filter(([k]) => k !== 'messages.csv' && k !== 'SearchQueries.csv'));
     try {
       sessionStorage.setItem('ga_csv_cache', LZString.compress(JSON.stringify({data: mainMap, src:'icp'})));
-    } catch(e) { console.warn('CSV session cache failed:', e); }
+    } catch(e) { console.warn('CSV session cache failed:', e); try{ lvQuotaNote('csv'); }catch(_){} }
     if (filemap['messages.csv']) {
       try {
         sessionStorage.setItem('ga_msg_cache', LZString.compress(filemap['messages.csv']));
-      } catch(e) { console.warn('Messages session cache skipped (storage full):', e); }
+      } catch(e) { console.warn('Messages session cache skipped (storage full):', e); try{ lvQuotaNote('messages'); }catch(_){} }
     }
   }
 
