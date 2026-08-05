@@ -825,9 +825,9 @@ a:hover{color:var(--tx);text-decoration:underline;}
         </label>
         <div class="faq-body">
           <div class="faq-body-inner" style="line-height:1.8;">
-            <p style="margin-bottom:10px;">It still works in Safari and Firefox — Chrome and Edge just give the smoothest path, for two reasons:</p>
+            <p style="margin-bottom:10px;">It works in Safari too — Chrome and Edge just give the smoothest path, for two reasons: <em>(Firefox isn't supported.)</em></p>
             <ol style="margin:0 0 0 18px;display:flex;flex-direction:column;gap:8px;">
-              <li><strong style="color:var(--tx);">One-click folder upload.</strong> The "Select Export Folder" button uses the File System Access API, which only Chrome and Edge support. In Safari/Firefox you pick the CSV files manually instead — a couple extra clicks, same result.</li>
+              <li><strong style="color:var(--tx);">One-click folder upload.</strong> The "Select Export Folder" button uses the File System Access API, which only Chrome and Edge support. In Safari you pick the CSV files manually instead — a couple extra clicks, same result.</li>
               <li><strong style="color:var(--tx);">Storage headroom.</strong> Safari caps per-tab storage (~5MB) lower than Chrome (~10MB), so very large networks (10k+ connections) can hit the limit. Either way, nothing ever leaves your browser.</li>
             </ol>
           </div>
@@ -898,7 +898,7 @@ document.addEventListener('DOMContentLoaded',openHashFaq); window.addEventListen
 <!-- Willis help widget -->
 <script src="lv-a11y.js?v=1"></script>
 <script src="privacy-monitor.js?v=2"></script>
-<script src="willis-articles.js?v=3"></script>
+<script src="willis-articles.js?v=4"></script>
 <script src="willis.js?v=3"></script>
 </body>
 </html>

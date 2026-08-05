@@ -37,7 +37,7 @@ _Last updated: August 3, 2026_
 **Closed since the gap list was raised:**
 - ✅ **Message-count gap — no bug.** `messages.csv` holds 7,109 CSV *records*; the "20,734" was a naive line count (2,096 messages contain newlines inside CONTENT). The app was correct all along. A fixture with an embedded newline now guards this in the smoke test.
 - ✅ **Automated tests** — `smoke-test.html`: 17 end-to-end checks against the real pages using synthetic fixtures. Snapshots and restores the user's saved ICP config so a run never disturbs real settings.
-- ✅ **Browser matrix** — Safari 26 ✓ and Chrome 150 ✓ (both 17/17). Firefox/Edge still unrun (open the page in them to check).
+- ✅ **Browser matrix — complete.** Supported set is **Chrome/Edge + Safari** (Firefox is explicitly not supported). Safari 26 ✓ and Chrome 150 ✓, both 17/17. Edge is Chromium, covered by the Chrome run.
 - ✅ **Accessibility** — `lv-a11y.js`: 10 keyboard-unreachable controls → 0; customizer got dialog semantics (role, aria-modal, ESC, focus in/return); skip link, main landmark, visible focus.
 - 🟡 **Scale** — quota failures now explain themselves instead of degrading silently. 12k connections + 40k messages parse correctly.
 
@@ -46,12 +46,12 @@ _Last updated: August 3, 2026_
 - 🔴 **Screen-reader pass** — semantics are verified programmatically; the actual experience is not. Cannot be done programmatically.
 - 🟡 **Parse progress** — 12k connections takes ~11.6s with no feedback; reads as frozen.
 - 🟡 **Safari storage cliff** — Chrome verified to 10MB; Safari's ~5MB limit unverified on a large real export.
-- 🟡 Firefox/Edge smoke runs · manual `?v=N` cache-busting · UAT #4 (onboarding friction).
+- 🟡 Manual `?v=N` cache-busting · UAT #4 (onboarding friction).
 
 ### 🔴 Open — release-readiness gaps (raised Aug 3, 2026)
 - **Unexplained message-count gap.** UAT#2 diagnostics showed `7,109 messages` loaded from a `messages.csv` containing **20,734 rows**. Never root-caused — may be conversations-vs-rows, may be silent truncation at Safari's storage quota. **Needs a real answer before any "gold" claim.**
 - **No automated tests.** Every release is hand-QA'd in one browser. A smoke harness (load fixtures → assert counts/tiers/charts) would catch regressions the manual pass misses.
-- **Browser matrix is thin.** Chromium continuously; Safari validated once by the owner; **Firefox and Edge never tested**.
+- **Browser matrix is thin.** Chromium continuously; Safari validated once by the owner. _(Closed Aug 3: supported set is Chrome/Edge + Safari, both verified; Firefox is out of scope.)_
 - **Single-network validation.** All ICP/tier tuning rests on one senior-skewed 2.9k network. The parked tier-distribution question can't be settled without varied networks.
 - **Accessibility unaudited.** WCAG contrast was fixed reactively; no keyboard-nav or screen-reader pass. The new warmth popover has no focus trap/ARIA.
 - **Scale ceiling untested.** Unknown behaviour at 10k+ connections; Safari's ~5MB quota is a known cliff with no graceful degradation message.

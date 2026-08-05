@@ -258,7 +258,7 @@ All templates have: title, category tag, usage note, template text with `[placeh
 - **No network calls** — no analytics, no logging, no data transmission
 - **sessionStorage only** — data cleared when tab closes
 - Files accepted: LinkedIn export `.zip` or direct folder mount
-- Browser support: Chrome (full), Safari (medium connections only), Firefox (limited — no File System Access API)
+- **Browser support (policy): Chrome / Edge (full) and Safari (no folder picker; ~5MB storage ceiling). Firefox is NOT supported** — don't spend effort on it or list it as a target.
 
 ---
 
