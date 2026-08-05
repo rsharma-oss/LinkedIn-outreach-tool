@@ -30,7 +30,7 @@ A priority queue built from your ICP list, with ready-to-send message templates 
 - **How It Works** — the landing / instructions page
 - **Demo pages** (`icp-demo.html`, `dashboard-demo.html`) — pre-loaded with sample data; nothing to upload
 - **Offline builds** (`dashboard-offline.html`, `icp-finder-offline.html`) — single self-contained files, every library inlined, zero network required
-- **`smoke-test.html`** — 17 end-to-end checks using synthetic fixtures. Open it in any browser to verify that browser. It snapshots and restores your saved ICP settings, so running it never disturbs your setup.
+- **`smoke-test.html`** — 17 end-to-end checks using synthetic fixtures. Open it in a supported browser to verify that machine. It snapshots and restores your saved ICP settings, so running it never disturbs your setup.
 
 ---
 
@@ -74,11 +74,13 @@ Works with **English-language** LinkedIn exports (LinkedIn translates CSV column
 
 ## Browser support
 
-| | Chrome / Edge | Safari | Firefox |
-|---|---|---|---|
-| Drop a `.zip` · pick CSVs | ✅ | ✅ | ✅ |
-| Folder picker | ✅ | ❌ use the file picker | ❌ use the file picker |
-| Sharing loaded data between tools | ✅ ~10 MB | ⚠️ ~5 MB — very large exports may need re-loading per tool (you'll be told) | ⚠️ |
+**Supported: Chrome, Edge and Safari on desktop.** Firefox is not supported.
+
+| | Chrome / Edge | Safari |
+|---|---|---|
+| Drop a `.zip` · pick CSVs | ✅ | ✅ |
+| Folder picker | ✅ | ❌ use the file picker instead |
+| Sharing loaded data between tools | ✅ ~10 MB | ⚠️ ~5 MB — very large exports may need re-loading per tool (you'll be told) |
 
 Verified end-to-end on **Safari 26** and **Chrome 150** (17/17 smoke checks). Desktop-first: loading an export needs a real browser, so phones get a heads-up notice.
 
