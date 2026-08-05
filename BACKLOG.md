@@ -32,7 +32,10 @@ _Last updated: August 3, 2026_
 
 ## 🔴 High Priority
 
-### 🚦 v1.1-rc — release candidate (tagged Aug 3, 2026, commit `7eee36be`)
+### 🏆 v1.1-gold — SHIPPED Aug 3, 2026 (`18ebba41`)
+
+_Tagged gold by Rahul. `v1.1-rc` = `7eee36be` was the candidate; gold adds the browser-scope decision (Firefox out) and the README rewrite._
+
 
 **Closed since the gap list was raised:**
 - ✅ **Message-count gap — no bug.** `messages.csv` holds 7,109 CSV *records*; the "20,734" was a naive line count (2,096 messages contain newlines inside CONTENT). The app was correct all along. A fixture with an embedded newline now guards this in the smoke test.
@@ -41,7 +44,7 @@ _Last updated: August 3, 2026_
 - ✅ **Accessibility** — `lv-a11y.js`: 10 keyboard-unreachable controls → 0; customizer got dialog semantics (role, aria-modal, ESC, focus in/return); skip link, main landmark, visible focus.
 - 🟡 **Scale** — quota failures now explain themselves instead of degrading silently. 12k connections + 40k messages parse correctly.
 
-**Still open before "gold":**
+**Open and tracked post-release** (none blocking; revisit as real usage comes in):
 - 🔴 **Varied-network validation** — every ICP/tier decision still rests on one senior-skewed 2.9k network. Needs 2–3 external testers with different networks. **The long pole.**
 - 🔴 **Screen-reader pass** — semantics are verified programmatically; the actual experience is not. Cannot be done programmatically.
 - 🟡 **Parse progress** — 12k connections takes ~11.6s with no feedback; reads as frozen.
