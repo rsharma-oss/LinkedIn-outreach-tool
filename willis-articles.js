@@ -331,9 +331,9 @@ window.WILLIS_ARTICLES = [
 
 { id:"why-safari", title:"Why Chrome or Edge over Safari?", cat:"Browser & device",
   k:"safari chrome edge firefox browser storage recommend best",
-  body:`<p>It works in Safari and Firefox too — Chrome/Edge just give the smoothest path:</p>
+  body:`<p>It works in Safari and Safari too — Chrome/Edge just give the smoothest path (Firefox isn't supported):</p>
   <ol>
-    <li><b>One-click folder upload</b> — the "Select Export Folder" picker is Chrome/Edge-only. In Safari/Firefox you pick the CSV files manually instead.</li>
+    <li><b>One-click folder upload</b> — the "Select Export Folder" picker is Chrome/Edge-only. In Safari/Safari you pick the CSV files manually instead.</li>
     <li><b>Storage headroom</b> — Safari caps per-tab storage (~5MB) lower than Chrome (~10MB), so very large networks (10k+ connections) can hit the limit.</li>
   </ol>
   <p>Either way, nothing ever leaves your browser.</p>` },
