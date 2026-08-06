@@ -3,7 +3,7 @@
 (function(){
   if (window.__willisLoaded) return; window.__willisLoaded = true;
 
-  var BASE = 'willis/';
+  var BASE = (window.WILLIS_CONFIG && window.WILLIS_CONFIG.artPath) || 'willis/';
   var ART = { welcoming:BASE+'willis-main.png', got:BASE+'willis-thumbsup.png',
               shrug:BASE+'willis-shrug.png', cheeky:BASE+'willis-cheeky.png', avatar:BASE+'willis-avatar.png' };
   var ARTICLES = window.WILLIS_ARTICLES || [];
@@ -14,6 +14,7 @@
   var DEF = { name:'Willis', tagline:'Your guide · online',
               placeholder:'Ask a question…',
               productName:'',   /* used where the engine must name the PRODUCT (report subjects); falls back to document.title */
+              artPath:'willis/',/* where the character art lives, relative to the page */
               reportEmail:'', actions:[] };
   var CFG = (function(){ var c=window.WILLIS_CONFIG||{}, o={}, k;
     for(k in DEF) o[k]=(c[k]!=null?c[k]:DEF[k]); return o; })();
@@ -111,10 +112,10 @@
   var root = document.createElement('div'); root.className = 'wz-root';
   root.innerHTML =
     '<button class="wz-bubble" id="wzBubble" title="Ask Willis" aria-label="Ask Willis for help">'+
-      '<img src="'+ART.avatar+'" alt="Willis" id="wzBubbleImg"><span class="wz-online"></span></button>'+
+      '<img src="'+ART.avatar+'" alt="'+esc(CFG.name)+'" id="wzBubbleImg"><span class="wz-online"></span></button>'+
     '<div class="wz-tip">Need a hand? Ask Willis</div>'+
     '<div class="wz-panel" id="wzPanel" role="dialog" aria-label="Ask Willis">'+
-      '<div class="wz-head"><img src="'+ART.avatar+'" alt="Willis">'+
+      '<div class="wz-head"><img src="'+ART.avatar+'" alt="'+esc(CFG.name)+'">'+
         '<div class="wz-t"><div class="wz-name"><span class="wz-dot"></span> '+esc(CFG.name)+'</div>'+
         '<div class="wz-status">'+esc(CFG.tagline)+'</div></div>'+
         '<button class="wz-x" id="wzClose" aria-label="Close Willis">×</button></div>'+
@@ -249,17 +250,19 @@
     return L.join('\n');
   }
   function gaReport(o){
-    o=o||{}; var EMAIL=CFG.reportEmail||'rahul@growthautomated.ai';
+    o=o||{}; var EMAIL=CFG.reportEmail||'';
+    /* Deliberately NO default address: a drop-in kit must never silently route another
+       app's bug reports to whoever shipped the engine. No address → offer copy only. */
     var PN=CFG.productName||document.title||'App';
     var subject='['+(o.feature?PN+' — feature request':(o.question?CFG.name+' — unanswered':PN+' — issue'))+'] '+document.title;
     var ov=document.createElement('div'); ov.className='gar-ov';
     var card=document.createElement('div'); card.className='gar-card'; card.setAttribute('role','dialog'); card.setAttribute('aria-label','Send a report');
     card.innerHTML='<h3>📨 Send us a report</h3><p class="gar-sub">Edit if you like, then copy it or open your email. No LinkedIn data is included.</p>'+
       '<textarea class="gar-ta" id="garTa"></textarea>'+
-      '<p class="gar-to">Goes to <b>'+EMAIL+'</b></p>'+
+      (EMAIL?'<p class="gar-to">Goes to <b>'+EMAIL+'</b></p>':'<p class="gar-to">Copy this and send it to whoever supports this app.</p>')+
       '<div class="gar-btns"><button class="gar-b gar-primary" id="garCopy">📋 Copy report</button>'+
-      '<button class="gar-b" id="garGmail">Open in Gmail</button>'+
-      '<button class="gar-b" id="garMail">Open mail app</button></div>'+
+      (EMAIL?'<button class="gar-b" id="garGmail">Open in Gmail</button>'+
+             '<button class="gar-b" id="garMail">Open mail app</button>':'')+'</div>'+
       '<div class="gar-btns" style="margin-top:8px"><button class="gar-b" id="garClose">Close</button></div>';
     ov.appendChild(card); document.body.appendChild(ov);
     var ta=card.querySelector('#garTa'); ta.value=gaDiag(o);
@@ -272,8 +275,8 @@
       function ok(){ btn.textContent='✓ Copied — now email it'; }
       if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(ta.value).then(ok,function(){ta.select();try{document.execCommand('copy');}catch(_){}ok();}); }
       else { ta.select(); try{document.execCommand('copy');}catch(_){} ok(); } };
-    card.querySelector('#garGmail').onclick=function(){ window.open('https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(EMAIL)+'&su='+encodeURIComponent(subject)+'&body='+encodeURIComponent(ta.value),'_blank','noopener'); };
-    card.querySelector('#garMail').onclick=function(){ window.location.href='mailto:'+EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(ta.value); };
+    if(EMAIL) card.querySelector('#garGmail').onclick=function(){ window.open('https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(EMAIL)+'&su='+encodeURIComponent(subject)+'&body='+encodeURIComponent(ta.value),'_blank','noopener'); };
+    if(EMAIL) card.querySelector('#garMail').onclick=function(){ window.location.href='mailto:'+EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(ta.value); };
     setTimeout(function(){ta.focus();ta.setSelectionRange(0,0);},40);
   }
   window.gaReport = gaReport;

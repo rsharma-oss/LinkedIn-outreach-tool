@@ -2,6 +2,27 @@
 
 ---
 
+## 🏆 v1.1 GOLD — August 3, 2026 (`18ebba41`)
+
+_Gold release. The relationship work, the Safari fixes, and the release-readiness pass, shipped together._
+
+**What's in it**
+- **Relationships** — endorsements, recommendations and company follows turn connections into people you actually know, with *why* you know them and a grounded opener. 34% of a real 2,963-connection network carries a signal.
+- **Targeting from your own data** — followed companies → T2 named accounts; your LinkedIn search terms → T1/T3 keywords. Suggest-and-approve, never automatic.
+- **Dashboard Relationships panel** — warmth distribution, what you're known for, endorsement activity by year.
+- **Loading just works** — drop a `.zip` (any case) with no unzipping, add files later without losing what's loaded, and a banner naming anything that didn't mount. Storage limits now explain themselves instead of failing silently.
+- **Privacy stated, not just practised** — the live "0 B uploaded" monitor, plus an explicit list of the files LinkVault never opens (ad clicks, ad-targeting, login IPs, billing, PII).
+
+**Why it earns "gold"**
+- **17-check smoke harness** (`smoke-test.html`) — end-to-end against the real pages, self-isolating so a run never disturbs your saved settings.
+- **Verified on the full supported set:** Safari 26 ✓ and Chrome 150 ✓, 17/17 each. Supported = Chrome/Edge + Safari; Firefox is out of scope.
+- **Accessibility floor:** every control keyboard-operable (10 failures → 0), dialog focus management, skip link, visible focus, WCAG AA contrast in both themes.
+- **Scale:** 12k connections + 40k messages parse correctly; quota failures degrade with an explanation.
+
+**Known and open (tracked, not blocking):** validation across varied network shapes still rests on one senior-skewed 2.9k network — the tier-distribution question stays parked until other networks are seen. Screen-reader experience is unverified (semantics are). Parse of ~12k connections takes ~11.6s with no progress feedback.
+
+---
+
 ## 🤝 v1.1 — Your network, as relationships — August 3, 2026
 
 _Public release. LinkVault stops treating your network as rows and starts treating it as people you already know._
