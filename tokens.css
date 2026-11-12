@@ -1,0 +1,128 @@
+/* ============================================================
+   LinkVault design tokens — v1.2
+   Light is default (:root). Dark via [data-theme="dark"].
+   All colour pairs below are pre-checked WCAG AA for their
+   intended use (see Kimi's states-a11y.md for the approved pairs).
+
+   Introduced Nov 2026 as Phase 1 of the Kimi redesign. During
+   the transition, the existing per-page CSS (using the legacy
+   --bg / --tx / --li token namespace) still drives the visible
+   chrome; --lv-* tokens below are available for new components
+   and get wired into the page shells in the chrome rebuild.
+   ============================================================ */
+
+:root {
+  /* ---- brand (theme-independent) ---- */
+  --lv-primary:        #0A66C2; /* LinkedIn Blue — sacred */
+  --lv-primary-hover:  #0958A8;
+  --lv-primary-active: #084B8C;
+  --lv-navy:           #0A2A4D;
+  --lv-on-navy:        #C7DAF2;
+
+  /* ---- semantic — LIGHT (default) ---- */
+  --lv-page:      #F6F9FC;
+  --lv-card:      #FFFFFF;
+  --lv-ink:       #12233B; /* primary text */
+  --lv-sub:       #5B6B7F; /* secondary text (AA on page/card) */
+  --lv-border:    #E1E8F0;
+  --lv-tint:      #EAF2FB; /* primary soft fill */
+  --lv-tintline:  #C7DCF5;
+  --lv-faint:     #8FB8E8; /* decorative only, never text */
+  --lv-link:      #0A66C2;
+
+  --lv-good:      #157347;
+  --lv-goodtint:  #E9F5EE;
+  --lv-warn:      #B45309;
+  --lv-warntint:  #FDF6E9;
+  --lv-bad:       #B42318;
+  --lv-badtint:   #FDEEEC;
+
+  /* .btn-sample — soft green, "Try with sample data" */
+  --lv-sample-bg:   #E7F4EC;
+  --lv-sample-ink:  #157347; /* matches --lv-good */
+  --lv-sample-line: #BFE3CD;
+
+  /* ---- type ---- */
+  --lv-font:      "Inter", system-ui, -apple-system, sans-serif;
+  --lv-wordmark:  var(--lv-font); /* Nov 2026: wordmark uses Inter 600 — Assistant dropped */
+  --lv-fs-micro:  12px;  --lv-lh-micro: 16px;
+  --lv-fs-small:  13px;  --lv-lh-small: 18px;
+  --lv-fs-body:   14px;  --lv-lh-body: 20px;
+  --lv-fs-h3:     16px;  --lv-lh-h3: 22px;
+  --lv-fs-h2:     20px;  --lv-lh-h2: 26px;
+  --lv-fs-h1:     26px;  --lv-lh-h1: 32px;
+  --lv-fs-display: 34px; --lv-lh-display: 40px;
+
+  /* ---- spacing (4px base) ---- */
+  --lv-sp-1: 4px;  --lv-sp-2: 8px;  --lv-sp-3: 12px; --lv-sp-4: 16px;
+  --lv-sp-6: 24px; --lv-sp-8: 32px; --lv-sp-12: 48px; --lv-sp-16: 64px;
+
+  /* ---- radii ---- */
+  --lv-r-sm: 6px; --lv-r-md: 10px; --lv-r-lg: 14px; --lv-r-pill: 999px;
+
+  /* ---- elevation ---- */
+  --lv-shadow-sm: 0 1px 2px rgba(10, 42, 77, 0.06);
+  --lv-shadow-md: 0 4px 14px rgba(10, 42, 77, 0.10);
+
+  /* ---- motion ---- */
+  --lv-dur-1: 120ms; /* hover, press */
+  --lv-dur-2: 220ms; /* panels, popovers */
+  --lv-dur-3: 260ms; /* page-level transitions */
+  --lv-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* ---- z-index ---- */
+  --lv-z-header: 100; --lv-z-popover: 400; --lv-z-modal: 500;
+  --lv-z-willis: 600; --lv-z-toast: 700;
+
+  /* ---- charts (light) ---- */
+  --lv-chart-grid: #E1E8F0;
+  --lv-chart-tick: #5B6B7F;
+  --lv-chart-1: #0A66C2;
+  --lv-chart-2: #8FB8E8;
+  --lv-chart-3: #157347;
+  --lv-chart-4: #B45309;
+  --lv-chart-5: #B42318;
+  --lv-chart-6: #0A2A4D;
+  --lv-seq-1: #EAF2FB; --lv-seq-2: #C7DCF5; --lv-seq-3: #8FB8E8;
+  --lv-seq-4: #3E8DE0; --lv-seq-5: #0A66C2;
+}
+
+/* ---- semantic — DARK (opt-in, WCAG AA) ---- */
+[data-theme="dark"] {
+  --lv-page:      #0E1622;
+  --lv-card:      #16222F;
+  --lv-ink:       #E9EFF6;
+  --lv-sub:       #9DAEC0;
+  --lv-border:    #27374B;
+  --lv-tint:      #14304F;
+  --lv-tintline:  #2A4B73;
+  --lv-faint:     #3D6591;
+  --lv-navy:      #0B1F38;
+  --lv-link:      #7AB5F5; /* #0A66C2 is too dark for text on dark bg; fills/buttons keep --lv-primary */
+
+  --lv-good:      #45B97C;
+  --lv-goodtint:  #10301F;
+  --lv-warn:      #E3A04B;
+  --lv-warntint:  #2E2412;
+  --lv-bad:       #F06A5B;
+  --lv-badtint:   #361715;
+
+  --lv-sample-bg:   #123626;
+  --lv-sample-ink:  #5CD69A;
+  --lv-sample-line: #1F5C3D;
+
+  --lv-chart-grid: #27374B;
+  --lv-chart-tick: #9DAEC0;
+  --lv-chart-1: #7AB5F5;
+  --lv-chart-2: #3D6591;
+  --lv-chart-3: #45B97C;
+  --lv-chart-4: #E3A04B;
+  --lv-chart-5: #F06A5B;
+  --lv-chart-6: #C7DAF2;
+  --lv-seq-1: #14304F; --lv-seq-2: #1E4470; --lv-seq-3: #2A5E96;
+  --lv-seq-4: #3E8DE0; --lv-seq-5: #7AB5F5;
+}
+
+/* Breakpoints (CSS custom properties can't be used in @media — hardcode):
+   ≥1280 desktop · 768–1279 tablet (768–950 is the known tight band — test it) · ≤767 mobile.
+   Mobile never gets the app — it gets the lead-capture flow (Kimi pages.md §5). */
