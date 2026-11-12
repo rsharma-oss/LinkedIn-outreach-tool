@@ -338,6 +338,74 @@ body[data-lv-chrome]{
 .lv-health-item.is-bad .lv-health-dot{background:var(--lv-bad)}
 .lv-health-item-sub{color:var(--lv-sub);margin-left:auto;font-variant-numeric:tabular-nums}
 
+/* Hero-chart callout (Kimi §2 — one hero chart, annotated) */
+.lv-hero-callout{
+  display:flex;align-items:flex-start;gap:var(--lv-sp-3);
+  background:var(--lv-warntint);
+  border-left:4px solid var(--lv-warn);
+  border-radius:var(--lv-r-md);
+  padding:var(--lv-sp-3) var(--lv-sp-4);
+  margin:var(--lv-sp-4) 0 var(--lv-sp-3);
+  color:var(--lv-ink);
+  font-family:var(--lv-font);
+}
+.lv-hero-callout-icon{font-size:20px;line-height:1;flex:0 0 auto}
+.lv-hero-callout-body{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lv-hero-callout-label{
+  font-weight:700;color:var(--lv-ink);
+  font-size:var(--lv-fs-small);
+  text-transform:uppercase;letter-spacing:0.06em;
+}
+.lv-hero-callout-detail{
+  font-size:var(--lv-fs-body);color:var(--lv-ink);line-height:1.4;
+}
+
+/* Recent activity */
+.lv-recent{
+  background:var(--lv-card);
+  border:1px solid var(--lv-border);
+  border-radius:var(--lv-r-lg);
+  padding:var(--lv-sp-4);
+  margin-top:var(--lv-sp-6);
+  box-shadow:var(--lv-shadow-sm);
+}
+.lv-recent-title{
+  font-family:var(--lv-font);
+  font-size:var(--lv-fs-small);font-weight:700;
+  color:var(--lv-sub);
+  text-transform:uppercase;letter-spacing:0.06em;
+  margin-bottom:var(--lv-sp-3);
+}
+.lv-recent-list{
+  list-style:none;margin:0;padding:0;
+  display:flex;flex-direction:column;gap:0;
+}
+.lv-recent-item{
+  display:flex;align-items:center;gap:var(--lv-sp-3);
+  padding:var(--lv-sp-3) 0;
+  border-top:1px solid var(--lv-border);
+}
+.lv-recent-item:first-child{border-top:0}
+.lv-recent-icon{
+  display:inline-grid;place-items:center;
+  width:32px;height:32px;border-radius:50%;
+  background:var(--lv-tint);color:var(--lv-primary);
+  font-size:16px;line-height:1;flex:0 0 32px;
+}
+.lv-recent-body{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.lv-recent-text{
+  font-size:var(--lv-fs-body);color:var(--lv-ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.lv-recent-date{
+  font-size:var(--lv-fs-micro);color:var(--lv-sub);
+}
+.lv-recent-empty{
+  padding:var(--lv-sp-3) 0;
+  color:var(--lv-sub);font-size:var(--lv-fs-small);
+  text-align:center;
+}
+
 /* Navy next-best-action card */
 .lv-next{
   display:block;

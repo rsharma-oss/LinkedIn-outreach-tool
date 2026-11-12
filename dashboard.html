@@ -8,7 +8,7 @@
 <title>LinkVault · Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css?v=1">
-<link rel="stylesheet" href="chrome.css?v=3">
+<link rel="stylesheet" href="chrome.css?v=4">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -529,7 +529,9 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <div class="ptitle">Network Overview</div>
       <div class="psub" id="overview-sub">Your LinkedIn presence at a glance</div>
 
-      <div class="stat-grid">
+      <!-- Phase 2b: legacy 6-card stat-grid hidden (superseded by KPIs above).
+           DOM kept so buildOverview() can still write to #s-* without crashing. -->
+      <div class="stat-grid" style="display:none" aria-hidden="true">
         <div class="stat-card sc-li">
           <div class="stat-val sv-li" id="s-connections">—</div>
           <div class="stat-label">Total Connections</div>
@@ -562,7 +564,9 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
         </div>
       </div>
 
-      <div class="chart-grid">
+      <!-- Phase 2b: Network Growth + Activity Breakdown demoted (duplicate the
+           KPI story). Canvases stay in the DOM so Chart.js init doesn't throw. -->
+      <div class="chart-grid" style="display:none" aria-hidden="true">
         <div class="chart-card">
           <div class="chart-title">Network Growth</div>
           <div class="chart-sub">Cumulative connections over time</div>
@@ -575,13 +579,27 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
         </div>
       </div>
 
+      <!-- Phase 2b: hero chart with annotation callout -->
       <div class="chart-grid single">
         <div class="chart-card">
           <div class="chart-title">Monthly Engagement (Last 18 Months)</div>
           <div class="chart-sub">Reactions + Comments + Posts stacked by month</div>
+          <div class="lv-hero-callout" id="lv-hero-callout" hidden>
+            <span class="lv-hero-callout-icon" aria-hidden="true">⭐</span>
+            <div class="lv-hero-callout-body">
+              <span class="lv-hero-callout-label">Insight</span>
+              <span class="lv-hero-callout-detail" id="lv-hero-callout-detail">—</span>
+            </div>
+          </div>
           <div class="chart-wrap"><canvas id="chart-overview-engagement" height="110"></canvas></div>
         </div>
       </div>
+
+      <!-- Phase 2b: Recent activity -->
+      <section class="lv-recent" id="lv-recent" hidden>
+        <div class="lv-recent-title">Recent activity</div>
+        <ul class="lv-recent-list" id="lv-recent-list"></ul>
+      </section>
     </div>
       <!-- ── RELATIONSHIPS (endorsements · recommendations · follows) ── -->
       <div id="rel-section" style="display:none;">
@@ -1736,6 +1754,90 @@ function renderDashKpis() {
   healthSet('lv-health-msgs', (D.messages||[]).length);
   healthSet('lv-health-rxn',  (D.reactions||[]).length);
   healthSet('lv-health-cmt',  (D.comments||[]).length);
+
+  // --- Hero-chart annotation: pick the month with the most interactions ---
+  try {
+    const callout = document.getElementById('lv-hero-callout');
+    const detail  = document.getElementById('lv-hero-callout-detail');
+    if (callout && detail) {
+      const byMonth = {};
+      const addToMonth = (arr) => {
+        (arr||[]).forEach(r => {
+          if (!r._date) return;
+          const ym = toYM(r._date);
+          byMonth[ym] = (byMonth[ym]||0) + 1;
+        });
+      };
+      addToMonth(D.reactions);
+      addToMonth(D.comments);
+      addToMonth(D.shares);
+      const entries = Object.entries(byMonth).sort((a,b)=>b[1]-a[1]);
+      if (entries.length) {
+        const [topYM, topN] = entries[0];
+        const [y,m] = topYM.split('-');
+        const monthName = MONTH_NAMES[parseInt(m,10)-1];
+        const totalActivity = Object.values(byMonth).reduce((a,b)=>a+b,0);
+        const pct = Math.round(topN / Math.max(1,totalActivity) * 100);
+        detail.textContent =
+          `${monthName} ${y} was your busiest month — ${fmtFull(topN)} interactions (${pct}% of the window). Look for a cadence you can repeat.`;
+        callout.hidden = false;
+      }
+    }
+  } catch(e) { console.warn('callout skipped:', e); }
+
+  // --- Recent activity list: last ~10 across reactions / comments / posts / messages ---
+  try {
+    const list = document.getElementById('lv-recent-list');
+    const shell = document.getElementById('lv-recent');
+    if (list && shell) {
+      const events = [];
+      (D.reactions||[]).forEach(r => { if (r._date) events.push({ t:r._date.getTime(), icon:'👍', text:'Reacted to a post', kind:'react' }); });
+      (D.comments ||[]).forEach(r => {
+        const text = (r['Link'] || r['Share Commented On'] || 'a post');
+        events.push({ t:r._date?r._date.getTime():0, icon:'💬', text:`Commented on ${String(text).slice(0,60)}`, kind:'comment' });
+      });
+      (D.shares   ||[]).forEach(r => {
+        const body = (r['ShareCommentary'] || r['Share Content'] || 'Published a post');
+        events.push({ t:r._date?r._date.getTime():0, icon:'📝', text:String(body).slice(0,80), kind:'post' });
+      });
+      (D.messages ||[]).forEach(r => {
+        const to = r['To'] || r['ConversationTitle'] || '';
+        const d = r['Date'] ? new Date(r['Date']) : null;
+        if (d && !isNaN(d.getTime())) {
+          events.push({ t:d.getTime(), icon:'✉️', text:`Messaged ${String(to).slice(0,50)}`, kind:'msg' });
+        }
+      });
+      events.sort((a,b)=>b.t-a.t);
+      const top = events.filter(e => e.t > 0).slice(0, 8);
+      list.innerHTML = '';
+      if (top.length === 0) {
+        list.innerHTML = '<li class="lv-recent-empty">No recent activity in your export yet.</li>';
+      } else {
+        const now = Date.now();
+        top.forEach(e => {
+          const days = Math.round((now - e.t) / 86400000);
+          const when =
+            days <= 0 ? 'today' :
+            days === 1 ? 'yesterday' :
+            days < 30 ? `${days} days ago` :
+            days < 365 ? `${Math.round(days/30)} months ago` :
+            `${Math.round(days/365)} years ago`;
+          const li = document.createElement('li');
+          li.className = 'lv-recent-item';
+          li.innerHTML =
+            `<span class="lv-recent-icon" aria-hidden="true">${e.icon}</span>`+
+            `<div class="lv-recent-body">`+
+            `<span class="lv-recent-text"></span>`+
+            `<span class="lv-recent-date"></span>`+
+            `</div>`;
+          li.querySelector('.lv-recent-text').textContent = e.text;
+          li.querySelector('.lv-recent-date').textContent = when;
+          list.appendChild(li);
+        });
+      }
+      shell.hidden = false;
+    }
+  } catch(e) { console.warn('recent activity skipped:', e); }
 }
 
 // ─── NETWORK ─────────────────────────────────────────────────────────────────
