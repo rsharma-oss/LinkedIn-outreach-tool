@@ -1301,15 +1301,20 @@ async function processFiles(filemap, isDemo=false) {
 
   document.getElementById('load-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  document.getElementById('status-dot').classList.add('loaded');
-  document.getElementById('reload-btn').style.display = 'flex';
+  // Legacy header elements (status-dot, reload-btn, status-text) were removed
+  // in Phase 1b; guard so the loader doesn't crash if they're absent.
+  const _sd = document.getElementById('status-dot'); if (_sd) _sd.classList.add('loaded');
+  const _rb = document.getElementById('reload-btn'); if (_rb) _rb.style.display = 'flex';
 
   if (window.LVWarmth) { try { LVWarmth.build(filemap); } catch(e) { console.warn('warmth build skipped:', e); } }
   try { renderRelationships(); } catch(e) { console.warn('relationship panel skipped:', e); }
   if (!isDemo) renderMountNote(filemap);
   const loadedFiles = Object.keys(filemap);
-  document.getElementById('status-text').textContent =
+  const _st = document.getElementById('status-text');
+  if (_st) _st.textContent =
     `${fmtFull(D.connections.length)} connections · ${fmtFull(D.messages.length)} messages · ↑ ${(window.__uploadBytes?window.__uploadBytes():0)} bytes sent`;
+  // Phase 1b replacement: update the header's data chip so loaded state is visible.
+  if (window.LVChrome) { try { LVChrome.setDataChip(); LVChrome.setStepStates(); } catch(e){} }
 
   // ─── CACHE: save raw CSV for cross-page navigation ─────────────────────────
   // LZ-string compression reduces each key by ~3x, bringing M-activity exports
