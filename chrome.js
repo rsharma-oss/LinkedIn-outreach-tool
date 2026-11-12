@@ -115,11 +115,33 @@
     }
   }
 
+  // Privacy-monitor badge (.lvpm-badge) used to mount into the legacy .hdr-r.
+  // The new chrome uses .lv-hdr-r, so privacy-monitor.js falls back to fixed
+  // positioning and ends up overlapping the Willis button. Relocate it into
+  // the new header's right cluster, just before the data chip, so it sits
+  // left of the chip without a conflicting fixed position.
+  function relocateMonitorBadge(){
+    var badge = doc.querySelector('.lvpm-badge');
+    var hdrR  = doc.querySelector('.lv-hdr-r');
+    var chip  = doc.getElementById('lv-data-chip');
+    if (!badge || !hdrR) return;
+    if (badge.parentElement === hdrR) return;
+    badge.style.position = 'static';
+    badge.style.top = badge.style.right = badge.style.zIndex = '';
+    if (chip) hdrR.insertBefore(badge, chip);
+    else hdrR.insertBefore(badge, hdrR.firstChild);
+  }
+
   function init(){
     setStepStates();
     setDataChip();
     updateThemeLabel();
     bindRightCluster();
+    relocateMonitorBadge();
+    // privacy-monitor.js may mount the badge AFTER our init (its own defer/order),
+    // so re-try on a microtask + on window load.
+    setTimeout(relocateMonitorBadge, 0);
+    window.addEventListener('load', relocateMonitorBadge);
   }
 
   if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', init);
