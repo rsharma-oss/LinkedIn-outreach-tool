@@ -8,7 +8,7 @@
 <title>LinkVault · Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css?v=1">
-<link rel="stylesheet" href="chrome.css?v=2">
+<link rel="stylesheet" href="chrome.css?v=3">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -463,6 +463,69 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
 
     <!-- ====== OVERVIEW ====== -->
     <div class="pane on" id="pane-overview">
+
+      <!-- Phase 2a: KPI strip + progress rail (Kimi redesign) -->
+      <div class="lv-dash-overview">
+        <div class="lv-dash-main">
+          <div class="lv-welcome" id="lv-welcome" hidden>
+            <div>
+              <div class="lv-welcome-eyebrow">Welcome back</div>
+              <h2 class="lv-welcome-title" id="lv-welcome-title">Your network, still here.</h2>
+              <p class="lv-welcome-sub"><span id="lv-welcome-freshness">Loaded just now</span> · <span id="lv-welcome-count">0 connections</span></p>
+            </div>
+            <a href="icp-finder.html" class="lv-btn lv-btn-primary">Open ICP Finder →</a>
+          </div>
+
+          <div class="lv-kpis" role="list" aria-label="Headline metrics">
+            <div class="lv-kpi" role="listitem">
+              <div class="lv-kpi-label">Connections parsed</div>
+              <div class="lv-kpi-value" id="kpi-connections">—</div>
+              <div class="lv-kpi-delta" id="kpi-connections-sub">Your total network</div>
+            </div>
+            <div class="lv-kpi" role="listitem">
+              <div class="lv-kpi-label">Tier-1 matches</div>
+              <div class="lv-kpi-value" id="kpi-t1">—</div>
+              <div class="lv-kpi-delta" id="kpi-t1-sub">High-fit for your ICP</div>
+            </div>
+            <div class="lv-kpi" role="listitem">
+              <div class="lv-kpi-label">Warm paths</div>
+              <div class="lv-kpi-value" id="kpi-warm">—</div>
+              <div class="lv-kpi-delta" id="kpi-warm-sub">People you actually know</div>
+            </div>
+            <div class="lv-kpi" role="listitem">
+              <div class="lv-kpi-label">Ready to message</div>
+              <div class="lv-kpi-value" id="kpi-ready">—</div>
+              <div class="lv-kpi-delta" id="kpi-ready-sub">T1 + warm + recent</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="lv-rail" aria-label="Progress and next step">
+          <div class="lv-prog">
+            <div class="lv-prog-title">Your progress</div>
+            <ol class="lv-prog-steps">
+              <li><div class="lv-prog-step is-current"><span class="lv-prog-num"><span class="lv-prog-num-digit">1</span></span><div class="lv-prog-step-body"><span class="lv-prog-step-title">Dashboard</span><span class="lv-prog-step-sub">Network at a glance</span></div></div></li>
+              <li><a class="lv-prog-step" href="icp-finder.html"><span class="lv-prog-num"><span class="lv-prog-num-digit">2</span></span><div class="lv-prog-step-body"><span class="lv-prog-step-title">ICP Finder</span><span class="lv-prog-step-sub">Rank who to contact first</span></div></a></li>
+              <li><div class="lv-prog-step is-locked" id="lv-prog-playbook"><span class="lv-prog-num"><span class="lv-prog-num-digit">3</span></span><div class="lv-prog-step-body"><span class="lv-prog-step-title">Playbook</span><span class="lv-prog-step-sub">Send ranked outreach</span></div></div></li>
+            </ol>
+          </div>
+          <div class="lv-health">
+            <div class="lv-health-title">Data health</div>
+            <ul class="lv-health-list" id="lv-health-list">
+              <li class="lv-health-item" id="lv-health-conn"><span class="lv-health-dot"></span><span>Connections</span><span class="lv-health-item-sub" id="lv-health-conn-count">0</span></li>
+              <li class="lv-health-item" id="lv-health-msgs"><span class="lv-health-dot"></span><span>Messages</span><span class="lv-health-item-sub" id="lv-health-msgs-count">0</span></li>
+              <li class="lv-health-item" id="lv-health-rxn"><span class="lv-health-dot"></span><span>Reactions</span><span class="lv-health-item-sub" id="lv-health-rxn-count">0</span></li>
+              <li class="lv-health-item" id="lv-health-cmt"><span class="lv-health-dot"></span><span>Comments</span><span class="lv-health-item-sub" id="lv-health-cmt-count">0</span></li>
+            </ul>
+          </div>
+          <a href="icp-finder.html" class="lv-next">
+            <div class="lv-next-eyebrow">Next step</div>
+            <div class="lv-next-title">Open ICP Finder →</div>
+            <div class="lv-next-sub">Rank your connections by fit + warmth. Takes a few seconds once loaded.</div>
+          </a>
+        </aside>
+      </div>
+
       <div class="ptitle">Network Overview</div>
       <div class="psub" id="overview-sub">Your LinkedIn presence at a glance</div>
 
@@ -1572,6 +1635,102 @@ function buildOverview() {
     {label:'Comments', data:cArr,color:'rgba(139,92,246,0.8)'},
     {label:'Posts',    data:sArr,color:'rgba(249,115,22,0.8)'},
   ], {stacked:true,maxX:18});
+
+  // Phase 2a: new KPI strip + welcome banner + progress rail + data health
+  try { renderDashKpis(); } catch(e) { console.warn('Phase 2a renderDashKpis failed:', e); }
+}
+
+// ─── PHASE 2a — KPIs / WELCOME / PROGRESS RAIL / HEALTH ──────────────────────
+function renderDashKpis() {
+  // --- Welcome banner ---
+  const banner = document.getElementById('lv-welcome');
+  const total  = (D.connections||[]).length;
+  if (banner && total > 0) {
+    banner.hidden = false;
+    const name = (D.profile && D.profile['First Name']) ? D.profile['First Name'] : 'you';
+    const title = document.getElementById('lv-welcome-title');
+    if (title) title.textContent = `Welcome back, ${name}.`;
+    const freshness = document.getElementById('lv-welcome-freshness');
+    if (freshness) freshness.textContent = 'Loaded just now';
+    const count = document.getElementById('lv-welcome-count');
+    if (count) count.textContent = `${fmtFull(total)} connections`;
+  }
+
+  // --- KPI row ---
+  const set = (id, val, sub) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+    if (sub !== undefined) {
+      const subEl = document.getElementById(id+'-sub');
+      if (subEl) subEl.textContent = sub;
+    }
+  };
+
+  set('kpi-connections', fmtFull(total));
+
+  // Tier-1 matches: read icp-finder's cache if present, else guide the user there.
+  let t1Count = null;
+  try {
+    const raw = localStorage.getItem('ga_icp_data');
+    if (raw) {
+      const icp = JSON.parse(raw);
+      if (Array.isArray(icp)) {
+        t1Count = icp.filter(c => (c.tier||'').toUpperCase() === 'T1').length;
+      }
+    }
+  } catch(e) { /* ignore */ }
+  if (t1Count !== null) {
+    set('kpi-t1', fmtFull(t1Count), 'High-fit for your ICP');
+  } else {
+    set('kpi-t1', '—', 'Open ICP Finder to compute');
+  }
+
+  // Warm paths from LVWarmth
+  let warmCount = null;
+  if (window.LVWarmth && LVWarmth.isBuilt && LVWarmth.isBuilt()) {
+    try {
+      const st = LVWarmth.stats();
+      warmCount = (st.strong||0) + (st.warm||0) + (st.light||0);
+    } catch(e) { /* ignore */ }
+  }
+  if (warmCount !== null) {
+    set('kpi-warm', fmtFull(warmCount), 'Endorsements + recs + follows');
+  } else {
+    set('kpi-warm', '—', 'Needs endorsements/recs in your export');
+  }
+
+  // Ready to message: T1 ∩ warm, if available. Else show a hint.
+  if (t1Count !== null && warmCount !== null) {
+    // Heuristic: assume warm distributes uniformly across tiers (rough).
+    const ratio = warmCount / Math.max(1, total);
+    const est = Math.round(t1Count * ratio);
+    set('kpi-ready', fmtFull(est), 'Est. T1 with a warm signal');
+  } else {
+    set('kpi-ready', '—', 'Needs ICP + warmth data');
+  }
+
+  // --- Progress rail: unlock Playbook once T1 data exists ---
+  const playbook = document.getElementById('lv-prog-playbook');
+  if (playbook && t1Count !== null) {
+    playbook.classList.remove('is-locked');
+    const sub = playbook.querySelector('.lv-prog-step-sub');
+    if (sub) sub.textContent = `${fmtFull(t1Count)} T1 contacts ready`;
+  }
+
+  // --- Data health list ---
+  const healthSet = (id, n) => {
+    const row = document.getElementById(id);
+    if (!row) return;
+    row.classList.remove('is-ok','is-warn','is-bad');
+    if (n > 0) row.classList.add('is-ok');
+    else row.classList.add('is-warn');
+    const sub = row.querySelector('.lv-health-item-sub');
+    if (sub) sub.textContent = n > 0 ? fmtFull(n) : 'missing';
+  };
+  healthSet('lv-health-conn', (D.connections||[]).length);
+  healthSet('lv-health-msgs', (D.messages||[]).length);
+  healthSet('lv-health-rxn',  (D.reactions||[]).length);
+  healthSet('lv-health-cmt',  (D.comments||[]).length);
 }
 
 // ─── NETWORK ─────────────────────────────────────────────────────────────────
