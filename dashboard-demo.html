@@ -830,12 +830,11 @@ async function processFiles(filemap) {
 
   document.getElementById('load-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  document.getElementById('status-dot').classList.add('loaded');
-  document.getElementById('reload-btn').style.display = 'flex';
+  (function(){var _e=document.getElementById('status-dot');if(_e)_e.classList.add('loaded');})();
+  (function(){var _e=document.getElementById('reload-btn');if(_e)_e.style.display='flex';})();
 
   const loadedFiles = Object.keys(filemap);
-  document.getElementById('status-text').textContent =
-    `${fmtFull(D.connections.length)} connections · ${fmtFull(D.messages.length)} messages · ${loadedFiles.length} files loaded`;
+  (function(){var _e=document.getElementById('status-text');if(_e)_e.textContent=`${fmtFull(D.connections.length)} connections · ${fmtFull(D.messages.length)} messages · ${loadedFiles.length} files loaded`;})();
 }
 
 // ─── GROUPING HELPERS ────────────────────────────────────────────────────────

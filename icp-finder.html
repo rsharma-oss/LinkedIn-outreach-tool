@@ -2488,11 +2488,11 @@ async function processFiles(filemap, isDemo) {
 
   document.getElementById('load-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  document.getElementById('status-dot').classList.add('loaded');
-  document.getElementById('reload-btn').style.display = 'flex';
+  (function(){var _e=document.getElementById('status-dot');if(_e)_e.classList.add('loaded');})();
+  (function(){var _e=document.getElementById('reload-btn');if(_e)_e.style.display='flex';})();
   document.getElementById('export-btn').style.display = 'flex';
   if (!isDemo) document.getElementById('playbook-btn').style.display = 'flex';
-  document.getElementById('status-text').textContent = `${ICP.length} ICP contacts from ${connRows.length} connections · ↑ ${(window.__uploadBytes?window.__uploadBytes():0)} bytes sent`;
+  (function(){var _e=document.getElementById('status-text');if(_e)_e.textContent=`${ICP.length} ICP contacts from ${connRows.length} connections · ↑ ${(window.__uploadBytes?window.__uploadBytes():0)} bytes sent`;})();
   if (isDemo) document.getElementById('demo-banner').style.display = 'block';
 
   // ─── CACHE: save raw CSV for cross-page navigation ─────────────────────────
@@ -2669,9 +2669,9 @@ function resetApp() {
   ICP = []; _icpPage = 0;
   document.getElementById('app').style.display = 'none';
   document.getElementById('load-screen').style.display = 'flex';
-  document.getElementById('status-dot').classList.remove('loaded');
-  document.getElementById('status-text').textContent = 'No data loaded';
-  document.getElementById('reload-btn').style.display = 'none';
+  (function(){var _e=document.getElementById('status-dot');if(_e)_e.classList.remove('loaded');})();
+  (function(){var _e=document.getElementById('status-text');if(_e)_e.textContent='No data loaded';})();
+  (function(){var _e=document.getElementById('reload-btn');if(_e)_e.style.display='none';})();
   document.getElementById('export-btn').style.display = 'none';
   document.getElementById('demo-banner').style.display = 'none';
   document.getElementById('progress-wrap').style.display = 'none';
