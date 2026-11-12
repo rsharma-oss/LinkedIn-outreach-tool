@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>(function(){try{var t=localStorage.getItem('ga_theme');if(t!=='dark')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('ga_theme');document.documentElement.setAttribute('data-theme',t==='dark'?'dark':'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
 <script>window.__gaErrs=[];addEventListener('error',function(e){try{window.__gaErrs.push((e.message||'error')+' @'+((e.filename||'').split('/').pop())+':'+(e.lineno||0));if(window.__gaErrs.length>10)window.__gaErrs.shift();}catch(_){}});</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LinkVault · How It Works</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css?v=1">
+<link rel="stylesheet" href="chrome.css?v=1">
 <style>
 :root {
   --bg:#080c14; --bg2:#0d1220; --bg3:#131926; --bg4:#1a2235; --card:#111827;
@@ -467,22 +469,29 @@ a:hover{color:var(--tx);text-decoration:underline;}
 <!-- ══════════════════════════════════════════
      HEADER
 ══════════════════════════════════════════ -->
-<header class="hdr">
-  <div class="hdr-l">
-    <a href="how-to.html" style="text-decoration:none;display:flex;align-items:center;gap:12px;color:inherit;"><span class="lv-brand"><img class="lv-mark" src="linkvault-mark.png" alt="LinkVault"><span class="lv-text"><span class="lv-word">LinkVault</span><span class="lv-ga" role="img" aria-label="by Growth Automated"></span></span></span>
-    <div>
-      <div class="hdr-title" style="font-family:'Assistant',sans-serif;font-weight:700;">GrowthAutomated<span style="color:var(--li2)">.ai</span></div>
-      <div class="hdr-sub">How It Works</div>
-    </div></a>
+<header class="lv-hdr">
+  <div class="lv-hdr-l">
+    <a href="how-to.html" class="lv-hdr-brand" aria-label="LinkVault — home">
+      <svg class="lv-hdr-brand-mark" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <path d="M14 2L25 8V20L14 26L3 20V8L14 2Z" fill="currentColor"/>
+        <path d="M11 13H17M11 16H17M12 10V18" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span class="lv-hdr-brand-word">LinkVault</span>
+    </a>
   </div>
-  <nav class="hdr-nav">
-    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle light / dark" aria-label="Toggle light or dark theme">☀️</button>
-    <a class="nav-link active" href="how-to.html">📘 How It Works</a>
-    <a class="nav-link" href="dashboard.html">📊 Dashboard</a>
-    <a class="nav-link" href="icp-finder.html">🎯 ICP Finder</a>
-    <a class="nav-link" href="outreach-playbook-demo.html">📋 Playbook</a>
+  <nav class="lv-hdr-c" aria-label="LinkVault workflow steps">
+    <ol class="lv-steps">
+      <li><a href="dashboard.html" class="lv-step" data-step="dashboard"><span class="lv-step-num"><span class="lv-step-num-digit">1</span></span><span class="lv-step-label">Dashboard</span></a></li>
+      <li><a href="icp-finder.html" class="lv-step" data-step="icp"><span class="lv-step-num"><span class="lv-step-num-digit">2</span></span><span class="lv-step-label">ICP Finder</span></a></li>
+      <li><a href="playbook.html" class="lv-step" data-step="playbook"><span class="lv-step-num"><span class="lv-step-num-digit">3</span></span><span class="lv-step-label">Playbook</span></a></li>
+    </ol>
   </nav>
-  <div class="hdr-r"></div>
+  <div class="lv-hdr-r">
+    <button type="button" class="lv-data-chip is-empty" id="lv-data-chip" aria-label="Data status"><span class="lv-dot" aria-hidden="true"></span><span class="lv-data-chip-text">No data</span></button>
+    <button type="button" class="lv-btn" id="lv-add-files-btn"><span class="lv-btn-label">Add files</span></button>
+    <button type="button" class="lv-btn" id="lv-theme-btn" aria-label="Toggle theme"><span class="lv-theme-icon" aria-hidden="true">☀️</span><span class="lv-theme-label">Theme: Light</span></button>
+    <button type="button" class="lv-btn" id="lv-willis-btn"><span class="lv-willis-avatar" aria-hidden="true">W</span><span class="lv-btn-label">Ask Willis</span></button>
+  </div>
 </header>
 
 <!-- ══════════════════════════════════════════
@@ -870,7 +879,7 @@ a:hover{color:var(--tx);text-decoration:underline;}
 <!-- ══════════════════════════════════════════
      FOOTER
 ══════════════════════════════════════════ -->
-<footer class="lv-footer"><a href="how-to.html" class="lv-foot-logo" aria-label="Growth Automated"></a><div class="lv-foot-tag"><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated</div><div class="lv-foot-links">Not affiliated with LinkedIn · <a href="#" onclick="window.reportIssue&&reportIssue();return false;">Report an issue</a></div></footer>
+<footer class="lv-ftr"><div class="lv-ftr-inner"><div class="lv-ftr-l"><span class="lv-ftr-promise">🔒 Your data never leaves this browser.</span><span class="lv-ftr-by">LinkVault — by <a href="https://growthautomated.ai" target="_blank" rel="noopener">Growth Automated</a> · Not affiliated with LinkedIn</span></div><div class="lv-ftr-r"><button type="button" class="lv-ftr-btn" onclick="window.Willis&&Willis.open();return false;">Ask Willis</button><a href="#" onclick="window.reportIssue&&reportIssue();return false;">Report an issue</a></div></div></footer>
 
 <script>
 function reportIssue(){
@@ -900,5 +909,6 @@ document.addEventListener('DOMContentLoaded',openHashFaq); window.addEventListen
 <script src="privacy-monitor.js?v=2"></script>
 <script src="willis-articles.js?v=4"></script>
 <script src="willis.js?v=4"></script>
+<script defer src="chrome.js?v=1"></script>
 </body>
 </html>

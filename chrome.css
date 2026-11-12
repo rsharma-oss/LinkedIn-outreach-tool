@@ -1,0 +1,175 @@
+/* ============================================================
+   LinkVault chrome — shared header, footer, theme bridge (v1.2)
+   Depends on tokens.css being linked first. Per-page CSS stays
+   in place; this styles only the new .lv-hdr / .lv-ftr shells.
+   ============================================================ */
+
+/* ---- body baseline (opt-in — only pages that want the new chrome
+        set <body data-lv-chrome>; legacy body styles keep working) ---- */
+body[data-lv-chrome]{
+  font-family:var(--lv-font);
+  color:var(--lv-ink);
+  background:var(--lv-page);
+}
+
+/* ======================= HEADER ======================= */
+.lv-hdr{
+  position:sticky;top:0;z-index:var(--lv-z-header);
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;gap:var(--lv-sp-4);
+  padding:0 var(--lv-sp-6);height:64px;
+  background:var(--lv-card);
+  border-bottom:1px solid var(--lv-border);
+  font-family:var(--lv-font);
+}
+.lv-hdr-l{display:flex;align-items:center;min-width:0}
+.lv-hdr-c{display:flex;align-items:center;gap:var(--lv-sp-2);justify-content:center}
+.lv-hdr-r{display:flex;align-items:center;justify-content:flex-end;gap:var(--lv-sp-2);min-width:0}
+
+/* Brand (scoped to new header to avoid collision with legacy .lv-brand) */
+.lv-hdr-brand{
+  display:flex;align-items:center;gap:var(--lv-sp-2);
+  text-decoration:none;color:var(--lv-ink);
+  padding:var(--lv-sp-1) var(--lv-sp-2);border-radius:var(--lv-r-sm);
+}
+.lv-hdr-brand:hover{background:var(--lv-tint)}
+.lv-hdr-brand:focus-visible{outline:2px solid var(--lv-primary);outline-offset:2px}
+.lv-hdr-brand-mark{
+  width:28px;height:28px;flex:0 0 28px;
+  color:var(--lv-primary);
+}
+.lv-hdr-brand-word{
+  font-family:var(--lv-wordmark);
+  font-weight:600;font-size:18px;line-height:1;
+  letter-spacing:-0.01em;
+  color:var(--lv-ink);
+}
+
+/* Step pills */
+.lv-steps{
+  display:flex;align-items:center;gap:var(--lv-sp-1);
+  list-style:none;margin:0;padding:var(--lv-sp-1);
+  background:var(--lv-page);border:1px solid var(--lv-border);
+  border-radius:var(--lv-r-pill);
+}
+.lv-step{
+  display:inline-flex;align-items:center;gap:var(--lv-sp-2);
+  padding:6px var(--lv-sp-3);border-radius:var(--lv-r-pill);
+  font-family:var(--lv-font);font-weight:600;
+  font-size:var(--lv-fs-small);line-height:1;
+  color:var(--lv-sub);background:transparent;
+  text-decoration:none;border:1px solid transparent;
+  transition:
+    background var(--lv-dur-1) var(--lv-ease),
+    color var(--lv-dur-1) var(--lv-ease);
+}
+.lv-step:hover{color:var(--lv-ink);background:var(--lv-card)}
+.lv-step:focus-visible{outline:2px solid var(--lv-primary);outline-offset:2px}
+.lv-step-num{
+  display:inline-grid;place-items:center;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--lv-border);color:var(--lv-ink);
+  font-weight:700;font-size:11px;line-height:1;
+}
+.lv-step.is-active{background:var(--lv-primary);color:#fff;border-color:var(--lv-primary)}
+.lv-step.is-active .lv-step-num{background:#fff;color:var(--lv-primary)}
+.lv-step.is-complete .lv-step-num{background:var(--lv-good);color:#fff}
+.lv-step.is-complete .lv-step-num::before{content:"✓";font-size:12px}
+.lv-step.is-complete .lv-step-num-digit{display:none}
+.lv-step.is-locked{opacity:.55;pointer-events:none}
+.lv-step.is-locked .lv-step-num::after{content:"🔒";font-size:10px;margin-left:2px}
+
+/* Right-cluster buttons + data chip */
+.lv-btn{
+  display:inline-flex;align-items:center;gap:var(--lv-sp-2);
+  height:36px;padding:0 var(--lv-sp-3);border-radius:var(--lv-r-sm);
+  font-family:var(--lv-font);font-weight:600;
+  font-size:var(--lv-fs-small);line-height:1;
+  background:transparent;color:var(--lv-ink);
+  border:1px solid var(--lv-border);cursor:pointer;
+  transition:
+    background var(--lv-dur-1) var(--lv-ease),
+    border-color var(--lv-dur-1) var(--lv-ease);
+  text-decoration:none;
+}
+.lv-btn:hover{background:var(--lv-tint);border-color:var(--lv-tintline)}
+.lv-btn:focus-visible{outline:2px solid var(--lv-primary);outline-offset:2px}
+.lv-btn-primary{
+  background:var(--lv-primary);color:#fff;border-color:var(--lv-primary);
+}
+.lv-btn-primary:hover{background:var(--lv-primary-hover);border-color:var(--lv-primary-hover)}
+
+.lv-data-chip{
+  display:inline-flex;align-items:center;gap:var(--lv-sp-2);
+  padding:6px var(--lv-sp-3);border-radius:var(--lv-r-pill);
+  background:var(--lv-page);border:1px solid var(--lv-border);
+  color:var(--lv-sub);
+  font-family:var(--lv-font);font-weight:600;
+  font-size:var(--lv-fs-micro);line-height:1;
+  cursor:pointer;
+}
+.lv-data-chip:hover{background:var(--lv-tint)}
+.lv-data-chip.is-live{color:var(--lv-ink);border-color:var(--lv-tintline)}
+.lv-data-chip.is-empty .lv-dot{background:var(--lv-sub)}
+.lv-data-chip.is-live .lv-dot{background:var(--lv-good)}
+.lv-data-chip.is-partial .lv-dot{background:var(--lv-warn)}
+.lv-data-chip.is-failed .lv-dot{background:var(--lv-bad)}
+.lv-dot{
+  display:inline-block;width:8px;height:8px;border-radius:50%;
+  background:var(--lv-sub);
+}
+
+/* Willis button avatar */
+.lv-willis-avatar{
+  display:inline-grid;place-items:center;
+  width:20px;height:20px;border-radius:50%;
+  background:var(--lv-navy);color:var(--lv-on-navy);
+  font-family:var(--lv-font);font-weight:700;font-size:11px;line-height:1;
+}
+
+/* ======================= FOOTER ======================= */
+.lv-ftr{
+  background:var(--lv-navy);color:var(--lv-on-navy);
+  padding:var(--lv-sp-8) var(--lv-sp-6);
+  font-family:var(--lv-font);
+  font-size:var(--lv-fs-small);line-height:1.5;
+  margin-top:var(--lv-sp-12);
+}
+.lv-ftr-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:var(--lv-sp-6);flex-wrap:wrap;
+}
+.lv-ftr-l{display:flex;flex-direction:column;gap:var(--lv-sp-1)}
+.lv-ftr-promise{font-weight:600;color:#fff}
+.lv-ftr-by{color:var(--lv-on-navy);opacity:.85}
+.lv-ftr-r{display:flex;gap:var(--lv-sp-5,var(--lv-sp-4));align-items:center;flex-wrap:wrap}
+.lv-ftr a,.lv-ftr-btn{
+  color:var(--lv-on-navy);text-decoration:underline;text-underline-offset:3px;
+  background:transparent;border:0;cursor:pointer;
+  font:inherit;padding:0;
+}
+.lv-ftr a:hover,.lv-ftr-btn:hover{color:#fff}
+.lv-ftr a:focus-visible,.lv-ftr-btn:focus-visible{
+  outline:2px solid var(--lv-on-navy);outline-offset:2px;border-radius:2px;
+}
+
+/* ======================= RESPONSIVE ======================= */
+/* Tight band 768–950 — hide pill labels, hide brand word */
+@media (min-width:768px) and (max-width:950px){
+  .lv-hdr{gap:var(--lv-sp-2);padding:0 var(--lv-sp-3)}
+  .lv-step-label{display:none}
+  .lv-hdr-brand-word{display:none}
+  .lv-btn .lv-theme-label{display:none}
+}
+/* Mobile: hide step pills + collapse labels */
+@media (max-width:767px){
+  .lv-hdr{
+    grid-template-columns:1fr auto;
+    height:56px;padding:0 var(--lv-sp-4);
+  }
+  .lv-hdr-c{display:none}
+  .lv-btn{height:32px;padding:0 var(--lv-sp-2);font-size:var(--lv-fs-micro)}
+  .lv-btn .lv-theme-label,.lv-btn-label{display:none}
+  .lv-data-chip{display:none}
+}
