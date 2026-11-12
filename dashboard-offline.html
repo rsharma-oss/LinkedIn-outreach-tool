@@ -420,7 +420,7 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
       <div class="pm-row"><span class="pm-file">messages.csv</span><span class="pm-use">Message history &amp; dates</span><span class="pm-loc">browser only</span></div>
       <div class="pm-row"><span class="pm-file">Reactions / Comments</span><span class="pm-use">Engagement activity charts</span><span class="pm-loc">browser only</span></div>
       <div class="pm-row"><span class="pm-file">Profile / Positions</span><span class="pm-use">Your own profile snapshot</span><span class="pm-loc">browser only</span></div>
-      <div class="pm-note">No server. No upload. All processing runs in your browser's local memory and disappears when you close the tab. <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener" class="pm-link">View source on GitHub ↗</a></div>
+      <div class="pm-note">No server. No upload. All processing runs in your browser's local memory and disappears when you close the tab.</div>
       <div class="pm-ignore" style="margin-top:9px;padding-top:9px;border-top:1px dashed var(--border2);font-size:0.72rem;color:var(--tx2);line-height:1.55;"><b style="color:var(--tx);">🚫 And what it never opens.</b> Your export also contains ad clicks, ad-targeting profile, login IPs &amp; security history, billing receipts, phone numbers and email addresses. LinkVault <b>never reads those files</b> — they have nothing to do with outreach.</div>
     </div>
 
@@ -3579,7 +3579,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 </script>
 <!-- Willis help widget -->
-<footer class="lv-footer"><a href="how-to.html" class="lv-foot-logo" aria-label="Growth Automated"></a><div class="lv-foot-tag"><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated</div><div class="lv-foot-links">Not affiliated with LinkedIn · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener">View source ↗</a> · <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes ↗</a> · <a href="#" onclick="window.reportIssue&&reportIssue();return false;">Report an issue</a></div></footer>
+<footer class="lv-footer"><a href="how-to.html" class="lv-foot-logo" aria-label="Growth Automated"></a><div class="lv-foot-tag"><b>LinkVault</b> — the LinkedIn outreach toolkit by Growth Automated</div><div class="lv-foot-links">Not affiliated with LinkedIn · <a href="#" onclick="window.reportIssue&&reportIssue();return false;">Report an issue</a></div></footer>
 <script>/* inlined lv-warmth.js */
 /* LinkVault — relationship warmth engine (shared by ICP Finder + Dashboard).
    Turns the export's *relationship* files into a per-person warmth signal, so a connection
@@ -4344,7 +4344,7 @@ window.WILLIS_ARTICLES = [
   <ul>
     <li><b>DevTools → Network</b> — load your data and watch: only fonts &amp; chart libraries load, no upload of your CSVs.</li>
     <li><b>View Source</b> — there's no API endpoint, no analytics, no tracking pixel.</li>
-    <li><b>Read the code</b> — it's open on <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener">GitHub ↗</a>.</li>
+    <li><b>Run it with Wi-Fi off</b> — grab an offline bundle, kill your network, load your data. If anything were being sent anywhere, it would fail. It doesn't.</li>
   </ul>
   <p>Still want belt-and-suspenders? See "Run it offline".</p>` },
 
@@ -4396,7 +4396,15 @@ window.WILLIS_ARTICLES = [
 
 { id:"whats-new", title:"What's new?", cat:"Help & feedback",
   k:"whats new release notes changelog updates version latest changes history",
-  body:`<p>See everything we've shipped — fixes, features, and improvements — in the <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/RELEASE_NOTES.md" target="_blank" rel="noopener">Release Notes ↗</a>.</p>` }
+  body:`<p>Recent highlights:</p>
+  <ul>
+    <li><b>Relationships</b> — endorsements, recommendations and the companies you follow now power a Relationship column in the ICP list. Click a badge to see <i>why</i> you know someone, plus a copyable grounded opener.</li>
+    <li><b>ICP customizer</b> — 4 vertical presets (DTC · B2B SaaS · Telecom · Financial Services), one-click per-row tiering from your own network, Save/Load config.</li>
+    <li><b>WCAG AA theming</b> — light is the default; dark meets contrast; no flash of the wrong theme on load.</li>
+    <li><b>Safari-hardened loader</b> — drop a .zip (any case), add files later without losing what's loaded, and a banner names anything that didn't mount.</li>
+    <li><b>Privacy, stated</b> — the live "0 B uploaded" monitor plus an explicit list of files LinkVault never opens.</li>
+  </ul>
+  <p>Have a question about a specific feature? Search the help panel — most features have their own article.</p>` }
 
 ];
 

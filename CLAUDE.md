@@ -8,10 +8,10 @@
 
 **The product is named "LinkVault" — _the LinkedIn outreach toolkit by Growth Automated_** (named June 2026). Growth Automated is the agency/maker brand; **LinkVault** is the product. (Repo/URL slug stays `LinkedIn-outreach-tool` for now.)
 
-A fully client-side LinkedIn analytics and outreach tool. Users upload their LinkedIn data export — the tool parses, classifies, and visualises their network. **Nothing leaves the browser.** Hosted on GitHub Pages.
+A fully client-side LinkedIn analytics and outreach tool. Users upload their LinkedIn data export — the tool parses, classifies, and visualises their network. **Nothing leaves the browser.** Hosted on **Cloudflare Pages** on the custom domain `linkvault.growthautomated.ai` (migrated from GitHub Pages November 2026 — see §Hosting migration below).
 
-**Live site:** https://rsharma-oss.github.io/LinkedIn-outreach-tool/
-**Repo:** `rsharma-oss/LinkedIn-outreach-tool`
+**Live site:** https://linkvault.growthautomated.ai/
+**Repo:** `rsharma-oss/LinkedIn-outreach-tool` (**private** as of November 2026)
 **Owner:** Rahul Sharma — rahul@growthautomated.ai
 **Target user:** Shopify DTC growth agency founders
 **Brand colors (LinkVault):** LinkedIn Blue `#0A66C2` (primary) · Dark Navy `#0F172A` · White · Gray `#808080`. Wordmark font: Assistant. Icon: blue hex "vault" + white chain-link.
@@ -38,13 +38,18 @@ Supporting docs (keep these updated):
 
 ---
 
+## Hosting migration — Nov 2026
+
+- **Hosting moved from GitHub Pages → Cloudflare Pages.** The site is served from the custom domain `linkvault.growthautomated.ai` (GoDaddy DNS: a CNAME on the `linkvault` subdomain → `<project>.pages.dev`). The `CNAME` file in the repo root carries the domain string and is required — do not delete.
+- **GitHub repo is now private.** The `View source ↗` / `Release notes ↗` footer links were removed from every page (they'd land on a GitHub login wall). The in-app `📝 Edit the keywords yourself →` link (pointed at `ICP-CUSTOMIZATION.md` on GitHub) was removed; the in-app customizer's Advanced disclosure is the single source now.
+- **`.nojekyll` is no longer load-bearing** — Cloudflare Pages doesn't run Jekyll. Keep the file anyway as defence-in-depth if we ever revert; it costs nothing.
+- **Old GitHub Pages URL** (`rsharma-oss.github.io/LinkedIn-outreach-tool`) is no longer served. External references (LinkedIn posts, old emails, shopify-embed snippet at previous embed locations) point at the dead URL — chase these manually if traffic matters.
+
 ## Branch Strategy
 
-⚠️ **`.nojekyll` at the repo root is LOAD-BEARING (July 3 2026).** GitHub Pages runs Jekyll by default, and Jekyll **fails** on the `{{` sequences inside the inlined Chart.js in `dashboard-offline.html` — deploys silently stalled at "building" then failed until `.nojekyll` was added to `main` (commit `760adac`). It tells Pages to serve the static files raw. **Never delete it**; it lives only on GitHub (not in the local push FILES) and survives the resync flow because resync mirrors `main`.
-
 ```
-main   →  production (GitHub Pages auto-deploys from here)
-dev    →  all work happens here — push here by default
+main   →  production (Cloudflare Pages auto-deploys from here)
+dev    →  all work happens here — push here by default; PR → main deploys
 ```
 
 **Workflow:**

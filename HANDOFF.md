@@ -65,7 +65,7 @@ _Since 1.6: LinkVault rebrand live (logo + naming); **ICP customizer un-gated to
 
 **Target user:** Shopify growth agency founders and operators who want to activate their LinkedIn network for outbound prospecting and relationship-based sales.
 
-**Hosting:** GitHub Pages — `rsharma-oss.github.io/LinkedIn-outreach-tool`
+**Hosting:** Cloudflare Pages on the custom domain `linkvault.growthautomated.ai` (migrated from GitHub Pages November 2026). DNS: CNAME at GoDaddy. Repo visibility: **private**.
 
 **Pages:**
 | File | Purpose |

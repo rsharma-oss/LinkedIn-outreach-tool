@@ -6,7 +6,7 @@ _The LinkedIn outreach toolkit by Growth Automated._
 
 Everything runs in your browser. No server, no account, no upload.
 
-**→ [Open LinkVault](https://rsharma-oss.github.io/LinkedIn-outreach-tool/)**
+**→ [Open LinkVault](https://linkvault.growthautomated.ai/)**
 
 ---
 
@@ -37,7 +37,7 @@ A priority queue built from your ICP list, with ready-to-send message templates 
 ## How to use
 
 1. **Get your data:** LinkedIn → Settings → Data Privacy → [Get a copy of your data ↗](https://www.linkedin.com/mypreferences/d/download-my-data) → Request archive. The email arrives in ~10 minutes to 24 hours.
-2. Open the [Dashboard](https://rsharma-oss.github.io/LinkedIn-outreach-tool/dashboard.html) or [ICP Finder](https://rsharma-oss.github.io/LinkedIn-outreach-tool/icp-finder.html).
+2. Open the [Dashboard](https://linkvault.growthautomated.ai/dashboard.html) or [ICP Finder](https://linkvault.growthautomated.ai/icp-finder.html).
 3. **Drop the `.zip` straight in — no unzipping needed.** Or pick individual CSVs, or select the unzipped folder (Chrome/Edge).
 4. Missed a file? Click **➕ Add files** — new files merge into what's already loaded, they don't replace it.
 
@@ -66,7 +66,7 @@ Works with **English-language** LinkedIn exports (LinkedIn translates CSV column
 
 ## Privacy
 
-**No server. No upload. No account. No tracking.** Every page carries a live monitor counting the bytes it sends — it reads `0 B uploaded` and never moves. Don't take our word for it; watch it, or [read the source](https://github.com/rsharma-oss/LinkedIn-outreach-tool).
+**No server. No upload. No account. No tracking.** Every page carries a live monitor counting the bytes it sends — it reads `0 B uploaded` and never moves. Don't take our word for it; watch it, open DevTools → Network while you load your data, or download the offline bundle and run it with Wi-Fi off.
 
 **And what it never opens.** Your export also contains ad clicks (the single largest file in it), your ad-targeting profile, login IPs and security history, billing receipts, phone numbers and email addresses. LinkVault doesn't read any of it — those files have nothing to do with outreach.
 

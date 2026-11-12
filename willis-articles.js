@@ -315,7 +315,7 @@ window.WILLIS_ARTICLES = [
   <ul>
     <li><b>DevTools → Network</b> — load your data and watch: only fonts &amp; chart libraries load, no upload of your CSVs.</li>
     <li><b>View Source</b> — there's no API endpoint, no analytics, no tracking pixel.</li>
-    <li><b>Read the code</b> — it's open on <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool" target="_blank" rel="noopener">GitHub ↗</a>.</li>
+    <li><b>Run it with Wi-Fi off</b> — grab an offline bundle, kill your network, load your data. If anything were being sent anywhere, it would fail. It doesn't.</li>
   </ul>
   <p>Still want belt-and-suspenders? See "Run it offline".</p>` },
 
@@ -367,6 +367,14 @@ window.WILLIS_ARTICLES = [
 
 { id:"whats-new", title:"What's new?", cat:"Help & feedback",
   k:"whats new release notes changelog updates version latest changes history",
-  body:`<p>See everything we've shipped — fixes, features, and improvements — in the <a href="https://github.com/rsharma-oss/LinkedIn-outreach-tool/blob/main/RELEASE_NOTES.md" target="_blank" rel="noopener">Release Notes ↗</a>.</p>` }
+  body:`<p>Recent highlights:</p>
+  <ul>
+    <li><b>Relationships</b> — endorsements, recommendations and the companies you follow now power a Relationship column in the ICP list. Click a badge to see <i>why</i> you know someone, plus a copyable grounded opener.</li>
+    <li><b>ICP customizer</b> — 4 vertical presets (DTC · B2B SaaS · Telecom · Financial Services), one-click per-row tiering from your own network, Save/Load config.</li>
+    <li><b>WCAG AA theming</b> — light is the default; dark meets contrast; no flash of the wrong theme on load.</li>
+    <li><b>Safari-hardened loader</b> — drop a .zip (any case), add files later without losing what's loaded, and a banner names anything that didn't mount.</li>
+    <li><b>Privacy, stated</b> — the live "0 B uploaded" monitor plus an explicit list of files LinkVault never opens.</li>
+  </ul>
+  <p>Have a question about a specific feature? Search the help panel — most features have their own article.</p>` }
 
 ];
