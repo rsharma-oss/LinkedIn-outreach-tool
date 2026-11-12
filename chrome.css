@@ -167,7 +167,7 @@ body[data-lv-chrome]{
   align-items:center;flex-wrap:wrap;justify-content:center;
   margin-top:var(--lv-sp-2);
 }
-.lv-ftr a,.lv-ftr-btn{
+.lv-ftr a:not(.lv-ftr-logo),.lv-ftr-btn{
   color:var(--lv-on-navy);text-decoration:underline;text-underline-offset:3px;
   background:transparent;border:0;cursor:pointer;
   font:inherit;padding:0;
