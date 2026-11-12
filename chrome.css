@@ -38,12 +38,24 @@ body[data-lv-chrome]{
   width:28px;height:28px;flex:0 0 28px;
   color:var(--lv-primary);
 }
+.lv-hdr-brand-text{
+  display:flex;flex-direction:column;gap:3px;
+  line-height:1;
+}
 .lv-hdr-brand-word{
   font-family:var(--lv-wordmark);
   font-weight:600;font-size:18px;line-height:1;
   letter-spacing:-0.01em;
   color:var(--lv-ink);
 }
+/* "by Growth Automated" sub-logo (uses the GA SVG) */
+.lv-hdr-brand-ga{
+  display:inline-block;
+  width:96px;height:12px;
+  background:url('logo-color.svg') left center / contain no-repeat;
+  opacity:.85;
+}
+[data-theme="dark"] .lv-hdr-brand-ga{background-image:url('logo-white.svg')}
 
 /* Step pills */
 .lv-steps{
@@ -130,25 +142,37 @@ body[data-lv-chrome]{
 /* ======================= FOOTER ======================= */
 .lv-ftr{
   background:var(--lv-navy);color:var(--lv-on-navy);
-  padding:var(--lv-sp-8) var(--lv-sp-6);
+  padding:var(--lv-sp-12) var(--lv-sp-6) var(--lv-sp-8);
   font-family:var(--lv-font);
   font-size:var(--lv-fs-small);line-height:1.5;
   margin-top:var(--lv-sp-12);
+  text-align:center;
 }
 .lv-ftr-inner{
   max-width:1200px;margin:0 auto;
-  display:flex;justify-content:space-between;align-items:center;
-  gap:var(--lv-sp-6);flex-wrap:wrap;
+  display:flex;flex-direction:column;align-items:center;
+  gap:var(--lv-sp-3);
 }
-.lv-ftr-l{display:flex;flex-direction:column;gap:var(--lv-sp-1)}
-.lv-ftr-promise{font-weight:600;color:#fff}
-.lv-ftr-by{color:var(--lv-on-navy);opacity:.85}
-.lv-ftr-r{display:flex;gap:var(--lv-sp-5,var(--lv-sp-4));align-items:center;flex-wrap:wrap}
+/* Large centered Growth Automated logo */
+.lv-ftr-logo{
+  display:block;
+  width:320px;max-width:85%;height:48px;
+  background:url('logo-white.svg') center center / contain no-repeat;
+  margin-bottom:var(--lv-sp-2);
+}
+.lv-ftr-promise{font-weight:600;color:#fff;font-size:var(--lv-fs-body)}
+.lv-ftr-tag{color:var(--lv-on-navy);opacity:.85;max-width:600px}
+.lv-ftr-links{
+  display:flex;gap:var(--lv-sp-4);
+  align-items:center;flex-wrap:wrap;justify-content:center;
+  margin-top:var(--lv-sp-2);
+}
 .lv-ftr a,.lv-ftr-btn{
   color:var(--lv-on-navy);text-decoration:underline;text-underline-offset:3px;
   background:transparent;border:0;cursor:pointer;
   font:inherit;padding:0;
 }
+.lv-ftr-logo{text-decoration:none}
 .lv-ftr a:hover,.lv-ftr-btn:hover{color:#fff}
 .lv-ftr a:focus-visible,.lv-ftr-btn:focus-visible{
   outline:2px solid var(--lv-on-navy);outline-offset:2px;border-radius:2px;
