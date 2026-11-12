@@ -476,6 +476,71 @@ body[data-lv-chrome]{
   text-align:center;
 }
 
+/* ICP Finder (Phase 3a) — navy next-step bar + filter-bar polish */
+.lv-icp-nextstep{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:var(--lv-sp-4);flex-wrap:wrap;
+  background:var(--lv-navy);color:var(--lv-on-navy);
+  border-radius:var(--lv-r-lg);
+  padding:var(--lv-sp-4) var(--lv-sp-6);
+  margin:var(--lv-sp-6) 0 var(--lv-sp-4);
+  box-shadow:var(--lv-shadow-md);
+  font-family:var(--lv-font);
+}
+.lv-icp-nextstep-l{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lv-icp-nextstep-eyebrow{
+  font-size:var(--lv-fs-micro);font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  opacity:.8;
+}
+.lv-icp-nextstep-title{
+  color:#fff;font-size:var(--lv-fs-h2);font-weight:700;
+  line-height:1.2;margin:0;
+}
+.lv-icp-nextstep-sub{
+  color:var(--lv-on-navy);opacity:.85;
+  font-size:var(--lv-fs-small);margin:4px 0 0;
+}
+.lv-icp-nextstep-cta{
+  display:inline-flex;align-items:center;gap:var(--lv-sp-2);
+  padding:10px var(--lv-sp-4);
+  background:#fff;color:var(--lv-navy);
+  border-radius:var(--lv-r-sm);
+  font-family:var(--lv-font);font-weight:700;
+  font-size:var(--lv-fs-body);
+  text-decoration:none;
+  transition:transform var(--lv-dur-1) var(--lv-ease);
+  white-space:nowrap;
+}
+.lv-icp-nextstep-cta:hover{transform:translateY(-1px)}
+
+/* Filter-bar refresh (Phase 3a) — keep the component, tokenize the surface */
+#app .filter-bar{
+  background:var(--lv-card);
+  border:1px solid var(--lv-border);
+  border-radius:var(--lv-r-lg);
+  padding:var(--lv-sp-3);
+  gap:var(--lv-sp-3);
+  box-shadow:var(--lv-shadow-sm);
+}
+#app .filter-bar .search-input{
+  background:var(--lv-page);
+  border:1px solid var(--lv-border);
+  color:var(--lv-ink);
+  border-radius:var(--lv-r-sm);
+  font-family:var(--lv-font);
+}
+#app .filter-bar .search-input::placeholder{color:var(--lv-sub)}
+#app .filter-bar .search-input:focus{
+  outline:2px solid var(--lv-primary);outline-offset:1px;
+  border-color:var(--lv-primary);
+}
+#app .filter-bar .filter-count{
+  color:var(--lv-sub);font-family:var(--lv-font);
+  font-size:var(--lv-fs-small);
+}
+#app .filter-bar .filter-count b{color:var(--lv-ink);font-variant-numeric:tabular-nums}
+
 /* Navy next-best-action card */
 .lv-next{
   display:block;

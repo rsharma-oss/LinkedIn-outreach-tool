@@ -8,7 +8,7 @@
 <title>LinkVault · ICP Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css?v=1">
-<link rel="stylesheet" href="chrome.css?v=5">
+<link rel="stylesheet" href="chrome.css?v=6">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
@@ -607,6 +607,16 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
         <span class="pg-info" id="icp-page-info"></span>
         <button class="pg-btn" id="icp-next" onclick="icpPage(1)">Next →</button>
       </div>
+
+      <!-- Phase 3a: navy next-step bar (Kimi pages.md §3) -->
+      <section class="lv-icp-nextstep" id="lv-icp-nextstep" hidden aria-label="Next step">
+        <div class="lv-icp-nextstep-l">
+          <div class="lv-icp-nextstep-eyebrow">Next step</div>
+          <h3 class="lv-icp-nextstep-title" id="lv-icp-nextstep-title">— Tier-1 contacts ready</h3>
+          <p class="lv-icp-nextstep-sub">Use them in the Outreach Plan or the message templates — one tier, one cadence, no digging.</p>
+        </div>
+        <a href="#" onclick="switchView('outreach');return false;" class="lv-icp-nextstep-cta">Open Outreach Plan →</a>
+      </section>
     </div><!-- /view-icp -->
 
     <!-- OUTREACH VIEW -->
@@ -2611,6 +2621,24 @@ function renderTable() {
   document.getElementById('icp-page-info').textContent = `Page ${_icpPage+1} of ${pages} (${total.toLocaleString()} contacts)`;
   document.getElementById('icp-prev').disabled = _icpPage === 0;
   document.getElementById('icp-next').disabled = _icpPage >= pages - 1;
+
+  // Phase 3a: populate the navy next-step bar with the total T1 count.
+  try { renderICPNextStep(); } catch(e) { /* no-op */ }
+}
+
+// Phase 3a: count T1 contacts across the full ICP (not filtered) and
+// surface the navy next-step bar. Hidden until there's something ready.
+function renderICPNextStep() {
+  const bar = document.getElementById('lv-icp-nextstep');
+  if (!bar || !Array.isArray(ICP)) return;
+  const t1 = ICP.filter(c => c.tier === 'T1').length;
+  const title = document.getElementById('lv-icp-nextstep-title');
+  if (title) {
+    title.textContent = t1 > 0
+      ? `${t1.toLocaleString()} Tier-1 contact${t1===1?'':'s'} ready to message`
+      : 'No Tier-1 matches yet';
+  }
+  bar.hidden = t1 === 0;
 }
 
 
