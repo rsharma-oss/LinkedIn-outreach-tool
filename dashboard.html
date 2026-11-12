@@ -8,7 +8,7 @@
 <title>LinkVault · Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css?v=1">
-<link rel="stylesheet" href="chrome.css?v=4">
+<link rel="stylesheet" href="chrome.css?v=5">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -1209,32 +1209,85 @@ function lvQuotaNote(which){
 }
 
 function renderMountNote(filemap) {
-  const have = Object.keys(filemap);
+  const have    = Object.keys(filemap);
   const missing = LV_WANTED.filter(w => !filemap[w]);
-  const main = document.querySelector('#app .main');
+  const main    = document.querySelector('#app .main');
   if (!main) return;
+
+  // Rough row count per file \u2014 keep in step with LV_WANTED \u2194 D.* mapping.
+  const rowsFor = (name) => {
+    switch (name) {
+      case 'Connections.csv': return (D.connections||[]).length;
+      case 'messages.csv':    return (D.messages   ||[]).length;
+      case 'Reactions.csv':   return (D.reactions  ||[]).length;
+      case 'Comments.csv':    return (D.comments   ||[]).length;
+      case 'Shares.csv':      return (D.shares     ||[]).length;
+      case 'Invitations.csv': return (D.invitations||[]).length;
+      case 'Member_Follows.csv': return (D.follows ||[]).length;
+      case 'Profile.csv':     return D.profile && Object.keys(D.profile).length ? 1 : 0;
+      case 'Positions.csv':   return (D.positions ||[]).length;
+      default: return 0;
+    }
+  };
+
+  const failures = (_readFailures||[]).slice();
+  const allOk = !missing.length && !failures.length;
+  const anyFailure = failures.length > 0;
+
   let note = document.getElementById('mount-note');
   if (!note) {
-    note = document.createElement('div');
+    note = document.createElement('section');
     note.id = 'mount-note';
-    note.style.cssText = 'margin:0 0 18px;padding:11px 14px;border-radius:10px;font-size:0.8rem;line-height:1.5;display:none;';
+    note.className = 'lv-mount';
+    note.setAttribute('aria-live', 'polite');
     main.insertBefore(note, main.firstChild);
   }
-  if (!missing.length && !_readFailures.length) {
-    note.style.cssText += ';background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:var(--tx);';
-    note.innerHTML = '\u2705 All ' + have.length + ' LinkedIn files mounted \u2014 every chart has its data.';
-    note.style.display = 'block';
-    setTimeout(() => { note.style.display = 'none'; }, 6000);
-    return;
+  note.className = 'lv-mount' + (anyFailure ? ' is-bad' : (missing.length ? ' is-warn' : ''));
+
+  const title =
+    anyFailure ? '\u2716 Some files could not be read' :
+    missing.length ? '\u26a0\ufe0f ' + have.length + ' of ' + LV_WANTED.length + ' files loaded' :
+    '\u2713 All ' + have.length + ' files loaded';
+  const sub =
+    anyFailure ? 'The ones below failed; the rest mounted OK.' :
+    missing.length ? 'Charts that need the missing files stay empty. Add them anytime.' :
+    'Every chart has its data. Dive into the Overview, or open ICP Finder.';
+
+  const fileHtml = LV_WANTED.map(name => {
+    const got = !!filemap[name];
+    const failed = failures.includes(name);
+    const cls = failed ? 'is-bad' : got ? 'is-ok' : 'is-missing';
+    const icon = failed ? '\u2716' : got ? '\u2713' : '\u25cb';
+    const rows = got ? fmtFull(rowsFor(name)) + ' rows' : (failed ? 'read failed' : 'missing');
+    return '<div class="lv-mount-file ' + cls + '">' +
+           '<span class="lv-mount-file-icon" aria-hidden="true">' + icon + '</span>' +
+           '<span class="lv-mount-file-name">' + name + '</span>' +
+           '<span class="lv-mount-file-rows">' + rows + '</span>' +
+           '</div>';
+  }).join('');
+
+  let actions = '';
+  if (missing.length || anyFailure) {
+    actions += '<button type="button" class="lv-btn lv-btn-primary" onclick="document.getElementById(\'file-input\').click()">\u2795 Add the missing files</button>';
   }
-  note.style.cssText += ';background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);color:var(--tx);';
+  actions += '<button type="button" class="lv-btn" onclick="document.getElementById(\'mount-note\').remove()">Looks right \u00b7 Dismiss</button>';
+
   note.innerHTML =
-    '\u26a0\ufe0f <b>' + have.length + ' file' + (have.length===1?'':'s') + ' mounted' +
-    (missing.length ? ', ' + missing.length + ' missing.</b> Charts that need the missing files stay empty. Not loaded: <b>' + missing.join(', ') + '</b>.' : '.</b>') +
-    (_readFailures.length ? ' Could not read: <b>' + _readFailures.join(', ') + '</b>.' : '') +
-    ' <button onclick="document.getElementById(\'file-input\').click()" style="margin-left:6px;background:var(--li);color:#fff;border:none;border-radius:7px;padding:5px 11px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;">\u2795 Add the missing files</button>' +
-    ' <button onclick="this.parentNode.style.display=\'none\'" style="margin-left:4px;background:none;border:none;color:var(--tx2);cursor:pointer;font-size:0.9rem;">\u00d7</button>';
-  note.style.display = 'block';
+    '<div class="lv-mount-head">' +
+      '<div><h3 class="lv-mount-title">' + title + '</h3>' +
+      '<p class="lv-mount-sub">' + sub + '</p></div>' +
+      '<button type="button" class="lv-mount-dismiss" aria-label="Dismiss" onclick="document.getElementById(\'mount-note\').remove()">\u00d7</button>' +
+    '</div>' +
+    '<div class="lv-mount-grid">' + fileHtml + '</div>' +
+    '<div class="lv-mount-actions">' + actions + '</div>';
+
+  // Auto-dismiss the all-OK case after 10s; keep warn/bad until the user acts.
+  if (allOk) {
+    setTimeout(() => {
+      const n = document.getElementById('mount-note');
+      if (n) n.remove();
+    }, 10000);
+  }
 }
 
 async function loadFromInput(fileList) {
@@ -1493,10 +1546,15 @@ function reportIssue(){
 function dismissMobileNotice(){ var n=document.getElementById('mobile-notice'); if(n) n.classList.add('dismissed'); try{localStorage.setItem('ga_mobile_notice','1');}catch(e){} }
 function updateThemeBtn(){ var b=document.getElementById('theme-btn'); if(b) b.textContent=document.documentElement.getAttribute('data-theme')==='light'?'☀️':'🌙'; }
 function toggleTheme(){
-  var light=document.documentElement.getAttribute('data-theme')==='light';
-  if(light){ document.documentElement.removeAttribute('data-theme'); try{localStorage.setItem('ga_theme','dark');}catch(e){} }
-  else { document.documentElement.setAttribute('data-theme','light'); try{localStorage.setItem('ga_theme','light');}catch(e){} }
-  updateThemeBtn(); applyChartTheme();
+  // Phase 1b flipped FOUC to always set the attribute; keep the toggle in sync.
+  var light = document.documentElement.getAttribute('data-theme') === 'light';
+  var next  = light ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('ga_theme', next); } catch(e) {}
+  updateThemeBtn();
+  applyChartTheme();
+  // Phase 2c: re-render Overview so tokenized chart colours pick up the new theme.
+  try { if (D.connections && D.connections.length) buildOverview(); } catch(e) {}
 }
 
 function mkChart(id, config) {
@@ -1653,10 +1711,12 @@ function buildOverview() {
     cArr.push(D.comments.filter(r=>toYM(r._date)===ym).length);
     sArr.push(D.shares.filter(r=>toYM(r._date)===ym).length);
   }
+  // Phase 2c: token-ize hero chart so dark/light flip picks up the right palette.
+  const lvToken = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   barChart('chart-overview-engagement', labels18, [
-    {label:'Reactions',data:rArr,color:'rgba(245,158,11,0.8)'},
-    {label:'Comments', data:cArr,color:'rgba(139,92,246,0.8)'},
-    {label:'Posts',    data:sArr,color:'rgba(249,115,22,0.8)'},
+    {label:'Reactions',data:rArr,color:lvToken('--lv-chart-4') || 'rgba(245,158,11,0.8)'},
+    {label:'Comments', data:cArr,color:lvToken('--lv-chart-2') || 'rgba(139,92,246,0.8)'},
+    {label:'Posts',    data:sArr,color:lvToken('--lv-chart-1') || 'rgba(249,115,22,0.8)'},
   ], {stacked:true,maxX:18});
 
   // Phase 2a: new KPI strip + welcome banner + progress rail + data health

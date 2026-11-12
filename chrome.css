@@ -360,6 +360,76 @@ body[data-lv-chrome]{
   font-size:var(--lv-fs-body);color:var(--lv-ink);line-height:1.4;
 }
 
+/* Mount report (post-parse summary card — Kimi components.md) */
+.lv-mount{
+  background:var(--lv-card);
+  border:1px solid var(--lv-border);
+  border-left:4px solid var(--lv-good);
+  border-radius:var(--lv-r-lg);
+  padding:var(--lv-sp-4);
+  margin:0 0 var(--lv-sp-4);
+  box-shadow:var(--lv-shadow-sm);
+  font-family:var(--lv-font);
+  font-size:var(--lv-fs-small);
+  color:var(--lv-ink);
+}
+.lv-mount.is-warn{border-left-color:var(--lv-warn)}
+.lv-mount.is-bad {border-left-color:var(--lv-bad)}
+.lv-mount-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:var(--lv-sp-3);flex-wrap:wrap;
+}
+.lv-mount-title{
+  font-size:var(--lv-fs-h3);font-weight:700;
+  color:var(--lv-ink);
+  margin:0;line-height:1.3;
+  display:flex;align-items:center;gap:var(--lv-sp-2);
+}
+.lv-mount-title-icon{font-size:20px}
+.lv-mount-sub{
+  color:var(--lv-sub);
+  margin:var(--lv-sp-1) 0 0;
+  font-size:var(--lv-fs-small);
+}
+.lv-mount-dismiss{
+  background:transparent;border:0;cursor:pointer;
+  color:var(--lv-sub);font-size:20px;line-height:1;
+  padding:4px 6px;border-radius:var(--lv-r-sm);
+}
+.lv-mount-dismiss:hover{background:var(--lv-tint);color:var(--lv-ink)}
+.lv-mount-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:var(--lv-sp-2);
+  margin:var(--lv-sp-3) 0 0;
+}
+.lv-mount-file{
+  display:flex;align-items:center;gap:var(--lv-sp-2);
+  padding:var(--lv-sp-2);
+  background:var(--lv-page);
+  border:1px solid var(--lv-border);
+  border-radius:var(--lv-r-md);
+  font-size:var(--lv-fs-small);
+}
+.lv-mount-file.is-ok    {border-color:var(--lv-tintline)}
+.lv-mount-file.is-missing{opacity:.75}
+.lv-mount-file-icon{font-size:14px;line-height:1}
+.lv-mount-file-name{
+  font-weight:600;color:var(--lv-ink);
+  flex:1;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.lv-mount-file-rows{
+  color:var(--lv-sub);
+  font-variant-numeric:tabular-nums;
+  font-size:var(--lv-fs-micro);
+}
+.lv-mount-actions{
+  display:flex;gap:var(--lv-sp-2);flex-wrap:wrap;
+  margin-top:var(--lv-sp-3);
+}
+.lv-mount .lv-btn-primary{height:32px;padding:0 var(--lv-sp-3)}
+
 /* Recent activity */
 .lv-recent{
   background:var(--lv-card);
