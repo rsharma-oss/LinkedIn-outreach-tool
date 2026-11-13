@@ -88,7 +88,9 @@ body[data-lv-chrome]{
 .lv-step.is-complete .lv-step-num{background:var(--lv-good);color:#fff}
 .lv-step.is-complete .lv-step-num::before{content:"✓";font-size:12px}
 .lv-step.is-complete .lv-step-num-digit{display:none}
-.lv-step.is-locked{opacity:.55;pointer-events:none}
+/* Locked step: stays clickable (destination handles empty state) — just a hint */
+.lv-step.is-locked{opacity:.65}
+.lv-step.is-locked:hover{opacity:1}
 .lv-step.is-locked .lv-step-num::after{content:"🔒";font-size:10px;margin-left:2px}
 
 /* Right-cluster buttons + data chip */
