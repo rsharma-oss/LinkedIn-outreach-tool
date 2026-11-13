@@ -11,25 +11,36 @@
 <link rel="stylesheet" href="tokens.css?v=1">
 <link rel="stylesheet" href="chrome.css?v=7">
 <style>
+/* Phase 4c: demo page tokens aliased through Kimi's --lv-* set */
 :root{
-  --bg:#080c14;--bg2:#0d1220;--bg3:#131926;--bg4:#1a2235;--card:#111827;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
-  --li:#0077B5;--li2:#00a0dc;--glow:rgba(0,119,181,0.18);
-  --green:#10b981;--tx:#f0f4ff;--tx2:rgba(240,244,255,0.65);--tx3:rgba(240,244,255,0.55);
-  /* theme-adaptive (dark defaults — overridden by [data-theme="light"]) */
-  --hdr-grad:linear-gradient(135deg,#0a0f1e,#0d1525);
-  --hover-strong:rgba(255,255,255,0.08);
-  --nav-idle:rgba(240,244,255,0.55);--nav-idle-hover:rgba(240,244,255,0.8);
+  --bg:    var(--lv-page,   #F6F9FC);
+  --bg2:   var(--lv-card,   #FFFFFF);
+  --bg3:   var(--lv-page,   #F6F9FC);
+  --bg4:   var(--lv-tint,   #EAF2FB);
+  --card:  var(--lv-card,   #FFFFFF);
+  --border: var(--lv-border,#E1E8F0);
+  --border2:var(--lv-tintline,#C7DCF5);
+  --li:    var(--lv-primary,#0A66C2);
+  --li2:   var(--lv-primary,#0A66C2);
+  --glow:  rgba(10,102,194,0.15);
+  --green: var(--lv-good,   #157347);
+  --tx:    var(--lv-ink,    #12233B);
+  --tx2:   var(--lv-sub,    #5B6B7F);
+  --tx3:   var(--lv-sub,    #5B6B7F);
+  --hdr-grad: linear-gradient(135deg, var(--lv-card,#fff), var(--lv-page,#F6F9FC));
+  --hover-strong: var(--lv-tint,#EAF2FB);
+  --nav-idle: var(--lv-sub,#5B6B7F);
+  --nav-idle-hover: var(--lv-ink,#12233B);
+  --ok: var(--lv-good,#157347);
+}
+[data-theme="dark"]{
+  --hdr-grad: linear-gradient(135deg, #0a0f1e, #0d1525);
+  --hover-strong: rgba(255,255,255,0.08);
 }
 [data-theme="light"]{
-  --bg:#eef1f7;--bg2:#ffffff;--bg3:#f4f6fb;--bg4:#e7ecf5;--card:#ffffff;
-  --border:rgba(15,23,42,0.1);--border2:rgba(15,23,42,0.18);--glow:rgba(0,119,181,0.12);
-  --tx:#0f172a;--tx2:rgba(15,23,42,0.7);--tx3:rgba(15,23,42,0.62);
-  --hdr-grad:linear-gradient(135deg,#ffffff,#eef1f7);
-  --hover-strong:rgba(15,23,42,0.07);
-  --nav-idle:rgba(15,23,42,0.55);--nav-idle-hover:rgba(15,23,42,0.9);
-  --li2:#0369a1;
-  --ok:#047857;
+  /* Kept for leftover light-only tokens outside the alias set */
+  --li2: #0369a1;
+  --ok: #047857;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.6;}
