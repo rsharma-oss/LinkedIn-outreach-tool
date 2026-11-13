@@ -14,12 +14,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
 <style>
+/* Phase 4d: legacy --bg/--tx/--li aliased through Kimi's --lv-* tokens */
 :root {
-  --bg:#080c14; --bg2:#0d1220; --bg3:#131926; --bg4:#1a2235; --card:#111827;
-  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
-  --li:#0077B5; --li2:#00a0dc; --glow:rgba(0,119,181,0.18);
-  --green:#10b981; --yellow:#f59e0b; --red:#ef4444; --purple:#8b5cf6; --orange:#f97316;
-  --tx:#f0f4ff; --tx2:rgba(240,244,255,0.65); --tx3:rgba(240,244,255,0.55);
+  --bg:    var(--lv-page,   #F6F9FC);
+  --bg2:   var(--lv-card,   #FFFFFF);
+  --bg3:   var(--lv-page,   #F6F9FC);
+  --bg4:   var(--lv-tint,   #EAF2FB);
+  --card:  var(--lv-card,   #FFFFFF);
+  --border: var(--lv-border,#E1E8F0);
+  --border2:var(--lv-tintline,#C7DCF5);
+  --li:    var(--lv-primary,#0A66C2);
+  --li2:   var(--lv-primary,#0A66C2);
+  --glow:  rgba(10,102,194,0.15);
+  --green: var(--lv-good,   #157347);
+  --yellow:var(--lv-warn,   #B45309);
+  --red:   var(--lv-bad,    #B42318);
+  --purple:#5B21B6;
+  --orange:var(--lv-warn,   #B45309);
+  --tx:    var(--lv-ink,    #12233B);
+  --tx2:   var(--lv-sub,    #5B6B7F);
+  --tx3:   var(--lv-sub,    #5B6B7F);
   /* theme-adaptive (dark defaults — overridden by [data-theme="light"]) */
   --hdr-grad:linear-gradient(135deg,#0a0f1e,#0d1525);
   --ga-logo:url('logo-white.svg');  /* white on dark header */
