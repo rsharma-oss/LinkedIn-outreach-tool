@@ -10,51 +10,63 @@
 <link rel="stylesheet" href="tokens.css?v=1">
 <link rel="stylesheet" href="chrome.css?v=7">
 <style>
+  /* Phase 4a: Playbook's split --bg-primary/--text-primary scheme now aliases
+     through Kimi's --lv-* tokens (defined in tokens.css). One unified palette
+     drives light + dark; no more duplicate theme blocks here. */
   :root {
-    --bg-primary: #080c14;
-    --bg-elevated: #0d1220;
-    --bg-surface: #131926;
-    --bg-hover: #1a2235;
-    --bg-card: #161d2e;
-    --border: rgba(255,255,255,0.08);
-    --border-active: rgba(99,179,237,0.4);
-    --accent: #3b82f6;
-    --accent-2: #6366f1;
-    --accent-glow: rgba(59,130,246,0.2);
-    --green: #10b981;
-    --yellow: #f59e0b;
-    --red: #ef4444;
-    --purple: #8b5cf6;
-    --text-primary: #f0f4ff;
-    --text-secondary: rgba(240,244,255,0.65);
-    --text-muted: rgba(240,244,255,0.55);
-    --tier1: #10b981;
-    --tier1-bg: rgba(16,185,129,0.1);
-    --tier2: #f59e0b;
-    --tier2-bg: rgba(245,158,11,0.1);
-    --tier3: #6b7280;
-    --tier3-bg: rgba(107,114,128,0.1);
-    --urgent: #ef4444;
-    --urgent-bg: rgba(239,68,68,0.1);
-    /* theme-adaptive (dark defaults — overridden by [data-theme="light"]) */
-    --hdr-grad: linear-gradient(135deg,#0a0f1e,#0d1525);
-    --hover-strong: rgba(255,255,255,0.08);
-    --nav-idle: rgba(240,244,255,0.55);
-    --nav-idle-hover: rgba(240,244,255,0.8);
+    --bg-primary:    var(--lv-page,   #F6F9FC);
+    --bg-elevated:   var(--lv-card,   #FFFFFF);
+    --bg-surface:    var(--lv-page,   #F6F9FC);
+    --bg-hover:      var(--lv-tint,   #EAF2FB);
+    --bg-card:       var(--lv-card,   #FFFFFF);
+    --border:        var(--lv-border, #E1E8F0);
+    --border-active: var(--lv-primary,#0A66C2);
+    --accent:        var(--lv-primary,#0A66C2);
+    --accent-2:      var(--lv-navy,   #0A2A4D);
+    --accent-glow:   rgba(10,102,194,0.15);
+    --green:         var(--lv-good,   #157347);
+    --yellow:        var(--lv-warn,   #B45309);
+    --red:           var(--lv-bad,    #B42318);
+    --purple:        #5B21B6;
+    --text-primary:  var(--lv-ink,    #12233B);
+    --text-secondary:var(--lv-sub,    #5B6B7F);
+    --text-muted:    var(--lv-sub,    #5B6B7F);
+    /* Tier colours — hierarchy over hue (matches ICP Finder Phase 3b) */
+    --tier1:         var(--lv-primary,#0A66C2);
+    --tier1-bg:      var(--lv-tint,   #EAF2FB);
+    --tier2:         var(--lv-navy,   #0A2A4D);
+    --tier2-bg:      var(--lv-tint,   #EAF2FB);
+    --tier3:         var(--lv-sub,    #5B6B7F);
+    --tier3-bg:      var(--lv-page,   #F6F9FC);
+    --urgent:        var(--lv-bad,    #B42318);
+    --urgent-bg:     var(--lv-badtint,#FDEEEC);
+    /* Chrome helpers kept as aliases for existing rules */
+    --hdr-grad:      linear-gradient(135deg, var(--lv-card,#fff), var(--lv-page,#F6F9FC));
+    --hover-strong:  var(--lv-tint,   #EAF2FB);
+    --nav-idle:      var(--lv-sub,    #5B6B7F);
+    --nav-idle-hover:var(--lv-ink,    #12233B);
+    --li2:           var(--lv-primary,#0A66C2);
+    --tx3:           var(--lv-sub,    #5B6B7F);
+    --ok:            var(--lv-good,   #157347);
+    --lilav:         #6D28D9;
+    --lilav2:        #5B21B6;
+    --lired:         var(--lv-bad,    #B42318);
+    --liamber:       var(--lv-warn,   #B45309);
+    --limint:        var(--lv-good,   #157347);
+    --liblue:        var(--lv-primary,#0A66C2);
   }
-  [data-theme="light"]{
-    --bg-primary:#eef1f7;--bg-elevated:#ffffff;--bg-surface:#f4f6fb;--bg-hover:#e7ecf5;--bg-card:#ffffff;
-    --border:rgba(15,23,42,0.1);--border-active:rgba(37,99,235,0.4);
-    --text-primary:#0f172a;--text-secondary:rgba(15,23,42,0.7);--text-muted:rgba(15,23,42,0.62);
-    --accent:#1d4ed8;--green:#047857;--yellow:#b45309;--red:#b91c1c;--purple:#6d28d9;
-    --tier1:#047857;--tier2:#b45309;--urgent:#b91c1c;--liblue:#1d4ed8;--lilav:#6d28d9;--lilav2:#5b21b6;--lired:#b91c1c;--liamber:#b45309;--limint:#047857;
-    --hdr-grad:linear-gradient(135deg,#ffffff,#eef1f7);
-    --hover-strong:rgba(15,23,42,0.07);
-    --nav-idle:rgba(15,23,42,0.55);--nav-idle-hover:rgba(15,23,42,0.9);
-  --li2:#0369a1;
-  --tx3:rgba(15,23,42,0.62);
-  --ok:#047857;
-}
+  /* Dark mode — all aliases automatically re-point through the --lv-* dark
+     overrides in tokens.css ([data-theme="dark"]). Keep this block only for
+     the few helpers that need explicit dark tuning. */
+  [data-theme="dark"] {
+    --accent-glow:   rgba(122,181,245,0.2);
+    --hdr-grad:      linear-gradient(135deg, #0a0f1e, #0d1525);
+    --nav-idle:      rgba(240,244,255,0.55);
+    --nav-idle-hover:rgba(240,244,255,0.9);
+    --hover-strong:  rgba(255,255,255,0.08);
+    --lilav:         #C4B5FD;
+    --lilav2:        #E9D5FF;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; line-height: 1.6; }
 
