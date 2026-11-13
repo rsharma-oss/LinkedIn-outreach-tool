@@ -2500,10 +2500,10 @@ async function processFiles(filemap, isDemo) {
   document.getElementById('app').style.display = 'block';
   (function(){var _e=document.getElementById('status-dot');if(_e)_e.classList.add('loaded');})();
   (function(){var _e=document.getElementById('reload-btn');if(_e)_e.style.display='flex';})();
-  document.getElementById('export-btn').style.display = 'flex';
-  if (!isDemo) document.getElementById('playbook-btn').style.display = 'flex';
+  (function(){var _e=document.getElementById('export-btn');if(_e)_e.style.display='flex';})();
+  if (!isDemo) (function(){var _e=document.getElementById('playbook-btn');if(_e)_e.style.display='flex';})();
   (function(){var _e=document.getElementById('status-text');if(_e)_e.textContent=`${ICP.length} ICP contacts from ${connRows.length} connections · ↑ ${(window.__uploadBytes?window.__uploadBytes():0)} bytes sent`;})();
-  if (isDemo) document.getElementById('demo-banner').style.display = 'block';
+  if (isDemo) (function(){var _e=document.getElementById('demo-banner');if(_e)_e.style.display='block';})();
 
   // ─── CACHE: save raw CSV for cross-page navigation ─────────────────────────
   // LZ-string compression reduces each key by ~3x — fixes Safari 5 MB quota for
@@ -2700,10 +2700,10 @@ function resetApp() {
   (function(){var _e=document.getElementById('status-dot');if(_e)_e.classList.remove('loaded');})();
   (function(){var _e=document.getElementById('status-text');if(_e)_e.textContent='No data loaded';})();
   (function(){var _e=document.getElementById('reload-btn');if(_e)_e.style.display='none';})();
-  document.getElementById('export-btn').style.display = 'none';
-  document.getElementById('demo-banner').style.display = 'none';
-  document.getElementById('progress-wrap').style.display = 'none';
-  document.getElementById('progress-bar').style.width = '0%';
+  (function(){var _e=document.getElementById('export-btn');if(_e)_e.style.display='none';})();
+  (function(){var _e=document.getElementById('demo-banner');if(_e)_e.style.display='none';})();
+  (function(){var _e=document.getElementById('progress-wrap');if(_e)_e.style.display='none';})();
+  (function(){var _e=document.getElementById('progress-bar');if(_e)_e.style.width='0%';})();
 }
 
 // ─── VIEW SWITCHER ────────────────────────────────────────────────────────────

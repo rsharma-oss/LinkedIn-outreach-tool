@@ -1,6 +1,24 @@
 # GrowthAutomated.ai — LinkedIn Toolkit Backlog
 
-_Last updated: August 3, 2026_
+_Last updated: November 13, 2026_
+
+---
+
+## 🔴 Blocker — Brand rename
+
+### Rename "LinkVault" — competition in the name space
+- **Status:** 🔴 Open · raised November 13, 2026 · blocks public rollout under the new domain.
+- **Why:** a different product is already using the LinkVault name (same space — LinkedIn / outreach tooling). Staying on the name invites confusion, inbound-traffic leakage, and avoidable trademark exposure. Decided to rebrand before pushing the toolkit under `linkvault.growthautomated.ai` / making the repo private.
+- **What a rename touches:** the product name is baked into — not an exhaustive list, but the places to hit first:
+  - **Domain / hosting:** `CNAME` in repo root, the custom-domain config in Cloudflare Pages, the GoDaddy CNAME record (still deferred), the "Open the deployed app" shortcut, the plan in `CLAUDE.md`.
+  - **Wordmark + icon:** the SVG hex-vault mark + "LinkVault" wordmark in every header (chrome.css `.lv-hdr-brand*`), the large Growth Automated footer still keeps its own logo but the LinkVault copy next to it changes, favicons and `<meta name="theme-color">`.
+  - **Copy:** page titles, Willis config (`WILLIS_CONFIG.productName`, tagline, report subject), the Willis "What is X?" starter article, every hero and sub-head using "LinkVault", footer tag line, every CTA button that says the name.
+  - **Docs:** `README.md`, `HANDOFF.md`, `CLAUDE.md` migration notes, `REDESIGN-BRIEF.md`, this backlog, `RELEASE_NOTES.md`.
+  - **Everywhere "lv-" is a prefix** (tokens, components): the prefix itself is fine — it's an internal namespace, not user-facing — but worth flagging if we want the prefix to echo the new name.
+  - **Repo slug:** `rsharma-oss/LinkedIn-outreach-tool` stays if we want — the slug isn't user-visible once the custom domain is live and the repo is private. Not worth a rename.
+- **What a rename does NOT touch:** the toolkit's data model, scoring, cache keys, config file format (`linkvault-icp` v1 — stays as a serialization identifier for round-trip compat), or any engine logic. Also doesn't touch Growth Automated — that stays as the maker brand.
+- **Next action:** the owner picks a name (not Claude's call). Once decided, one sweep rename across the surfaces above — straightforward because `lv-*` component CSS stays, and the wordmark is in one place in the chrome.
+- **Candidate directions** (to seed, not a shortlist): network-metaphor names (Threadline, Warmwork, Rolodex-N) · action-verb names (RankIn, SendFirst) · neutral-utility names (Prospectr, Conductline) · growth-automated-first names where the product is simply "the LinkedIn toolkit by GA" and the sub-brand goes away.
 
 ---
 
