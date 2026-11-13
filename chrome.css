@@ -476,6 +476,47 @@ body[data-lv-chrome]{
   text-align:center;
 }
 
+/* Load-screen "try first" card — soft-green, visible without scrolling */
+.lv-try-first{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:var(--lv-sp-4);flex-wrap:wrap;
+  background:var(--lv-sample-bg);
+  border:1px solid var(--lv-sample-line);
+  border-radius:var(--lv-r-lg);
+  padding:var(--lv-sp-4) var(--lv-sp-5,var(--lv-sp-4));
+  margin:var(--lv-sp-4) 0 var(--lv-sp-6);
+  box-shadow:var(--lv-shadow-sm);
+  font-family:var(--lv-font);
+}
+.lv-try-first-l{flex:1 1 300px;min-width:0}
+.lv-try-first-eyebrow{
+  color:var(--lv-sample-ink);
+  font-size:var(--lv-fs-micro);font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  margin:0;
+}
+.lv-try-first-title{
+  margin:4px 0 0;font-size:var(--lv-fs-h2);font-weight:700;
+  color:var(--lv-ink);line-height:1.25;
+}
+.lv-try-first-sub{
+  margin:6px 0 0;font-size:var(--lv-fs-body);
+  color:var(--lv-ink);opacity:.85;line-height:1.5;
+}
+.lv-try-first-cta{
+  display:inline-flex;align-items:center;gap:var(--lv-sp-2);
+  height:44px;padding:0 var(--lv-sp-5,var(--lv-sp-4));
+  background:var(--lv-sample-ink);border:0;color:#fff;
+  border-radius:var(--lv-r-sm);
+  font-family:var(--lv-font);font-weight:700;
+  font-size:var(--lv-fs-body);
+  cursor:pointer;flex-shrink:0;
+  box-shadow:var(--lv-shadow-sm);
+  transition:transform var(--lv-dur-1) var(--lv-ease),filter var(--lv-dur-1) var(--lv-ease);
+}
+.lv-try-first-cta:hover{transform:translateY(-1px);filter:brightness(0.95)}
+.lv-try-first-cta:focus-visible{outline:2px solid var(--lv-sample-ink);outline-offset:3px}
+
 /* ICP Finder (Phase 3a) — navy next-step bar + filter-bar polish */
 .lv-icp-nextstep{
   display:flex;align-items:center;justify-content:space-between;
@@ -565,14 +606,23 @@ body[data-lv-chrome]{
 .lv-next-sub{font-size:var(--lv-fs-small);opacity:.85;line-height:1.5}
 
 /* ======================= RESPONSIVE ======================= */
-/* Tight band 768–950 — hide pill labels, hide brand word */
+/* Make [hidden] win over .lv-btn {display:inline-flex} */
+.lv-hdr [hidden]{display:none !important}
+
+/* Below 1200 — right cluster is cramped; drop the theme + Willis labels
+   first so the icons stay but the pills don't shove into the step column. */
+@media (max-width:1199px){
+  .lv-btn .lv-theme-label,
+  .lv-willis-avatar + .lv-btn-label{display:none}
+}
+/* Tight band 768–950 — hide step labels, hide brand word, hide data chip text */
 @media (min-width:768px) and (max-width:950px){
   .lv-hdr{gap:var(--lv-sp-2);padding:0 var(--lv-sp-3)}
   .lv-step-label{display:none}
   .lv-hdr-brand-word{display:none}
-  .lv-btn .lv-theme-label{display:none}
+  .lv-data-chip-text{display:none}
 }
-/* Mobile: hide step pills + collapse labels */
+/* Mobile: hide step pills + collapse all labels */
 @media (max-width:767px){
   .lv-hdr{
     grid-template-columns:1fr auto;

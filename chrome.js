@@ -94,12 +94,17 @@
       });
     }
 
-    // Add files — defer to per-page handlers (addFiles / openFolderPicker / openZipPicker). Hide if none exist.
+    // Add files — the real handler across dashboard + icp-finder is a click
+    // on the hidden #file-input element (universal pattern in this app).
+    // Fall back to the legacy named functions if a page doesn't have it.
     var addBtn = doc.getElementById('lv-add-files-btn');
     if (addBtn){
-      var handler = window.addFiles || window.openFolderPicker || window.handleAddFiles || null;
-      if (handler){
-        addBtn.addEventListener('click', handler);
+      var fileInput = doc.getElementById('file-input');
+      var namedHandler = window.addFiles || window.openFolderPicker || window.handleAddFiles || null;
+      if (fileInput) {
+        addBtn.addEventListener('click', function(){ fileInput.click(); });
+      } else if (namedHandler) {
+        addBtn.addEventListener('click', namedHandler);
       } else {
         addBtn.hidden = true;
       }

@@ -8,7 +8,7 @@
 <title>LinkVault · ICP Finder</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css?v=1">
-<link rel="stylesheet" href="chrome.css?v=6">
+<link rel="stylesheet" href="chrome.css?v=7">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
@@ -460,7 +460,19 @@ td{padding:10px 12px;font-size:0.82rem;vertical-align:middle;}
     <div class="load-icon">🎯</div>
     <div class="load-title">LinkVault ICP Finder</div>
     <div class="load-sub">
-      Automatically classify your LinkedIn connections into ICP tiers — decision makers, ecosystem partners, and adjacent contacts. Everything runs in your browser. Your data stays on your device. <em>The default ICP is tuned for B2B outreach — customize it in-app once loaded, or we'll build yours. Works with English-language LinkedIn exports.</em>
+      Rank your LinkedIn connections by fit + warmth — decision makers, ecosystem partners, and adjacent contacts. Nothing leaves your device.
+    </div>
+
+    <!-- Phase 3b: see-the-tool-first CTA, above the fold, no scrolling required -->
+    <div class="lv-try-first" role="group" aria-label="Preview with sample data">
+      <div class="lv-try-first-l">
+        <p class="lv-try-first-eyebrow">Start here · no sign-up</p>
+        <h3 class="lv-try-first-title">See the ICP Finder in action — with sample data.</h3>
+        <p class="lv-try-first-sub">Click to load a realistic demo network with tier-ranked contacts and warmth scores.</p>
+      </div>
+      <button type="button" class="lv-try-first-cta" onclick="loadDemoData()">
+        ✨ Try with sample data
+      </button>
     </div>
 
     <!-- CR-2: primary above-the-fold CTA -->
