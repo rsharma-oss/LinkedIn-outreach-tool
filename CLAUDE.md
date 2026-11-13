@@ -38,6 +38,33 @@ Supporting docs (keep these updated):
 
 ---
 
+## Kimi redesign — Nov 2026 (where it stands)
+
+Shipped the Kimi redesign across every themed page. Phase progression:
+
+- **Phase 1a — tokens.** `tokens.css` carries the `--lv-*` palette (light default, `[data-theme="dark"]` opt-in). `playbook.html` is a client-side redirect so `/playbook` resolves instead of 404-ing.
+- **Phase 1b — chrome.** Shared `.lv-hdr` + `.lv-ftr` across all 7 pages, via `chrome.css` + `chrome.js`. Numbered step pills (1 Dashboard · 2 ICP Finder · 3 Playbook) with `.is-active`/`.is-complete`/`.is-locked` driven by cache keys + current URL. Theme attribute flip handled by a per-page FOUC script that always sets `data-theme="light"|"dark"` explicitly.
+- **GA branding.** Header brand stacks the LinkVault wordmark over a small "by Growth Automated" sub-logo; the footer carries the big centered GA logo on navy.
+- **Phase 2a — Dashboard chrome.** Overview welcomes with a "Welcome back, <name>" banner + 4-card KPI row (Connections / T1 / Warm paths / Ready to message) + a sticky right rail (Progress / Data health / navy Next-step CTA).
+- **Phase 2b — Dashboard hero.** The old 6-card stat-grid + Network Growth + Activity Breakdown charts are hidden; Monthly Engagement promoted to hero with an auto-computed INSIGHT callout ("<Month YYYY> was your busiest month — N interactions (X% of the window)"). Recent activity card under it.
+- **Phase 2c — Dashboard polish.** Mount report rebuilt as a persistent Kimi card (per-file status chips, "Add the missing files" + "Looks right · Dismiss" actions); hero chart series on `--lv-chart-1/2/4` with theme-flip rerender via `toggleTheme` → `buildOverview`.
+- **Phase 3a — ICP navy next-step bar** below the ICP list ("N Tier-1 contacts ready to message → Open Outreach Plan"), filter-bar surfaces on `--lv-card/--lv-page/--lv-border/--lv-ink/--lv-sub`.
+- **Phase 3b — ICP chips + warmth.** Tier pills on `--lv-primary` (T1 filled) / `--lv-tint` (T2 soft) / `--lv-card`+border (T3 outline). Recency + engagement text on `--lv-good/warn/sub`. Warmth pill temperature ramp, warmth popover restyled to Kimi tokens (280px, `--lv-z-popover`).
+- **Phase 3c — Customizer modal.** 3-step modal (industry pills → network picker → Advanced disclosure) rebuilt on `--lv-card` / scrim `rgba(10,42,77,0.4)` with backdrop-blur / inputs on `--lv-page` with `--lv-primary` focus ring / primary CTA on `--lv-primary`. Explainer card above it too.
+- **Phase 4a–4d — unified palette.** The Playbook's split `--bg-primary/--text-primary` scheme, plus `how-to/demo/dashboard/icp-finder`'s legacy `--bg/--tx/--li` tokens, all alias through Kimi's `--lv-*` palette at `:root`. Theming is fully automatic in all 7 themed pages; the per-page `[data-theme="light"]` blocks stay as safety-net overrides.
+
+**Open redesign work (post Nov 2026):**
+- Mobile lead-capture flow per Kimi pages.md §5 (desktop still the only data-work path; mobile gets a "LinkVault works best on desktop → email me a link" flow — not yet built).
+- Full chart-palette sweep: only the Monthly Engagement hero chart is tokenised; the other ~20 charts across Network / Engagement / Content / Messages / Relationships tabs still use their original hardcoded rgba.
+- Offline bundles (`dashboard-offline.html`, `icp-finder-offline.html`) still carry old chrome + Phase 1 tokens. Regenerate from the current source via `build_offline_bundle.py` (lives on the user's older Mac, not in this clone).
+- `icp-finder-prototype.html` (unlisted, deliberately parked) is unchanged.
+
+**Cache-bust state:** `chrome.css?v=7`, `chrome.js?v=3`, `tokens.css?v=1`. Bump any that change.
+
+**Workflow from here:** push to `main` (Cloudflare Pages auto-deploys), add to `BACKLOG.md` as items come up. The 🔴 brand-rename blocker is the gate before the private-repo flip + GoDaddy DNS cut-over.
+
+---
+
 ## Hosting migration — Nov 2026
 
 - **Hosting moved from GitHub Pages → Cloudflare Pages.** The site is served from the custom domain `linkvault.growthautomated.ai` (GoDaddy DNS: a CNAME on the `linkvault` subdomain → `<project>.pages.dev`). The `CNAME` file in the repo root carries the domain string and is required — do not delete.
